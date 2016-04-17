@@ -1,7 +1,7 @@
 # Jekyll configuration
 
-name: My blog
-description: A jekyll theme
+name: Mouse的博客
+description: 记录学习生活工作的点滴
 
 # url is currently only used only for the RSS feed in feed.xml
 url: https://gongchangyou.github.io
