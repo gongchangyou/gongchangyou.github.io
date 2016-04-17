@@ -57,11 +57,7 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2014/08/jekyll-clean-theme">Jekyll Clean Theme</a></li>
-        
-          <li><a href="/2014/07/Lorem-ipsum-dolor-sit-amet">Lorem ipsum dolor sit amet</a></li>
-        
-          <li><a href="/2014/06/Maecenas-feugiat-fringilla-nibh">Maecenas feugiat fringilla nibh</a></li>
+          <li><a href="/2013/08/git-patch">git patch</a></li>
         
           <li><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">c++调用oc</a></li>
         
@@ -72,6 +68,10 @@
 		
 			
 				<li><a href="/tag/c++" title="c++">c++<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>1</sup></a></li>
 			
 		
 </div>
@@ -91,14 +91,18 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2014/06/Maecenas-feugiat-fringilla-nibh">Jun 23, 2014 - Maecenas feugiat fringilla nibh</a></h1>
+                <h1><a href="/2013/08/git-patch">Aug 14, 2013 - git patch</a></h1>
             
             <div class="post-content">
-            <p>Maecenas feugiat fringilla nibh ut mattis. Sed non metus sit amet mi luctus feugiat in quis sem. Vivamus pulvinar commodo bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas sapien nulla, eleifend in dolor et, rutrum maximus velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tempus malesuada egestas. Phasellus pulvinar vulputate urna in tempor. In vel sapien ullamcorper, condimentum ipsum ut, porttitor turpis. Nam auctor erat sed lectus tempus euismod. Nunc ipsum quam, condimentum ac bibendum sit amet, sodales nec metus.</p>
+            <h1>生成patch:</h1>
 
-<p>Vivamus a ullamcorper ipsum. Donec dictum eleifend massa, rhoncus consequat sem tempor nec. Ut bibendum luctus gravida. Nullam eleifend laoreet quam, nec tincidunt dolor tincidunt non. Aenean vel magna massa. Pellentesque sit amet tincidunt ante. Nulla posuere varius elit eu consequat. Sed vitae tortor scelerisque lacus eleifend condimentum. Nulla vitae neque sed lorem sagittis pretium eu nec est. Aliquam in euismod risus, vel vulputate orci.</p>
+<p>1.先commit</p>
 
-<p>Praesent sit amet auctor justo. Suspendisse pretium rutrum vehicula. Cras ut porta urna. Morbi massa odio, eleifend vitae dictum eget, mattis nec metus. Praesent pellentesque metus eu massa pharetra facilisis. Suspendisse potenti. Vestibulum pellentesque pharetra tristique. Nam ut lobortis felis. Proin sit amet consequat ipsum. Curabitur et mattis justo, sit amet feugiat lectus. Sed eleifend eget arcu non pretium. Suspendisse rhoncus erat quis leo laoreet rhoncus. Aliquam quis metus vitae enim cursus sodales. In euismod tortor id odio fermentum, non pretium ipsum iaculis. Quisque consectetur elementum nisi, et posuere odio vulputate ac. Ut consequat, velit eget fermentum ultrices, ligula odio fringilla diam, sit amet accumsan elit velit tempus dolor.</p>
+<p>2.git format-patch version/HEAD^</p>
+
+<h1>使用patch:</h1>
+
+<p>git am XXX.patch</p>
 
             </div>
             
@@ -111,8 +115,6 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2014/07/Lorem-ipsum-dolor-sit-amet" class="next">Newer Post</a>
-              
               
                 <a class="btn btn-default" href="/2013/08/c++%E8%B0%83%E7%94%A8oc" class="previous">Older Post</a>
               
@@ -122,13 +124,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta"></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2014-06-maecenas-feugiat-fringilla-nibh';
+        this.page.identifier = '2013-08-git-patch';
     };
 
    (function() {
