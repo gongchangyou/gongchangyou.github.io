@@ -1,4 +1,4 @@
-# Jekyll configuration
+Jekyll configuration
 
 name: Mouse的博客
 description: 记录学习生活工作的点滴
@@ -34,4 +34,3 @@ gems: ['jekyll-paginate']
 exclude: ['README.md', 'LICENSE']
 
 favicon: /images/favicon.ico
-relative_permalinks: true
