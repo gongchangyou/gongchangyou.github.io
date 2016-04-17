@@ -103,22 +103,56 @@
 
         </div>
         <div class="col-md-9">
-            <!-- This page provides the sidebar links for mobile, where the sidebar is hidden -->
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
+            
+            <div class="post-content">
+            <p>以下两种都可以</p>
 
-<div class="well">
-  <h1>Links</h1>
-<ul>
-  <li><a href="#">One</a></li>
-  <li><a href="#">Two</a></li>
-  <li><a href="#">Three</a></li>
-  <li><a href="#">Four</a></li>
-</ul>
+<figure class="highlight"><pre><code class="language-c" data-lang="c"> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个pad上开不了iphone的应用
+</span> 
+ <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个不同device都可以打开那个应用 推荐！
+</span> </code></pre></figure>
 
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2013/08/git-patch" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2013-08-ios-e5-9c-a8app-e4-b8-ad-e8-bf-9b-e5-85-a5-e5-95-86-e5-ba-97-e4-bb-a5-e4-be-bf-e6-9b-b4-e6-96-b0';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">

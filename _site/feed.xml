@@ -7,6 +7,32 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>草坪婚礼</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://v.youku.com/v_show/id_XNTk2NjM3MzEy.html&quot;&gt;2013613襄阳婚礼&lt;/a&gt;&lt;/p&gt;
+
+&lt;embed id=&quot;STK_137687746371535&quot; height=&quot;356&quot; allowscriptaccess=&quot;never&quot; style=&quot;visibility: visible;&quot; pluginspage=&quot;http://get.adobe.com/cn/flashplayer/&quot; flashvars=&quot;playMovie=true&amp;amp;auto=1&quot; width=&quot;440&quot; allowfullscreen=&quot;true&quot; quality=&quot;high&quot; src=&quot;http://player.youku.com/player.php/sid/XNTk2NjM3MzEy/v.swf&quot; type=&quot;application/x-shockwave-flash&quot; wmode=&quot;transparent&quot; /&gt;
+
+</description>
+				<pubDate>Fri, 16 Aug 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC</guid>
+			</item>
+		
+			<item>
+				<title>ios在app中进入商店以便更新</title>
+				<description>&lt;p&gt;以下两种都可以&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UIApplication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openURL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URLWithString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;amp;mt=8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//这个pad上开不了iphone的应用
+&lt;/span&gt; 
+ &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UIApplication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openURL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URLWithString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;amp;mt=8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//这个不同device都可以打开那个应用 推荐！
+&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0</guid>
+			</item>
+		
+			<item>
 				<title>git patch</title>
 				<description>&lt;h1&gt;生成patch:&lt;/h1&gt;
 
@@ -18,9 +44,26 @@
 
 &lt;p&gt;git am XXX.patch&lt;/p&gt;
 </description>
-				<pubDate>Wed, 14 Aug 2013 07:25:06 +0800</pubDate>
+				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2013/08/git-patch</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/git-patch</guid>
+			</item>
+		
+			<item>
+				<title>git ignore</title>
+				<description>&lt;p&gt;不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令&lt;/p&gt;
+
+&lt;p&gt;% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传&lt;/p&gt;
+
+&lt;p&gt;% git update-index –really-refresh /path/to/file&lt;/p&gt;
+
+&lt;p&gt;% git update-index –skip-worktree /path/to/file 不更新这个文件&lt;/p&gt;
+
+&lt;p&gt;git update-index –no-assume-unchanged&lt;/p&gt;
+</description>
+				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/08/git-ignore</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/git-ignore</guid>
 			</item>
 		
 			<item>
@@ -59,7 +102,7 @@
 
 &lt;p&gt;&lt;img src=&quot;/images/image1-400x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
-				<pubDate>Wed, 14 Aug 2013 07:25:06 +0800</pubDate>
+				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8oc</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8oc</guid>
 			</item>

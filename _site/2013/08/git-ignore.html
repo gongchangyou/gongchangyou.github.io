@@ -103,22 +103,59 @@
 
         </div>
         <div class="col-md-9">
-            <!-- This page provides the sidebar links for mobile, where the sidebar is hidden -->
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2013/08/git-ignore">Aug 13, 2013 - git ignore</a></h1>
+            
+            <div class="post-content">
+            <p>不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令</p>
 
-<div class="well">
-  <h1>Links</h1>
-<ul>
-  <li><a href="#">One</a></li>
-  <li><a href="#">Two</a></li>
-  <li><a href="#">Three</a></li>
-  <li><a href="#">Four</a></li>
-</ul>
+<p>% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传</p>
 
+<p>% git update-index –really-refresh /path/to/file</p>
+
+<p>% git update-index –skip-worktree /path/to/file 不更新这个文件</p>
+
+<p>git update-index –no-assume-unchanged</p>
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2013/08/git-patch" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2013/08/c++%E8%B0%83%E7%94%A8oc" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2013-08-git-ignore';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">
