@@ -35,3 +35,27 @@ git am XXX.patch
 <h3>git 删除所有tag</h3>
 git tag |xargs git tag -d
 
+
+<h3>git cherry-pick</h3>
+git cherry-pick c2f3d52e7^..d0c9463f4
+
+注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。
+
+<h3>git 添加文件到最近的一次commit中</h3>
+漏掉了一些文件，但是已经提交了怎么办？
+
+git add forgotten_files
+
+git commit –amend
+
+<h3>在A branch查看 B branch的log</h3>
+有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录
+
+只需要 git log -p branch_name path/to/file
+
+<h3>git diff 无视win和macos 换行的</h3>
+git config –global core.autocrlf true
+
+<h3>git 查找 注释 文本</h3>
+git log -S “test”
+

@@ -57,15 +57,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2013/09/journey_day3">成都第三日</a></li>
+          <li><a href="/2015/02/journey_day1">一整天的路途奔波和半天闲适布达佩斯</a></li>
         
-          <li><a href="/2013/09/journey_day2">成都第二日</a></li>
+          <li><a href="/2014/05/shell-command">shell 常用命令</a></li>
         
-          <li><a href="/2013/09/journey_day1">成都第一日</a></li>
+          <li><a href="/2014/04/mysql%E7%9F%A5%E8%AF%86">mysql知识</a></li>
         
-          <li><a href="/2013/08/c++%E8%B0%83%E7%94%A8java%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95">c++新建thread 调用java静态方法</a></li>
+          <li><a href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A">安纳托利亚</a></li>
         
-          <li><a href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC">草坪婚礼</a></li>
+          <li><a href="/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F">cocos骨骼动画加速渲染</a></li>
         
     </ul>
 </div>
@@ -73,7 +73,7 @@
 	<h1>标签</h1>
 		
 			
-				<li><a href="/tag/c++" title="c++">c++<sup>2</sup></a></li>
+				<li><a href="/tag/c++" title="c++">c++<sup>4</sup></a></li>
 			
 		
 			
@@ -89,7 +89,15 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>4</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>1</sup></a></li>
 			
 		
 </div>
@@ -138,6 +146,29 @@ git am XXX.patch
 
 <h3>git 删除所有tag</h3>
 <p>git tag |xargs git tag -d</p>
+
+<h3>git cherry-pick</h3>
+<p>git cherry-pick c2f3d52e7^..d0c9463f4</p>
+
+<p>注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。</p>
+
+<h3>git 添加文件到最近的一次commit中</h3>
+<p>漏掉了一些文件，但是已经提交了怎么办？</p>
+
+<p>git add forgotten_files</p>
+
+<p>git commit –amend</p>
+
+<h3>在A branch查看 B branch的log</h3>
+<p>有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录</p>
+
+<p>只需要 git log -p branch_name path/to/file</p>
+
+<h3>git diff 无视win和macos 换行的</h3>
+<p>git config –global core.autocrlf true</p>
+
+<h3>git 查找 注释 文本</h3>
+<p>git log -S “test”</p>
 
 
             </div>

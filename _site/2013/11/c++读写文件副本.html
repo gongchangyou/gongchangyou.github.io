@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well">
+记录学习生活工作的点滴
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2014/04/mysql%E7%9F%A5%E8%AF%86">mysql知识</a></li>
+        
+          <li><a href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A">安纳托利亚</a></li>
+        
+          <li><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E5%89%AF%E6%9C%AC">c++读写文件</a></li>
+        
+          <li><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6">c++读写文件</a></li>
+        
+          <li><a href="/2013/09/journey_day6">成都第六日</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E5%89%AF%E6%9C%AC">Nov 8, 2013 - c++读写文件</a></h1>
+            
+            <div class="post-content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
+
+<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
+
+<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
+
+<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
+
+<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
+
+<span class="c1">//std::string fileContent = std::string("filecontent");
+</span>
+<span class="c1">//ofile &lt;&lt; fileContent;
+</span>
+<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
+
+<p><span style="color: #ff0000;">
+注意 ofstream是写入模式，文件中原有的内容会被清空。
+ifstream ifile；是读取模式,
+</span></p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="n">bool</span> <span class="n">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
+
+<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2013-11-c-e8-af-bb-e5-86-99-e6-96-87-e4-bb-b6-e5-89-af-e6-9c-ac';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2016 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+

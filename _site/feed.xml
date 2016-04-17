@@ -7,6 +7,194 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>一整天的路途奔波和半天闲适布达佩斯</title>
+				<description>&lt;p&gt;&lt;img src=&quot;/images/201502/image10-400x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201502/image8-1024x768.jpg&quot; alt=&quot;&quot; /&gt;
+image8-1024x768&lt;/p&gt;
+</description>
+				<pubDate>Fri, 13 Feb 2015 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2015/02/journey_day1</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day1</guid>
+			</item>
+		
+			<item>
+				<title>shell 常用命令</title>
+				<description>&lt;h3&gt;批量正则rename&lt;/h3&gt;
+&lt;p&gt;rename ‘s/([0-9]).txt/file_$1.txt/’ *.txt&lt;/p&gt;
+
+&lt;h3&gt;tar命令&lt;/h3&gt;
+
+&lt;p&gt;压缩率更大的压缩:tar cvjf  解压:tar xvjf tar.bz2&lt;/p&gt;
+
+&lt;p&gt;压缩:tar cvzf 解压:tar xvzf tar.gz&lt;/p&gt;
+
+</description>
+				<pubDate>Mon, 26 May 2014 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2014/05/shell-command</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2014/05/shell-command</guid>
+			</item>
+		
+			<item>
+				<title>mysql知识</title>
+				<description>&lt;h3&gt;批量导入sql文件到db中&lt;/h3&gt;
+&lt;p&gt;ls -1 *.sql | awk ‘{ print “source”,$0 }’ | mysql –force -h192.168.1.22 -P3310 -uroot -ppassword dbname&lt;/p&gt;
+</description>
+				<pubDate>Mon, 28 Apr 2014 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2014/04/mysql%E7%9F%A5%E8%AF%86</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2014/04/mysql%E7%9F%A5%E8%AF%86</guid>
+			</item>
+		
+			<item>
+				<title>安纳托利亚</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://www.duwanjuan.cn/an-na-tuo-li-ya-zhan-chang-xun-zong-zhan-zheng-shi-li-de-tu-er-qi&quot;&gt;安纳托利亚战争史&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公元前1269。赫梯王朝和埃及订立合约。   大约是商朝末期 赫梯、巴比伦、古埃及 中东版三国&lt;/li&gt;
+&lt;li&gt;公元前1200年。特洛伊之战 来了希腊人 统治了四百多年。一部分幸存者逃离，一路向西，后来建立罗马帝国。&lt;/li&gt;
+&lt;li&gt;公元前547年。来了波斯人，&lt;/li&gt;
+&lt;li&gt;公元前490年。波斯借口希腊人煽动叛乱，在希腊城市马拉松开战。希腊胜利。&lt;/li&gt;
+&lt;li&gt;公元前334年。马其顿国王亚历山大出征小亚细亚，赶跑了波斯人。很快亚历山大死在巴比伦，安纳托利亚陷入军阀混战。&lt;/li&gt;
+&lt;li&gt;公元前189年。罗马共和国跟马其顿帝国打了四次战争，确立地中海唯一霸主地位后发动了对土耳其中部高卢人的战争。基督教在罗马军队眼皮底下艰难传播。之后罗马帝国分裂为东西两个。西罗马帝国于公元476年灭亡。拜占庭帝国延续下来。&lt;/li&gt;
+&lt;li&gt;公元7世纪。突厥人大规模西迁，被阿拉伯人和波斯人雇佣，入侵拜占庭并且之后成功摆脱雇主。建立塞尔柱突厥国。突厥人带来了伊斯兰教。公元1150建都科尼亚。&lt;/li&gt;
+&lt;li&gt;公元1207年鲁米出生，伊斯兰发展出苏菲神秘主义，苏菲之后又发展出鲁米派。发明了旋转舞。更重要的是对奥斯曼帝国起到了决定性的影响。对异族文化的宽容。（游牧民族的特点善于打江山，不善于坐江山，自治且服从管理的社会比较有利）&lt;/li&gt;
+&lt;li&gt;13世纪中叶，成吉思汗的蒙古大军来了，把安纳托利亚打的七零八落，又军阀混战。10个突厥小公国。奥斯曼是其中一个。&lt;/li&gt;
+&lt;li&gt;1299年，奥斯曼宣布独立，开创600年的江山。&lt;/li&gt;
+&lt;li&gt;1453年，攻打君士坦丁堡。&lt;/li&gt;
+&lt;li&gt;1525年，苏莱曼大帝攻陷贝尔格莱德，征服匈牙利，打到维也纳城墙下。君士坦丁堡改名为伊斯坦布尔。&lt;/li&gt;
+&lt;li&gt;1915年，一战加利波利之战，达达尼尔海峡狼烟再起。凯末尔在前线指挥，缔造了现代土耳其，被尊称为祖国之父。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.mafengwo.cn/i/1353471.html&quot;&gt;公元537年建立的索非亚大教堂&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Mon, 30 Dec 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A</guid>
+			</item>
+		
+			<item>
+				<title>cocos骨骼动画加速渲染</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/mrblue/p/3442709.html&quot;&gt;http://www.cnblogs.com/mrblue/p/3442709.html&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Fri, 08 Nov 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F</guid>
+			</item>
+		
+			<item>
+				<title>c++读写文件</title>
+				<description>&lt;p&gt;C++代码&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filePath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;/file/to/path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ofstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ofile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ofile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dlcVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;dlcVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pageJson&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;data&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dlc_version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asCString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ofile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dlcVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;toStyledString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//std::string fileContent = std::string(&quot;filecontent&quot;);
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//ofile &amp;lt;&amp;lt; fileContent;
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ofile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;
+注意 ofstream是写入模式，文件中原有的内容会被清空。
+ifstream ifile；是读取模式,
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileToJSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ifstream&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seekg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ios&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reserve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tellg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;seekg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ios&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;beg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;assign&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;istreambuf_iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;istreambuf_iterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Reader&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reader&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+				<pubDate>Fri, 08 Nov 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6</guid>
+			</item>
+		
+			<item>
+				<title>成都第六日</title>
+				<description>&lt;p&gt;在把行李放到锦里客栈之后，我们发现这是这几日住的最舒服的一家酒店了，巴适哦！后悔没早来。下午根据各大攻略上说的去成都旅游集散中心坐公交线去熊猫基地。问了下问询处的大妈这边有车去熊猫基地么，她说这里不卖去那里的车票，我又问该怎么过去呢？她说这里不卖去那里的车票。顿时有一种本来想找人工服务结果问到了NPC的感觉，拽着媳妇直接出门坐上出租车。&lt;/p&gt;
+
+&lt;p&gt;在熊猫基地逛的很开心，看到了各种可爱的国宝。年幼的熊猫因为不知生活的艰辛所以嬉戏打闹挥霍青春，成年了就会明白靠竹子这种低能食物只能维持吃了睡睡了吃偶尔拉个屎的生活，连交配都会消耗过多体力。&lt;/p&gt;
+
+&lt;embed id=&quot;STK_137687746371535&quot; style=&quot;visibility: visible;&quot; width=&quot;440&quot; height=&quot;356&quot; type=&quot;application/x-shockwave-flash&quot; src=&quot;http://player.youku.com/player.php/sid/XNjE1NTgyNjQ4/v.swf&quot; allowscriptaccess=&quot;never&quot; pluginspage=&quot;http://get.adobe.com/cn/flashplayer/&quot; flashvars=&quot;playMovie=true&amp;amp;auto=1&quot; allowfullscreen=&quot;true&quot; quality=&quot;high&quot; wmode=&quot;transparent&quot; /&gt;
+
+&lt;p&gt;熊猫凭借长相可爱会卖萌就获得了那么多经费感觉对其他长相没那么出众甚至丑陋的濒危物种好不公平。&lt;/p&gt;
+
+&lt;p&gt;晚上去了成都本地人会去吃饭的一品天下街，出租车师傅给我们介绍的他常去的大蓉和太高档了，引的我跟老婆连连感叹成都出租车司机太舒服了，寻路让乘客自己开导航，一路跟同事有说有笑，平时还下高端馆子。最后我们去了永久王鲶鱼，点了微辣的2斤，太爽了！在上海吃不到那么地道的川菜，可惜我们直到最后一天才找到这么地道的地方。&lt;/p&gt;
+</description>
+				<pubDate>Mon, 30 Sep 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/09/journey_day6</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day6</guid>
+			</item>
+		
+			<item>
+				<title>成都第五日</title>
+				<description>&lt;p&gt;临时改变旅行计划总是很折腾。由于昨天赶山路非常辛苦，我们决定今天不去青城后山，而是返回成都休息，这样我们要取消都江堰的房子改租成都的。&lt;/p&gt;
+
+&lt;p&gt;后来我们讨论出来去青城山当天坐晚上的动车回成都住一米阳光，第二天还可以根据身体情况去都江堰或者继续留在成都睡懒觉，最重要的是我们不用搬运行李而且可以晾晒衣物。&lt;/p&gt;
+
+&lt;p&gt;今天再次感受到了成都的悠闲，出租车司机一路上一直在跟同事闲聊，不认识路也不知道跟我们沟通，幸好发现及时没绕远路。我们本想下午去锦里随便吃吃坐坐的，结果国庆的恐怖已经提前展示了，基本上摩肩接踵，吃小吃都找不到位子坐。一路尝试各种失败的街头食物，包括像亲人一样的一品粥店，看上去很美的勾魂面，在wowo便利店买的蔓越梅干，跟襄阳的良品铺子完全没法比。&lt;/p&gt;
+
+&lt;p&gt;晚上落魄到了如家，明天去看大熊猫但愿可以顺利些。那些号称成都很好玩很多好吃的人我怀疑他们只待了两三天，因为到了第五天我已经开始怀念江南了。&lt;/p&gt;
+</description>
+				<pubDate>Sun, 29 Sep 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/09/journey_day5</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day5</guid>
+			</item>
+		
+			<item>
+				<title>青城山游记</title>
+				<description>&lt;p&gt;成都到青城山的动车只要15元，给我一种青城山人民果然朴实的印象。结果到了青城山以后发现臣妾竟然错付啦！花园酒店一晚上500就算了，毕竟算是档次比较高的酒店。出租车管理混乱，看上去正规的出租车漫天要价，从火车站到花园酒店明明是起步价的路程要20！黑车更黑，从山门回来就一里路要30！这物价比上海高多了啊！恩，我承认此时想念上海了，至少明码标价童叟无欺。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1791-300x179.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;说实话，我对道教没什么兴趣，道可道，非常道。我一向对这种只有描述没有定义的事物非常头疼，理解不能，包括数学中的集合。青城山是号称天下第一幽的名山。一开始在山门的时候还是人山人海，越往后走越清幽，走到后半段的时候几乎感受不到是在中国了，给人一种到了挪威或者加拿大的错觉。我们上山坐的索道，听边上的导游说以前到索道入口可以选择坐船也可以绕湖走过去，他们看到今天人多就关闭了走路过去的道路，大家都要买票上船，每人5块，所谓的坐船也就是20秒左右的渡轮，刚上船就到了。把我无语的呀。余沧海只是觊觎辟邪剑谱，你们这伙人居然捞钱都那么疯狂，真是档次越来越低了。白瞎了这片静幽山水！&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1806-300x179.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;不可否认山上景色还是不错的。参天大树比比皆是，直接从山脚拔地而起，树梢一直窜到山腰。我们仿佛来到了侏罗纪公园，担心冷不丁会有梁龙什么的窜出来吃这些植物。我们登到老君阁的时候已经是身在此山中，云深不知处了，眼前尽是白茫茫的一片雾气，有如堕入蓬莱仙境。山上湿气甚重，从石罅中渗出的水珠滴落在台阶上，蒙上了一层青苔，走到这种地方要格外小心，路滑而且脑袋上可能中招。幸好我穿上了丈母娘之前给我准备的农村小伙防水带帽套装。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1797-300x179.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/images/201309/IMAG1799-300x179.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/images/201309/IMAG1796-179x300.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/images/201309/IMAG1804-300x179.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;因为我们上山较晚，所以登顶时已经是下午3点半。因为担心天黑时还没下山，到时候还要麻烦人家派人救咱。所以整个下午就紧赶慢赶，没有多余时间欣赏沿途美景，每逢休息时就多拍几张。本来如龙门峡谷般的栈道就已经够险峻的了，峡谷中还有很多高大的银杏穿插其间，翠绿逼人。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1818-179x300.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/images/201309/IMAG1824-179x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;好歹在六点半回到山门，打了30块的黑车到达酒店。明天本来计划去后山的，这腿估计是不行了，只能回成都。&lt;/p&gt;
+</description>
+				<pubDate>Sat, 28 Sep 2013 16:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2013/09/journey_day4</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day4</guid>
+			</item>
+		
+			<item>
 				<title>成都第三日</title>
 				<description>&lt;p&gt;天公不作美啊！起床时发现下起了淅淅沥沥的小雨，遂打电话去大熊猫繁育基地询问雨天熊猫还出来活动否，在得到一个不置可否的答案后，再次查看网上信息，感觉再等几天天气好转再去会保险些。&lt;/p&gt;
 
@@ -27,211 +215,6 @@
 				<pubDate>Fri, 27 Sep 2013 16:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2013/09/journey_day3</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day3</guid>
-			</item>
-		
-			<item>
-				<title>成都第二日</title>
-				<description>&lt;p&gt;一觉睡到中午！哎呀能睡懒觉的日子实在太爽啦！懒洋洋起来去锦里，据说高端洋气的地方，吃了清爽的龙抄手，担担面不如昨日的好吃，没有花生，只有香菇。卖毛笔的鼠须和羊毫都很棒，能让我这种字如蟹脚的人也能轻松掌握。酒吧和茶馆看起来没那么悠闲轻松，至少价格不轻松，整体格调就是豫园类型的就别往新天地上凑，几个酒吧又类似茶馆的店感觉很突兀。
-&lt;img src=&quot;/images/201309/IMAG1747-179x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1756-179x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在某处惊现诸葛连弩！这个我要尝试下！看我还射的准吧？再次感叹在人力不足的时候提高生产力才是解决问题的方法。那些整天瞎操心说将来年轻人少了养老咋办的人可以歇菜了，你怎么可以预测几十年后生产力会提升到什么程度。亮不愧是伟大的科学家。媳妇说嫁给诸葛亮很不错，整天钻研发明了这么多玩意儿，不好女色。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1750-179x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1752-179x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1761-179x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;锦里隔壁就是武侯祠，爷爷受罗贯中荼毒甚深，他最佩服诸葛亮，因为他是个变不可能为可能的男人。看过三国志才明白是个伟大的政治家，外交家，带兵打仗其实没那么神。即便如此，我还是愿意去相信有个料事如神的诸葛亮可以救民于水火，就好像怎么也看不腻的超人和蝙蝠侠，不断向梦想努力，你最终会成为你想成为的人！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201309/d1160924ab18972b306cce78e7cd7b899e510a2a-193x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1762-179x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1770-179x300.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1773-179x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201309/IMAG1768-300x179.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201309/IMAG1769-300x179.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 26 Sep 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/09/journey_day2</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day2</guid>
-			</item>
-		
-			<item>
-				<title>成都第一日</title>
-				<description>&lt;p&gt;宽窄巷子里品尝了若干小吃：茶马江湖的担担面、粉蒸排骨、粉蒸牛肉都很不错。豆花就不行了，太老，哪里是豆花，分明是豆腐啊！凤爪很大很好吃。这里应该是宰外地人的地方，以上这些花费77元。看在好吃的份上暂且接受啦。不能让我接受的是有很多宅邸在门口用不锈钢的铭牌标注私人宅邸，门却又虚掩着或者半开着，看起来像是高级会所的样子。顿时让我等屌丝生出屌丝与狗不得入内的挫败感。想到上海的新天地或者杭州的清河坊街都没有这样多的私人宅邸，觉得以上两个城市的权贵还是很低调的，尽量照顾民众的感受，私人会所都在隐蔽的位置而不是在游人如织的地方显摆。&lt;/p&gt;
-
-&lt;p&gt;晚饭在连锁火锅店蜀九香吃了顶级牛肉，因为之前在创智天地曾经沧海，吃起来也就那样。当然厨师的刀功了得，乌江鱼的鱼片能做到下水即熟。汤底也比较鲜，俩人花销260左右，性价比不是很高，等我们吃完出来一看，队伍跟辛香汇差不多，感叹商家只要肯在各大攻略上投钱，一定会有丰厚回报啊！&lt;/p&gt;
-</description>
-				<pubDate>Wed, 25 Sep 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/09/journey_day1</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/09/journey_day1</guid>
-			</item>
-		
-			<item>
-				<title>c++新建thread 调用java静态方法</title>
-				<description>&lt;p&gt;首先需要3个静态变量&lt;/p&gt;
-
-&lt;p&gt;static JavaVM *gs_jvm=NULL;//这个是JavaVM 两个线程共享这个变量&lt;/p&gt;
-
-&lt;p&gt;static jobject gs_createFolder = NULL;//通过 gs_createFolder = env-&amp;gt;NewGlobalRef(ret);可以做到让两个线程共享一个jobject&lt;/p&gt;
-
-&lt;p&gt;static jmethodID gs_methodId = NULL;&lt;/p&gt;
-
-&lt;p&gt;在新建thread之前做以下事情：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;gs_jvm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JniHelper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getJavaVM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;CCLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;save javavm after&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;JNIEnv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;gs_jvm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AttachCurrentThread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;jclass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FindClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;com/gumichina/lib/Storage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;gs_createFolder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewGlobalRef&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;gs_methodId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetStaticMethodID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;createExternalFolder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;(Ljava/lang/String;)Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//接下来就开你的thread吧：
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pthread_create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s_zipThread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unzipFileOnThread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;在thread中这样获取:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;n&quot;&gt;JNIEnv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;gs_jvm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AttachCurrentThread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//这里就获取了JavaVM的env&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;jclass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GetObjectClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gs_createFolder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//把class巧妙的拿过来了&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//调用的时候&lt;/span&gt;
-
-&lt;span class=&quot;nl&quot;&gt;std:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tempPath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;rfind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;jstring&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringArg1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NewStringUTF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tempPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;c_str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CallStaticBooleanMethod&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gs_methodId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StringArg1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//cls 和methodId 齐活了！&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DeleteLocalRef&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;StringArg1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-				<pubDate>Fri, 30 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8java%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8java%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95</guid>
-			</item>
-		
-			<item>
-				<title>草坪婚礼</title>
-				<description>&lt;p&gt;&lt;a href=&quot;http://v.youku.com/v_show/id_XNTk2NjM3MzEy.html&quot;&gt;2013613襄阳婚礼&lt;/a&gt;&lt;/p&gt;
-
-&lt;embed id=&quot;STK_137687746371535&quot; height=&quot;356&quot; allowscriptaccess=&quot;never&quot; style=&quot;visibility: visible;&quot; pluginspage=&quot;http://get.adobe.com/cn/flashplayer/&quot; flashvars=&quot;playMovie=true&amp;amp;auto=1&quot; width=&quot;440&quot; allowfullscreen=&quot;true&quot; quality=&quot;high&quot; src=&quot;http://player.youku.com/player.php/sid/XNTk2NjM3MzEy/v.swf&quot; type=&quot;application/x-shockwave-flash&quot; wmode=&quot;transparent&quot; /&gt;
-
-</description>
-				<pubDate>Fri, 16 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC</guid>
-			</item>
-		
-			<item>
-				<title>mac常用命令</title>
-				<description>&lt;h3&gt;将文件内容复制到剪贴板&lt;/h3&gt;
-&lt;p&gt;pbcopy &amp;lt; ~/.ssh/id_rsa.pub&lt;/p&gt;
-</description>
-				<pubDate>Fri, 16 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/mac-command</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/mac-command</guid>
-			</item>
-		
-			<item>
-				<title>ios在app中进入商店以便更新</title>
-				<description>&lt;p&gt;以下两种都可以&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UIApplication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openURL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URLWithString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;amp;mt=8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//这个pad上开不了iphone的应用
-&lt;/span&gt; 
- &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;UIApplication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedApplication&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openURL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URLWithString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;amp;mt=8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//这个不同device都可以打开那个应用 推荐！
-&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0</guid>
-			</item>
-		
-			<item>
-				<title>git 常用命令</title>
-				<description>&lt;h3&gt;git ignore&lt;/h3&gt;
-&lt;p&gt;不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令&lt;/p&gt;
-
-&lt;p&gt;% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传&lt;/p&gt;
-
-&lt;p&gt;% git update-index –really-refresh /path/to/file&lt;/p&gt;
-
-&lt;p&gt;% git update-index –skip-worktree /path/to/file 不更新这个文件&lt;/p&gt;
-
-&lt;p&gt;git update-index –no-assume-unchanged&lt;/p&gt;
-
-&lt;h3&gt;git patch&lt;/h3&gt;
-&lt;ul&gt;
-&lt;h4&gt;生成patch:&lt;/h4&gt;
-&lt;li&gt;
-1.先commit
-&lt;/li&gt;
-&lt;li&gt;	
-2.git format-patch version/HEAD^
-&lt;/li&gt;
-&lt;h4&gt;使用patch:&lt;/h4&gt;
-git am XXX.patch
-&lt;/ul&gt;
-
-&lt;h3&gt;git 删除所有tag&lt;/h3&gt;
-&lt;p&gt;git tag |xargs git tag -d&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/git-command</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/git-command</guid>
-			</item>
-		
-			<item>
-				<title>c++调用oc</title>
-				<description>&lt;p&gt;C++代码&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt; &lt;span class=&quot;c1&quot;&gt;//
-&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// MKStoreForCpp.h
-&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//
-&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;#ifndef SGR_MKStoreForCpp_h
-&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;#define SGR_MKStoreForCpp_h
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MKStoreForCpp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
- &lt;span class=&quot;kr&quot;&gt;inline&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MKStoreForCpp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MKStoreForCpp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mkStoreForCpp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mkStoreForCpp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
- &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buyFeature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;#endif&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;OC代码&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt; &lt;span class=&quot;c1&quot;&gt;//
-&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// MKStoreForCpp.mm
-&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//
-&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;#include &quot;MKStoreForCpp.h&quot;
-&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;#include &quot;MKStoreManager.h&quot;
-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MKStoreForCpp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buyFeature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MKStoreManager&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buyFeature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringWithUTF8String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
- &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/image1-400x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Tue, 13 Aug 2013 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8oc</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8oc</guid>
 			</item>
 		
 	</channel>
