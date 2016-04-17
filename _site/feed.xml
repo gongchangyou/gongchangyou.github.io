@@ -213,16 +213,18 @@ respective owners:&lt;/p&gt;
 
 &lt;p&gt;OC代码&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ios&quot; data-lang=&quot;ios&quot;&gt; //
- // MKStoreForCpp.mm
- //
-#include &quot;MKStoreForCpp.h&quot;
- #include &quot;MKStoreManager.h&quot;
-void MKStoreForCpp::buyFeature(const char* feature)
- {
- [[MKStoreManager sharedManager] buyFeature: [NSString stringWithUTF8String: feature]];
- }
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt; &lt;span class=&quot;c1&quot;&gt;//
+&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// MKStoreForCpp.mm
+&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//
+&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;#include &quot;MKStoreForCpp.h&quot;
+&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;#include &quot;MKStoreManager.h&quot;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MKStoreForCpp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buyFeature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MKStoreManager&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sharedManager&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buyFeature&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stringWithUTF8String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;feature&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/image1-400x300.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Wed, 14 Aug 2013 07:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2013/08/c++%E8%B0%83%E7%94%A8oc</link>

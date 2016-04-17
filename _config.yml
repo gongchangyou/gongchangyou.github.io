@@ -33,4 +33,5 @@ gems: ['jekyll-paginate']
 
 exclude: ['README.md', 'LICENSE']
 
-favicon: images/favicon.ico
+favicon: /images/favicon.ico
+relative_permalinks: true

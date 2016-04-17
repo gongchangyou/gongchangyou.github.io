@@ -10,6 +10,14 @@
         {% endfor %}
     </ul>
 </div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		{% for item in site.tags %}
+			{% if item[1] | size != 0 %}
+				<li><a href="{{ site.baseurl }}/tags/#{{ item[0] }}" title="{{ item[0] }}">{{ item[0] }}<sup>{{ item[1] | size }}</sup></a></li>
+			{% endif %}
+		{% endfor %}
+</div>
 <!-- 
 <div class="sidebar well">
 {% include links-list.html %}
