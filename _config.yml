@@ -33,11 +33,4 @@ gems: ['jekyll-paginate']
 
 exclude: ['README.md', 'LICENSE']
 
-#### Image
-imglogo:
-  enable: true             ## display image logo true/false.
-  src: images/logo.png        ## `.svg` and `.png` are recommended,please put image into the theme folder `/jacman/source/img`.
-favicon: images/favicon.ico   ## size:32px*32px,`.ico` is recommended,please put image into the theme folder `/jacman/source/img`.     
-apple_icon: images/favicon.ico ## size:114px*114px,please put image into the theme folder `/jacman/source/img`.
-author_img: images/favicon.ico ## size:220px*220px.display author avatar picture.if don't want to display,please don't set this.
-banner_img: #img/banner.jpg ## size:1920px*200px+. Banner Picture
+favicon: favicon.ico
