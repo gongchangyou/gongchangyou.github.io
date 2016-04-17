@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well">
+记录学习生活工作的点滴
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2014/08/jekyll-clean-theme">Jekyll Clean Theme</a></li>
+        
+          <li><a href="/2014/07/Lorem-ipsum-dolor-sit-amet">Lorem ipsum dolor sit amet</a></li>
+        
+          <li><a href="/2014/06/Maecenas-feugiat-fringilla-nibh">Maecenas feugiat fringilla nibh</a></li>
+        
+          <li><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">c++调用oc</a></li>
+        
+          <li><a href="/2013/06/Cum-sociis-natoque-penatibus">Cum sociis natoque penatibus</a></li>
+        
+    </ul>
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 14, 2013 - c++调用oc</a></h1>
+            
+            <div class="post-content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.h
+</span> <span class="c1">//
+</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">public</span><span class="o">:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>OC代码</p>
+
+<figure class="highlight"><pre><code class="language-ios" data-lang="ios"> //
+ // MKStoreForCpp.mm
+ //
+#include "MKStoreForCpp.h"
+ #include "MKStoreManager.h"
+void MKStoreForCpp::buyFeature(const char* feature)
+ {
+ [[MKStoreManager sharedManager] buyFeature: [NSString stringWithUTF8String: feature]];
+ }
+ </code></pre></figure>
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2014/06/Maecenas-feugiat-fringilla-nibh" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2013/06/Cum-sociis-natoque-penatibus" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2013-08-c-e8-b0-83-e7-94-a8oc';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2016 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+
