@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2015/02/journey_day8">2月14日布拉格</a></li>
+          <li><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">VsVim快捷键</a></li>
         
-          <li><a href="/2015/02/journey_day7">2月13日布拉格</a></li>
+          <li><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">c++ lamda函数</a></li>
         
-          <li><a href="/2015/02/journey_day6">2月12日维也纳购物和去布拉格</a></li>
+          <li><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">关于贬值</a></li>
         
-          <li><a href="/2015/02/journey_day5">2月11日维也纳</a></li>
+          <li><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">龚一峰出生啦！</a></li>
         
-          <li><a href="/2015/02/journey_day4">2月10日维也纳</a></li>
+          <li><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">c++ 反射实现 动态创建实例</a></li>
         
     </ul>
 </div>
@@ -76,7 +76,7 @@
 	<h1>标签</h1>
 		
 			
-				<li><a href="/tag/c++" title="c++">c++<sup>4</sup></a></li>
+				<li><a href="/tag/c++" title="c++">c++<sup>11</sup></a></li>
 			
 		
 			
@@ -92,7 +92,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>17</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>19</sup></a></li>
 			
 		
 			
@@ -121,12 +121,53 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC">Aug 16, 2013 - 草坪婚礼</a></h1>
+        <h1><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6">Nov 8, 2013 - c++读写文件</a></h1>
         
         <div class="content">
-            <p><a href="http://v.youku.com/v_show/id_XNTk2NjM3MzEy.html">2013613襄阳婚礼</a></p>
+            <p>C++代码</p>
 
-<embed id="STK_137687746371535" height="356" allowscriptaccess="never" style="visibility: visible;" pluginspage="http://get.adobe.com/cn/flashplayer/" flashvars="playMovie=true&amp;auto=1" width="440" allowfullscreen="true" quality="high" src="http://player.youku.com/player.php/sid/XNTk2NjM3MzEy/v.swf" type="application/x-shockwave-flash" wmode="transparent" />
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
+
+<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
+
+<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
+
+<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
+
+<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
+
+<span class="c1">//std::string fileContent = std::string("filecontent");
+</span>
+<span class="c1">//ofile &lt;&lt; fileContent;
+</span>
+<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
+
+<p><span style="color: #ff0000;">
+注意 ofstream是写入模式，文件中原有的内容会被清空。
+ifstream ifile；是读取模式,
+</span></p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="n">bool</span> <span class="n">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
+
+<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
 
 
         </div>
@@ -135,11 +176,18 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+        <h1><a href="/2013/09/journey_day6">Sep 30, 2013 - 成都第六日</a></h1>
         
         <div class="content">
-            <h3>将文件内容复制到剪贴板</h3>
-<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+            <p>在把行李放到锦里客栈之后，我们发现这是这几日住的最舒服的一家酒店了，巴适哦！后悔没早来。下午根据各大攻略上说的去成都旅游集散中心坐公交线去熊猫基地。问了下问询处的大妈这边有车去熊猫基地么，她说这里不卖去那里的车票，我又问该怎么过去呢？她说这里不卖去那里的车票。顿时有一种本来想找人工服务结果问到了NPC的感觉，拽着媳妇直接出门坐上出租车。</p>
+
+<p>在熊猫基地逛的很开心，看到了各种可爱的国宝。年幼的熊猫因为不知生活的艰辛所以嬉戏打闹挥霍青春，成年了就会明白靠竹子这种低能食物只能维持吃了睡睡了吃偶尔拉个屎的生活，连交配都会消耗过多体力。</p>
+
+<embed id="STK_137687746371535" style="visibility: visible;" width="440" height="356" type="application/x-shockwave-flash" src="http://player.youku.com/player.php/sid/XNjE1NTgyNjQ4/v.swf" allowscriptaccess="never" pluginspage="http://get.adobe.com/cn/flashplayer/" flashvars="playMovie=true&amp;auto=1" allowfullscreen="true" quality="high" wmode="transparent" />
+
+<p>熊猫凭借长相可爱会卖萌就获得了那么多经费感觉对其他长相没那么出众甚至丑陋的濒危物种好不公平。</p>
+
+<p>晚上去了成都本地人会去吃饭的一品天下街，出租车师傅给我们介绍的他常去的大蓉和太高档了，引的我跟老婆连连感叹成都出租车司机太舒服了，寻路让乘客自己开导航，一路跟同事有说有笑，平时还下高端馆子。最后我们去了永久王鲶鱼，点了微辣的2斤，太爽了！在上海吃不到那么地道的川菜，可惜我们直到最后一天才找到这么地道的地方。</p>
 
         </div>
     </div>
@@ -147,15 +195,16 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
+        <h1><a href="/2013/09/journey_day5">Sep 29, 2013 - 成都第五日</a></h1>
         
         <div class="content">
-            <p>以下两种都可以</p>
+            <p>临时改变旅行计划总是很折腾。由于昨天赶山路非常辛苦，我们决定今天不去青城后山，而是返回成都休息，这样我们要取消都江堰的房子改租成都的。</p>
 
-<figure class="highlight"><pre><code class="language-c" data-lang="c"> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个pad上开不了iphone的应用
-</span> 
- <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个不同device都可以打开那个应用 推荐！
-</span> </code></pre></figure>
+<p>后来我们讨论出来去青城山当天坐晚上的动车回成都住一米阳光，第二天还可以根据身体情况去都江堰或者继续留在成都睡懒觉，最重要的是我们不用搬运行李而且可以晾晒衣物。</p>
+
+<p>今天再次感受到了成都的悠闲，出租车司机一路上一直在跟同事闲聊，不认识路也不知道跟我们沟通，幸好发现及时没绕远路。我们本想下午去锦里随便吃吃坐坐的，结果国庆的恐怖已经提前展示了，基本上摩肩接踵，吃小吃都找不到位子坐。一路尝试各种失败的街头食物，包括像亲人一样的一品粥店，看上去很美的勾魂面，在wowo便利店买的蔓越梅干，跟襄阳的良品铺子完全没法比。</p>
+
+<p>晚上落魄到了如家，明天去看大熊猫但愿可以顺利些。那些号称成都很好玩很多好吃的人我怀疑他们只待了两三天，因为到了第五天我已经开始怀念江南了。</p>
 
         </div>
     </div>
@@ -168,7 +217,7 @@
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 9</span>
+  <span class="page_number ">Page: 8 of 12</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   

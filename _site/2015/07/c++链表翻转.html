@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well">
+<img src="/images/favicon.ico" alt="" align=center/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">VsVim快捷键</a></li>
+        
+          <li><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">c++ lamda函数</a></li>
+        
+          <li><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">关于贬值</a></li>
+        
+          <li><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">龚一峰出生啦！</a></li>
+        
+          <li><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">c++ 反射实现 动态创建实例</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC">Jul 31, 2015 - c++链表翻转</a></h1>
+            
+            <div class="post-content">
+            <p>字符串连接符</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
+
+<span class="kt">void</span>
+
+<span class="n">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span>
+
+<span class="n">random_access_iterator_tag</span><span class="p">)</span>
+
+<span class="p">{</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
+
+<span class="k">return</span><span class="p">;</span>
+
+<span class="err">–</span><span class="n">__last</span><span class="p">;</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
+
+<span class="p">{</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
+
+<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
+
+<span class="err">–</span><span class="n">__last</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="p">}</span></code></pre></figure>
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2015-07-c-e9-93-be-e8-a1-a8-e7-bf-bb-e8-bd-ac';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2016 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+
