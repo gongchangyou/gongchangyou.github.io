@@ -120,27 +120,37 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A">Dec 30, 2013 - 安纳托利亚</a></h1>
+                <h1><a href="/2015/06/c++%E5%BF%AB%E6%8E%92">Jun 17, 2015 - c++  快排</a></h1>
             
             <div class="post-content">
-            <p><a href="http://www.duwanjuan.cn/an-na-tuo-li-ya-zhan-chang-xun-zong-zhan-zheng-shi-li-de-tu-er-qi">安纳托利亚战争史</a></p>
-<ul>
-<li>公元前1269。赫梯王朝和埃及订立合约。   大约是商朝末期 赫梯、巴比伦、古埃及 中东版三国</li>
-<li>公元前1200年。特洛伊之战 来了希腊人 统治了四百多年。一部分幸存者逃离，一路向西，后来建立罗马帝国。</li>
-<li>公元前547年。来了波斯人，</li>
-<li>公元前490年。波斯借口希腊人煽动叛乱，在希腊城市马拉松开战。希腊胜利。</li>
-<li>公元前334年。马其顿国王亚历山大出征小亚细亚，赶跑了波斯人。很快亚历山大死在巴比伦，安纳托利亚陷入军阀混战。</li>
-<li>公元前189年。罗马共和国跟马其顿帝国打了四次战争，确立地中海唯一霸主地位后发动了对土耳其中部高卢人的战争。基督教在罗马军队眼皮底下艰难传播。之后罗马帝国分裂为东西两个。西罗马帝国于公元476年灭亡。拜占庭帝国延续下来。</li>
-<li>公元7世纪。突厥人大规模西迁，被阿拉伯人和波斯人雇佣，入侵拜占庭并且之后成功摆脱雇主。建立塞尔柱突厥国。突厥人带来了伊斯兰教。公元1150建都科尼亚。</li>
-<li>公元1207年鲁米出生，伊斯兰发展出苏菲神秘主义，苏菲之后又发展出鲁米派。发明了旋转舞。更重要的是对奥斯曼帝国起到了决定性的影响。对异族文化的宽容。（游牧民族的特点善于打江山，不善于坐江山，自治且服从管理的社会比较有利）</li>
-<li>13世纪中叶，成吉思汗的蒙古大军来了，把安纳托利亚打的七零八落，又军阀混战。10个突厥小公国。奥斯曼是其中一个。</li>
-<li>1299年，奥斯曼宣布独立，开创600年的江山。</li>
-<li>1453年，攻打君士坦丁堡。</li>
-<li>1525年，苏莱曼大帝攻陷贝尔格莱德，征服匈牙利，打到维也纳城墙下。君士坦丁堡改名为伊斯坦布尔。</li>
-<li>1915年，一战加利波利之战，达达尼尔海峡狼烟再起。凯末尔在前线指挥，缔造了现代土耳其，被尊称为祖国之父。</li>
-</ul>
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span> <span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span><span class="c1">//慢速下标
+</span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">x</span><span class="p">){</span>
+            <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span><span class="c1">//发现小的跟j交换
+</span>            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="n">j</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">q</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">q</span><span class="p">;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">}</span>
 
-<p><a href="http://www.mafengwo.cn/i/1353471.html">公元537年建立的索非亚大教堂</a></p>
+<span class="kt">void</span> <span class="n">quickSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+        <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
             </div>
             
@@ -153,10 +163,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2014/04/mysql%E7%9F%A5%E8%AF%86" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/02/journey_day8" class="previous">Older Post</a>
               
 </div>
 
@@ -164,13 +172,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-12-e5-ae-89-e7-ba-b3-e6-89-98-e5-88-a9-e4-ba-9a';
+        this.page.identifier = '2015-06-c-e5-bf-ab-e6-8e-92';
     };
 
    (function() {
