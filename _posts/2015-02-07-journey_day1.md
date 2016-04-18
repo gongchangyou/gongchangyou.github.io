@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "一整天的路途奔波和半天闲适布达佩斯"
-date: 2015-02-08 16:25:06 +0800
+date: 2015-02-07 16:25:06 +0800
 comments: true
 category: life
 tag: [life]
