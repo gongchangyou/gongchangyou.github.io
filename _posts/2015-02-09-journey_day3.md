@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2月9日布达佩斯半日和火车去维也纳"
-date: 2015-02-10 16:25:06 +0800
+date: 2015-02-09 22:25:06 +0800
 comments: true
 category: life
 tag: [life]

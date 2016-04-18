@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "布达佩斯第二天"
-date: 2015-02-09 16:25:06 +0800
+date: 2015-02-08 22:25:06 +0800
 comments: true
 category: life
 tag: [life]

@@ -115,57 +115,63 @@
 
         </div>
         <div class="col-md-9">
-          <div class="article">
-            <div class="well">
-                <h1><a href="/2013/09/journey_day5">Sep 29, 2013 - 成都第五日</a></h1>
             
-            <div class="post-content">
-            <p>临时改变旅行计划总是很折腾。由于昨天赶山路非常辛苦，我们决定今天不去青城后山，而是返回成都休息，这样我们要取消都江堰的房子改租成都的。</p>
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
+        
+        <div class="content">
+            <p>C++代码</p>
 
-<p>后来我们讨论出来去青城山当天坐晚上的动车回成都住一米阳光，第二天还可以根据身体情况去都江堰或者继续留在成都睡懒觉，最重要的是我们不用搬运行李而且可以晾晒衣物。</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.h
+</span> <span class="c1">//
+</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">public</span><span class="o">:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<p>今天再次感受到了成都的悠闲，出租车司机一路上一直在跟同事闲聊，不认识路也不知道跟我们沟通，幸好发现及时没绕远路。我们本想下午去锦里随便吃吃坐坐的，结果国庆的恐怖已经提前展示了，基本上摩肩接踵，吃小吃都找不到位子坐。一路尝试各种失败的街头食物，包括像亲人一样的一品粥店，看上去很美的勾魂面，在wowo便利店买的蔓越梅干，跟襄阳的良品铺子完全没法比。</p>
+<p>OC代码</p>
 
-<p>晚上落魄到了如家，明天去看大熊猫但愿可以顺利些。那些号称成都很好玩很多好吃的人我怀疑他们只待了两三天，因为到了第五天我已经开始怀念江南了。</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.mm
+</span> <span class="c1">//
+</span><span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
-            </div>
-            
-            <div id="disqus_thread">
-                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-            </div>
-            
-            </div>
-          </div>
-          <div class="pagination">
-              
-                <a class="btn btn-default" href="/2013/09/journey_day6" class="next">Newer Post</a>
-              
-              
-                <a class="btn btn-default" href="/2013/09/journey_day4" class="previous">Older Post</a>
-              
+
+        </div>
+    </div>
+</div>
+
+
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page7" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 8 of 8</span>
+  
 </div>
 
         </div>
     </div>
 </div>
-<!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
-
-  <script type="text/javascript">
-    var disqus_shortname = '';
-
-    var disqus_config = function () {
-        this.page.identifier = '2013-09-journey-day5';
-    };
-
-   (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-
 
 <div class="container-fluid">
     <div class="row-fluid">
