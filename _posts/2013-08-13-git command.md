@@ -59,3 +59,5 @@ git config –global core.autocrlf true
 <h3>git 查找 注释 文本</h3>
 git log -S “test”
 
+<h3>git st 中文乱码问题</h3>
+git config --global core.quotepath false
