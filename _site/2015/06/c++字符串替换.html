@@ -120,11 +120,42 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2014/04/mysql%E7%9F%A5%E8%AF%86">Apr 28, 2014 - mysql知识</a></h1>
+                <h1><a href="/2015/06/c++%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2">Jun 26, 2015 - c++ 字符串替换</a></h1>
             
             <div class="post-content">
-            <h3>批量导入sql文件到db中</h3>
-<p>ls -1 *.sql | awk ‘{ print “source”,$0 }’ | mysql –force -h192.168.1.22 -P3310 -uroot -ppassword dbname</p>
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include&lt;string&gt;
+#include&lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="c1">//第一种替换字符串的方法用replace()
+</span>
+<span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//第二种替换字符串的方法用erase()和insert()
+</span>
+<span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
 
             </div>
             
@@ -137,10 +168,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2014/05/shell-command" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/06/c++%E5%BF%AB%E6%8E%92" class="previous">Older Post</a>
               
 </div>
 
@@ -148,13 +177,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2014-04-mysql-e7-9f-a5-e8-af-86';
+        this.page.identifier = '2015-06-c-e5-ad-97-e7-ac-a6-e4-b8-b2-e6-9b-bf-e6-8d-a2';
     };
 
    (function() {
