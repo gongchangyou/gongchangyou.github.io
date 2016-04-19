@@ -7,6 +7,127 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>VsVim快捷键</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;切换头文件 按住ctrl  依次按下 K和O 你就KO了&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+				<pubDate>Mon, 18 Apr 2016 10:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE</guid>
+			</item>
+		
+			<item>
+				<title>c++ lamda函数</title>
+				<description>
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//匿名函数 这里可以写很多行哦
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//声明一个函数 可以call=f；或者call.bind(f);
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+				<pubDate>Thu, 24 Mar 2016 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</guid>
+			</item>
+		
+			<item>
+				<title>关于贬值</title>
+				<description>&lt;p&gt;最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;人民币贬不贬值不重要，你自己别贬值就好。&lt;/span&gt;&lt;/p&gt;
+</description>
+				<pubDate>Thu, 14 Jan 2016 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC</guid>
+			</item>
+		
+			<item>
+				<title>龚一峰出生啦！</title>
+				<description>&lt;p&gt;12月10日17:20，龚一峰出生，人生第一泡尿尿在了自己脸上。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201512/IMG_20151210_234301.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;object id=&quot;STK_137687746371535&quot; style=&quot;visibility: visible;&quot; width=&quot;440&quot; height=&quot;356&quot; classid=&quot;clsid:d27cdb6e-ae6d-11cf-96b8-444553540000&quot; codebase=&quot;http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0&quot;&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;never&quot; /&gt;&lt;param name=&quot;pluginspage&quot; value=&quot;http://get.adobe.com/cn/flashplayer/&quot; /&gt;&lt;param name=&quot;flashvars&quot; value=&quot;playMovie=true&amp;amp;auto=1&quot; /&gt;&lt;param name=&quot;allowfullscreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;quality&quot; value=&quot;high&quot; /&gt;&lt;param name=&quot;src&quot; value=&quot;http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf&quot; /&gt;&lt;param name=&quot;wmode&quot; value=&quot;transparent&quot; /&gt;&lt;embed id=&quot;STK_137687746371535&quot; style=&quot;visibility: visible;&quot; width=&quot;440&quot; height=&quot;356&quot; type=&quot;application/x-shockwave-flash&quot; src=&quot;http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf&quot; allowscriptaccess=&quot;never&quot; pluginspage=&quot;http://get.adobe.com/cn/flashplayer/&quot; flashvars=&quot;playMovie=true&amp;amp;auto=1&quot; allowfullscreen=&quot;true&quot; quality=&quot;high&quot; wmode=&quot;transparent&quot; /&gt;&lt;/object&gt;
+
+&lt;p&gt;名字取自&lt;/p&gt;
+
+&lt;p&gt;会当凌绝顶，一览众山小&lt;/p&gt;
+
+&lt;p&gt;海到无边天作岸，山登绝顶我为峰&lt;/p&gt;
+
+&lt;p&gt;是你爹我喜欢的句子，少年就应该有这种豪气，是你姑奶奶取了其中两个字哦。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/201601/mmexport1453695205909.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+				<pubDate>Wed, 16 Dec 2015 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6</guid>
+			</item>
+		
+			<item>
+				<title>c++ 反射实现 动态创建实例</title>
+				<description>&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/cen616899547/article/details/9317323&quot;&gt;http://blog.csdn.net/cen616899547/article/details/9317323&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;通过map&amp;lt;string, createClass&amp;gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass&lt;/p&gt;
+
+&lt;p&gt;成员变量也是如此，利用map&amp;lt;string, setValue&amp;gt; m_propertyMap ; 来保存变量名 和set方法的映射&lt;/p&gt;
+
+&lt;p&gt;git clone git@github.com:gongchangyou/dynamic_class.git&lt;/p&gt;
+</description>
+				<pubDate>Thu, 12 Nov 2015 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</guid>
+			</item>
+		
+			<item>
+				<title>c++链表翻转</title>
+				<description>&lt;p&gt;字符串连接符&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_access_iterator_tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter_swap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+				<pubDate>Fri, 31 Jul 2015 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</guid>
+			</item>
+		
+			<item>
+				<title>c++ 宏中 “##”的意义</title>
+				<description>&lt;p&gt;字符串连接符&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boolean_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;boolean_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boolean_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define INIT(p, v) case p##type: result = v; break
+&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;boolean_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;cp&quot;&gt;#undef INIT
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+				<pubDate>Mon, 20 Jul 2015 22:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89</guid>
+			</item>
+		
+			<item>
 				<title>c++ 字符串替换</title>
 				<description>
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include&amp;lt;string&amp;gt;
@@ -116,318 +237,6 @@
 				<pubDate>Sat, 14 Feb 2015 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2015/02/journey_day8</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day8</guid>
-			</item>
-		
-			<item>
-				<title>2月13日布拉格</title>
-				<description>&lt;p&gt;布拉格这座城起的很晚，一看就知道夜生活丰富了。一路走向布拉格广场，这才留意到全城好像都是石板路，这么多石子是从哪儿来的呢？到达布拉格广场的时候人还很稀少，据说这里各种建筑形式都有。我注意到布拉格的教堂都很有意思，塔顶都是黑黑的，像烤焦了。从广场延伸出去的每条街都仿佛叫同一个名字叫做坑你没商量。各种啤酒纪念品廉价音乐会。11点左右到达天文钟，敲钟的时候没有门徒出现，我们也不可能在这傻等1个小时，等明天再来吧。&lt;/p&gt;
-
-&lt;p&gt;广场附近小巷里用我大中华桃干喂鸽子，看起来鸽子很喜欢吃桃干啊！我拿鱿鱼丝喂过，他们不感兴趣。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_105855.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150213_105901.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我们在广场附近路过一家蛋糕咖啡店，直觉告诉我这家店可能很好吃，进去要了两个水果蛋糕，一个草莓布丁蛋糕，一个是蓝莓覆盆子水果蛋糕。好吃到爆！草莓布丁中的布丁少了塑料的柔滑感觉，却多了奶酪的绵密，让我这个从不吃布丁的也吃的很开心，覆盆子是我们在这边吃的最多的水果，酸甜的口感适合男女老幼，难怪在外国文学作品中经常出现。老板娘气质很好，在布达佩斯或者维也纳都不算啥，但是在布拉格这座烦躁狂野的城市就显得尤为出众，老婆偏要说我看上人家，买了一瓶果酱带回上海留念。&lt;/p&gt;
-
-&lt;p&gt;现在一看到照片还会流口水……&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_112035.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;下午去伏尔塔瓦河对岸的布拉格皇宫，我们上山路上看到的都是下山的人群。傻子也看出来我们走错方向了好吗。爬山累得要死，到了山顶，除了教堂比较出挑别的建筑简直可以用简陋来形容，完全没有参观的意愿，而且各种entrance和box office标识不清楚，都不知道该怎么参观。偶遇皇家卫队，齐步走也是很懒散，还不如匈牙利，老婆说就是捣糨糊的。难怪二战时候德军来了一打就散，一触即降，1周就占领捷克全境。&lt;/p&gt;
-
-&lt;p&gt;布拉格皇宫俯瞰全城，特别像虹口的红顶子吧&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_131619.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150213_141024.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/xj2015_02_13_13_19_09.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我快对教堂免疫了&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_135758.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;华丽的彩绘玻璃&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_135015.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150213_135054.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我在教堂门口&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_134542.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;教堂背面，下方出现不明物体&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_133135.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;离开布拉格皇宫时间尚早，老婆说布拉格也有歌剧院和音乐厅的，我们就乘坐电车去国家歌剧院买票。&lt;/p&gt;
-
-&lt;p&gt;电车上有到站信息的电子显示屏，很直观&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_144411.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;前面还有一对情侣和一对萝莉闺蜜。在中国我们看电影，他们就是看歌剧和音乐会，花费差不多，都是50，100rmb这样。看了排期发现今晚只有opera，演的是唐璜，地点不在国家歌剧院，而是在城东的estate theater。我们又听不懂人家唱什么，所以就暂时没买。明天的是音乐会，在鲁道夫音乐厅，我们明天是晚上12点的飞机，所以还能去听，赶去鲁道夫音乐厅买明天的票子。售票的大姐一个劲的宣传音乐会很不错，还能在原价700的基础上给我们打折，每人600，大概150rmb吧。我们瞧着划算就买下了。接着去estate theater买今晚歌剧票。可惜此时已经没有坐票了，我们只好买了两张站票。&lt;/p&gt;
-
-&lt;p&gt;差不多晚饭时间到了，离今晚的歌剧还有2小时，我们赶去老婆计划中的crystal餐厅，点了鸭胸肉和牛肉，鸭胸肉的酱很棒，都吃不出是哪些材料做的。牛肉吃的我直想哭，我花了几千块机票不是来这品尝妈妈的味道的啊……你们做牛肉咋那么中式啊？&lt;/p&gt;
-
-&lt;p&gt;鸭胸肉&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_173707.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;中式牛肉&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_173718.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;漫步布拉格街头&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150213_163143.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;吃完去听歌剧，抱着反正听不懂，稍微站半个小时就出来的心态我们去了。结果惊喜的发现有字幕！而且是捷克语和英语双语的！幸运的我们找到了两个无主的座位坐了整场。莫扎特创作的两幕歌剧揭示出当时贵族生活的荒淫无度。今天老婆手机没电了，就托一个韩国小妹帮忙拍照，等回国后email我们，截至发稿她还没发邮件，唉，韩国人真不靠谱，亏得我们千恩万谢的……&lt;/p&gt;
-
-&lt;p&gt;结束已经是9点半也不知道10点，天已完全黑了，从地铁口出来走回宾馆的路咋那么荒凉的感觉，行人道就半米宽，偶尔朝一家18禁的酒吧瞄了几眼，旁边黑人保安就很热心的招呼我们进去看看，我们连连摆手，老婆责备我不该瞎看，我说也是，生怕呼吸到带有艾滋病毒的空气。&lt;/p&gt;
-
-&lt;p&gt;晚上回到宾馆挨到1点值完机才睡，挑个好位子还省得去机场排队。&lt;/p&gt;
-</description>
-				<pubDate>Fri, 13 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day7</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day7</guid>
-			</item>
-		
-			<item>
-				<title>2月12日维也纳购物和去布拉格</title>
-				<description>&lt;p&gt;因为计划乘坐下午1点半的火车去布拉格，所以我们打算利用这半天时间坐有轨电车绕城一圈，最后欣赏下维也纳的建筑艺术和多瑙河风光。结果在换乘2次不知道该乘坐几路车之后老婆决定去城西边的街上去（老婆补充街道名称）购物。街上有levis专卖店，断码的裤子很便宜，一条200rmb左右。一般要7，800rmb，虽然比国内动辄上千要便宜些，对我来说这样的也太贵了，钱包款式很少，就两三种，样子也不好看，2、300rmb的售价还是比国内500+要容易接受些。&lt;/p&gt;
-
-&lt;p&gt;在那边的5块10块店我们买齐了给大家的礼物。逛到差不多10点该回宾馆退房了。唉，时光过的太快了。这座城我还远远没有看够，没去多瑙河边走走，令人眼花缭乱的室外雕刻，各种博物馆还没参观，甚至金色大厅的表演都没看到。相比布达佩斯，这座城市的人们更加懂得利用晚上时间来欣赏古典艺术。&lt;/p&gt;
-
-&lt;p&gt;在维也纳的站台上结识了一位克罗地亚的小哥，音乐世家，自己玩大提琴。跟我们介绍了一下克罗地亚的风光，消费比这低，还有地中海沿岸的沙滩，强烈推荐下次我们自由行去那边。对中国文化也很感兴趣，居然知道华为小米，还有魅族！！跟我们侃了一路！唉，话唠伤不起啊。&lt;/p&gt;
-
-&lt;p&gt;到达布拉格已经是晚上，建议在火车站附近先兑换一点捷克布朗坐地铁，兑换布朗最划算的还是在市区中各种标记0%手续费的柜台。因为晚上我忍受不了身上没几块捷克克朗的恐惧，所以去宾馆附近查理大桥桥头的兑换点兑换，给家庭造成了200rmb的手续费损失。&lt;/p&gt;
-
-&lt;p&gt;一出地铁，布拉格已是华灯初上，各种夜店五光十色，天哪，欢迎来到欧洲的丽江，约炮之所布拉格，路边还有各种18禁的表演钢管舞的酒吧。相比静谧的布达佩斯，优雅的维也纳，这座城市简直让人难以忍受，第一印象太差了，接下来要花两天时间来改观了。&lt;/p&gt;
-
-&lt;p&gt;从地铁站走了10分钟到达宾馆，因为事先得知布拉格是此行的治安最差的城市，所以我们特意选择了4星级的宾馆，不求别的就是希望安全一些。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://hotels.ctrip.com/international/650658.html&quot;&gt;布拉格宫帕奇图威马梅森套房酒店&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;订了一个小型套房，国内的套房就是多了一间客厅嘛，我想这个套房也应该如此吧，但是一进门，我就傻眼了！这……这是我们订的？面积比我们家还大，客厅就不止20平吧，还带小厨房，2个卧室，2个厕所。我都不知道该睡哪儿了。后来事实证明，他的价值也仅仅是大，跟维也纳&lt;a href=&quot;http://hotels.ctrip.com/international/656871.html&quot;&gt;阿尔法酒店&lt;/a&gt;的细致简直没法比，装修的太不讲究了，主卧的梳妆台大镜子就在床边，晚上咋睡啊？淋浴房的天花板太低，浴缸简直是多余，垫高了地面导致淋浴时腰都伸不直，还有洗手台，老婆的那些护肤品根本找不到地方放，临走时发现都被溅到水，维也纳的卫生间不大，但是摆放这些东西的位置还是考虑的很到位。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150212_185609.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150212_184923.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;稍事收拾我们立马出去找吃的，刚刚从地铁站走过来的时候路过一家叫cozel酒馆，服务生不管是捷克小哥还是小妹，精力似乎异常充沛，转着圈就来给你点单了。我们要了牛肉汤和烤肉，对了，来布拉格怎么能不品尝号称德国啤酒起源的捷克啤酒呢？上海捷克旅游局的帅小伙局长说了，他最推崇捷克的啤酒。上来一喝，果然有小麦的清香，但是回味怎么有尿味？大概是我欣赏不了吧。牛肉汤是盛在一个掏空的大圆面包中的，好吃不油腻。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150212_200738.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;吃饱以后走回查理大桥，因为住在这附近，所以感觉随时可以逛，结果一次也没走过……&lt;/p&gt;
-
-&lt;p&gt;最终我们还是选择睡在小卧室里，晚安，布拉格。&lt;/p&gt;
-</description>
-				<pubDate>Thu, 12 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day6</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day6</guid>
-			</item>
-		
-			<item>
-				<title>2月11日维也纳</title>
-				<description>&lt;p&gt;由于昨天在火车票上浪费了太多时间，今天的行程略赶，一早赶去离市区较远的美泉宫，那里是哈布斯堡的夏宫，跟我们这承德避暑山庄意思差不多。玩了这么多天总算到了一个有中文讲解器的地方啦！亲人啊！接着我们开始一间间参观，主要就是介绍玛利亚特蕾莎和他曾孙弗朗茨约瑟夫以及茜茜公主伊丽莎白是如何使用这么大的皇宫的，比如这里是卫兵室，那里是约瑟夫的接见室，后面是办公室，皇帝每天晚睡早起，睡的是窄小不舒适的行军床，不管做出的决策是对是错，至少给人感觉是一直很勤政。皇帝卧室隔壁加盖了一个小型厕所，皇帝就在这里使用抽水马桶。接着往里走是茜茜公主的书房和梳妆房，内外兼修啊，面积都不大，20个平方吧，梳妆台也很小，不过打理那浓云一般的长发实在太耗时，大概3小时。玛利亚对自己定位很准确，就是为了维护帝国稳定的存在，而子女就是稳定的工具，通过各种联姻来解决纠纷，几十年如一日的生娃，老太太的艺术修养也很高，不光收藏了西洋艺术，还收藏东亚艺术，中日的漆画和中国的工笔画巨幅壁纸，我跟非常有艺术修养的老婆仔细观察了一下，唉呀，工笔画都被修复成啥样了，叶脉重新勾勒也细致些撒，都勾到叶子外面去了。他们真心需要来中国实地考察下工笔画的制作，虽然这些进口壁纸本身质量也不好，但也不能敷衍了事啊……制作室外雕刻时的那种精制、细腻去哪儿啦？后面是音乐厅，莫扎特小时候在这里为玛利亚女王演奏过，还爬上她的膝盖，搂住脖子亲热地吻她。天真自然的小孩谁都喜欢。可惜宫廷乐师就是朝廷豢养的奴仆，再不世出的天才也要看人脸色。&lt;/p&gt;
-
-&lt;p&gt;再往后还有几个宴会厅，在皇室重大节日时使用。茜茜公主整了一个带浴缸的洗澡间，突然发现这整个皇宫如果没有茜茜公主的话就没几件现代化的设备。整座皇宫就没有抽水马桶除了皇帝，其他人只好用马桶了……一想到凡尔赛宫也是如此，唉……古时候人们生活还是很不方便的，不管贵族或者平民。&lt;/p&gt;
-
-&lt;p&gt;因为下午要逛茜茜公主纪念馆，所以中午打算随便在霍夫堡附近吃了。老婆说星巴克隔壁有家不错的饭店，我想商业区嘛，能好到哪去。踏破铁鞋无觅处，原来是我一直心心念念的普拉楚塔餐厅！在这儿也有分店！号称最地道的维也纳餐厅。大概跟港丽在上海一样。关键是，价钱跟港丽差不多。我们当然点了最有名的牛肉汤，炸猪排。餐前面包的奶酪也很好吃，我只光顾着蘸那个黄山葵带小葱的酱，忘记吃老婆说的那个圆圆的奶酪了。唉，被那个服务态度很差的waiter收走了，我跟隔壁老头交流维也纳的美食，他居然还提醒我老头不是waiter，要你管啊，人家当地老头还是很热情的。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150211_133526.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;吃完去霍夫堡门口那个五角场，地图上很好认，茜茜公主纪念馆入口就在门洞里面，这里也有中文讲解器，看来维也纳的中国游客不少。一开始是介绍皇家餐具，各式各样的金银器具，当战事紧急时，这些制作精美的皇家器具也是要重新融化，做成货币以支撑军费的。后来也慢慢演变成镶金边的瓷器，省钱还健康嘛！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150211_145051.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150211_145116.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;开始茜茜公主的一生，我们看到一代作女的生平，希望自己容颜永驻而尝试各种偏方，对华丽服装的追求不惜重金去巴黎定制，为了保持身材把时间耗在各种健身器材上，甚至在门框上装了俩吊环！难道接见客人的时候要来个空中转体出境吗？ 她既不愿受皇家礼仪的束缚，又要拿着大笔的经费到处旅行，甚至火车车厢也是装修的富丽堂皇，矛盾的很。广大女性朋友如此推崇茜茜公主，应该不只是因为她是个对生活有要求的作女，而是羡慕她有个能够包容她爱她的皇帝老公吧。&lt;/p&gt;
-
-&lt;p&gt;茜茜公主纪念馆比我们要想象的大很多，原定1，2个小时的参观持续了一个下午。&lt;/p&gt;
-
-&lt;p&gt;下午茶去了中央咖啡馆，莫扎特也在这里坐过呢！看看价钱果然很平民。里面的咖啡加了点酒精，很奇怪，我们应该少点一杯咖啡多点一份蛋糕的。覆盆子蛋糕很好吃！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150211_173835.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150211_173826.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;晚饭路上随便吃了点就匆匆赶去自然史博物馆，里面关于地层和陨石的介绍多了一些。楼上是各种动物标本，因为已经天黑临近闭馆，博物馆里没多少人，标本又做的栩栩如生，真个是博物馆奇妙夜啊，生怕里面的鳄鱼猛犸都活过来，我们匆匆参观完就回去了。&lt;/p&gt;
-
-&lt;p&gt;博物馆地质部&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150211_185125.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150211_201320.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在rathaus 地铁口有一家墨西哥烤肉店，durum这种东西就像墨西哥卷饼里面插了一根热狗，这边的热狗肠做的比较细致，夹杂着cheese一口下去满口飘香。吃完就赶紧睡了。&lt;/p&gt;
-</description>
-				<pubDate>Wed, 11 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day5</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day5</guid>
-			</item>
-		
-			<item>
-				<title>2月10日维也纳</title>
-				<description>&lt;p&gt;因为昨天看芭蕾太晚睡，结果今天很晚才起。早饭是宾馆提供的，所以最好挑个提供早饭的宾馆，不必为了找早饭浪费时间，除非你想充分体会当地美食。第一站霍夫堡，他是一个城堡群，由不同功能的城堡组成，不得不说维也纳这个旅游城市太赞了，故宫真应该学学人家，我们买票进入皇家图书馆，就是一个state hall，收费每人7欧。另外西西公主纪念馆还有别的什么是额外收费的。以后故宫也这么搞，乾清宫50，上书房30，漱芳斋30，收入马上就翻番了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150210_131205.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_131051.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_123958.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;皇家图书馆里面藏书很丰富，从TIME到 mao bible，应有尽有，即便如此，因为只有靠墙的一面可以放书，这里藏书应该没有复旦图书馆多。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150210_121327.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_121947.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;出来以后找中饭吃，街边随便一家人均10欧，我们仔细观察发现当地人都推开一扇小门进去，透过模糊的玻璃窗里面好像全是人，我们跟着进去发现果然有好吃的，维也纳寿司，薄面包上面铺了满满一层，中间是金枪鱼和肉糜，两边是酱料，1块2一个，先买三个试试。真是太好吃了！这边的东西就是酱做得好，完了我们又多买了两个。吃完去史蒂芬教堂。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150210_133714.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_133018.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;斯蒂芬教堂&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150210_141334.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_141118.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;斯蒂芬教堂附近街拍，老婆你兜里的A4纸是咋回事？&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/xj2015_02_10_13_44_54.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;一站地铁到圣史蒂芬教堂，广场上有穿着神父服装兜售音乐会门票的黄鱼，洛可可式确实很复杂，眼睛都不知道看哪里，各种镂空雕花，确实维也纳比布达佩斯精致多了，相比之下马加什教堂和国会大厦简直弱爆了，还好我们先去了匈牙利。教堂内部的穹顶挑高又把我吓尿了。到此一游照拍完我们决定去火车站买票。大家千万不要抱有侥幸心理啊！我们在布达佩斯能买到19欧的车票完全是运气好，这回问从维也纳去布拉格的票要65每人！天啦，这种事情一定要事先网上订好打印出来，后来就是傻瓜一样的跑去大巴站想买大巴票，结果人家下午3点就关门了，又折回火车站买票，唉，晚上只能去火车站附近的美景宫玩了。&lt;/p&gt;
-
-&lt;p&gt;美景宫
-&lt;img src=&quot;/images/201502/IMG_20150210_163725.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;美景宫在火车站附近，跟其他景点相距较远，从外面看起来比较华丽，不过里面是油画展，我感觉没啥特别的，不想浪费门票钱的话可以拍照走人。但是我们是从地铁站走了15-20分钟到这里的，实在是不想走回去了，问了门卫知道门口就有tram D。东欧公交车很少，大部分都是有轨电车，乘坐tram换乘地铁去到城市公园听音乐会。&lt;/p&gt;
-
-&lt;p&gt;spar超市中的自助榨橙汁机，3欧不到0.5升，很划算吧？&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150210_185722.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150210_185659.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这栋建筑一看就是新建的，很敷衍的洛可可，进到现场，天啦！这里是给人做婚宴的吧？根本不是专业的音乐厅！以后没买到金色大厅或者国家歌剧院的票别让我来维也纳…这支band就是七拼八凑的一锅粥，还有俩跳芭蕾俩唱歌剧的。再加上音响效果实在太差。整体演出效果不理想。感觉这里就是骗外地人钱的，就好像你在人广南京路开个黑暗料理，因为人流量够大，总能赚钱。关键是票价还不便宜，俩人500多。这里提一下，这边消费水平普遍比上海低，看芭蕾和歌剧都很便宜。人均50-150吧。&lt;/p&gt;
-</description>
-				<pubDate>Tue, 10 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day4</guid>
-			</item>
-		
-			<item>
-				<title>2月9日布达佩斯半日和火车去维也纳</title>
-				<description>&lt;p&gt;好印象都被破坏了，大家去布达佩斯火车站如果有人很好心的凑上来问你车厢位置千万别搭理，一开始他带我们走去那个很远的车厢，我还很感动的。这两天被布达佩斯朴素的民风搞迟钝了。结果在他帮忙把我把行李扛上去之后居然问我要钱！我兜里福林不多了，被他坑了5欧。想到地铁站里那么漂亮的妹子在做清洁工，国会大厦门口那么帅的小伙在倒垃圾，这个大叔真是太恶心了，真给布达佩斯丢人！过没多久我们又看到他领了一个黄种人过来了。好麻，专门盯着黄种人坑，太可恶了！
-言归正传，今天起了个大早跑去国会大厦参观，因为下午一点的火车去维也纳。地铁里面人们行色匆匆，老婆前两天还在感慨这儿人们怎么都一点没有为生活忙碌的样子。现在知道了，那是因为前两天是周末啊！今天地铁里面清一色周一上班脸。国会大厦门口还支了两顶小帐篷，抗议游客太多了，不禁愕然，这也叫多！？晚上路上根本没人好吗？国会参观入口的旋转门和地铁的电梯一样，快的略吓人，但是他们的有轨电车都很慢，真是搞不懂。到了国会，每人4000福林门票，折人民币100，是我们参观到现在最贵的门票了。里面墙壁确实有金色的条纹，但是整个国会里面如果涂满肯定不止号称的40公斤黄金，后面的参观也证明了应该是只有重要的房间有涂。国会那个最大的穹顶底下每根柱子上有历代先王的雕像，他们喜欢用雕像，我们喜欢挂画像。其实后来去了维也纳国家歌剧院发现差不多，想省钱的话国会内部参观可以不用去。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image30.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image19.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image18.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;所谓国会，就是执政党和反对党互相掣肘的地方，经济平稳发展的年代，还是互相掣肘的好，政策少变动，百姓少折腾。但是如果经济下行，还在国会吵吵，拿不出解决方案，那就是百姓不幸了，正如国民党在各大电视台打的广告一样，台湾经济不行，民进党负主要责任。
-参观完国会，离火车出发还有2小时，赶去大菜场买点纪念品，搞了个冰箱贴，老婆想买顶帽子，感觉1800不太划算，但是上升到老婆健康角度我就不得不买了，看着样子特别土，说实话也不挡风，一看标签，果然是made in P.R.C!哈哈，不说了，兜里一分都没剩，赶去火车站就发生开头的一幕。&lt;/p&gt;
-
-&lt;p&gt;布达佩斯城隍庙
-&lt;img src=&quot;/images/201502/image20.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image29.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;欧铁果然很安静，大家都在默默做自己的事，看书，看电影，没有小孩哭闹也没有火腿肠和方便面，我们摊着那么多零食吃的也不好意思了。车厢之间的红外感应门设计很棒，每次坐国内的动车都被厕所味道熏死。不过厕所的洗手台能不能一样做成感应的啊？我还在傻等怎么不出水，结果是按钮的…&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image21.jpg&quot; alt=&quot;&quot; /&gt;
- 车窗外的雪景真美啊！生长在南方的我们好像一下子来到了东北，但是风雪越下越大，4点到达wien half banhuld 的时候居然说列车停运了！！什么？？在这鸟不拉屎的地方？！晚上7点还要去国家剧院看芭蕾剧呢！仔细研究地图发现我们大概停在类似于松江站的地方，这里有1号线，可惜我们下错口了，这边没有一号线，要走上站台，顶着暴风雪走到那边口下去，这站台建的…居然下面不通的。研究了一下公交车站牌发现有公交车摆渡过去，就在那里傻等，结果广播里说因为大雪公交车会晚点来，左等右等不来我们决定还是上站台换个口子下。顶着风雪一路狂奔，终于来到1号线！有种从地狱到人间的感觉，好多中国人！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image22.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;酒店电梯，比较窄&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image23.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;1号线换乘2号线rathus下，赶紧check in，放下行李赶去karlsquartsz，另外吐槽下rathus这个站，不同方向居然是不同地铁口下去的，下面不通的。我们搞错方向只能再次接受风雪考验。一到国家歌剧院，发现俩山炮进城了，大家都是正装，咱俩这羽绒服算咋回事？应该穿结婚那套来的，哎呀不管了，取了票直奔包厢，就是那种小阳台，每个小阳台坐6个人左右，很复古，废话，本来就是古建筑…就是挤了点，坐着不舒服。这场芭蕾水平不是很高，跟在上海艺术中心的演出差不多，很多动作都没做到位，不知道为啥结束时大家鼓掌这么起劲。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image24.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image25.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image28.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image26.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;看完已是9点半了，我的倒时差策略到了维也纳因为要看表演就没办法执行了，我的策略就是早睡早起，每天当地时间6，7点睡，然后3点起床做攻略写游记，就好像上海晚上12点睡，8点起一样。&lt;/p&gt;
-</description>
-				<pubDate>Mon, 09 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day3</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day3</guid>
-			</item>
-		
-			<item>
-				<title>布达佩斯第二天</title>
-				<description>&lt;p&gt;早上起来睡得还不错，凌晨3点半就醒了，果然还是国内的作息，没事，昨晚7点睡的，也够了。我开始做攻略，今天要去布达皇宫，渔人堡，大菜场和国会参观。行程比较赶。&lt;/p&gt;
-
-&lt;p&gt;早饭没吃就直奔大菜场，还信心满满的跟老婆说菜场周日也不会关门的，结果去了一看，果然一个人也没有，问了保安大叔说明天周一才开门，惨了。马上坐电车去渔人堡，我想这个城堡那么大，等看到了再下车也不迟，就没查站名，结果18路车一路坐到底…问边上老太太怎么去布达皇宫，老太太不会英文，就抓了边上的年轻人帮我们，这下知道了，整个景区有小巴16路环线，可以到任何景点，然后我们一整天就泡在这里了。&lt;/p&gt;
-
-&lt;p&gt;在布达皇宫参观了匈牙利国家博物馆，最有意思的是地窖，可以进去探索，里面还有个小教堂。隔壁是美术馆，跟老婆进去品评油画，我是不懂啦，高中老师只教过塞尚、莫奈，提香好像都没说过。但是我还是凭借细致的观察和大胆的想像解答了老婆为什么一幅画中皇帝看上去比其他人都要威严。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;出来是缆车，直通山脚链桥，因为不知道链桥回家的路，所以就继续参观。&lt;/p&gt;
-
-&lt;p&gt;缆车入口
-&lt;img src=&quot;/images/201502/image3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;中饭是在别人游记上说的21这家店吃的，太黑了！不想点再点牛肉汤了，就要了煎羊排和鸡肉面疙瘩，羊排柴了，鸡肉凑合。还给老婆叫了个热可可，我就不喝什么了，就点了白开水，点完老婆跟我说这边水都是要钱的，30块人民币…加上13%的服务费，一餐吃了300人民币+。说实话，匈牙利菜不讲究，有些肉腥气都没除干净。
-&lt;img src=&quot;/images/201502/image4.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;出门右转去教堂，马加什教堂是为了纪念匈牙利历史上领土贡献最大的皇帝马加什一世的，将奥地利的一大半国土和维也纳都抢过来了，不经感慨地中海乃至世界历史如果有什么规律的话，那就是风水轮流转，意大利，德意志，法兰西，西班牙，鼎盛时期罗马的教皇都会巴巴的来给你加冕，他还指着你去抵抗奥斯曼帝国呢。正如三傻里说的那样，追求卓越，成功自然会如影随行。&lt;/p&gt;
-
-&lt;p&gt;马加什教堂
-&lt;img src=&quot;/images/201502/image15.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image14.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image12.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image11.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image10.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image9.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image16.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;结束今天的参观已经5点过了，坐地铁去昨天订位的吃晚饭，点了一个号称for 2persons的烤猪肘，端上来一看这是给4个人吃的吧！吃到最后我们也只是消灭了一半。其实今天已经有点牙龈肿喉咙痛了，大概是倒时差和缺少维生素的关系，我又点了个豌豆汤，豌豆大概焖过，入口即化，很不错！这顿饭大概150人民币左右，边上有个弹类似于扬琴一样乐器的大叔，我看他弹了一晚上大概只收获1000福林的小费，好可怜，就让老婆给他1000福林。&lt;/p&gt;
-
-&lt;p&gt;又陡又快的地铁电梯&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image6.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/image17.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;沿着nador u 走回国会大厦地铁站，路过一家叫spar的超市，后来去了维也纳才发现这家是连锁的，里面可以买到水果蔬菜和零食。居然有昨天吃的面疙瘩！3RMB一包。此时人民币对当地货币福林是1比40，当地消费还是很低的，在超市买了这堆东西就价值人民币25。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150207_185318.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;好吃的零食有苹果干（5RMB）和杂粮棒，后者有点像掺了水果干或者巧克力的米老农，2rmb一根。牛奶巨便宜，5rmb 750ml。酸奶也是3块钱&lt;/p&gt;
-</description>
-				<pubDate>Sun, 08 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day2</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day2</guid>
-			</item>
-		
-			<item>
-				<title>一整天的路途奔波和半天闲适布达佩斯</title>
-				<description>&lt;p&gt;当我第一次跟妈说要去欧洲的时候，她问我欧州啊，是不是跟衢州差不多的。我说嗯，人口差不多，就是过去有点远。丈母娘叮嘱我们说，你们第一次出国，记住——&lt;/p&gt;
-
-&lt;p&gt;别给祖国丢人。&lt;/p&gt;
-
-&lt;p&gt;临行前有个小插曲，在俄航值机时地勤问我们，你们签证是奥地利，结果先去匈牙利，怎么过去，我就无语了，到当地再买火车票啊，这边又没春运，怕什么。后来跟他们经理出示了自己打印的携程行程单才给我机票，想人家领事馆都没管那么多，签证都给了，结果被自己人卡。&lt;/p&gt;
-
-&lt;p&gt;赞下中国边检，速度很快，窗口很多，跟平时安检没啥差别。到了莫斯科和布达佩斯就知道他们效率多低下了。&lt;/p&gt;
-
-&lt;p&gt;俄航没网上说的那么严重，起飞降落都很平稳，饭也比东航的好吃，fish比chicken好吃，味道有点像我们平时吃的番茄黄鱼，饮料很好喝，像都乐的品质，不象东航冲泡。我们凌晨1点出发，到达莫斯科是当地时间5点左右，此时的换乘安检口只有一个，而且俄罗斯大妈检查比较多，看脸决定你要不要脱鞋。偶遇上港集团的球员，我不看中超，都不认识。有个大叔跑去合影。&lt;/p&gt;
-
-&lt;p&gt;莫斯科转机中
-&lt;img src=&quot;/images/201502/image.jpg&quot; alt=&quot;&quot; /&gt;
-在莫斯科免税店买了一支睫毛膏，老婆说国内卖360，这里27欧，此时汇率1比7。莫斯科机场中国人很多。等了4个小时，10点半上了飞机，6人一排的那种，我们那排过道坐了个老太太，刚开始她还不愿起身，乘务员过来确认了座位之后才老大不情愿。老婆问我咱是不是被歧视了，我不置可否，也可能老人家耳背。后来她看到后面有空座就换过去了，我想她大概是不愿跟我们坐一起吧。&lt;/p&gt;
-
-&lt;p&gt;一个人的思想是由从小受的教育和媒体宣扬的信息所决定的，正如香港和台湾地区对大陆的鄙视一样，可能从来没来过大陆，就看东森新闻或者是十几二十年前来过，就固化了这样的印象。所以我们需要更多的沟通，这是个潜移默化的过程，需要时间。这个过程最怕叶公好龙，知乎上有个点赞数很高的回答，说现在台湾的年轻人根本不在乎谁执政，只是希望经济，生活好一点，那么好，真正惠民的服贸来了，他们又怂了，害怕被大陆绑架。&lt;/p&gt;
-
-&lt;p&gt;对多民族大国来说，民族融合是稳定的基础，约瑟夫和西西公主的联姻也无法拯救风雨飘摇的奥匈帝国，一战以后迅速解体，二战以后更是元气大伤，再经历了共产主义的洗礼，现在的布达佩斯人口只有不到200万，难怪老婆直呼没什么人。到了晚上6，7点，市中心就没啥人了，大概跟现在冬天天黑的早也有关系。&lt;/p&gt;
-
-&lt;p&gt;话说回来，一到布达佩斯，就去排队检查护照，羡慕欧盟citizen，有个跟金卡会员一样的快速通道。幸好马上增开了一个窗口，大家都ong过去，机灵的我当然也排过去，顺利通关。出了机场，都不知道方向，赶紧把事先打印的地图拿出来看，坐公交车200e 。机场的汇率比较坑，稍微换5欧就行了，就坐个公交车去地铁站换。在metro city 兜兜转转找售票处，有个好心的女孩看出来了，指了一下远处的门，说the purple one.千恩万谢进去买了2张72小时票，其实买错了，我们就呆2天，应该买4张24小时票，没有48小时的。地铁站门口有大叔大妈检票，他们下班很晚，在寒风中瑟瑟发抖，你们建个闸机是有多难。&lt;/p&gt;
-
-&lt;p&gt;圣伊斯特万教堂和国会大厦。昼夜温差大，还好有暖宝宝，晚上6，7点就天黑了，回宾馆休息。宾馆一定要在地铁站附近，因为经常用百度地图的我们已经丧失了探知公交车线路的功能。从国会大厦出来已经是晚饭时间，前去别人游记说的在steindl imre u上的hungary bistro，居然定位满了？！我们立马定了明天6点的位置，走出nador u路过一家叫grey goose的店，看上去挺local的，最里面几个男人喝醉了，好像在庆生，隔壁 桌的男人一边享受酒一边在逗弄两只斗牛犬。我们点了这边最有名的土豆牛肉汤和面疙瘩炒小牛肉，俩人一共100左右，挺划算的。土豆胡萝卜牛肉汤就是没放洋葱和番茄的罗宋汤，面疙瘩有点像泡馍。&lt;/p&gt;
-
-&lt;p&gt;国会大厦&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/image1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Sat, 07 Feb 2015 16:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day1</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day1</guid>
 			</item>
 		
 	</channel>
