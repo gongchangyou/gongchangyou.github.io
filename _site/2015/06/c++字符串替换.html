@@ -127,10 +127,8 @@
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include&lt;string&gt;
 #include&lt;iostream&gt;
 </span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-
 <span class="c1">//第一种替换字符串的方法用replace()
-</span>
-<span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+</span><span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
@@ -141,10 +139,8 @@
 		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-
 <span class="c1">//第二种替换字符串的方法用erase()和insert()
-</span>
-<span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+</span><span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
