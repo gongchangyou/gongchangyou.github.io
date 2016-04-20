@@ -7,6 +7,37 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>tmux常用命令</title>
+				<description>&lt;ul&gt;
+&lt;li&gt;创建并指定session名字&lt;br /&gt;
+	tmux new -s $session_name&lt;/li&gt;
+
+&lt;li&gt;删除session&lt;br /&gt;
+ Ctrl+b :kill-session&lt;/li&gt;
+&lt;li&gt;临时退出session&lt;br /&gt;
+Ctrl+b d&lt;/li&gt;
+&lt;li&gt;列出session&lt;br /&gt;
+tmux ls&lt;/li&gt;
+&lt;li&gt;进入已存在的session&lt;br /&gt;
+tmux a -t $session_name&lt;/li&gt;
+&lt;li&gt;删除所有session&lt;br /&gt;
+Ctrl+b :kill-server&lt;/li&gt;
+&lt;li&gt;删除指定session&lt;br /&gt;
+tmux kill-session -t $session_name&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+
+&lt;/ul&gt;
+</description>
+				<pubDate>Mon, 18 Apr 2016 10:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/04/tmux</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/04/tmux</guid>
+			</item>
+		
+			<item>
 				<title>VsVim快捷键</title>
 				<description>&lt;ul&gt;
 &lt;li&gt;切换头文件 按住ctrl  依次按下 K和O 你就KO了&lt;/li&gt;
@@ -197,46 +228,6 @@
 				<pubDate>Wed, 17 Jun 2015 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2015/06/c++%E5%BF%AB%E6%8E%92</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2015/06/c++%E5%BF%AB%E6%8E%92</guid>
-			</item>
-		
-			<item>
-				<title>2月14日布拉格</title>
-				<description>&lt;p&gt;旅行总有结束的一天，没结束的不叫旅行叫流浪。&lt;/p&gt;
-
-&lt;p&gt;我们计划用一场完美的音乐会来作为结束。在此之前，先让我赖会儿床。在床上看了程伟推荐的&lt;a href=&quot;http://v.ifeng.com/news/society/201502/01ce5cb3-77b6-4d05-bdda-c810c6ddbde0.shtml&quot;&gt;徐静蕾推荐的布拉格之旅&lt;/a&gt;徐静蕾推荐的布拉格之旅 发现她根本就没啥文化嘛，歌剧不看，音乐会不看，书也不读，只识喝酒坐广场。洗完澡出来收拾东西，12点左右退房，把行李寄存在前台后我们就去用早餐，据说是卡夫卡经常来逛。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/xj2015_02_14_12_29_50.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/xj2015_02_14_12_30_47.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;之后去逛穆哈纪念馆，来之前我都不知道穆哈是谁，老婆做的攻略。
-&lt;a href=&quot;http://baike.baidu.com/link?url=_0qatwVREUP2ReBcWxio_J9x31MgMV2LVUsRwvE_17MA4MistwNCOXSkONYGcKAfwXDtcjzwJAHwJXJ26qHGWIJrpg6VvEFoYaImnhG1MVu&quot;&gt;捷克斯洛伐克新艺术运动大师阿方斯·穆哈&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;晚饭去crystal隔壁一家当地餐馆吃，看得出来这里是捷克本地人聚餐的地方，老婆说好吃的东西关键字是gaulish，我就点了菜单上带这个的两道菜，结果一个是牛肉汤，另一个还是妈妈的味道，疯了……&lt;/p&gt;
-
-&lt;p&gt;鲁道夫音乐厅&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150214_155714.jpg&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;/images/201502/IMG_20150213_153638.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;提琴协奏&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/IMG_20150214_183621.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;吃完慢慢踱去鲁道夫音乐厅，这个小厅有种被坑的感觉啊，貌似维也纳城市公园的悲剧要上演。果然，band出现啦，就5个人，3个小提琴手，1个中提琴还有一个大提琴，提琴协奏曲之夜啊！不过，随着演出的进行，我对乐队的评价越来越高，简直甩维也纳混搭乐队几条街。这个组合虽然缺少了管乐的搭配，在一些地方略显单薄，但是他们做了精巧的构思和修改，利用渐进和现场不错的音响，依然展现出了气势恢宏。&lt;/p&gt;
-
-&lt;p&gt;1个小时的演出意犹未尽，但是我们顾不上鼓掌，还得赶去机场。也不知道机场大巴的时刻表只能尽早。酒店取了行李之后再次路过查理大桥，唉，明明近在咫尺却从来没走过，留个影走吧。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/201502/xj2015_02_14_19_30_07.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;搭地铁换乘机场大巴，在车站等大巴的时候惊觉今天是情人节，在这异国他乡我还没送花给亲爱的老婆呢！转身突然柳暗花明，车站后面有个书报亭正要打烊，里面也卖些花卉，兴冲冲的跑过去要了rose，看到老婆乐的，旅途再远也不辛苦啦！&lt;/p&gt;
-
-&lt;p&gt;顺利搭上大巴，攻略上说到lestate下，不过我看到航站楼terminal1就下了。还是老婆机灵，说看到departure就在那边。还好没按照攻略来，否则要走回头路了。&lt;/p&gt;
-
-&lt;p&gt;布拉格机场里挂着华为大大的广告牌，有能力的中国企业果然都在执行走出去战略。俄航开始值机了，一条队伍也没有，大家都堵在一起。没个指示牌，国人外国人素质都差不多。明明两个窗口，结果另个窗口人也没有，我就拿着打印出来的机票上去试试，瞬间托运好。我们就此踏上归国的旅程。&lt;/p&gt;
-</description>
-				<pubDate>Sat, 14 Feb 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/02/journey_day8</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/02/journey_day8</guid>
 			</item>
 		
 	</channel>

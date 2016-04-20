@@ -118,14 +118,71 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
             <div class="well">
-    <h1>About me</h1>
-    <p>Hello, I am me.</p>
+                <h1><a href="/2016/04/tmux">Apr 18, 2016 - tmux常用命令</a></h1>
+            
+            <div class="post-content">
+            <ul>
+<li>创建并指定session名字<br />
+	tmux new -s $session_name</li>
+
+<li>删除session<br />
+ Ctrl+b :kill-session</li>
+<li>临时退出session<br />
+Ctrl+b d</li>
+<li>列出session<br />
+tmux ls</li>
+<li>进入已存在的session<br />
+tmux a -t $session_name</li>
+<li>删除所有session<br />
+Ctrl+b :kill-server</li>
+<li>删除指定session<br />
+tmux kill-session -t $session_name</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+</ul>
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2016-04-tmux';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">
