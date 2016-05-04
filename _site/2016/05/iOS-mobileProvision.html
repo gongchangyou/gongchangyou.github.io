@@ -120,12 +120,14 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
+                <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
             
             <div class="post-content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
+            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
+
+<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
+
+<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
 
             </div>
             
@@ -138,10 +140,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/04/tmux" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2016/03/c++lamda%E5%87%BD%E6%95%B0" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/04/tmux" class="previous">Older Post</a>
               
 </div>
 
@@ -149,13 +149,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-04-vsvim-e5-bf-ab-e6-8d-b7-e9-94-ae';
+        this.page.identifier = '2016-05-ios-mobileprovision';
     };
 
    (function() {

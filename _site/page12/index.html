@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/05/iOS-mobileProvision">mobileProvision</a></li>
+        
           <li><a href="/2016/04/tmux">tmux常用命令</a></li>
         
           <li><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">VsVim快捷键</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">c++ lamda函数</a></li>
         
           <li><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">关于贬值</a></li>
-        
-          <li><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">龚一峰出生啦！</a></li>
         
     </ul>
 </div>
@@ -84,7 +84,7 @@
 			
 		
 			
-				<li><a href="/tag/ios" title="ios">ios<sup>1</sup></a></li>
+				<li><a href="/tag/ios" title="ios">ios<sup>2</sup></a></li>
 			
 		
 			
@@ -119,6 +119,18 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+        
+        <div class="content">
+            <h3>将文件内容复制到剪贴板</h3>
+<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
@@ -197,48 +209,6 @@ git am XXX.patch
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
-        
-        <div class="content">
-            <p>C++代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.h
-</span> <span class="c1">//
-</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
-</span> <span class="cp">#define SGR_MKStoreForCpp_h
-</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
- <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
- <span class="p">{</span>
- <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="k">public</span><span class="o">:</span>
- <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
-<span class="p">;</span>
-<span class="cp">#endif</span></code></pre></figure>
-
-<p>OC代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.mm
-</span> <span class="c1">//
-</span><span class="cp">#include "MKStoreForCpp.h"
-</span> <span class="cp">#include "MKStoreManager.h"
-</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
- <span class="p">{</span>
- <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
- <span class="p">}</span>
- </code></pre></figure>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -246,7 +216,9 @@ git am XXX.patch
         <a class="btn btn-default" href="/page11" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 12 of 12</span>
+  <span class="page_number ">Page: 12 of 13</span>
+  
+    <a class="btn btn-default" href="/page13" class="next">Older</a>
   
 </div>
 

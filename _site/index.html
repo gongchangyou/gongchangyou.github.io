@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/05/iOS-mobileProvision">mobileProvision</a></li>
+        
           <li><a href="/2016/04/tmux">tmux常用命令</a></li>
         
           <li><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">VsVim快捷键</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">c++ lamda函数</a></li>
         
           <li><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">关于贬值</a></li>
-        
-          <li><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">龚一峰出生啦！</a></li>
         
     </ul>
 </div>
@@ -84,7 +84,7 @@
 			
 		
 			
-				<li><a href="/tag/ios" title="ios">ios<sup>1</sup></a></li>
+				<li><a href="/tag/ios" title="ios">ios<sup>2</sup></a></li>
 			
 		
 			
@@ -121,12 +121,27 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
+        
+        <div class="content">
+            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
+
+<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
+
+<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/04/tmux">Apr 18, 2016 - tmux常用命令</a></h1>
         
         <div class="content">
             <ul>
 <li>创建并指定session名字<br />
-	tmux new -s $session_name</li>
+		tmux new -s $session_name</li>
 
 <li>删除session<br />
  Ctrl+b :kill-session</li>
@@ -165,25 +180,10 @@ tmux kill-session -t $session_name</li>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
-        
-        <div class="content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 12</span>
+  <span class="page_number ">Page: 1 of 13</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   
