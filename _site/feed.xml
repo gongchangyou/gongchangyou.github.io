@@ -22,7 +22,7 @@
   &lt;li&gt;
     &lt;p&gt;查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为”使用系统默认”&lt;/p&gt;
 
-    &lt;p&gt;查看你的distribution 的mobileProvision 是否用对，并且将信任置为”使用系统默认”。//一般这样就ok了&lt;/p&gt;
+    &lt;p&gt;查看你的distribution 的mobileProvision 是否用对，并且将信任置为”使用系统默认”。//一般这样就ok了 亲测这个ok&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 

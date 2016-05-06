@@ -21,7 +21,7 @@ No matching provisioning profile found: XXXX, however, no such provisioning prof
 
 1. 查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为"使用系统默认"
 
-	查看你的distribution 的mobileProvision 是否用对，并且将信任置为"使用系统默认"。//一般这样就ok了
+	查看你的distribution 的mobileProvision 是否用对，并且将信任置为"使用系统默认"。//一般这样就ok了 亲测这个ok
 
 
-2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试
+2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试 
