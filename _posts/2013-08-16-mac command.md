@@ -9,3 +9,11 @@ tag: [mac]
 
 <h3>将文件内容复制到剪贴板</h3>
 pbcopy < ~/.ssh/id_rsa.pub
+
+<h3>启动虚拟机</h3>
+
+$ virtualenv --system-site-packages ~/tensorflow
+
+$ cd ~/tensorflow
+
+source bin/activate
