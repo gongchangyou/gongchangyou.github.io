@@ -7,6 +7,26 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>lambda捕获</title>
+				<description>&lt;p&gt;int x = 1, y=2;&lt;/p&gt;
+
+&lt;p&gt;auto z = [x,y]{return x+ y;};&lt;/p&gt;
+
+&lt;p&gt;//auto z = [x,&amp;amp;y]{return x+ y;}; 引用就是运行时，值就是编译时&lt;/p&gt;
+
+&lt;p&gt;x= 3, y = 4;&lt;/p&gt;
+
+&lt;p&gt;cout « z() « endl;&lt;/p&gt;
+
+&lt;p&gt;[]捕获的如果是weak_ptr 貌似会丢失? why?&lt;/p&gt;
+
+</description>
+				<pubDate>Mon, 06 Jun 2016 10:31:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/06/lambda-%E6%8D%95%E8%8E%B7</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/06/lambda-%E6%8D%95%E8%8E%B7</guid>
+			</item>
+		
+			<item>
 				<title>python虚拟机</title>
 				<description>&lt;p&gt;安装 创建 基本命令&lt;/p&gt;
 
@@ -172,31 +192,6 @@ tmux kill-session -t $session_name&lt;/li&gt;
 				<pubDate>Fri, 31 Jul 2015 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</guid>
-			</item>
-		
-			<item>
-				<title>c++ 宏中 “##”的意义</title>
-				<description>&lt;p&gt;字符串连接符&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boolean_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;boolean_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;boolean_type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;#define INIT(p, v) case p##type: result = v; break
-&lt;/span&gt;	&lt;span class=&quot;n&quot;&gt;INIT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;boolean_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-	&lt;span class=&quot;cp&quot;&gt;#undef INIT
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-				<pubDate>Mon, 20 Jul 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89</guid>
 			</item>
 		
 	</channel>

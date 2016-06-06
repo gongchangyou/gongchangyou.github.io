@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">lambda捕获</a></li>
+        
           <li><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">python虚拟机</a></li>
         
           <li><a href="/2016/05/iOS-mobileProvision">mobileProvision</a></li>
@@ -68,15 +70,13 @@
         
           <li><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">VsVim快捷键</a></li>
         
-          <li><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">c++ lamda函数</a></li>
-        
     </ul>
 </div>
 <div class="sidebar well">
 	<h1>标签</h1>
 		
 			
-				<li><a href="/tag/c++" title="c++">c++<sup>11</sup></a></li>
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
 			
 		
 			
@@ -125,6 +125,19 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
+        
+        <div class="content">
+            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
+
+<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">Dec 16, 2015 - 龚一峰出生啦！</a></h1>
         
         <div class="content">
@@ -160,31 +173,6 @@
 <p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
 
 <p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC">Jul 31, 2015 - c++链表翻转</a></h1>
-        
-        <div class="content">
-            <p>字符串连接符</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
-<span class="kt">void</span> <span class="n">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="n">random_access_iterator_tag</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
-		<span class="k">return</span><span class="p">;</span>
-	<span class="err">–</span><span class="n">__last</span><span class="p">;</span>
-	<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
-		<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
-		<span class="err">–</span><span class="n">__last</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
 
         </div>
     </div>
