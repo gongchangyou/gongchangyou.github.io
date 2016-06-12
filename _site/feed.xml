@@ -7,6 +7,18 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>ios抓包利器</title>
+				<description>&lt;p&gt;Replica&lt;/p&gt;
+
+&lt;p&gt;https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8&lt;/p&gt;
+
+</description>
+				<pubDate>Sun, 12 Jun 2016 15:28:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8</guid>
+			</item>
+		
+			<item>
 				<title>lambda捕获</title>
 				<description>&lt;p&gt;int x = 1, y=2;&lt;/p&gt;
 
@@ -169,29 +181,6 @@ tmux kill-session -t $session_name&lt;/li&gt;
 				<pubDate>Thu, 12 Nov 2015 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</guid>
-			</item>
-		
-			<item>
-				<title>c++链表翻转</title>
-				<description>&lt;p&gt;字符串连接符&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;k&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_RandomAccessIterator&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random_access_iterator_tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter_swap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-		&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-		&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-				<pubDate>Fri, 31 Jul 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC</guid>
 			</item>
 		
 	</channel>
