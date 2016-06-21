@@ -7,6 +7,23 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>atos命令 调试ios crash</title>
+				<description>&lt;p&gt;打开Terminal，进入到build/Debug-iphoneos&lt;/p&gt;
+
+&lt;p&gt;使用命令:&lt;/p&gt;
+
+&lt;p&gt;$atos -arch armv7 -o XXX.app/XXX 0xabcdef&lt;/p&gt;
+
+&lt;p&gt;XXX是你的App名字，用需要解析的地址替换上面的0xabcdef&lt;/p&gt;
+
+&lt;p&gt;armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386&lt;/p&gt;
+</description>
+				<pubDate>Tue, 21 Jun 2016 17:24:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/06/atos-dSYM</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/06/atos-dSYM</guid>
+			</item>
+		
+			<item>
 				<title>ios抓包利器</title>
 				<description>&lt;p&gt;Replica&lt;/p&gt;
 
@@ -166,21 +183,6 @@ tmux kill-session -t $session_name&lt;/li&gt;
 				<pubDate>Wed, 16 Dec 2015 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6</guid>
-			</item>
-		
-			<item>
-				<title>c++ 反射实现 动态创建实例</title>
-				<description>&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/cen616899547/article/details/9317323&quot;&gt;http://blog.csdn.net/cen616899547/article/details/9317323&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;通过map&amp;lt;string, createClass&amp;gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass&lt;/p&gt;
-
-&lt;p&gt;成员变量也是如此，利用map&amp;lt;string, setValue&amp;gt; m_propertyMap ; 来保存变量名 和set方法的映射&lt;/p&gt;
-
-&lt;p&gt;git clone git@github.com:gongchangyou/dynamic_class.git&lt;/p&gt;
-</description>
-				<pubDate>Thu, 12 Nov 2015 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B</guid>
 			</item>
 		
 	</channel>
