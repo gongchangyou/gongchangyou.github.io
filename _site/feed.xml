@@ -17,6 +17,12 @@
 &lt;p&gt;XXX是你的App名字，用需要解析的地址替换上面的0xabcdef&lt;/p&gt;
 
 &lt;p&gt;armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386&lt;/p&gt;
+
+&lt;p&gt;=====================&lt;/p&gt;
+
+&lt;p&gt;上传ipa:&lt;/p&gt;
+
+&lt;p&gt;利用mac自带软件 Application Loader上传ipa&lt;/p&gt;
 </description>
 				<pubDate>Tue, 21 Jun 2016 17:24:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/06/atos-dSYM</link>
