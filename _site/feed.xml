@@ -7,6 +7,59 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>sed替换命令</title>
+				<description>&lt;p&gt;&lt;a herf=&quot;http://my.oschina.net/shelllife/blog/118337&quot;&gt; http://my.oschina.net/shelllife/blog/118337&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。&lt;/p&gt;
+
+&lt;p&gt;sed ‘:label;N;s/\n/:/;b label’ filename&lt;/p&gt;
+
+&lt;p&gt;sed ‘:label;N;s/\n/:/;t label’ filename&lt;/p&gt;
+
+&lt;p&gt;上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：&lt;/p&gt;
+
+&lt;p&gt;:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令&lt;/p&gt;
+
+&lt;p&gt;N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见&lt;/p&gt;
+
+&lt;p&gt;s/\n/:/;   s是sed的替换命令，将换行符替换为冒号&lt;/p&gt;
+
+&lt;p&gt;b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处&lt;/p&gt;
+
+&lt;p&gt;标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$  echo “a,b,c,d”&lt;/td&gt;
+      &lt;td&gt;sed ‘s/,/\n/g’&lt;/td&gt;
+      &lt;td&gt;sed ‘:x;N;s/\n/,/;b x’&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;a,b,c,d&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$  echo “a,b,c,d”&lt;/td&gt;
+      &lt;td&gt;sed ‘s/,/\n/g’&lt;/td&gt;
+      &lt;td&gt;sed ‘N;s/\n/,/’&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;a,b&lt;/p&gt;
+
+&lt;p&gt;c,d&lt;/p&gt;
+</description>
+				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</guid>
+			</item>
+		
+			<item>
 				<title>activity 别名</title>
 				<description>&lt;activity android:name=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;&gt;&lt;/activity&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &amp;lt;activity-alias
@@ -21,8 +74,8 @@
 &lt;p&gt;记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity&lt;/p&gt;
 </description>
 				<pubDate>Fri, 01 Jul 2016 13:24:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/07/atos-dSYM%E5%89%AF%E6%9C%AC</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/atos-dSYM%E5%89%AF%E6%9C%AC</guid>
+				<link>https://gongchangyou.github.io/2016/07/activity%E5%88%AB%E5%90%8D</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/activity%E5%88%AB%E5%90%8D</guid>
 			</item>
 		
 			<item>
@@ -174,17 +227,6 @@ tmux kill-session -t $session_name&lt;/li&gt;
 				<pubDate>Thu, 24 Mar 2016 22:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</guid>
-			</item>
-		
-			<item>
-				<title>关于贬值</title>
-				<description>&lt;p&gt;最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。&lt;/p&gt;
-
-&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;人民币贬不贬值不重要，你自己别贬值就好。&lt;/span&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 14 Jan 2016 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC</guid>
 			</item>
 		
 	</channel>

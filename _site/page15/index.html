@@ -122,17 +122,60 @@
 
         </div>
         <div class="col-md-9">
-            <div class="well">
-<h1>Articles by tag :python</h1>
-<div>
-    
-    <ul>
+            
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
         
-            <li><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">python虚拟机</a></li>
-        
-    
+        <div class="content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.h
+</span> <span class="c1">//
+</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">public</span><span class="o">:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>OC代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.mm
+</span> <span class="c1">//
+</span><span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
+
+
+        </div>
+    </div>
 </div>
+
+
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page14" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 15 of 15</span>
+  
 </div>
+
         </div>
     </div>
 </div>
