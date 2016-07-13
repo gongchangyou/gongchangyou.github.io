@@ -58,6 +58,7 @@
 
 &lt;p&gt;&lt;a herf=&quot;https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&quot;&gt; sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;SVN_VERSION=&lt;code class=&quot;highlighter-rouge&quot;&gt;svn info |sed -n &#39;s/Revision: \(.*\)/\1/p&#39;&lt;/code&gt; #shell结果输出到变量 用`符号即可&lt;/p&gt;
 </description>
 				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</link>
