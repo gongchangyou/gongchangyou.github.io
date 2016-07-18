@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">nfs磁盘共享</a></li>
+        
           <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">sed替换命令</a></li>
         
           <li><a href="/2016/07/activity%E5%88%AB%E5%90%8D">activity 别名</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2016/06/atos-dSYM">atos命令 调试ios crash</a></li>
         
           <li><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">ios抓包利器</a></li>
-        
-          <li><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">lambda捕获</a></li>
         
     </ul>
 </div>
@@ -100,7 +100,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>3</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>4</sup></a></li>
 			
 		
 			
@@ -123,6 +123,18 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2014/04/mysql%E7%9F%A5%E8%AF%86">Apr 28, 2014 - mysql知识</a></h1>
+        
+        <div class="content">
+            <h3>批量导入sql文件到db中</h3>
+<p>ls -1 *.sql | awk ‘{ print “source”,$0 }’ | mysql –force -h192.168.1.22 -P3310 -uroot -ppassword dbname</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A">Dec 30, 2013 - 安纳托利亚</a></h1>
@@ -157,61 +169,6 @@
         
         <div class="content">
             <p><a href="http://www.cnblogs.com/mrblue/p/3442709.html">http://www.cnblogs.com/mrblue/p/3442709.html</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6">Nov 8, 2013 - c++读写文件</a></h1>
-        
-        <div class="content">
-            <p>C++代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
-
-<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
-
-<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
-
-<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
-
-<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
-
-<span class="c1">//std::string fileContent = std::string("filecontent");
-</span>
-<span class="c1">//ofile &lt;&lt; fileContent;
-</span>
-<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
-
-<p><span style="color: #ff0000;">
-注意 ofstream是写入模式，文件中原有的内容会被清空。
-ifstream ifile；是读取模式,
-</span></p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="n">bool</span> <span class="n">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
-<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
-
-<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
-<span class="p">}</span></code></pre></figure>
-
 
         </div>
     </div>

@@ -7,6 +7,49 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>nfs磁盘共享</title>
+				<description>&lt;p&gt;A机器磁盘太小了  希望通过A机器的路径访问到 有剩余空间的B机器&lt;/p&gt;
+
+&lt;p&gt;0.先进入到B机器，发现没有安装nfs service&lt;/p&gt;
+
+&lt;p&gt;1，配置NFS服务端&lt;/p&gt;
+
+&lt;p&gt;$ sudo yum install nfs-utils portmap  （适用centos 5）
+$ sudo yum install nfs-utils rpcbind  （适用centos 6）&lt;/p&gt;
+
+&lt;p&gt;2.sudo vi /etc/exports&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/var/log/big_query 10.140.69.97(rw)  //前面的是本地的路径 后面是A机器的ip rw是读写权限 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;参数说明：
+rw：read-write，可读写；
+ro：read-only，只读；
+sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合
+async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；
+root_squash（默认）：将来访的root用户映射为匿名用户或用户组；
+no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；
+no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；
+all_squash：将来访的所有用户映射为匿名用户或用户组；
+secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；
+insecure：允许客户端从大于1024的tcp/ip端口连接服务器；
+anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；
+anongid：匿名用户的GID值；
+no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）&lt;/p&gt;
+
+&lt;p&gt;3.sudo service nfs start //启动nfs服务 可以通过sudo service nfs status来查看当前状态&lt;/p&gt;
+
+&lt;p&gt;4.激动人心的来了 去A服务器
+	mount  10.140.99.122:/var/log/big_query  /var/path/of/local //前面的ip是B的ip 路径就是第2步中的路径 后面那个是A本地路径&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2016/07/nfs%E5%85%B1%E4%BA%AB</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/nfs%E5%85%B1%E4%BA%AB</guid>
+			</item>
+		
+			<item>
 				<title>sed替换命令</title>
 				<description>&lt;p&gt;&lt;a herf=&quot;http://my.oschina.net/shelllife/blog/118337&quot;&gt; http://my.oschina.net/shelllife/blog/118337&lt;/a&gt;&lt;/p&gt;
 
@@ -220,19 +263,6 @@ tmux kill-session -t $session_name&lt;/li&gt;
 				<pubDate>Mon, 18 Apr 2016 10:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE</guid>
-			</item>
-		
-			<item>
-				<title>c++ lamda函数</title>
-				<description>
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;auto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//匿名函数 这里可以写很多行哦
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//声明一个函数 可以call=f；或者call.bind(f);
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-</description>
-				<pubDate>Thu, 24 Mar 2016 22:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/03/c++lamda%E5%87%BD%E6%95%B0</guid>
 			</item>
 		
 	</channel>

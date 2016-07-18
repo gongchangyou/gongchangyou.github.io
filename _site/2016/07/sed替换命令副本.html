@@ -60,7 +60,7 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">nfs磁盘共享</a></li>
+          <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4%E5%89%AF%E6%9C%AC">sed替换命令</a></li>
         
           <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">sed替换命令</a></li>
         
@@ -124,14 +124,60 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
+                <h1><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4%E5%89%AF%E6%9C%AC">Jul 7, 2016 - sed替换命令</a></h1>
             
             <div class="post-content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
+            <p><a herf="http://my.oschina.net/shelllife/blog/118337"> http://my.oschina.net/shelllife/blog/118337</a></p>
+
+<p>下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。</p>
+
+<p>sed ‘:label;N;s/\n/:/;b label’ filename</p>
+
+<p>sed ‘:label;N;s/\n/:/;t label’ filename</p>
+
+<p>上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：</p>
+
+<p>:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令</p>
+
+<p>N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见</p>
+
+<p>s/\n/:/;   s是sed的替换命令，将换行符替换为冒号</p>
+
+<p>b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处</p>
+
+<p>标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘:x;N;s/\n/,/;b x’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b,c,d</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘N;s/\n/,/’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b</p>
+
+<p>c,d</p>
+
+<p><a herf="http://blog.chinaunix.net/uid-26150691-id-3054317.html">sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html</a></p>
+
+<p><a herf="https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc"> sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc</a></p>
+
+<p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
 
             </div>
             
@@ -144,10 +190,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
               
 </div>
 
@@ -155,13 +199,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-03-c-lamda-e5-87-bd-e6-95-b0';
+        this.page.identifier = '2016-07-sed-e6-9b-bf-e6-8d-a2-e5-91-bd-e4-bb-a4-e5-89-af-e6-9c-ac';
     };
 
    (function() {

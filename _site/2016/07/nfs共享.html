@@ -124,14 +124,44 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
+                <h1><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">Jul 7, 2016 - nfs磁盘共享</a></h1>
             
             <div class="post-content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
+            <p>A机器磁盘太小了  希望通过A机器的路径访问到 有剩余空间的B机器</p>
+
+<p>0.先进入到B机器，发现没有安装nfs service</p>
+
+<p>1，配置NFS服务端</p>
+
+<p>$ sudo yum install nfs-utils portmap  （适用centos 5）
+$ sudo yum install nfs-utils rpcbind  （适用centos 6）</p>
+
+<p>2.sudo vi /etc/exports</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/var/log/big_query 10.140.69.97(rw)  //前面的是本地的路径 后面是A机器的ip rw是读写权限 
+</code></pre>
+</div>
+
+<p>参数说明：
+rw：read-write，可读写；
+ro：read-only，只读；
+sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合
+async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；
+root_squash（默认）：将来访的root用户映射为匿名用户或用户组；
+no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；
+no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；
+all_squash：将来访的所有用户映射为匿名用户或用户组；
+secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；
+insecure：允许客户端从大于1024的tcp/ip端口连接服务器；
+anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；
+anongid：匿名用户的GID值；
+no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
+
+<p>3.sudo service nfs start //启动nfs服务 可以通过sudo service nfs status来查看当前状态</p>
+
+<p>4.激动人心的来了 去A服务器
+	mount  10.140.99.122:/var/log/big_query  /var/path/of/local //前面的ip是B的ip 路径就是第2步中的路径 后面那个是A本地路径</p>
+
 
             </div>
             
@@ -144,10 +174,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
               
 </div>
 
@@ -155,13 +183,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-03-c-lamda-e5-87-bd-e6-95-b0';
+        this.page.identifier = '2016-07-nfs-e5-85-b1-e4-ba-ab';
     };
 
    (function() {

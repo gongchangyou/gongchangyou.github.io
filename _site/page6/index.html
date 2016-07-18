@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">nfs磁盘共享</a></li>
+        
           <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">sed替换命令</a></li>
         
           <li><a href="/2016/07/activity%E5%88%AB%E5%90%8D">activity 别名</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2016/06/atos-dSYM">atos命令 调试ios crash</a></li>
         
           <li><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">ios抓包利器</a></li>
-        
-          <li><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">lambda捕获</a></li>
         
     </ul>
 </div>
@@ -100,7 +100,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>3</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>4</sup></a></li>
 			
 		
 			
@@ -123,6 +123,33 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89">Jul 20, 2015 - c++ 宏中 “##”的意义</a></h1>
+        
+        <div class="content">
+            <p>字符串连接符</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">(){</span>
+	<span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">string</span> <span class="n">boolean_</span> <span class="o">=</span> <span class="s">"boolean_"</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">boolean_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">){</span>
+<span class="cp">#define INIT(p, v) case p##type: result = v; break
+</span>	<span class="n">INIT</span><span class="p">(</span><span class="n">boolean_</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+	<span class="cp">#undef INIT
+</span><span class="k">default</span><span class="o">:</span> <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2015/06/c++%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2">Jun 26, 2015 - c++ 字符串替换</a></h1>
@@ -194,48 +221,6 @@
         <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/02/journey_day8">Feb 14, 2015 - 2月14日布拉格</a></h1>
-        
-        <div class="content">
-            <p>旅行总有结束的一天，没结束的不叫旅行叫流浪。</p>
-
-<p>我们计划用一场完美的音乐会来作为结束。在此之前，先让我赖会儿床。在床上看了程伟推荐的<a href="http://v.ifeng.com/news/society/201502/01ce5cb3-77b6-4d05-bdda-c810c6ddbde0.shtml">徐静蕾推荐的布拉格之旅</a>徐静蕾推荐的布拉格之旅 发现她根本就没啥文化嘛，歌剧不看，音乐会不看，书也不读，只识喝酒坐广场。洗完澡出来收拾东西，12点左右退房，把行李寄存在前台后我们就去用早餐，据说是卡夫卡经常来逛。</p>
-
-<p><img src="/images/201502/xj2015_02_14_12_29_50.jpg" alt="" />
-<img src="/images/201502/xj2015_02_14_12_30_47.jpg" alt="" /></p>
-
-<p>之后去逛穆哈纪念馆，来之前我都不知道穆哈是谁，老婆做的攻略。
-<a href="http://baike.baidu.com/link?url=_0qatwVREUP2ReBcWxio_J9x31MgMV2LVUsRwvE_17MA4MistwNCOXSkONYGcKAfwXDtcjzwJAHwJXJ26qHGWIJrpg6VvEFoYaImnhG1MVu">捷克斯洛伐克新艺术运动大师阿方斯·穆哈</a></p>
-
-<p>晚饭去crystal隔壁一家当地餐馆吃，看得出来这里是捷克本地人聚餐的地方，老婆说好吃的东西关键字是gaulish，我就点了菜单上带这个的两道菜，结果一个是牛肉汤，另一个还是妈妈的味道，疯了……</p>
-
-<p>鲁道夫音乐厅</p>
-
-<p><img src="/images/201502/IMG_20150214_155714.jpg" alt="" />
-<img src="/images/201502/IMG_20150213_153638.jpg" alt="" /></p>
-
-<p>提琴协奏</p>
-
-<p><img src="/images/201502/IMG_20150214_183621.jpg" alt="" /></p>
-
-<p>吃完慢慢踱去鲁道夫音乐厅，这个小厅有种被坑的感觉啊，貌似维也纳城市公园的悲剧要上演。果然，band出现啦，就5个人，3个小提琴手，1个中提琴还有一个大提琴，提琴协奏曲之夜啊！不过，随着演出的进行，我对乐队的评价越来越高，简直甩维也纳混搭乐队几条街。这个组合虽然缺少了管乐的搭配，在一些地方略显单薄，但是他们做了精巧的构思和修改，利用渐进和现场不错的音响，依然展现出了气势恢宏。</p>
-
-<p>1个小时的演出意犹未尽，但是我们顾不上鼓掌，还得赶去机场。也不知道机场大巴的时刻表只能尽早。酒店取了行李之后再次路过查理大桥，唉，明明近在咫尺却从来没走过，留个影走吧。</p>
-
-<p><img src="/images/201502/xj2015_02_14_19_30_07.jpg" alt="" /></p>
-
-<p>搭地铁换乘机场大巴，在车站等大巴的时候惊觉今天是情人节，在这异国他乡我还没送花给亲爱的老婆呢！转身突然柳暗花明，车站后面有个书报亭正要打烊，里面也卖些花卉，兴冲冲的跑过去要了rose，看到老婆乐的，旅途再远也不辛苦啦！</p>
-
-<p>顺利搭上大巴，攻略上说到lestate下，不过我看到航站楼terminal1就下了。还是老婆机灵，说看到departure就在那边。还好没按照攻略来，否则要走回头路了。</p>
-
-<p>布拉格机场里挂着华为大大的广告牌，有能力的中国企业果然都在执行走出去战略。俄航开始值机了，一条队伍也没有，大家都堵在一起。没个指示牌，国人外国人素质都差不多。明明两个窗口，结果另个窗口人也没有，我就拿着打印出来的机票上去试试，瞬间托运好。我们就此踏上归国的旅程。</p>
 
         </div>
     </div>

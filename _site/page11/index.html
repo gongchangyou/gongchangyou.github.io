@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">nfs磁盘共享</a></li>
+        
           <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">sed替换命令</a></li>
         
           <li><a href="/2016/07/activity%E5%88%AB%E5%90%8D">activity 别名</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2016/06/atos-dSYM">atos命令 调试ios crash</a></li>
         
           <li><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">ios抓包利器</a></li>
-        
-          <li><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">lambda捕获</a></li>
         
     </ul>
 </div>
@@ -100,7 +100,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>3</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>4</sup></a></li>
 			
 		
 			
@@ -123,6 +123,61 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6">Nov 8, 2013 - c++读写文件</a></h1>
+        
+        <div class="content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
+
+<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
+
+<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
+
+<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
+
+<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
+
+<span class="c1">//std::string fileContent = std::string("filecontent");
+</span>
+<span class="c1">//ofile &lt;&lt; fileContent;
+</span>
+<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
+
+<p><span style="color: #ff0000;">
+注意 ofstream是写入模式，文件中原有的内容会被清空。
+ifstream ifile；是读取模式,
+</span></p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="n">bool</span> <span class="n">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
+<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
+
+<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
+
+<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
+
+<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/09/journey_day6">Sep 30, 2013 - 成都第六日</a></h1>
@@ -154,37 +209,6 @@
 <p>今天再次感受到了成都的悠闲，出租车司机一路上一直在跟同事闲聊，不认识路也不知道跟我们沟通，幸好发现及时没绕远路。我们本想下午去锦里随便吃吃坐坐的，结果国庆的恐怖已经提前展示了，基本上摩肩接踵，吃小吃都找不到位子坐。一路尝试各种失败的街头食物，包括像亲人一样的一品粥店，看上去很美的勾魂面，在wowo便利店买的蔓越梅干，跟襄阳的良品铺子完全没法比。</p>
 
 <p>晚上落魄到了如家，明天去看大熊猫但愿可以顺利些。那些号称成都很好玩很多好吃的人我怀疑他们只待了两三天，因为到了第五天我已经开始怀念江南了。</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/09/journey_day4">Sep 28, 2013 - 青城山游记</a></h1>
-        
-        <div class="content">
-            <p>成都到青城山的动车只要15元，给我一种青城山人民果然朴实的印象。结果到了青城山以后发现臣妾竟然错付啦！花园酒店一晚上500就算了，毕竟算是档次比较高的酒店。出租车管理混乱，看上去正规的出租车漫天要价，从火车站到花园酒店明明是起步价的路程要20！黑车更黑，从山门回来就一里路要30！这物价比上海高多了啊！恩，我承认此时想念上海了，至少明码标价童叟无欺。</p>
-
-<p><img src="/images/201309/IMAG1791-300x179.jpg" alt="" /></p>
-
-<p>说实话，我对道教没什么兴趣，道可道，非常道。我一向对这种只有描述没有定义的事物非常头疼，理解不能，包括数学中的集合。青城山是号称天下第一幽的名山。一开始在山门的时候还是人山人海，越往后走越清幽，走到后半段的时候几乎感受不到是在中国了，给人一种到了挪威或者加拿大的错觉。我们上山坐的索道，听边上的导游说以前到索道入口可以选择坐船也可以绕湖走过去，他们看到今天人多就关闭了走路过去的道路，大家都要买票上船，每人5块，所谓的坐船也就是20秒左右的渡轮，刚上船就到了。把我无语的呀。余沧海只是觊觎辟邪剑谱，你们这伙人居然捞钱都那么疯狂，真是档次越来越低了。白瞎了这片静幽山水！</p>
-
-<p><img src="/images/201309/IMAG1806-300x179.jpg" alt="" /></p>
-
-<p>不可否认山上景色还是不错的。参天大树比比皆是，直接从山脚拔地而起，树梢一直窜到山腰。我们仿佛来到了侏罗纪公园，担心冷不丁会有梁龙什么的窜出来吃这些植物。我们登到老君阁的时候已经是身在此山中，云深不知处了，眼前尽是白茫茫的一片雾气，有如堕入蓬莱仙境。山上湿气甚重，从石罅中渗出的水珠滴落在台阶上，蒙上了一层青苔，走到这种地方要格外小心，路滑而且脑袋上可能中招。幸好我穿上了丈母娘之前给我准备的农村小伙防水带帽套装。</p>
-
-<p><img src="/images/201309/IMAG1797-300x179.jpg" alt="" />
-<img src="/images/201309/IMAG1799-300x179.jpg" alt="" />
-<img src="/images/201309/IMAG1796-179x300.jpg" alt="" />
-<img src="/images/201309/IMAG1804-300x179.jpg" alt="" /></p>
-
-<p>因为我们上山较晚，所以登顶时已经是下午3点半。因为担心天黑时还没下山，到时候还要麻烦人家派人救咱。所以整个下午就紧赶慢赶，没有多余时间欣赏沿途美景，每逢休息时就多拍几张。本来如龙门峡谷般的栈道就已经够险峻的了，峡谷中还有很多高大的银杏穿插其间，翠绿逼人。</p>
-
-<p><img src="/images/201309/IMAG1818-179x300.jpg" alt="" />
-<img src="/images/201309/IMAG1824-179x300.jpg" alt="" /></p>
-
-<p>好歹在六点半回到山门，打了30块的黑车到达酒店。明天本来计划去后山的，这腿估计是不行了，只能回成都。</p>
 
         </div>
     </div>
