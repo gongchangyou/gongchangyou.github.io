@@ -102,6 +102,21 @@ no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父�
 &lt;p&gt;&lt;a herf=&quot;https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&quot;&gt; sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;SVN_VERSION=&lt;code class=&quot;highlighter-rouge&quot;&gt;svn info |sed -n &#39;s/Revision: \(.*\)/\1/p&#39;&lt;/code&gt; #shell结果输出到变量 用`符号即可&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#在ssh之前先整理好参数 只要在ssh中 &#39;${ESCAPE_PATH}&#39;即可
+SCRIPT_DIR=/var/home/aiming/world_all/bin/
+ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed &#39;s/\//\\\//g&#39;)
+echo ${ESCAPE_PATH}
+ssh aiming@lfs-cn-manage &quot;
+cd ${SCRIPT_DIR}
+echo &#39;${PUSH_CONTENT}&#39; &amp;gt; ${SCRIPT_DIR}tmp
+
+./idc_world_all_update.sh update_notification &#39;${ESCAPE_PATH}&#39; 
+&quot;
+#&#39;\/var\/home\/aiming\/world_all\/bin\/tmp&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 </description>
 				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</link>
@@ -110,8 +125,9 @@ no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父�
 		
 			<item>
 				<title>activity 别名</title>
-				<description>&lt;activity android:name=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;&gt;&lt;/activity&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &amp;lt;activity-alias
+				<description>&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;activity
+        android:name=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;&amp;gt;&amp;lt;/activity&amp;gt; 
+    &amp;lt;activity-alias
         android:name=&quot;.wxapi.WXEntryActivity&quot;
         android:targetActivity=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;
         android:exported=&quot;true&quot; /&amp;gt;

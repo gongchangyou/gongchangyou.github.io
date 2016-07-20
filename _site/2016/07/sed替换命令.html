@@ -179,6 +179,21 @@
 
 <p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>#在ssh之前先整理好参数 只要在ssh中 '${ESCAPE_PATH}'即可
+SCRIPT_DIR=/var/home/aiming/world_all/bin/
+ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed 's/\//\\\//g')
+echo ${ESCAPE_PATH}
+ssh aiming@lfs-cn-manage "
+cd ${SCRIPT_DIR}
+echo '${PUSH_CONTENT}' &gt; ${SCRIPT_DIR}tmp
+
+./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
+"
+#'\/var\/home\/aiming\/world_all\/bin\/tmp'
+</code></pre>
+</div>
+
+
             </div>
             
             <div id="disqus_thread">
