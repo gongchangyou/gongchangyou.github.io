@@ -128,13 +128,22 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
+                <h1><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">Nov 11, 2016 - 光照模型</a></h1>
             
             <div class="post-content">
-            <p>安装 创建 基本命令</p>
+            <p>标准光照模型</p>
 
-<p><a href="http://www.cnblogs.com/ifantastic/p/4090726.html">http://www.cnblogs.com/ifantastic/p/4090726.html</a></p>
+<p>漫反射</p>
 
+<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
+
+<p>高光反射</p>
+
+<p>r = 2(n . l)n - l;</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
 
             </div>
             
@@ -147,10 +156,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/06/lambda-%E6%8D%95%E8%8E%B7" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2016/05/iOS-mobileProvision" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab" class="previous">Older Post</a>
               
 </div>
 
@@ -164,7 +171,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-06-python-e8-99-9a-e6-8b-9f-e6-9c-ba';
+        this.page.identifier = '2016-11-shader-e5-85-89-e7-85-a7-e6-a8-a1-e5-9e-8b';
     };
 
    (function() {
