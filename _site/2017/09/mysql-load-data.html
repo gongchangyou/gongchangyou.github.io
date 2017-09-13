@@ -128,19 +128,19 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+                <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - mysql load data</a></h1>
             
             <div class="post-content">
-            <h3>将文件内容复制到剪贴板</h3>
-<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
 
-<h3>启动虚拟机</h3>
+<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
+错误咋办？</p>
 
-<p>$ virtualenv –system-site-packages ~/tensorflow</p>
+<p>在/etc/my.cnf中添加
+secure-file-priv=”/data/xlive/tools/masterdata/”</p>
 
-<p>$ cd ~/tensorflow</p>
+<p>注意： csv文件中，逗号隔开，不要有空格</p>
 
-<p>source bin/activate</p>
 
             </div>
             
@@ -153,10 +153,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B" class="previous">Older Post</a>
               
 </div>
 
@@ -170,7 +168,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-08-mac-command';
+        this.page.identifier = '2017-09-mysql-load-data';
     };
 
    (function() {
