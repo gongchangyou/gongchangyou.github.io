@@ -22,6 +22,7 @@ tag: [php]
 
 6.重点来了: 去到sublime => Preferences => Browse Packages 打开PhpBeautifier/php_beautifier.py
 
-        # cmd = "php_beautifier"
-        cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
+    # cmd = "php_beautifier"
+    cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
+    
 7.试试ctrl+alt+f 或者 command+shift+p   搜索format php

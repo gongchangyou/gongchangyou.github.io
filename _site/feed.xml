@@ -25,10 +25,12 @@
 
 &lt;p&gt;6.重点来了: 去到sublime =&amp;gt; Preferences =&amp;gt; Browse Packages 打开PhpBeautifier/php_beautifier.py&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    # cmd = &quot;php_beautifier&quot;
-    cmd = &quot;/Users/gongchangyou/pear/bin/php_beautifier&quot; #替换成之前第4步安装的php_beautifier的路径 7.试试ctrl+alt+f 或者 command+shift+p   搜索format php
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cmd = &quot;php_beautifier&quot;
+cmd = &quot;/Users/gongchangyou/pear/bin/php_beautifier&quot; #替换成之前第4步安装的php_beautifier的路径
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;p&gt;7.试试ctrl+alt+f 或者 command+shift+p   搜索format php&lt;/p&gt;
 </description>
 				<pubDate>Sat, 30 Sep 2017 13:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2017/09/php_beautifier</link>
