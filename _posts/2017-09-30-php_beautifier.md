@@ -24,5 +24,9 @@ tag: [php]
 
     # cmd = "php_beautifier"
     cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
-    
+    如果有需求将class和function 的开启花括号放到下一行
+    filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return:break) Pear(add-header=false,newline_class=true,newline_function=true)" //这里需要加上newline_class=true,newline_function=true
+
 7.试试ctrl+alt+f 或者 command+shift+p   搜索format php
+
+
