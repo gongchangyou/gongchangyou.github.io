@@ -132,25 +132,36 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/07/ssh-%E4%BF%9D%E5%AD%98host%E5%92%8C%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D">Jul 20, 2016 - ssh rsa</a></h1>
+                <h1><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">Oct 20, 2017 - memcache过期时间</a></h1>
             
             <div class="post-content">
-            <p>1.ssh-keygen  -t rsa</p>
+            <p>memcache 过期时间的设置</p>
 
-<p>2.在 ~/.ssh/config中添加</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#define REALTIME_MAXDELTA 60*60*24*30  </span>
+   <span class="n">static</span> <span class="n">rel_time_t</span> <span class="n">realtime</span><span class="p">(</span><span class="n">const</span> <span class="n">time_t</span> <span class="n">exptime</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&gt;</span> <span class="no">REALTIME_MAXDELTA</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">#如果超过30天  </span>
+               <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&lt;=</span> <span class="n">process_started</span><span class="p">)</span>   <span class="c1">#又小于进程启动时间，直接失效  </span>
+                      <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>   
+               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">-</span> <span class="n">process_started</span><span class="p">);</span>   <span class="c1">#返回相对时间 exptime时间戳 - 进程启动时间  </span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>   <span class="c1">#没超过30天的秒数，就是用当前运行时间+exptime  </span>
+               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">+</span> <span class="n">current_time</span><span class="p">);</span>   <span class="c1">#返回相对时间 服务器运行时间(从启动到现在的时间) + exptime  </span>
+        <span class="p">}</span>  
+ <span class="p">}</span>  </code></pre></figure>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>	Host lfs-cn-manage 
-	  HostName localhost  #这里写ip
-	  User aiming
-	  IdentityFile ~/.ssh/id_rsa.aiming
-</code></pre>
-</div>
+<p>当memcache的current_time不对，当(process_started + current_time)落后系统时间戳时，导致cache迟迟不过期,</p>
 
-<p>3.chmod 666 ~/.ssh/config #勿忘</p>
+<p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
 
-<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
+<p>uptime就是运行时间<br />
+time是当前时间 （memcache启动时间 + uptime)<br />
+当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！ (uptime就是代码中的current_time)</p>
 
-<p>搞定！</p>
+<font color="red">如何处理？ 重启memcache  </font>
+
+<p>ps aux|grep memcache<br />
+kill -9 pid<br />
+/usr/bin/memcached -d restart -m 64 -p 11211 -u memcache -l 127.0.0.1</p>
 
 
             </div>
@@ -164,10 +175,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/08/mysqldump-%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E5%89%AF%E6%9C%AC" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2016/07/nfs%E5%85%B1%E4%BA%AB" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2017/09/php_beautifier" class="previous">Older Post</a>
               
 </div>
 
@@ -181,7 +190,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-07-ssh-e4-bf-9d-e5-ad-98host-e5-92-8c-e8-ae-be-e7-bd-ae-e5-88-ab-e5-90-8d';
+        this.page.identifier = '2017-10-memcache-e8-bf-87-e6-9c-9f-e6-97-b6-e9-97-b4';
     };
 
    (function() {
