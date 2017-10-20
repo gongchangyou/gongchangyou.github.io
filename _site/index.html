@@ -155,10 +155,11 @@
 <p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
 
 <p>uptime就是运行时间<br />
-time是当前时间 （memcache启动时间 + uptime)<br />
-当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！ (uptime就是代码中的current_time)</p>
+time是当前时间 （memcache启动时间 + uptime)</p>
+<font color="red">当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！</font>
+<p>(uptime就是代码中的current_time)</p>
 
-<font color="red">如何处理？ 重启memcache  </font>
+<font color="blue">如何处理？ 重启memcache  </font>
 
 <p>ps aux|grep memcache<br />
 kill -9 pid<br />

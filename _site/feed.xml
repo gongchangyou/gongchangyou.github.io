@@ -27,10 +27,11 @@
 &lt;p&gt;&lt;img src=&quot;/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;uptime就是运行时间&lt;br /&gt;
-time是当前时间 （memcache启动时间 + uptime)&lt;br /&gt;
-当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！ (uptime就是代码中的current_time)&lt;/p&gt;
+time是当前时间 （memcache启动时间 + uptime)&lt;/p&gt;
+&lt;font color=&quot;red&quot;&gt;当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！&lt;/font&gt;
+&lt;p&gt;(uptime就是代码中的current_time)&lt;/p&gt;
 
-&lt;font color=&quot;red&quot;&gt;如何处理？ 重启memcache  &lt;/font&gt;
+&lt;font color=&quot;blue&quot;&gt;如何处理？ 重启memcache  &lt;/font&gt;
 
 &lt;p&gt;ps aux|grep memcache&lt;br /&gt;
 kill -9 pid&lt;br /&gt;
