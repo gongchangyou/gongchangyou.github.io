@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">mysql查找多行重复记录</a></li>
+        
           <li><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">memcache过期时间</a></li>
         
           <li><a href="/2017/09/php_beautifier">在sublime 2中添加php_beautifer </a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/09/mysql-load-data">csv文件导入mysql</a></li>
         
           <li><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">光照模型</a></li>
-        
-          <li><a href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab">vim 查看空格</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>3</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>4</sup></a></li>
 			
 		
 			
@@ -131,6 +131,23 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
+        
+        <div class="content">
+            <p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
+
+<p>通过map&lt;string, createClass&gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass</p>
+
+<p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
+
+<p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC">Jul 31, 2015 - c++链表翻转</a></h1>
@@ -183,45 +200,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/06/c++%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2">Jun 26, 2015 - c++ 字符串替换</a></h1>
-        
-        <div class="content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include&lt;string&gt;
-#include&lt;iostream&gt;
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="c1">//第一种替换字符串的方法用replace()
-</span><span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="n">s1</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
-		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-<span class="c1">//第二种替换字符串的方法用erase()和insert()
-</span><span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="n">s1</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
-		<span class="n">s1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
-		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -229,7 +207,7 @@
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 17</span>
+  <span class="page_number ">Page: 8 of 18</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   

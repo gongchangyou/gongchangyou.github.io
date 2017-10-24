@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">mysql查找多行重复记录</a></li>
+        
           <li><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">memcache过期时间</a></li>
         
           <li><a href="/2017/09/php_beautifier">在sublime 2中添加php_beautifer </a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/09/mysql-load-data">csv文件导入mysql</a></li>
         
           <li><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">光照模型</a></li>
-        
-          <li><a href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab">vim 查看空格</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>3</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>4</sup></a></li>
 			
 		
 			
@@ -131,6 +131,26 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+        
+        <div class="content">
+            <h3>将文件内容复制到剪贴板</h3>
+<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+
+<h3>启动虚拟机</h3>
+
+<p>$ virtualenv –system-site-packages ~/tensorflow</p>
+
+<p>$ cd ~/tensorflow</p>
+
+<p>source bin/activate</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
@@ -209,48 +229,6 @@ git am XXX.patch
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
-        
-        <div class="content">
-            <p>C++代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.h
-</span> <span class="c1">//
-</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
-</span> <span class="cp">#define SGR_MKStoreForCpp_h
-</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
- <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
- <span class="p">{</span>
- <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="k">public</span><span class="o">:</span>
- <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
-<span class="p">;</span>
-<span class="cp">#endif</span></code></pre></figure>
-
-<p>OC代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.mm
-</span> <span class="c1">//
-</span><span class="cp">#include "MKStoreForCpp.h"
-</span> <span class="cp">#include "MKStoreManager.h"
-</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
- <span class="p">{</span>
- <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
- <span class="p">}</span>
- </code></pre></figure>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -258,7 +236,9 @@ git am XXX.patch
         <a class="btn btn-default" href="/page16" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 17 of 17</span>
+  <span class="page_number ">Page: 17 of 18</span>
+  
+    <a class="btn btn-default" href="/page18" class="next">Older</a>
   
 </div>
 

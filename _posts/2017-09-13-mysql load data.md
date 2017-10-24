@@ -22,4 +22,7 @@ secure-file-priv="/data/xlive/tools/masterdata/"
 <br>
 <a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a>
 
- 
+将cdb_pms表subject字段中的Welcom to替换成 欢迎光临  
+UPDATE `cdb_pms`  
+SET `subject` = REPLACE(`subject`, 'Welcome to', '欢迎光临')  
+WHERE INSTR(`subject`,'Welcome to') > 0

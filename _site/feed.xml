@@ -7,6 +7,16 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>mysql查找多行重复记录</title>
+				<description>&lt;p&gt;select user_name,count(*) as count from user_table group by user_name having count&amp;gt;1;&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 24 Oct 2017 10:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</guid>
+			</item>
+		
+			<item>
 				<title>memcache过期时间</title>
 				<description>&lt;p&gt;memcache 过期时间的设置&lt;/p&gt;
 
@@ -93,6 +103,10 @@ secure-file-priv=”/data/xlive/tools/masterdata/”&lt;/p&gt;
 &lt;br /&gt;
 &lt;a href=&quot;http://www.51testing.com/html/46/262846-837305.html&quot;&gt;替换mysql中某个字段的部分内容&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;将cdb_pms表subject字段中的Welcom to替换成 欢迎光临&lt;br /&gt;
+UPDATE &lt;code class=&quot;highlighter-rouge&quot;&gt;cdb_pms&lt;/code&gt;&lt;br /&gt;
+SET &lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt; = REPLACE(&lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt;, ‘Welcome to’, ‘欢迎光临’)&lt;br /&gt;
+WHERE INSTR(&lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt;,’Welcome to’) &amp;gt; 0&lt;/p&gt;
 </description>
 				<pubDate>Wed, 13 Sep 2017 13:25:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2017/09/mysql-load-data</link>
@@ -286,26 +300,6 @@ echo &#39;${PUSH_CONTENT}&#39; &amp;gt; ${SCRIPT_DIR}tmp
 				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</guid>
-			</item>
-		
-			<item>
-				<title>activity 别名</title>
-				<description>&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;activity
-        android:name=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;&amp;gt;&amp;lt;/activity&amp;gt; 
-    &amp;lt;activity-alias
-        android:name=&quot;.wxapi.WXEntryActivity&quot;
-        android:targetActivity=&quot;com.skymoons.zdbmgj.WXEntryActivity&quot;
-        android:exported=&quot;true&quot; /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替&lt;/p&gt;
-
-&lt;p&gt;记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity&lt;/p&gt;
-</description>
-				<pubDate>Fri, 01 Jul 2016 13:24:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/07/activity%E5%88%AB%E5%90%8D</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/activity%E5%88%AB%E5%90%8D</guid>
 			</item>
 		
 	</channel>
