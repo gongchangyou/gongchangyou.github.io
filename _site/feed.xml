@@ -7,6 +7,17 @@
 		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>查找git中有特定字符串的文件</title>
+				<description>&lt;p&gt;查看我的修改中是否含有var_dump字符串&lt;/p&gt;
+
+&lt;p&gt;git log --name-only --author=&quot;mouse&quot; |grep php |xargs find {} |xargs grep var_dump&lt;/p&gt;
+</description>
+				<pubDate>Mon, 06 Nov 2017 10:25:06 +0800</pubDate>
+				<link>https://gongchangyou.github.io/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</link>
+				<guid isPermaLink="true">https://gongchangyou.github.io/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</guid>
+			</item>
+		
+			<item>
 				<title>mysql查找多行重复记录</title>
 				<description>&lt;p&gt;select user_name,count(*) as count from user_table group by user_name having count&amp;gt;1;&lt;/p&gt;
 
@@ -226,80 +237,6 @@ no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父�
 				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
 				<link>https://gongchangyou.github.io/2016/07/nfs%E5%85%B1%E4%BA%AB</link>
 				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/nfs%E5%85%B1%E4%BA%AB</guid>
-			</item>
-		
-			<item>
-				<title>sed替换命令</title>
-				<description>&lt;p&gt;&lt;a herf=&quot;http://my.oschina.net/shelllife/blog/118337&quot;&gt; http://my.oschina.net/shelllife/blog/118337&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。&lt;/p&gt;
-
-&lt;p&gt;sed ‘:label;N;s/\n/:/;b label’ filename&lt;/p&gt;
-
-&lt;p&gt;sed ‘:label;N;s/\n/:/;t label’ filename&lt;/p&gt;
-
-&lt;p&gt;上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：&lt;/p&gt;
-
-&lt;p&gt;:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令&lt;/p&gt;
-
-&lt;p&gt;N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见&lt;/p&gt;
-
-&lt;p&gt;s/\n/:/;   s是sed的替换命令，将换行符替换为冒号&lt;/p&gt;
-
-&lt;p&gt;b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处&lt;/p&gt;
-
-&lt;p&gt;标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;$  echo “a,b,c,d”&lt;/td&gt;
-      &lt;td&gt;sed ‘s/,/\n/g’&lt;/td&gt;
-      &lt;td&gt;sed ‘:x;N;s/\n/,/;b x’&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;a,b,c,d&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;$  echo “a,b,c,d”&lt;/td&gt;
-      &lt;td&gt;sed ‘s/,/\n/g’&lt;/td&gt;
-      &lt;td&gt;sed ‘N;s/\n/,/’&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;a,b&lt;/p&gt;
-
-&lt;p&gt;c,d&lt;/p&gt;
-
-&lt;p&gt;&lt;a herf=&quot;http://blog.chinaunix.net/uid-26150691-id-3054317.html&quot;&gt;sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a herf=&quot;https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&quot;&gt; sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;SVN_VERSION=&lt;code class=&quot;highlighter-rouge&quot;&gt;svn info |sed -n &#39;s/Revision: \(.*\)/\1/p&#39;&lt;/code&gt; #shell结果输出到变量 用`符号即可&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#在ssh之前先整理好参数 只要在ssh中 &#39;${ESCAPE_PATH}&#39;即可
-SCRIPT_DIR=/var/home/aiming/world_all/bin/
-ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed &#39;s/\//\\\//g&#39;)
-echo ${ESCAPE_PATH}
-ssh aiming@lfs-cn-manage &quot;
-cd ${SCRIPT_DIR}
-echo &#39;${PUSH_CONTENT}&#39; &amp;gt; ${SCRIPT_DIR}tmp
-
-./idc_world_all_update.sh update_notification &#39;${ESCAPE_PATH}&#39; 
-&quot;
-#&#39;\/var\/home\/aiming\/world_all\/bin\/tmp&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-				<pubDate>Thu, 07 Jul 2016 13:24:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4</guid>
 			</item>
 		
 	</channel>

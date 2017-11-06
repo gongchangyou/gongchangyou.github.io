@@ -46,7 +46,7 @@ git cherry-pick c2f3d52e7^..d0c9463f4
 
 git add forgotten_files
 
-git commit –amend
+git commit -\-amend
 
 <h3>在A branch查看 B branch的log</h3>
 有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录
@@ -57,7 +57,11 @@ git commit –amend
 git config –global core.autocrlf true
 
 <h3>git 查找 注释 文本</h3>
-git log -S “test”
+git log -S “test”  
+git log -\-grep=“test”
 
 <h3>git st 中文乱码问题</h3>
-git config --global core.quotepath false
+git config -\-global core.quotepath false
+
+<h3>git 将tag push到远程</h3>
+git push origin -\-tags

@@ -130,64 +130,51 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
+            <div class="post-content">
+            <p>查看我的修改中是否含有var_dump字符串</p>
 
-        </div>
-    </div>
-</div>
+<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
-        
-        <div class="content">
+            </div>
             
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);
-</span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
-        
-        <div class="content">
-            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
-
-<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="pagination">
-  
-      
-        <a class="btn btn-default" href="/page6" class="previous">Newer</a>
-      
-  
-  <span class="page_number ">Page: 7 of 18</span>
-  
-    <a class="btn btn-default" href="/page8" class="next">Older</a>
-  
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2017-11-e6-9f-a5-e6-89-begit-e4-b8-ad-e6-9c-89-e7-89-b9-e5-ae-9a-e5-ad-97-e7-ac-a6-e4-b8-b2-e7-9a-84-e6-96-87-e4-bb-b6';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">

@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6">查找git中有特定字符串的文件</a></li>
+        
           <li><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">mysql查找多行重复记录</a></li>
         
           <li><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">memcache过期时间</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/09/php_beautifier">在sublime 2中添加php_beautifer </a></li>
         
           <li><a href="/2017/09/mysql-load-data">csv文件导入mysql</a></li>
-        
-          <li><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">光照模型</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>1</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>2</sup></a></li>
 			
 		
 			
@@ -131,6 +131,72 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/git-command">Aug 13, 2013 - git 常用命令</a></h1>
+        
+        <div class="content">
+            <h3>git ignore</h3>
+<p>不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令</p>
+
+<p>% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传</p>
+
+<p>% git update-index –really-refresh /path/to/file</p>
+
+<p>% git update-index –skip-worktree /path/to/file 不更新这个文件</p>
+
+<p>git update-index –no-assume-unchanged</p>
+
+<h3>git patch</h3>
+<ul>
+<h4>生成patch:</h4>
+<li>
+1.先commit
+</li>
+<li>	
+2.git format-patch version/HEAD^
+</li>
+<h4>使用patch:</h4>
+git am XXX.patch
+</ul>
+
+<h3>git 删除所有tag</h3>
+<p>git tag |xargs git tag -d</p>
+
+<h3>git cherry-pick</h3>
+<p>git cherry-pick c2f3d52e7^..d0c9463f4</p>
+
+<p>注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。</p>
+
+<h3>git 添加文件到最近的一次commit中</h3>
+<p>漏掉了一些文件，但是已经提交了怎么办？</p>
+
+<p>git add forgotten_files</p>
+
+<p>git commit --amend</p>
+
+<h3>在A branch查看 B branch的log</h3>
+<p>有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录</p>
+
+<p>只需要 git log -p branch_name path/to/file</p>
+
+<h3>git diff 无视win和macos 换行的</h3>
+<p>git config –global core.autocrlf true</p>
+
+<h3>git 查找 注释 文本</h3>
+<p>git log -S “test”<br />
+git log --grep=“test”</p>
+
+<h3>git st 中文乱码问题</h3>
+<p>git config --global core.quotepath false</p>
+
+<h3>git 将tag push到远程</h3>
+<p>git push origin --tags</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
