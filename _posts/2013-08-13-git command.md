@@ -67,10 +67,10 @@ git config -\-global core.quotepath false
 git push origin -\-tags
 
 <h3>查看远程标签</h3>
-git ls-remote --tags
+git ls-remote -\-tags
 
 <h3>删除远程标签</h3>
-git push origin --delete tag v0.1
+git push origin -\-delete tag v0.1
 或 git push origin :refs/tags/v0.1
 
 <h3>删除本地标签</h3>
