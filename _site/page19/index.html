@@ -133,12 +133,75 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 30, 2017 - sublime常用命令</a></h1>
+        <h1><a href="/2013/08/git-command">Aug 13, 2013 - git 常用命令</a></h1>
         
         <div class="content">
-            <p>批量修改  <br />
-    1. command + F 搜索字符串  <br />
-    2. alt + enter 批量选中</p>
+            <h3>git ignore</h3>
+<p>不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令</p>
+
+<p>% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传</p>
+
+<p>% git update-index –really-refresh /path/to/file</p>
+
+<p>% git update-index –skip-worktree /path/to/file 不更新这个文件</p>
+
+<p>git update-index –no-assume-unchanged</p>
+
+<h3>git patch</h3>
+<ul>
+<h4>生成patch:</h4>
+<li>
+1.先commit
+</li>
+<li>	
+2.git format-patch version/HEAD^
+</li>
+<h4>使用patch:</h4>
+git am XXX.patch
+</ul>
+
+<h3>git 删除所有tag</h3>
+<p>git tag |xargs git tag -d</p>
+
+<h3>git cherry-pick</h3>
+<p>git cherry-pick c2f3d52e7^..d0c9463f4</p>
+
+<p>注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。</p>
+
+<h3>git 添加文件到最近的一次commit中</h3>
+<p>漏掉了一些文件，但是已经提交了怎么办？</p>
+
+<p>git add forgotten_files</p>
+
+<p>git commit --amend</p>
+
+<h3>在A branch查看 B branch的log</h3>
+<p>有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录</p>
+
+<p>只需要 git log -p branch_name path/to/file</p>
+
+<h3>git diff 无视win和macos 换行的</h3>
+<p>git config –global core.autocrlf true</p>
+
+<h3>git 查找 注释 文本</h3>
+<p>git log -S “test”<br />
+git log --grep=“test”</p>
+
+<h3>git st 中文乱码问题</h3>
+<p>git config --global core.quotepath false</p>
+
+<h3>git 将tag push到远程</h3>
+<p>git push origin --tags</p>
+
+<h3>查看远程标签</h3>
+<p>git ls-remote --tags</p>
+
+<h3>删除远程标签</h3>
+<p>git push origin --delete tag v0.1
+或 git push origin :refs/tags/v0.1</p>
+
+<h3>删除本地标签</h3>
+<p>git tag -d [标签名]</p>
 
         </div>
     </div>
@@ -146,81 +209,41 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 28, 2017 - docker常用命令</a></h1>
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
         
         <div class="content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
+            <p>C++代码</p>
 
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.h
+</span> <span class="c1">//
+</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">public</span><span class="o">:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
+<p>OC代码</p>
 
-<p>启动容器  <br />
-1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.mm
+</span> <span class="c1">//
+</span><span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
-<p>进入容器</p>
-
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
-
-<p>退出 敲exit即可</p>
-
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">Nov 9, 2017 - apt-get命令</a></h1>
-        
-        <div class="content">
-            <p>apt-get update——在修改/etc/apt/sources.list或者/etc/apt/preferences之後运行该命令。此外您需要定期运行这一命令以确保您的软件包列表是最新的。</p>
-
-<p>apt-get install packagename——安装一个新软件包（参见下文的aptitude）</p>
-
-<p>apt-get remove packagename——卸载一个已安装的软件包（保留配置文件）</p>
-
-<p>apt-get –purge remove packagename——卸载一个已安装的软件包（删除配置文件）</p>
-
-<p>dpkg –force-all –purge packagename 有些软件很难卸载，而且还阻止了别的软件的应用，就可以用这个，不过有点冒险。</p>
-
-<p>apt-get autoclean apt会把已装或已卸的软件都备份在硬盘上，所以如果需要空间的话，可以让这个命令来删除你已经删掉的软件</p>
-
-<p>apt-get clean 这个命令会把安装的软件的备份也删除，不过这样不会影响软件的使用的。</p>
-
-<p>apt-get upgrade——更新所有已安装的软件包</p>
-
-<p>apt-get dist-upgrade——将系统升级到新版本</p>
-
-<p>apt-cache search string——在软件包列表中搜索字符串</p>
-
-<p>dpkg -l package-name-pattern——列出所有与模式相匹配的软件包。如果您不知道软件包的全名，您可以使用“<em>package-name-pattern</em>”。</p>
-
-<p>aptitude——详细查看已安装或可用的软件包。与apt-get类似，aptitude可以通过命令行方式调用，但仅限于某些命令——最常见的有安装和卸载命令。由于aptitude比apt-get了解更多信息，可以说它更适合用来进行安装和卸载。</p>
-
-<p>aptitude search XXX</p>
-
-<p>apt-cache showpkg pkgs——显示软件包信息。</p>
-
-<p>apt-cache dumpavail——打印可用软件包列表。</p>
-
-<p>apt-cache show pkgs——显示软件包记录，类似于dpkg –print-avail。</p>
-
-<p>apt-cache pkgnames——打印软件包列表中所有软件包的名称。</p>
-
-<p>dpkg -S file——这个文件属于哪个已安装软件包。</p>
-
-<p>dpkg -L package——列出软件包中的所有文件。</p>
-
-<p>apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。</p>
-
-<p>apt-get update 系统软件包更新</p>
 
         </div>
     </div>
@@ -229,9 +252,11 @@ docker ps -a -q |xargs docker rm</p>
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 19</span>
+      
+        <a class="btn btn-default" href="/page18" class="previous">Newer</a>
+      
   
-    <a class="btn btn-default" href="/page2" class="next">Older</a>
+  <span class="page_number ">Page: 19 of 19</span>
   
 </div>
 
