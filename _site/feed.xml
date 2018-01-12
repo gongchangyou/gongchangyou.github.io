@@ -28,7 +28,7 @@
     &lt;p&gt;unset TMPDIR&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;mysql_install_db –verbose –user=&lt;code class=&quot;highlighter-rouge&quot;&gt;whoami&lt;/code&gt; –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql&lt;/p&gt;
+    &lt;p&gt;mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
