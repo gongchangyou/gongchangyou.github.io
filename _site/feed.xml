@@ -3,18 +3,80 @@
 	<channel>
 		<title>Mouse的博客</title>
 		<description>记录学习生活工作的点滴</description>
-		<link>https://gongchangyou.github.io</link>
-		<atom:link href="https://gongchangyou.github.io/feed.xml" rel="self" type="application/rss+xml" />
+		<link>http://localhost:4000</link>
+		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</title>
+				<description>&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysql stop&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;amp;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysql -u root mysql&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;update user set authentication_string=password(‘root’) where user=’root’;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;flush privileges;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;unset TMPDIR&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysql_install_db –verbose –user=&lt;code class=&quot;highlighter-rouge&quot;&gt;whoami&lt;/code&gt; –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysql.server start&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;mysql -uroot -proot 进去啦！！&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+				<pubDate>Fri, 12 Jan 2018 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81</link>
+				<guid isPermaLink="true">http://localhost:4000/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81</guid>
+			</item>
+		
+			<item>
+				<title>curl常用命令</title>
+				<description>&lt;p&gt;模拟队列插入
+curl -d ‘{“id”:853098,”event”:”update”,”timestamp”:1463641228622}’ ‘http://nydus.tj.a.ajkdns.com/publish?tunnel=service.internal.community&amp;amp;routingKey=service.internal.community.data_change’&lt;/p&gt;
+
+&lt;p&gt;上传图片
+curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg” ‘http://upd1.anjuke.com/upload’&lt;/p&gt;
+</description>
+				<pubDate>Thu, 14 Dec 2017 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
+			</item>
 		
 			<item>
 				<title>sublime常用命令</title>
 				<description>&lt;p&gt;批量修改  &lt;br /&gt;
     1. command + F 搜索字符串  &lt;br /&gt;
     2. alt + enter 批量选中&lt;/p&gt;
+
+&lt;p&gt;编译配置&lt;/p&gt;
+
+&lt;p&gt;/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User&lt;/p&gt;
+
+&lt;p&gt;g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.&lt;/p&gt;
+
 </description>
 				<pubDate>Thu, 30 Nov 2017 10:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
+				<link>http://localhost:4000/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
 			</item>
 		
 			<item>
@@ -42,8 +104,8 @@ docker ps -a -q |xargs docker rm&lt;/p&gt;
 
 </description>
 				<pubDate>Tue, 28 Nov 2017 10:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
+				<link>http://localhost:4000/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
 			</item>
 		
 			<item>
@@ -91,8 +153,8 @@ docker ps -a -q |xargs docker rm&lt;/p&gt;
 &lt;p&gt;apt-get update 系统软件包更新&lt;/p&gt;
 </description>
 				<pubDate>Thu, 09 Nov 2017 10:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/11/apt-get%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/11/apt-get%E5%91%BD%E4%BB%A4</guid>
+				<link>http://localhost:4000/2017/11/apt-get%E5%91%BD%E4%BB%A4</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/11/apt-get%E5%91%BD%E4%BB%A4</guid>
 			</item>
 		
 			<item>
@@ -100,10 +162,19 @@ docker ps -a -q |xargs docker rm&lt;/p&gt;
 				<description>&lt;p&gt;查看我的修改中是否含有var_dump字符串&lt;/p&gt;
 
 &lt;p&gt;git log --name-only --author=&quot;mouse&quot; |grep php |xargs find {} |xargs grep var_dump&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;find .&lt;/td&gt;
+      &lt;td&gt;xargs grep -ri “example_str” -l&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
 </description>
 				<pubDate>Mon, 06 Nov 2017 10:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</guid>
+				<link>http://localhost:4000/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</guid>
 			</item>
 		
 			<item>
@@ -112,8 +183,8 @@ docker ps -a -q |xargs docker rm&lt;/p&gt;
 
 </description>
 				<pubDate>Tue, 24 Oct 2017 10:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</guid>
+				<link>http://localhost:4000/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95</guid>
 			</item>
 		
 			<item>
@@ -149,8 +220,8 @@ kill -9 pid&lt;br /&gt;
 
 </description>
 				<pubDate>Fri, 20 Oct 2017 11:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4</guid>
+				<link>http://localhost:4000/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4</guid>
 			</item>
 		
 			<item>
@@ -159,10 +230,9 @@ kill -9 pid&lt;br /&gt;
 
 &lt;p&gt;2.cd /user/gongchangyou&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;php go-pear.phar
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;php go-pear.phar
 一路回车
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;3.export PATH=”/Users/gongchangyou/pear/bin:$PATH” 将这行加到~/.bash_profile中，source ~/.bash_profile&lt;/p&gt;
 
@@ -172,25 +242,24 @@ kill -9 pid&lt;br /&gt;
 
 &lt;p&gt;6.重点来了: 去到sublime =&amp;gt; Preferences =&amp;gt; Browse Packages 打开PhpBeautifier/php_beautifier.py&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cmd = &quot;php_beautifier&quot;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# cmd = &quot;php_beautifier&quot;
 cmd = &quot;/Users/gongchangyou/pear/bin/php_beautifier&quot; #替换成之前第4步安装的php_beautifier的路径
 如果有需求将class和function 的开启花括号放到下一行
 filters = &quot;ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return:break) Pear(add-header=false,newline_class=true,newline_function=true)&quot; //这里需要加上newline_class=true,newline_function=true
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;7.试试ctrl+alt+f 或者 command+shift+p   搜索format php&lt;/p&gt;
 
 </description>
 				<pubDate>Sat, 30 Sep 2017 13:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/09/php_beautifier</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/09/php_beautifier</guid>
+				<link>http://localhost:4000/2017/09/php_beautifier</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/09/php_beautifier</guid>
 			</item>
 		
 			<item>
 				<title>csv文件导入mysql</title>
 				<description>&lt;p&gt;load data infile “/data/xlive/tools/masterdata/badwords.csv” &lt;br /&gt;
-into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘&#39;’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;&lt;/p&gt;
+into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;&lt;/p&gt;
 
 &lt;p&gt;ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
 错误咋办？&lt;/p&gt;
@@ -209,38 +278,8 @@ SET &lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt; = REPLA
 WHERE INSTR(&lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt;,’Welcome to’) &amp;gt; 0&lt;/p&gt;
 </description>
 				<pubDate>Wed, 13 Sep 2017 13:25:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2017/09/mysql-load-data</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2017/09/mysql-load-data</guid>
-			</item>
-		
-			<item>
-				<title>光照模型</title>
-				<description>&lt;p&gt;标准光照模型&lt;/p&gt;
-
-&lt;p&gt;漫反射&lt;/p&gt;
-
-&lt;p&gt;C_diffuse = C_light * M_diffuse * max(0, dot(n,l))&lt;/p&gt;
-
-&lt;p&gt;高光反射&lt;/p&gt;
-
-&lt;p&gt;r = 2(n . l)n - l;&lt;/p&gt;
-
-&lt;p&gt;C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);&lt;/p&gt;
-
-&lt;p&gt;C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);&lt;/p&gt;
-</description>
-				<pubDate>Fri, 11 Nov 2016 13:24:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B</guid>
-			</item>
-		
-			<item>
-				<title>vim 查看空格</title>
-				<description>&lt;p&gt;set listchars=tab:&amp;gt;-,trail:-&lt;/p&gt;
-</description>
-				<pubDate>Fri, 26 Aug 2016 13:24:06 +0800</pubDate>
-				<link>https://gongchangyou.github.io/2016/08/vim-%E6%9F%A5%E7%9C%8Btab</link>
-				<guid isPermaLink="true">https://gongchangyou.github.io/2016/08/vim-%E6%9F%A5%E7%9C%8Btab</guid>
+				<link>http://localhost:4000/2017/09/mysql-load-data</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/09/mysql-load-data</guid>
 			</item>
 		
 	</channel>

@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%89%AF%E6%9C%AC">docker常用命令</a></li>
+          <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
+        
+          <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
+        
+          <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
         
           <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
         
           <li><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">apt-get命令</a></li>
-        
-          <li><a href="/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6">查找git中有特定字符串的文件</a></li>
-        
-          <li><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">mysql查找多行重复记录</a></li>
         
     </ul>
 </div>
@@ -96,11 +96,11 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>4</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>9</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
 			
 		
 			
@@ -130,74 +130,68 @@
 
         </div>
         <div class="col-md-9">
-          <div class="article">
-            <div class="well">
-                <h1><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%89%AF%E6%9C%AC">Nov 28, 2017 - docker常用命令</a></h1>
             
-            <div class="post-content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
+        
+        <div class="content">
+            <p>C++代码</p>
 
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.h
+</span> <span class="c1">//
+</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">public</span><span class="o">:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
+<p>OC代码</p>
 
-<p>启动容器  <br />
-1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
-
-<p>进入容器</p>
-
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
-
-<p>退出 敲exit即可</p>
-
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
+</span> <span class="c1">// MKStoreForCpp.mm
+</span> <span class="c1">//
+</span><span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
 
-            </div>
-            
-            <div id="disqus_thread">
-                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-            </div>
-            
-            </div>
-          </div>
-          <div class="pagination">
-              
-              
-                <a class="btn btn-default" href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
-              
+        </div>
+    </div>
+</div>
+
+
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page19" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 20 of 20</span>
+  
 </div>
 
         </div>
     </div>
 </div>
-<!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
-
-  <script type="text/javascript">
-    var disqus_shortname = '';
-
-    var disqus_config = function () {
-        this.page.identifier = '2017-11-docker-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4-e5-89-af-e6-9c-ac';
-    };
-
-   (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-
 
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2017 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2018 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>

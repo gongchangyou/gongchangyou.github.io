@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
+        
+          <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
+        
           <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
         
           <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
         
           <li><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">apt-get命令</a></li>
-        
-          <li><a href="/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6">查找git中有特定字符串的文件</a></li>
-        
-          <li><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">mysql查找多行重复记录</a></li>
         
     </ul>
 </div>
@@ -96,11 +96,11 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>4</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>9</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
 			
 		
 			
@@ -133,6 +133,102 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">Jul 7, 2016 - sed替换命令</a></h1>
+        
+        <div class="content">
+            <p><a herf="http://my.oschina.net/shelllife/blog/118337"> http://my.oschina.net/shelllife/blog/118337</a></p>
+
+<p>下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。</p>
+
+<p>sed ‘:label;N;s/\n/:/;b label’ filename</p>
+
+<p>sed ‘:label;N;s/\n/:/;t label’ filename</p>
+
+<p>上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：</p>
+
+<p>:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令</p>
+
+<p>N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见</p>
+
+<p>s/\n/:/;   s是sed的替换命令，将换行符替换为冒号</p>
+
+<p>b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处</p>
+
+<p>标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘:x;N;s/\n/,/;b x’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b,c,d</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘N;s/\n/,/’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b</p>
+
+<p>c,d</p>
+
+<p><a herf="http://blog.chinaunix.net/uid-26150691-id-3054317.html">sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html</a></p>
+
+<p><a herf="https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc"> sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc</a></p>
+
+<p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在ssh之前先整理好参数 只要在ssh中 '${ESCAPE_PATH}'即可
+SCRIPT_DIR=/var/home/aiming/world_all/bin/
+ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed 's/\//\\\//g')
+echo ${ESCAPE_PATH}
+ssh aiming@lfs-cn-manage "
+cd ${SCRIPT_DIR}
+echo '${PUSH_CONTENT}' &gt; ${SCRIPT_DIR}tmp
+
+./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
+"
+#'\/var\/home\/aiming\/world_all\/bin\/tmp'
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
+        
+        <div class="content">
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
+        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
+    &lt;activity-alias
+        android:name=".wxapi.WXEntryActivity"
+        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
+        android:exported="true" /&gt;
+</code></pre></div></div>
+
+<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
+
+<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
         
         <div class="content">
@@ -156,42 +252,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
-        
-        <div class="content">
-            <p>Replica</p>
-
-<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">Jun 6, 2016 - lambda捕获</a></h1>
-        
-        <div class="content">
-            <p>int x = 1, y=2;</p>
-
-<p>auto z = [x,y]{return x+ y;};</p>
-
-<p>//auto z = [x,&amp;y]{return x+ y;}; 引用就是运行时，值就是编译时</p>
-
-<p>x= 3, y = 4;</p>
-
-<p>cout « z() « endl;</p>
-
-<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -199,7 +259,7 @@
         <a class="btn btn-default" href="/page5" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 6 of 19</span>
+  <span class="page_number ">Page: 6 of 20</span>
   
     <a class="btn btn-default" href="/page7" class="next">Older</a>
   
@@ -212,7 +272,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2017 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2018 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>

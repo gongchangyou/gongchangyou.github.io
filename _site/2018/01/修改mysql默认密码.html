@@ -49,23 +49,26 @@
 <div class="container container-left">
     <div class="row">
         <div class="col-md-3 hidden-xs">
-            <div class="sidebar well">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
 记录学习生活工作的点滴
+</h4>
 </div>
 
 <div class="sidebar well">
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2013/09/journey_day6">成都第六日</a></li>
+          <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
         
-          <li><a href="/2013/09/journey_day5">成都第五日</a></li>
+          <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
         
-          <li><a href="/2013/09/journey_day4">青城山游记</a></li>
+          <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
         
-          <li><a href="/2013/09/journey_day3">成都第三日</a></li>
+          <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
         
-          <li><a href="/2013/09/journey_day2">成都第二日</a></li>
+          <li><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">apt-get命令</a></li>
         
     </ul>
 </div>
@@ -73,15 +76,15 @@
 	<h1>标签</h1>
 		
 			
-				<li><a href="/tag/c++" title="c++">c++<sup>3</sup></a></li>
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>1</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tag/ios" title="ios">ios<sup>1</sup></a></li>
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
 			
 		
 			
@@ -89,7 +92,27 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>7</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>2</sup></a></li>
 			
 		
 </div>
@@ -109,42 +132,43 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc%E5%89%AF%E6%9C%AC">Aug 13, 2013 - c++调用oc</a></h1>
+                <h1><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
             
             <div class="post-content">
-            <p>C++代码</p>
+            <ol>
+  <li>
+    <p>mysql stop</p>
+  </li>
+  <li>
+    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
+  </li>
+  <li>
+    <p>mysql -u root mysql</p>
+  </li>
+  <li>
+    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
+  </li>
+  <li>
+    <p>flush privileges;</p>
+  </li>
+  <li>
+    <p>unset TMPDIR</p>
+  </li>
+  <li>
+    <p>mysql_install_db –verbose –user=<code class="highlighter-rouge">whoami</code> –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
+  </li>
+</ol>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.h
-</span> <span class="c1">//
-</span><span class="cp">#ifndef SGR_MKStoreForCpp_h
-</span> <span class="cp">#define SGR_MKStoreForCpp_h
-</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
- <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
- <span class="p">{</span>
- <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="k">public</span><span class="o">:</span>
- <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
-<span class="p">;</span>
-<span class="cp">#endif</span></code></pre></figure>
+<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
 
-<p>OC代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//
-</span> <span class="c1">// MKStoreForCpp.mm
-</span> <span class="c1">//
-</span><span class="cp">#include "MKStoreForCpp.h"
-</span> <span class="cp">#include "MKStoreManager.h"
-</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
- <span class="p">{</span>
- <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
- <span class="p">}</span>
- </code></pre></figure>
-
-<p><img src="/images/image1-400x300.jpg" alt="" /></p>
+<ol>
+  <li>
+    <p>mysql.server start</p>
+  </li>
+  <li>
+    <p>mysql -uroot -proot 进去啦！！</p>
+  </li>
+</ol>
 
             </div>
             
@@ -157,10 +181,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/08/git-command" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/08/c++%E8%B0%83%E7%94%A8oc" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
               
 </div>
 
@@ -168,13 +190,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-08-c-e8-b0-83-e7-94-a8oc-e5-89-af-e6-9c-ac';
+        this.page.identifier = '2018-01-e4-bf-ae-e6-94-b9mysql-e9-bb-98-e8-ae-a4-e5-af-86-e7-a0-81';
     };
 
    (function() {
@@ -188,7 +210,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2016 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2018 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>
