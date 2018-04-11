@@ -7,6 +7,26 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>python keyring 在macos的cron中无效</title>
+				<description>&lt;p&gt;写了个定时定会议室的脚本，要利用keyring模块获取chrome中的cookie。
+在终端中执行python没问题，写到cron中就报错 Can’t fetch password from system&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;解锁钥匙串 在cron中先执行 security unlock-keychain -p MYPASS /path/to/login.keychain&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码中设置钥匙串的路径    keyring.get_keyring().keychain = ‘/Users/gongchangyou/Library/Keychains/login.keychain-db’&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<pubDate>Wed, 11 Apr 2018 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2018/04/python-keyring</link>
+				<guid isPermaLink="true">http://localhost:4000/2018/04/python-keyring</guid>
+			</item>
+		
+			<item>
 				<title>修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</title>
 				<description>&lt;ol&gt;
   &lt;li&gt;
@@ -254,32 +274,6 @@ filters = &quot;ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:r
 				<pubDate>Sat, 30 Sep 2017 13:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2017/09/php_beautifier</link>
 				<guid isPermaLink="true">http://localhost:4000/2017/09/php_beautifier</guid>
-			</item>
-		
-			<item>
-				<title>csv文件导入mysql</title>
-				<description>&lt;p&gt;load data infile “/data/xlive/tools/masterdata/badwords.csv” &lt;br /&gt;
-into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;&lt;/p&gt;
-
-&lt;p&gt;ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
-错误咋办？&lt;/p&gt;
-
-&lt;p&gt;在/etc/my.cnf中添加
-secure-file-priv=”/data/xlive/tools/masterdata/”&lt;/p&gt;
-
-&lt;font style=&quot;color:red&quot;&gt;注意： csv文件中，逗号隔开，不要有空格&lt;/font&gt;
-&lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;
-&lt;a href=&quot;http://www.51testing.com/html/46/262846-837305.html&quot;&gt;替换mysql中某个字段的部分内容&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;将cdb_pms表subject字段中的Welcom to替换成 欢迎光临&lt;br /&gt;
-UPDATE &lt;code class=&quot;highlighter-rouge&quot;&gt;cdb_pms&lt;/code&gt;&lt;br /&gt;
-SET &lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt; = REPLACE(&lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt;, ‘Welcome to’, ‘欢迎光临’)&lt;br /&gt;
-WHERE INSTR(&lt;code class=&quot;highlighter-rouge&quot;&gt;subject&lt;/code&gt;,’Welcome to’) &amp;gt; 0&lt;/p&gt;
-</description>
-				<pubDate>Wed, 13 Sep 2017 13:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2017/09/mysql-load-data</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/09/mysql-load-data</guid>
 			</item>
 		
 	</channel>

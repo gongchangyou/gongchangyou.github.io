@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2018/04/python-keyring">python keyring 在macos的cron中无效</a></li>
+        
           <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
         
           <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
         
           <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
-        
-          <li><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">apt-get命令</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>1</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>2</sup></a></li>
 			
 		
 			
@@ -131,6 +131,26 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 30, 2017 - sublime常用命令</a></h1>
+        
+        <div class="content">
+            <p>批量修改  <br />
+    1. command + F 搜索字符串  <br />
+    2. alt + enter 批量选中</p>
+
+<p>编译配置</p>
+
+<p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
+
+<p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 28, 2017 - docker常用命令</a></h1>
@@ -208,28 +228,6 @@ docker ps -a -q |xargs docker rm</p>
 <p>apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。</p>
 
 <p>apt-get update 系统软件包更新</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
-        
-        <div class="content">
-            <p>查看我的修改中是否含有var_dump字符串</p>
-
-<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>find .</td>
-      <td>xargs grep -ri “example_str” -l</td>
-    </tr>
-  </tbody>
-</table>
 
         </div>
     </div>

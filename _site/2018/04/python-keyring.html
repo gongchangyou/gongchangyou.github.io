@@ -130,108 +130,60 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2018/04/python-keyring">Apr 11, 2018 - python keyring 在macos的cron中无效</a></h1>
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/09/php_beautifier">Sep 30, 2017 - 在sublime 2中添加php_beautifer </a></h1>
-        
-        <div class="content">
-            <p>1.下载go-pear.phar 到php安装目录下，地址http://pear.php.net/go-pear.phar 。//macbook 无法放到/usr/bin 中，我随便放到了/User/gongchangyou/ 下 <br /></p>
+            <div class="post-content">
+            <p>写了个定时定会议室的脚本，要利用keyring模块获取chrome中的cookie。
+在终端中执行python没问题，写到cron中就报错 Can’t fetch password from system</p>
 
-<p>2.cd /user/gongchangyou</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php go-pear.phar
-一路回车
-</code></pre></div></div>
-
-<p>3.export PATH=”/Users/gongchangyou/pear/bin:$PATH” 将这行加到~/.bash_profile中，source ~/.bash_profile</p>
-
-<p>4.pear install –alldeps channel://pear.php.net/php_beautifier-0.1.15</p>
-
-<p>5.在Sublime text中安装beautifier插件,  按ctrl+shift+p 在package control中搜索install ,回车后稍等一下就会跳出好多插件,搜索phpbeautifier,回车安装</p>
-
-<p>6.重点来了: 去到sublime =&gt; Preferences =&gt; Browse Packages 打开PhpBeautifier/php_beautifier.py</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cmd = "php_beautifier"
-cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
-如果有需求将class和function 的开启花括号放到下一行
-filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return:break) Pear(add-header=false,newline_class=true,newline_function=true)" //这里需要加上newline_class=true,newline_function=true
-</code></pre></div></div>
-
-<p>7.试试ctrl+alt+f 或者 command+shift+p   搜索format php</p>
+<ol>
+  <li>
+    <p>解锁钥匙串 在cron中先执行 security unlock-keychain -p MYPASS /path/to/login.keychain</p>
+  </li>
+  <li>
+    <p>代码中设置钥匙串的路径    keyring.get_keyring().keychain = ‘/Users/gongchangyou/Library/Keychains/login.keychain-db’</p>
+  </li>
+</ol>
 
 
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - csv文件导入mysql</a></h1>
-        
-        <div class="content">
-            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” <br />
-into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
-
-<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
-错误咋办？</p>
-
-<p>在/etc/my.cnf中添加
-secure-file-priv=”/data/xlive/tools/masterdata/”</p>
-
-<font style="color:red">注意： csv文件中，逗号隔开，不要有空格</font>
-<p><br />
-<br />
-<a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a></p>
-
-<p>将cdb_pms表subject字段中的Welcom to替换成 欢迎光临<br />
-UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
-SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
-WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">Nov 11, 2016 - 光照模型</a></h1>
-        
-        <div class="content">
-            <p>标准光照模型</p>
-
-<p>漫反射</p>
-
-<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
-
-<p>高光反射</p>
-
-<p>r = 2(n . l)n - l;</p>
-
-<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
-
-<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="pagination">
-  
-      
-        <a class="btn btn-default" href="/page3" class="previous">Newer</a>
-      
-  
-  <span class="page_number ">Page: 4 of 20</span>
-  
-    <a class="btn btn-default" href="/page5" class="next">Older</a>
-  
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: </p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2018-04-python-keyring';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">
