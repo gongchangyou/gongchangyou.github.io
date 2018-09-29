@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2018/09/GuzzleHttp">GuzzleHttp</a></li>
+        
           <li><a href="/2018/04/python-keyring">python keyring 在macos的cron中无效</a></li>
         
           <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
         
           <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
-        
-          <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
         
     </ul>
 </div>
@@ -112,7 +112,7 @@
 			
 		
 			
-				<li><a href="/tag/php" title="php">php<sup>2</sup></a></li>
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
 			
 		
 </div>
@@ -131,6 +131,28 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">Jun 6, 2016 - lambda捕获</a></h1>
+        
+        <div class="content">
+            <p>int x = 1, y=2;</p>
+
+<p>auto z = [x,y]{return x+ y;};</p>
+
+<p>//auto z = [x,&amp;y]{return x+ y;}; 引用就是运行时，值就是编译时</p>
+
+<p>x= 3, y = 4;</p>
+
+<p>cout « z() « endl;</p>
+
+<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
@@ -171,40 +193,6 @@
 <p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
 
 <p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/04/tmux">Apr 18, 2016 - tmux常用命令</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>创建并指定session名字<br />
-		tmux new -s $session_name</li>
-&lt;/li&gt;
-<li>删除session<br />
- Ctrl+b :kill-session</li>
-<li>临时退出session<br />
-Ctrl+b d</li>
-<li>列出session<br />
-tmux ls</li>
-<li>进入已存在的session<br />
-tmux a -t $session_name</li>
-<li>删除所有session<br />
-Ctrl+b :kill-server</li>
-<li>删除指定session<br />
-tmux kill-session -t $session_name</li>
-<li>删除指定window<br />
-Ctrl+b : &amp;</li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-
-</ul>
 
         </div>
     </div>

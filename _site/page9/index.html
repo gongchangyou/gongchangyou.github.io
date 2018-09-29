@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2018/09/GuzzleHttp">GuzzleHttp</a></li>
+        
           <li><a href="/2018/04/python-keyring">python keyring 在macos的cron中无效</a></li>
         
           <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
         
           <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
-        
-          <li><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">docker常用命令</a></li>
         
     </ul>
 </div>
@@ -112,7 +112,7 @@
 			
 		
 			
-				<li><a href="/tag/php" title="php">php<sup>2</sup></a></li>
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
 			
 		
 </div>
@@ -131,6 +131,40 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/04/tmux">Apr 18, 2016 - tmux常用命令</a></h1>
+        
+        <div class="content">
+            <ul>
+<li>创建并指定session名字<br />
+		tmux new -s $session_name</li>
+&lt;/li&gt;
+<li>删除session<br />
+ Ctrl+b :kill-session</li>
+<li>临时退出session<br />
+Ctrl+b d</li>
+<li>列出session<br />
+tmux ls</li>
+<li>进入已存在的session<br />
+tmux a -t $session_name</li>
+<li>删除所有session<br />
+Ctrl+b :kill-server</li>
+<li>删除指定session<br />
+tmux kill-session -t $session_name</li>
+<li>删除指定window<br />
+Ctrl+b : &amp;</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+</ul>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
@@ -154,19 +188,6 @@
 <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦
 </span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);
 </span><span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
-        
-        <div class="content">
-            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
-
-<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
 
         </div>
     </div>
