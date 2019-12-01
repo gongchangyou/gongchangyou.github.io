@@ -1,0 +1,16 @@
+I"�<p>打开Terminal，进入到build/Debug-iphoneos</p>
+
+<p>使用命令:</p>
+
+<p>$atos -arch armv7 -o XXX.app/XXX 0xabcdef</p>
+
+<p>XXX是你的App名字，用需要解析的地址替换上面的0xabcdef</p>
+
+<p>armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386</p>
+
+<p>=====================</p>
+
+<p>上传ipa:</p>
+
+<p>利用mac自带软件 Application Loader上传ipa</p>
+:ET

@@ -1,0 +1,35 @@
+I"�<ol>
+  <li>
+    <p>mysql stop</p>
+  </li>
+  <li>
+    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
+  </li>
+  <li>
+    <p>mysql -u root mysql</p>
+  </li>
+  <li>
+    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
+  </li>
+  <li>
+    <p>flush privileges;</p>
+  </li>
+  <li>
+    <p>unset TMPDIR</p>
+  </li>
+  <li>
+    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
+  </li>
+</ol>
+
+<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+
+<ol>
+  <li>
+    <p>mysql.server start</p>
+  </li>
+  <li>
+    <p>mysql -uroot -proot 进去啦！！</p>
+  </li>
+</ol>
+:ET

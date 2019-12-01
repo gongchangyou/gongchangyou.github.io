@@ -1,0 +1,11 @@
+I"�<h3>将文件内容复制到剪贴板</h3>
+<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+
+<h3>启动虚拟机</h3>
+
+<p>$ virtualenv –system-site-packages ~/tensorflow</p>
+
+<p>$ cd ~/tensorflow</p>
+
+<p>source bin/activate</p>
+:ET

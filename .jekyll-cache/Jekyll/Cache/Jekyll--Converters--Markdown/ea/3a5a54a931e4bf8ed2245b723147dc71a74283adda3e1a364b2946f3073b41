@@ -1,0 +1,14 @@
+I"5<p>标准光照模型</p>
+
+<p>漫反射</p>
+
+<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
+
+<p>高光反射</p>
+
+<p>r = 2(n . l)n - l;</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
+:ET

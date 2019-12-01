@@ -1,0 +1,7 @@
+I"�<p>以下两种都可以</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个pad上开不了iphone的应用</span>
+ 
+ <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个不同device都可以打开那个应用 推荐！</span>
+ </code></pre></figure>
+:ET

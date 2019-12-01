@@ -1,0 +1,3 @@
+I"�<h3>批量导入sql文件到db中</h3>
+<p>ls -1 *.sql | awk ‘{ print “source”,$0 }’ | mysql –force -h192.168.1.22 -P3310 -uroot -ppassword dbname</p>
+:ET

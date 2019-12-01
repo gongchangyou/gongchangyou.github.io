@@ -1,0 +1,16 @@
+I"�<h3>批量正则rename</h3>
+<p>rename ‘s/([0-9]).txt/file_$1.txt/’ *.txt</p>
+
+<h3>tar命令</h3>
+
+<p>压缩率更大的压缩:tar cvjf  解压:tar xvjf tar.bz2</p>
+
+<p>压缩:tar cvzf 解压:tar xvzf tar.gz</p>
+
+<p>如果有不想进包的部分</p>
+
+<p>tar -zcvf test.tar.gz –exclude=fileName/dirName test</p>
+
+<p>注意这个exclude的位置， 文件名和目录名可以添加正则*来匹配</p>
+
+:ET

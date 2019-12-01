@@ -1,0 +1,11 @@
+I"!<p>批量修改  <br />
+    1. command + F 搜索字符串  <br />
+    2. alt + enter 批量选中</p>
+
+<p>编译配置</p>
+
+<p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
+
+<p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
+
+:ET

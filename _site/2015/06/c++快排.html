@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81">金钱暗流</a></li>
+        
+          <li><a href="/2019/03/tmux">tmux常用命令</a></li>
+        
           <li><a href="/2018/09/GuzzleHttp">GuzzleHttp</a></li>
         
           <li><a href="/2018/04/python-keyring">python keyring 在macos的cron中无效</a></li>
         
           <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
-        
-          <li><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">curl常用命令</a></li>
-        
-          <li><a href="/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">sublime常用命令</a></li>
         
     </ul>
 </div>
@@ -92,7 +92,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>19</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>20</sup></a></li>
 			
 		
 			
@@ -100,7 +100,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>9</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
 			
 		
 			
@@ -136,7 +136,7 @@
             
             <div class="post-content">
             
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span> <span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span> <span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
     <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">];</span>
     <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span><span class="c1">//慢速下标</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -150,12 +150,12 @@
     <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
     <span class="k">return</span> <span class="n">j</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="kt">void</span> <span class="n">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">q</span><span class="p">){</span>
+<span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">q</span><span class="p">){</span>
     <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">q</span><span class="p">;</span>
     <span class="n">q</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="kt">void</span> <span class="n">quickSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+<span class="kt">void</span> <span class="nf">quickSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
     <span class="k">if</span><span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">){</span>
         <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
         <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>

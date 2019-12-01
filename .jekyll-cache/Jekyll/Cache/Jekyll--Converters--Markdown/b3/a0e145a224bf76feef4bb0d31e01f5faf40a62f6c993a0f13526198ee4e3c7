@@ -1,0 +1,17 @@
+I"�<p>1.ssh-keygen  -t rsa</p>
+
+<p>2.在 ~/.ssh/config中添加</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	Host lfs-cn-manage 
+	  HostName localhost  #这里写ip
+	  User aiming
+	  IdentityFile ~/.ssh/id_rsa.aiming
+</code></pre></div></div>
+
+<p>3.chmod 666 ~/.ssh/config #勿忘</p>
+
+<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
+
+<p>搞定！</p>
+
+:ET

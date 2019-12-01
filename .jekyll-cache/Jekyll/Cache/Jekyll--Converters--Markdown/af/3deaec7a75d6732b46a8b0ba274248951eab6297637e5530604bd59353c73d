@@ -1,0 +1,48 @@
+I"6<p>首先需要3个静态变量</p>
+
+<p>static JavaVM *gs_jvm=NULL;//这个是JavaVM 两个线程共享这个变量</p>
+
+<p>static jobject gs_createFolder = NULL;//通过 gs_createFolder = env-&gt;NewGlobalRef(ret);可以做到让两个线程共享一个jobject</p>
+
+<p>static jmethodID gs_methodId = NULL;</p>
+
+<p>在新建thread之前做以下事情：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">gs_jvm</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getJavaVM</span><span class="p">();</span>
+
+<span class="n">CCLog</span><span class="p">(</span><span class="s">"save javavm after"</span><span class="p">);</span>
+
+<span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">;</span>
+
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="n">AttachCurrentThread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">env</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">jclass</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">FindClass</span><span class="p">(</span><span class="s">"com/gumichina/lib/Storage"</span><span class="p">);</span>
+
+<span class="n">gs_createFolder</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">NewGlobalRef</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+
+<span class="n">gs_methodId</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">GetStaticMethodID</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="s">"createExternalFolder"</span><span class="p">,</span> <span class="s">"(Ljava/lang/String;)Z"</span><span class="p">);</span>
+
+<span class="c1">//接下来就开你的thread吧：</span>
+<span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_zipThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">unzipFileOnThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span></code></pre></figure>
+
+<p>在thread中这样获取:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nc">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="o">;</span>
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="nc">AttachCurrentThread</span><span class="o">(&amp;</span><span class="n">env</span><span class="o">,</span> <span class="no">NULL</span><span class="o">);</span><span class="c1">//这里就获取了JavaVM的env</span>
+<span class="n">jclass</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">GetObjectClass</span><span class="o">(</span><span class="n">gs_createFolder</span><span class="o">);</span><span class="c1">//把class巧妙的拿过来了</span>
+
+<span class="c1">//调用的时候</span>
+
+<span class="nl">std:</span><span class="o">:</span><span class="n">string</span> <span class="n">tempPath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">substr</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">path</span><span class="o">.</span><span class="na">rfind</span><span class="o">(</span><span class="s">"/"</span><span class="o">));</span>
+
+<span class="n">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+<span class="n">jstring</span> <span class="nc">StringArg1</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">NewStringUTF</span><span class="o">(</span><span class="n">tempPath</span><span class="o">.</span><span class="na">c_str</span><span class="o">());</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">CallStaticBooleanMethod</span><span class="o">(</span><span class="n">cls</span><span class="o">,</span> <span class="n">gs_methodId</span><span class="o">,</span> <span class="nc">StringArg1</span><span class="o">);</span><span class="c1">//cls 和methodId 齐活了！</span>
+
+<span class="n">env</span><span class="o">-&gt;</span><span class="nc">DeleteLocalRef</span><span class="o">(</span><span class="nc">StringArg1</span><span class="o">);</span></code></pre></figure>
+
+:ET

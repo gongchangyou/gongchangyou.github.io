@@ -1,0 +1,10 @@
+I"�<p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
+
+<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
+
+<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
+
+<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
+
+<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
+:ET
