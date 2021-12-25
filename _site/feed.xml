@@ -7,6 +7,79 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>java-selenium</title>
+				<description>&lt;h1 id=&quot;kotlin-语法糖&quot;&gt;Kotlin 语法糖&lt;/h1&gt;
+
+&lt;p&gt;sequence chunked 列表分块处理&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/553dd6095edb&quot;&gt;简书-kotlin语法糖整理&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Mon, 20 Dec 2021 15:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2021/12/kotlin</link>
+				<guid isPermaLink="true">http://localhost:4000/2021/12/kotlin</guid>
+			</item>
+		
+			<item>
+				<title>java-selenium</title>
+				<description>&lt;h1 id=&quot;下载-chrome-driver&quot;&gt;下载 chrome-driver&lt;/h1&gt;
+&lt;p&gt;https://chromedriver.chromium.org/downloads&lt;/p&gt;
+
+&lt;h2 id=&quot;拷贝到-usrlocalbin-并-chmod-777&quot;&gt;拷贝到 /usr/local/bin/ 并 chmod 777&lt;/h2&gt;
+
+&lt;p&gt;MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
+MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver&lt;/p&gt;
+
+&lt;h2 id=&quot;可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开&quot;&gt;可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”&lt;/h2&gt;
+
+&lt;h1 id=&quot;添加依赖&quot;&gt;添加依赖&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+   &amp;lt;groupId&amp;gt;org.seleniumhq.selenium&amp;lt;/groupId&amp;gt;
+   &amp;lt;artifactId&amp;gt;selenium-java&amp;lt;/artifactId&amp;gt;
+   &amp;lt;version&amp;gt;3.14.0&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;编写代码&quot;&gt;编写代码&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        log.info(&quot;args = {}&quot;, args);
+        val driver = new ChromeDriver();
+        driver.get(&quot;https://leetcode-cn.com/tag/dynamic-programming/problemset/&quot;);
+        val problemList = driver.findElementsByCssSelector(&quot;#lc-content &amp;gt; div &amp;gt; div.css-1ezka95-TableContainer.ermji1u1 &amp;gt; div &amp;gt; section &amp;gt; div &amp;gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; table &amp;gt; tbody &amp;gt; tr:nth-child(1) &amp;gt; td:nth-child(2) &amp;gt; div &amp;gt; div &amp;gt; div&quot;);
+        log.info(&quot;problemList={}&quot;, problemList);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;如果难以打开新的标签页&quot;&gt;如果难以打开新的标签页&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JavascriptExecutor js = (JavascriptExecutor) driver;  
+js.executeScript(&quot;window.open();&quot;);
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript(&quot;window.open(\&quot;http://www.baidu.com\&quot;);&quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+				<pubDate>Mon, 20 Dec 2021 15:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2021/12/selenium-java</link>
+				<guid isPermaLink="true">http://localhost:4000/2021/12/selenium-java</guid>
+			</item>
+		
+			<item>
+				<title>爷爷</title>
+				<description>&lt;h1 id=&quot;爷爷&quot;&gt;爷爷&lt;/h1&gt;
+
+&lt;p&gt;在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。&lt;/p&gt;
+
+&lt;h2 id=&quot;第一次吃肯德基&quot;&gt;第一次吃肯德基&lt;/h2&gt;
+
+&lt;p&gt;我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。&lt;/p&gt;
+</description>
+				<pubDate>Sat, 24 Apr 2021 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96</link>
+				<guid isPermaLink="true">http://localhost:4000/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96</guid>
+			</item>
+		
+			<item>
 				<title>金钱暗流</title>
 				<description>&lt;h1 id=&quot;第一章-科赫家族史&quot;&gt;第一章 科赫家族史&lt;/h1&gt;
 
@@ -302,104 +375,6 @@ curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg
 				<pubDate>Thu, 30 Nov 2017 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
 				<guid isPermaLink="true">http://localhost:4000/2017/11/sublime%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
-			</item>
-		
-			<item>
-				<title>docker常用命令</title>
-				<description>&lt;p&gt;生成镜像  &lt;br /&gt;
-docker build -f Dockerfile -t panshi .&lt;/p&gt;
-
-&lt;p&gt;批量删除image &lt;br /&gt;
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi&lt;/p&gt;
-
-&lt;p&gt;批量删除容器&lt;br /&gt;
-docker ps -a -q |xargs docker rm&lt;/p&gt;
-
-&lt;p&gt;启动容器  &lt;br /&gt;
-1.docker run -dit --name container_name image_name /bin/bash -c &quot;/etc/rc.local;/bin/bash&quot;&lt;/p&gt;
-
-&lt;p&gt;进入容器&lt;/p&gt;
-
-&lt;p&gt;1.docker exec -it container_id/container_name /bin/bash&lt;/p&gt;
-
-&lt;p&gt;退出 敲exit即可&lt;/p&gt;
-
-&lt;p&gt;2.docker attach container_id  &lt;br /&gt;
-    退出需要ctrl+p+q&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 28 Nov 2017 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4</guid>
-			</item>
-		
-			<item>
-				<title>apt-get命令</title>
-				<description>&lt;p&gt;apt-get update——在修改/etc/apt/sources.list或者/etc/apt/preferences之後运行该命令。此外您需要定期运行这一命令以确保您的软件包列表是最新的。&lt;/p&gt;
-
-&lt;p&gt;apt-get install packagename——安装一个新软件包（参见下文的aptitude）&lt;/p&gt;
-
-&lt;p&gt;apt-get remove packagename——卸载一个已安装的软件包（保留配置文件）&lt;/p&gt;
-
-&lt;p&gt;apt-get –purge remove packagename——卸载一个已安装的软件包（删除配置文件）&lt;/p&gt;
-
-&lt;p&gt;dpkg –force-all –purge packagename 有些软件很难卸载，而且还阻止了别的软件的应用，就可以用这个，不过有点冒险。&lt;/p&gt;
-
-&lt;p&gt;apt-get autoclean apt会把已装或已卸的软件都备份在硬盘上，所以如果需要空间的话，可以让这个命令来删除你已经删掉的软件&lt;/p&gt;
-
-&lt;p&gt;apt-get clean 这个命令会把安装的软件的备份也删除，不过这样不会影响软件的使用的。&lt;/p&gt;
-
-&lt;p&gt;apt-get upgrade——更新所有已安装的软件包&lt;/p&gt;
-
-&lt;p&gt;apt-get dist-upgrade——将系统升级到新版本&lt;/p&gt;
-
-&lt;p&gt;apt-cache search string——在软件包列表中搜索字符串&lt;/p&gt;
-
-&lt;p&gt;dpkg -l package-name-pattern——列出所有与模式相匹配的软件包。如果您不知道软件包的全名，您可以使用“&lt;em&gt;package-name-pattern&lt;/em&gt;”。&lt;/p&gt;
-
-&lt;p&gt;aptitude——详细查看已安装或可用的软件包。与apt-get类似，aptitude可以通过命令行方式调用，但仅限于某些命令——最常见的有安装和卸载命令。由于aptitude比apt-get了解更多信息，可以说它更适合用来进行安装和卸载。&lt;/p&gt;
-
-&lt;p&gt;aptitude search XXX&lt;/p&gt;
-
-&lt;p&gt;apt-cache showpkg pkgs——显示软件包信息。&lt;/p&gt;
-
-&lt;p&gt;apt-cache dumpavail——打印可用软件包列表。&lt;/p&gt;
-
-&lt;p&gt;apt-cache show pkgs——显示软件包记录，类似于dpkg –print-avail。&lt;/p&gt;
-
-&lt;p&gt;apt-cache pkgnames——打印软件包列表中所有软件包的名称。&lt;/p&gt;
-
-&lt;p&gt;dpkg -S file——这个文件属于哪个已安装软件包。&lt;/p&gt;
-
-&lt;p&gt;dpkg -L package——列出软件包中的所有文件。&lt;/p&gt;
-
-&lt;p&gt;apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。&lt;/p&gt;
-
-&lt;p&gt;apt-get update 系统软件包更新&lt;/p&gt;
-</description>
-				<pubDate>Thu, 09 Nov 2017 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2017/11/apt-get%E5%91%BD%E4%BB%A4</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/11/apt-get%E5%91%BD%E4%BB%A4</guid>
-			</item>
-		
-			<item>
-				<title>查找git中有特定字符串的文件</title>
-				<description>&lt;p&gt;查看我的修改中是否含有var_dump字符串&lt;/p&gt;
-
-&lt;p&gt;git log --name-only --author=&quot;mouse&quot; |grep php |xargs find {} |xargs grep var_dump&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;find .&lt;/td&gt;
-      &lt;td&gt;xargs grep -ri “example_str” -l&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-</description>
-				<pubDate>Mon, 06 Nov 2017 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/11/%E6%9F%A5%E6%89%BEgit%E4%B8%AD%E6%9C%89%E7%89%B9%E5%AE%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%87%E4%BB%B6</guid>
 			</item>
 		
 	</channel>

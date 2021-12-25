@@ -1,0 +1,38 @@
+I"
+<h1 id="下载-chrome-driver">下载 chrome-driver</h1>
+<p>https://chromedriver.chromium.org/downloads</p>
+
+<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
+
+<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
+MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
+
+<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
+
+<h1 id="添加依赖">添加依赖</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+   &lt;version&gt;3.14.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<h1 id="编写代码">编写代码</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
+        val driver = new ChromeDriver();
+        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
+        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
+        log.info("problemList={}", problemList);
+</code></pre></div></div>
+
+<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
+js.executeScript("window.open();");
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("window.open(\"http://www.baidu.com\");");
+</code></pre></div></div>
+:ET

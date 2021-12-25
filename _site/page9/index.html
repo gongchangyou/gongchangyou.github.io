@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2021/12/kotlin">java-selenium</a></li>
+        
+          <li><a href="/2021/12/selenium-java">java-selenium</a></li>
+        
+          <li><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">爷爷</a></li>
+        
           <li><a href="/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81">金钱暗流</a></li>
         
           <li><a href="/2019/03/tmux">tmux常用命令</a></li>
-        
-          <li><a href="/2018/09/GuzzleHttp">GuzzleHttp</a></li>
-        
-          <li><a href="/2018/04/python-keyring">python keyring 在macos的cron中无效</a></li>
-        
-          <li><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></li>
         
     </ul>
 </div>
@@ -92,7 +92,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>20</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
 			
 		
 			
@@ -115,6 +115,14 @@
 				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
 			
 		
+			
+				<li><a href="/tag/java" title="java">java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
 </div>
 <!-- 
 <div class="sidebar well">
@@ -133,12 +141,37 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
+        <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
         
         <div class="content">
-            <p>安装 创建 基本命令</p>
+            <p>打开Terminal，进入到build/Debug-iphoneos</p>
 
-<p><a href="http://www.cnblogs.com/ifantastic/p/4090726.html">http://www.cnblogs.com/ifantastic/p/4090726.html</a></p>
+<p>使用命令:</p>
+
+<p>$atos -arch armv7 -o XXX.app/XXX 0xabcdef</p>
+
+<p>XXX是你的App名字，用需要解析的地址替换上面的0xabcdef</p>
+
+<p>armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386</p>
+
+<p>=====================</p>
+
+<p>上传ipa:</p>
+
+<p>利用mac自带软件 Application Loader上传ipa</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
+        
+        <div class="content">
+            <p>Replica</p>
+
+<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
 
 
         </div>
@@ -147,43 +180,21 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
+        <h1><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">Jun 6, 2016 - lambda捕获</a></h1>
         
         <div class="content">
-            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
+            <p>int x = 1, y=2;</p>
 
-<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
+<p>auto z = [x,y]{return x+ y;};</p>
 
-<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
+<p>//auto z = [x,&amp;y]{return x+ y;}; 引用就是运行时，值就是编译时</p>
 
-<p>上传到appStore的时候一直报这个错：Error ITMS-90034:”Missing or invalid signature. The bundle XXX at bundle path ‘Payload/XXX.app’ is not signed using  an Apple submission certificate.”</p>
+<p>x= 3, y = 4;</p>
 
-<p>解决方法:</p>
+<p>cout « z() « endl;</p>
 
-<ol>
-  <li>
-    <p>查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为”使用系统默认”</p>
+<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
 
-    <p>查看你的distribution 的mobileProvision 是否用对，并且将你的distribution证书信任置为”使用系统默认”。//一般这样就ok了 亲测这个ok</p>
-  </li>
-</ol>
-
-<p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
-
-<p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
 
         </div>
     </div>
@@ -196,7 +207,7 @@
         <a class="btn btn-default" href="/page8" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 9 of 21</span>
+  <span class="page_number ">Page: 9 of 22</span>
   
     <a class="btn btn-default" href="/page10" class="next">Older</a>
   
@@ -209,7 +220,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2019 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2021 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>
