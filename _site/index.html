@@ -149,21 +149,21 @@
   <li>https://github.com/alibaba/nacos/releases</li>
 </ol>
 
-<p>下载 nacos-server-xxx.tar.gz</p>
+<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
 
 <ol>
   <li>
     <p>解压缩</p>
   </li>
-  <li>
-    <p>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)</p>
+  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
+    <ol>
+      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
+    </ol>
   </li>
-  <li>
-    <p>http://127.0.0.1:8848/nacos/</p>
-  </li>
+  <li>http://127.0.0.1:8848/nacos/</li>
+  <li>账号名密码是 <strong>nacos/nacos</strong></li>
 </ol>
 
-<p>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</p>
 
         </div>
     </div>
