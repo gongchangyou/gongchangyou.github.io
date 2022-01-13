@@ -14,7 +14,6 @@ tag: [java]
 
 1. Nacos官方用nacos client + spring boot 模式
 2. Spring Cloud Alibaba 提供的 Discovery 模式
-3. z
 
 注意：如果关闭应用的话，nacos中的配置还在
 

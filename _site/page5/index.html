@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/01/nacos-registry">nacos</a></li>
+        
           <li><a href="/2022/01/nacos">nacos</a></li>
         
           <li><a href="/2021/12/kotlin">kotlin 语法糖</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2021/12/selenium-java">java-selenium</a></li>
         
           <li><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">爷爷</a></li>
-        
-          <li><a href="/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81">金钱暗流</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>2</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>3</sup></a></li>
 			
 		
 			
@@ -139,6 +139,37 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 28, 2017 - docker常用命令</a></h1>
+        
+        <div class="content">
+            <p>生成镜像  <br />
+docker build -f Dockerfile -t panshi .</p>
+
+<p>批量删除image <br />
+docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
+
+<p>批量删除容器<br />
+docker ps -a -q |xargs docker rm</p>
+
+<p>启动容器  <br />
+1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
+
+<p>进入容器</p>
+
+<p>1.docker exec -it container_id/container_name /bin/bash</p>
+
+<p>退出 敲exit即可</p>
+
+<p>2.docker attach container_id  <br />
+    退出需要ctrl+p+q</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2017/11/apt-get%E5%91%BD%E4%BB%A4">Nov 9, 2017 - apt-get命令</a></h1>
@@ -207,18 +238,6 @@
     </tr>
   </tbody>
 </table>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">Oct 24, 2017 - mysql查找多行重复记录</a></h1>
-        
-        <div class="content">
-            <p>select user_name,count(*) as count from user_table group by user_name having count&gt;1;</p>
-
 
         </div>
     </div>

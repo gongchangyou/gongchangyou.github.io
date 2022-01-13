@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/01/nacos-registry">nacos</a></li>
+        
           <li><a href="/2022/01/nacos">nacos</a></li>
         
           <li><a href="/2021/12/kotlin">kotlin 语法糖</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2021/12/selenium-java">java-selenium</a></li>
         
           <li><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">爷爷</a></li>
-        
-          <li><a href="/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81">金钱暗流</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>2</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>3</sup></a></li>
 			
 		
 			
@@ -139,6 +139,50 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+        
+        <div class="content">
+            <ol>
+  <li>
+    <p>mysql stop</p>
+  </li>
+  <li>
+    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
+  </li>
+  <li>
+    <p>mysql -u root mysql</p>
+  </li>
+  <li>
+    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
+  </li>
+  <li>
+    <p>flush privileges;</p>
+  </li>
+  <li>
+    <p>unset TMPDIR</p>
+  </li>
+  <li>
+    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
+  </li>
+</ol>
+
+<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+
+<ol>
+  <li>
+    <p>mysql.server start</p>
+  </li>
+  <li>
+    <p>mysql -uroot -proot 进去啦！！</p>
+  </li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Dec 14, 2017 - curl常用命令</a></h1>
@@ -168,37 +212,6 @@ curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg
 <p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
 
 <p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/11/docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Nov 28, 2017 - docker常用命令</a></h1>
-        
-        <div class="content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
-
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
-
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
-
-<p>启动容器  <br />
-1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
-
-<p>进入容器</p>
-
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
-
-<p>退出 敲exit即可</p>
-
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
 
 
         </div>
