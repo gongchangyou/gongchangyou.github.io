@@ -1,0 +1,31 @@
+I"o<h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
+
+<h2 id="http调用">HTTP调用</h2>
+
+<ol>
+  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通
+```
+         return restTemplate.getForObject(“http://service-provider/echo/” + str, String.class);</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+
+## Dubbo服务  
+1. dubbo服务 注册
+问题： @DubboService 添加 不管用？
+
+[https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html](https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html)
+
+注意到 NamingProxy这个类的 callServer方法，这里会跟nacos服务器交互，包括注册，心跳等
+我们来看看为啥注册不成功
+
+
+
+2.  dubbo RPC调用 TODO
+
+</code></pre></div></div>
+
+<p>```</p>
+
+:ET

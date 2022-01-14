@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2022/01/nacos-service-providerconsumer">nacos</a></li>
+        
+          <li><a href="/2022/01/maven-%E6%90%AD%E5%BB%BA">nacos</a></li>
+        
+          <li><a href="/2022/01/nacos-registry">nacos</a></li>
+        
+          <li><a href="/2022/01/nacos">nacos</a></li>
+        
+          <li><a href="/2021/12/kotlin">kotlin 语法糖</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/java" title="java">java<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 13, 2022 - nacos</a></h1>
+            
+            <div class="post-content">
+            <h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
+
+<h2 id="http调用">HTTP调用</h2>
+
+<ol>
+  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
+
+</code></pre></div></div>
+
+<h2 id="dubbo服务">Dubbo服务</h2>
+<ol>
+  <li>dubbo服务 注册  nacos 接口汇总 <a href="https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html">https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html</a></li>
+</ol>
+
+<p>问题： @DubboService 添加 不管用？</p>
+
+<p>注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
+我们来看看为啥注册不成功</p>
+
+<p>正常情况下 应该是能注册成功的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880'
+</code></pre></div></div>
+
+<p>但是我的代码偏偏多了几个参数</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880&amp;app=unknown&amp;healthy=true&amp;clusterName=null&amp;enable=true&amp;ephemeral=true&amp;groupName=dubbo-demo-service&amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
+</code></pre></div></div>
+<p>尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了</p>
+
+<ol>
+  <li>dubbo RPC调用 TODO</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/01/maven-%E6%90%AD%E5%BB%BA" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-01-nacos-service-providerconsumer';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+

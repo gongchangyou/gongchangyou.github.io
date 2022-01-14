@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/01/nacos-service-providerconsumer">nacos</a></li>
+        
+          <li><a href="/2022/01/maven-%E6%90%AD%E5%BB%BA">nacos</a></li>
+        
           <li><a href="/2022/01/nacos-registry">nacos</a></li>
         
           <li><a href="/2022/01/nacos">nacos</a></li>
         
           <li><a href="/2021/12/kotlin">kotlin 语法糖</a></li>
-        
-          <li><a href="/2021/12/selenium-java">java-selenium</a></li>
-        
-          <li><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">爷爷</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>3</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>5</sup></a></li>
 			
 		
 			
@@ -153,6 +153,16 @@
 
 <p>注意：如果关闭应用的话，nacos中的配置还在</p>
 
+<p>application.properties没有拷贝到target文件夹的原因？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
+</code></pre></div></div>
+<p>改成 下面，或者直接这行删掉</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
+</code></pre></div></div>
+
+<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
+
 
             </div>
             
@@ -164,6 +174,8 @@
             </div>
           </div>
           <div class="pagination">
+              
+                <a class="btn btn-default" href="/2022/01/maven-%E6%90%AD%E5%BB%BA" class="next">Newer Post</a>
               
               
                 <a class="btn btn-default" href="/2022/01/nacos" class="previous">Older Post</a>

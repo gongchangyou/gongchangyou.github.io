@@ -8,6 +8,103 @@
 		
 			<item>
 				<title>nacos</title>
+				<description>&lt;h1 id=&quot;spring-cloud-alibaba---nacos-3-服务注册和订阅&quot;&gt;Spring Cloud Alibaba - nacos 3 服务注册和订阅&lt;/h1&gt;
+
+&lt;h2 id=&quot;http调用&quot;&gt;HTTP调用&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;            return restTemplate.getForObject(&quot;http://service-provider/echo/&quot; + str, String.class);
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;dubbo服务&quot;&gt;Dubbo服务&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;dubbo服务 注册  nacos 接口汇总 &lt;a href=&quot;https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html&quot;&gt;https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题： @DubboService 添加 不管用？&lt;/p&gt;
+
+&lt;p&gt;注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
+我们来看看为啥注册不成功&lt;/p&gt;
+
+&lt;p&gt;正常情况下 应该是能注册成功的&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;amp;ip=192.168.1.145&amp;amp;port=20880'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但是我的代码偏偏多了几个参数&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;amp;ip=192.168.1.145&amp;amp;port=20880&amp;amp;app=unknown&amp;amp;healthy=true&amp;amp;clusterName=null&amp;amp;enable=true&amp;amp;ephemeral=true&amp;amp;groupName=dubbo-demo-service&amp;amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;dubbo RPC调用 TODO&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Thu, 13 Jan 2022 15:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/01/nacos-service-providerconsumer</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/01/nacos-service-providerconsumer</guid>
+			</item>
+		
+			<item>
+				<title>nacos</title>
+				<description>&lt;h1 id=&quot;maven-repository-私服搭建&quot;&gt;maven repository 私服搭建&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/wuwei928/p/10338307.html&quot;&gt;https://www.cnblogs.com/wuwei928/p/10338307.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;问题：mvn deploy -X&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;注意将 url 的路径改成和 maven中的Repositories中的一致&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;distributionManagement&amp;gt;
+
+        &amp;lt;repository&amp;gt;
+
+            &amp;lt;id&amp;gt;nexus-releases&amp;lt;/id&amp;gt;
+
+            &amp;lt;url&amp;gt;
+				就是这行，要跟maven服务器上的settings中的URL保持一致
+                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
+
+            &amp;lt;/url&amp;gt;
+
+        &amp;lt;/repository&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;401错误  本地的settings.xml账号错误&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;servers&amp;gt;
+  &amp;lt;server&amp;gt;
+    &amp;lt;id&amp;gt;nexus-releases&amp;lt;/id&amp;gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
+    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
+    &amp;lt;password&amp;gt;xxx&amp;lt;/password&amp;gt;
+  &amp;lt;/server&amp;gt;
+  &amp;lt;server&amp;gt;
+    &amp;lt;id&amp;gt;nexus-snapshots&amp;lt;/id&amp;gt;
+    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
+    &amp;lt;password&amp;gt;xxx&amp;lt;/password&amp;gt;
+  &amp;lt;/server&amp;gt;
+&amp;lt;/servers&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+				<pubDate>Thu, 13 Jan 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/01/maven-%E6%90%AD%E5%BB%BA</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/01/maven-%E6%90%AD%E5%BB%BA</guid>
+			</item>
+		
+			<item>
+				<title>nacos</title>
 				<description>&lt;h1 id=&quot;spring-cloud-alibaba---nacos-2-应用接入&quot;&gt;Spring Cloud Alibaba - nacos 2 应用接入&lt;/h1&gt;
 &lt;p&gt;两个方法&lt;/p&gt;
 
@@ -17,6 +114,16 @@
 &lt;/ol&gt;
 
 &lt;p&gt;注意：如果关闭应用的话，nacos中的配置还在&lt;/p&gt;
+
+&lt;p&gt;application.properties没有拷贝到target文件夹的原因？&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;packaging&amp;gt;pom&amp;lt;/packaging&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;改成 下面，或者直接这行删掉&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;packaging&amp;gt;jar&amp;lt;/packaging&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;https://blog.csdn.net/qq_37651267/article/details/99305176&lt;/p&gt;
 
 </description>
 				<pubDate>Wed, 12 Jan 2022 15:25:06 +0800</pubDate>
@@ -328,68 +435,6 @@ Ctrl+b : &amp;amp;&lt;/li&gt;
 				<pubDate>Sat, 29 Sep 2018 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2018/09/GuzzleHttp</link>
 				<guid isPermaLink="true">http://localhost:4000/2018/09/GuzzleHttp</guid>
-			</item>
-		
-			<item>
-				<title>python keyring 在macos的cron中无效</title>
-				<description>&lt;p&gt;写了个定时定会议室的脚本，要利用keyring模块获取chrome中的cookie。
-在终端中执行python没问题，写到cron中就报错 Can’t fetch password from system&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;解锁钥匙串 在cron中先执行 security unlock-keychain -p MYPASS /path/to/login.keychain&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;代码中设置钥匙串的路径    keyring.get_keyring().keychain = ‘/Users/gongchangyou/Library/Keychains/login.keychain-db’&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-				<pubDate>Wed, 11 Apr 2018 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2018/04/python-keyring</link>
-				<guid isPermaLink="true">http://localhost:4000/2018/04/python-keyring</guid>
-			</item>
-		
-			<item>
-				<title>修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</title>
-				<description>&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql stop&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;amp;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql -u root mysql&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;update user set authentication_string=password(‘root’) where user=’root’;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;flush privileges;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;unset TMPDIR&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql.server start&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql -uroot -proot 进去啦！！&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-</description>
-				<pubDate>Fri, 12 Jan 2018 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81</link>
-				<guid isPermaLink="true">http://localhost:4000/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81</guid>
 			</item>
 		
 	</channel>
