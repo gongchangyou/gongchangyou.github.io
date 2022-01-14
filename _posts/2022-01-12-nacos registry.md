@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "nacos"
+title: "nacos 2 应用接入"
 date: 2022-01-12 15:25:06 +0800
 comments: true
 category: java
