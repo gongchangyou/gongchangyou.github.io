@@ -56,15 +56,133 @@ curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?servi
    https://github.com/apache/dubbo/issues/7274
 
 
-	问题2 明明服务已经注册到nacos中了，但是
+	问题2 明明服务已经注册到nacos中了，但是消费端报错
 	
 	```
 	Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&dubbo=2.0.2&group=dubbo-demo&init=false&interface=com.braindata.dubbodemo.intf.StuRpcService&metadata-type=remote&methods=add&pid=67340&register.ip=192.168.1.145&release=2.7.8&revision=0.0.1-SNAPSHOT&side=consumer&sticky=false&timestamp=1642129445698&version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
 	
 	```
-```
+
+注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了
+
+dubbo-spring-boot-starter  加进去就好了
+
+
+## 最佳实践
+以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip
+
+[https://github.com/gongchangyou/dubbo-demo-producer](https://github.com/gongchangyou/dubbo-demo-producer)
+
+[https://github.com/gongchangyou/dubbo-demo-consumer](https://github.com/gongchangyou/dubbo-demo-consumer)
+
+
+注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去
 
 ```
+<!-- <settings>
+  <localRepository>/Users/suixinyu/Documents/java/repository/repository</localRepository>
+</settings>
 
+ -->
+ <settings>
+<servers>
+  <server>
+    <id>nexus-releases</id>
+    <username>admin</username>
+    <password>naozhi123</password>
+  </server>
+  <server>
+    <id>nexus-snapshots</id>
+    <username>admin</username>
+    <password>naozhi123</password>
+  </server>  
+</servers>
 
+  <mirrors>
+      <mirror>
+      <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>        
+    </mirror>
+  
+  </mirrors>
+  
+  <profiles>
+    <profile>
+      <id>development</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+    <profile>
+      <!--this profile will allow snapshots to be searched when activated-->
+      <id>public-snapshots</id>
+      <repositories>
+        <repository>
+      <id>ali</id>
+          <name>ali Maven repository</name>
+          <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>false</enabled></snapshots>
+      </repository>  
+       <repository>
+      <id>ali-snapshot</id>
+          <name>ali Maven repository snapshot</name>
+          <url>https://maven.aliyun.com/nexus/content/groups/snapshots/</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+      </repository> 
+    <repository>
+      <id>local</id>
+          <name>Local Maven repository</name>
+          <url>http://10.10.48.192:8081/nexus/content/groups/public/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+      </repository>  
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  <profile>
+    <id>sonar</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <properties>
+      <sonar.jdbc.url>jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8</sonar.jdbc.url>
+      <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
+      <sonar.jdbc.username>sonar</sonar.jdbc.username>
+      <sonar.jdbc.password>sonar</sonar.jdbc.password>
+      <sonar.host.url>http://10.58.156.108:9000/</sonar.host.url>
+    </properties>
+  </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>development</activeProfile>
+    <activeProfile>public-snapshots</activeProfile>
+  </activeProfiles>
+
+</settings>
+
+```
 

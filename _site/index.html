@@ -187,16 +187,133 @@
     <p>解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
 https://github.com/apache/dubbo/issues/7274</p>
 
-    <p>问题2 明明服务已经注册到nacos中了，但是</p>
+    <p>问题2 明明服务已经注册到nacos中了，但是消费端报错</p>
 
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;dubbo=2.0.2&amp;group=dubbo-demo&amp;init=false&amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;metadata-type=remote&amp;methods=add&amp;pid=67340&amp;register.ip=192.168.1.145&amp;release=2.7.8&amp;revision=0.0.1-SNAPSHOT&amp;side=consumer&amp;sticky=false&amp;timestamp=1642129445698&amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
 	
 </code></pre></div>    </div>
-    <p>```</p>
   </li>
 </ol>
 
-<p>```</p>
+<p>注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了</p>
+
+<p>dubbo-spring-boot-starter  加进去就好了</p>
+
+<h2 id="最佳实践">最佳实践</h2>
+<p>以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip</p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
+
+<p>注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- &lt;settings&gt;
+  &lt;localRepository&gt;/Users/suixinyu/Documents/java/repository/repository&lt;/localRepository&gt;
+&lt;/settings&gt;
+
+ --&gt;
+ &lt;settings&gt;
+&lt;servers&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;  
+&lt;/servers&gt;
+
+  &lt;mirrors&gt;
+      &lt;mirror&gt;
+      &lt;id&gt;alimaven&lt;/id&gt;
+      &lt;name&gt;aliyun maven&lt;/name&gt;
+      &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
+    &lt;/mirror&gt;
+  
+  &lt;/mirrors&gt;
+  
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;development&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+    &lt;profile&gt;
+      &lt;!--this profile will allow snapshots to be searched when activated--&gt;
+      &lt;id&gt;public-snapshots&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+      &lt;id&gt;ali&lt;/id&gt;
+          &lt;name&gt;ali Maven repository&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+       &lt;repository&gt;
+      &lt;id&gt;ali-snapshot&lt;/id&gt;
+          &lt;name&gt;ali Maven repository snapshot&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt; 
+    &lt;repository&gt;
+      &lt;id&gt;local&lt;/id&gt;
+          &lt;name&gt;Local Maven repository&lt;/name&gt;
+          &lt;url&gt;http://10.10.48.192:8081/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;public-snapshots&lt;/id&gt;
+          &lt;url&gt;http://public-snapshots&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+  &lt;profile&gt;
+    &lt;id&gt;sonar&lt;/id&gt;
+    &lt;activation&gt;
+      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+    &lt;/activation&gt;
+    &lt;properties&gt;
+      &lt;sonar.jdbc.url&gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&lt;/sonar.jdbc.url&gt;
+      &lt;sonar.jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driverClassName&gt;
+      &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
+      &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
+      &lt;sonar.host.url&gt;http://10.58.156.108:9000/&lt;/sonar.host.url&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;development&lt;/activeProfile&gt;
+    &lt;activeProfile&gt;public-snapshots&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+
+&lt;/settings&gt;
+
+</code></pre></div></div>
 
 
         </div>

@@ -51,16 +51,133 @@
     &lt;p&gt;解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
 https://github.com/apache/dubbo/issues/7274&lt;/p&gt;
 
-    &lt;p&gt;问题2 明明服务已经注册到nacos中了，但是&lt;/p&gt;
+    &lt;p&gt;问题2 明明服务已经注册到nacos中了，但是消费端报错&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;amp;dubbo=2.0.2&amp;amp;group=dubbo-demo&amp;amp;init=false&amp;amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;amp;metadata-type=remote&amp;amp;methods=add&amp;amp;pid=67340&amp;amp;register.ip=192.168.1.145&amp;amp;release=2.7.8&amp;amp;revision=0.0.1-SNAPSHOT&amp;amp;side=consumer&amp;amp;sticky=false&amp;amp;timestamp=1642129445698&amp;amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
 	
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;```&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;p&gt;注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了&lt;/p&gt;
+
+&lt;p&gt;dubbo-spring-boot-starter  加进去就好了&lt;/p&gt;
+
+&lt;h2 id=&quot;最佳实践&quot;&gt;最佳实践&lt;/h2&gt;
+&lt;p&gt;以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-producer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-producer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-consumer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-consumer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- &amp;lt;settings&amp;gt;
+  &amp;lt;localRepository&amp;gt;/Users/suixinyu/Documents/java/repository/repository&amp;lt;/localRepository&amp;gt;
+&amp;lt;/settings&amp;gt;
+
+ --&amp;gt;
+ &amp;lt;settings&amp;gt;
+&amp;lt;servers&amp;gt;
+  &amp;lt;server&amp;gt;
+    &amp;lt;id&amp;gt;nexus-releases&amp;lt;/id&amp;gt;
+    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
+    &amp;lt;password&amp;gt;naozhi123&amp;lt;/password&amp;gt;
+  &amp;lt;/server&amp;gt;
+  &amp;lt;server&amp;gt;
+    &amp;lt;id&amp;gt;nexus-snapshots&amp;lt;/id&amp;gt;
+    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
+    &amp;lt;password&amp;gt;naozhi123&amp;lt;/password&amp;gt;
+  &amp;lt;/server&amp;gt;  
+&amp;lt;/servers&amp;gt;
+
+  &amp;lt;mirrors&amp;gt;
+      &amp;lt;mirror&amp;gt;
+      &amp;lt;id&amp;gt;alimaven&amp;lt;/id&amp;gt;
+      &amp;lt;name&amp;gt;aliyun maven&amp;lt;/name&amp;gt;
+      &amp;lt;url&amp;gt;http://maven.aliyun.com/nexus/content/groups/public/&amp;lt;/url&amp;gt;
+      &amp;lt;mirrorOf&amp;gt;central&amp;lt;/mirrorOf&amp;gt;        
+    &amp;lt;/mirror&amp;gt;
+  
+  &amp;lt;/mirrors&amp;gt;
+  
+  &amp;lt;profiles&amp;gt;
+    &amp;lt;profile&amp;gt;
+      &amp;lt;id&amp;gt;development&amp;lt;/id&amp;gt;
+      &amp;lt;repositories&amp;gt;
+        &amp;lt;repository&amp;gt;
+          &amp;lt;id&amp;gt;central&amp;lt;/id&amp;gt;
+          &amp;lt;url&amp;gt;http://central&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
+        &amp;lt;/repository&amp;gt;
+      &amp;lt;/repositories&amp;gt;
+     &amp;lt;pluginRepositories&amp;gt;
+        &amp;lt;pluginRepository&amp;gt;
+          &amp;lt;id&amp;gt;central&amp;lt;/id&amp;gt;
+          &amp;lt;url&amp;gt;http://central&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
+        &amp;lt;/pluginRepository&amp;gt;
+      &amp;lt;/pluginRepositories&amp;gt;
+    &amp;lt;/profile&amp;gt;
+    &amp;lt;profile&amp;gt;
+      &amp;lt;!--this profile will allow snapshots to be searched when activated--&amp;gt;
+      &amp;lt;id&amp;gt;public-snapshots&amp;lt;/id&amp;gt;
+      &amp;lt;repositories&amp;gt;
+        &amp;lt;repository&amp;gt;
+      &amp;lt;id&amp;gt;ali&amp;lt;/id&amp;gt;
+          &amp;lt;name&amp;gt;ali Maven repository&amp;lt;/name&amp;gt;
+          &amp;lt;url&amp;gt;https://maven.aliyun.com/nexus/content/groups/public/&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
+      &amp;lt;/repository&amp;gt;  
+       &amp;lt;repository&amp;gt;
+      &amp;lt;id&amp;gt;ali-snapshot&amp;lt;/id&amp;gt;
+          &amp;lt;name&amp;gt;ali Maven repository snapshot&amp;lt;/name&amp;gt;
+          &amp;lt;url&amp;gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
+      &amp;lt;/repository&amp;gt; 
+    &amp;lt;repository&amp;gt;
+      &amp;lt;id&amp;gt;local&amp;lt;/id&amp;gt;
+          &amp;lt;name&amp;gt;Local Maven repository&amp;lt;/name&amp;gt;
+          &amp;lt;url&amp;gt;http://10.10.48.192:8081/nexus/content/groups/public/&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
+      &amp;lt;/repository&amp;gt;  
+      &amp;lt;/repositories&amp;gt;
+     &amp;lt;pluginRepositories&amp;gt;
+        &amp;lt;pluginRepository&amp;gt;
+          &amp;lt;id&amp;gt;public-snapshots&amp;lt;/id&amp;gt;
+          &amp;lt;url&amp;gt;http://public-snapshots&amp;lt;/url&amp;gt;
+          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
+          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
+        &amp;lt;/pluginRepository&amp;gt;
+      &amp;lt;/pluginRepositories&amp;gt;
+    &amp;lt;/profile&amp;gt;
+  &amp;lt;profile&amp;gt;
+    &amp;lt;id&amp;gt;sonar&amp;lt;/id&amp;gt;
+    &amp;lt;activation&amp;gt;
+      &amp;lt;activeByDefault&amp;gt;true&amp;lt;/activeByDefault&amp;gt;
+    &amp;lt;/activation&amp;gt;
+    &amp;lt;properties&amp;gt;
+      &amp;lt;sonar.jdbc.url&amp;gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&amp;lt;/sonar.jdbc.url&amp;gt;
+      &amp;lt;sonar.jdbc.driverClassName&amp;gt;com.mysql.jdbc.Driver&amp;lt;/sonar.jdbc.driverClassName&amp;gt;
+      &amp;lt;sonar.jdbc.username&amp;gt;sonar&amp;lt;/sonar.jdbc.username&amp;gt;
+      &amp;lt;sonar.jdbc.password&amp;gt;sonar&amp;lt;/sonar.jdbc.password&amp;gt;
+      &amp;lt;sonar.host.url&amp;gt;http://10.58.156.108:9000/&amp;lt;/sonar.host.url&amp;gt;
+    &amp;lt;/properties&amp;gt;
+  &amp;lt;/profile&amp;gt;
+  &amp;lt;/profiles&amp;gt;
+  &amp;lt;activeProfiles&amp;gt;
+    &amp;lt;activeProfile&amp;gt;development&amp;lt;/activeProfile&amp;gt;
+    &amp;lt;activeProfile&amp;gt;public-snapshots&amp;lt;/activeProfile&amp;gt;
+  &amp;lt;/activeProfiles&amp;gt;
+
+&amp;lt;/settings&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>
 				<pubDate>Thu, 13 Jan 2022 15:25:06 +0800</pubDate>
