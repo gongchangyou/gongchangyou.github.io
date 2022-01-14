@@ -45,8 +45,23 @@ curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?servi
 
 
 
-2.  dubbo RPC调用 TODO
+2. dubbo RPC调用 TODO
 
+   问题1 
+	```
+	Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
+
+	```
+   解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
+   https://github.com/apache/dubbo/issues/7274
+
+
+	问题2 明明服务已经注册到nacos中了，但是
+	
+	```
+	Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&dubbo=2.0.2&group=dubbo-demo&init=false&interface=com.braindata.dubbodemo.intf.StuRpcService&metadata-type=remote&methods=add&pid=67340&register.ip=192.168.1.145&release=2.7.8&revision=0.0.1-SNAPSHOT&side=consumer&sticky=false&timestamp=1642129445698&version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
+	
+	```
 ```
 
 ```
