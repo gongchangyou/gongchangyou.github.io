@@ -9,7 +9,35 @@ tag: [java]
 
 
 
-#  gitlab-install
+
+# 方法1： 推荐 docker 安装
+
+```
+docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 
+
+
+postgresql['shared_buffers'] = "256MB"
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = "http://localhost:8888"
+
+
+
+```
+
+#  方法2（不推荐）：gitlab-install
 
 [https://blog.csdn.net/qq_35844177/article/details/106876923](https://blog.csdn.net/qq_35844177/article/details/106876923)
 
@@ -60,33 +88,3 @@ lsof -i:9091
 
 
 
-
-
-
-
-# 推荐 docker 安装
-
-```
-docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
-
-docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-
-
-可能需要改一些配置
-
-vi /srv/gitlab/config/gitlab.rb
-
-external_url 
-
-
-postgresql['shared_buffers'] = "256MB"
-
-如果puma 启动不了 看到pid不停变大
-gitlab-ctl tail puma
-
-puma['port'] = 8888
-gitlab_workhorse['auth_backend'] = "http://localhost:8888"
-
-
-
-```

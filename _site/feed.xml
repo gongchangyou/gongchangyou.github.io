@@ -21,7 +21,33 @@
 		
 			<item>
 				<title>gitlab-install</title>
-				<description>&lt;h1 id=&quot;gitlab-install&quot;&gt;gitlab-install&lt;/h1&gt;
+				<description>&lt;h1 id=&quot;方法1-推荐-docker-安装&quot;&gt;方法1： 推荐 docker 安装&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 
+
+
+postgresql['shared_buffers'] = &quot;256MB&quot;
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = &quot;http://localhost:8888&quot;
+
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;方法2不推荐gitlab-install&quot;&gt;方法2（不推荐）：gitlab-install&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/qq_35844177/article/details/106876923&quot;&gt;https://blog.csdn.net/qq_35844177/article/details/106876923&lt;/a&gt;&lt;/p&gt;
 
@@ -76,31 +102,6 @@ sudo apt install ca-certificates curl openssh-server postfix&lt;/p&gt;
 
 &lt;p&gt;lsof -i:9091&lt;/p&gt;
 
-&lt;h1 id=&quot;推荐-docker-安装&quot;&gt;推荐 docker 安装&lt;/h1&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
-
-docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-
-
-可能需要改一些配置
-
-vi /srv/gitlab/config/gitlab.rb
-
-external_url 
-
-
-postgresql['shared_buffers'] = &quot;256MB&quot;
-
-如果puma 启动不了 看到pid不停变大
-gitlab-ctl tail puma
-
-puma['port'] = 8888
-gitlab_workhorse['auth_backend'] = &quot;http://localhost:8888&quot;
-
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Mon, 17 Jan 2022 13:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/gitlab-install</link>
