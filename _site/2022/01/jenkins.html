@@ -140,43 +140,23 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+                <h1><a href="/2022/01/jenkins">Jan 19, 2022 - jenkins-install</a></h1>
             
             <div class="post-content">
-            <ol>
-  <li>
-    <p>mysql stop</p>
-  </li>
-  <li>
-    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
-  </li>
-  <li>
-    <p>mysql -u root mysql</p>
-  </li>
-  <li>
-    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
-  </li>
-  <li>
-    <p>flush privileges;</p>
-  </li>
-  <li>
-    <p>unset TMPDIR</p>
-  </li>
-  <li>
-    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
-  </li>
-</ol>
+            <h1 id="jenkins-install">Jenkins-install</h1>
 
-<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+<p><a href="https://www.jenkins.io/zh/doc/book/installing/">https://www.jenkins.io/zh/doc/book/installing/</a></p>
 
-<ol>
-  <li>
-    <p>mysql.server start</p>
-  </li>
-  <li>
-    <p>mysql -uroot -proot 进去啦！！</p>
-  </li>
-</ol>
+<h2 id="记得把timezone设置成东8区">记得把timezone设置成东8区</h2>
+<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
+
+<p>docker ps</p>
+
+<p>docker exec -it  ad5f918f0e58 bash</p>
+
+<p>bash-5.1# cat /var/jenkins_home/secrets/initialAdminPassword</p>
+
+<p>10.10.48.192:8080/</p>
 
             </div>
             
@@ -189,10 +169,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2018/04/python-keyring" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/01/gitlab-sync" class="previous">Older Post</a>
               
 </div>
 
@@ -200,13 +178,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2018-01-e4-bf-ae-e6-94-b9mysql-e9-bb-98-e8-ae-a4-e5-af-86-e7-a0-81';
+        this.page.identifier = '2022-01-jenkins';
     };
 
    (function() {
