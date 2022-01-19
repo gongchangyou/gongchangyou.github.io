@@ -7,6 +7,19 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>gitlab-sync</title>
+				<description>&lt;h1 id=&quot;gitlab-主从同步&quot;&gt;gitlab-主从同步&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/52de6a8d29d6&quot;&gt;https://www.jianshu.com/p/52de6a8d29d6&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;lsyncd 配置完事就能跑了&lt;/p&gt;
+</description>
+				<pubDate>Tue, 18 Jan 2022 13:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/01/gitlab-sync</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/01/gitlab-sync</guid>
+			</item>
+		
+			<item>
 				<title>gitlab-install</title>
 				<description>&lt;h1 id=&quot;gitlab-install&quot;&gt;gitlab-install&lt;/h1&gt;
 
@@ -63,6 +76,31 @@ sudo apt install ca-certificates curl openssh-server postfix&lt;/p&gt;
 
 &lt;p&gt;lsof -i:9091&lt;/p&gt;
 
+&lt;h1 id=&quot;推荐-docker-安装&quot;&gt;推荐 docker 安装&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 
+
+
+postgresql['shared_buffers'] = &quot;256MB&quot;
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = &quot;http://localhost:8888&quot;
+
+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Mon, 17 Jan 2022 13:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/gitlab-install</link>
@@ -444,44 +482,6 @@ js.executeScript(&quot;window.open(\&quot;http://www.baidu.com\&quot;);&quot;);
 				<pubDate>Sun, 01 Dec 2019 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81</link>
 				<guid isPermaLink="true">http://localhost:4000/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81</guid>
-			</item>
-		
-			<item>
-				<title>tmux常用命令</title>
-				<description>&lt;ul&gt;
-&lt;li&gt;创建并指定session名字&lt;br /&gt;
-		tmux new -s $session_name&lt;/li&gt;
-&amp;lt;/li&amp;gt;
-&lt;li&gt;删除session&lt;br /&gt;
- Ctrl+b :kill-session&lt;/li&gt;
-&lt;li&gt;临时退出session&lt;br /&gt;
-Ctrl+b d&lt;/li&gt;
-&lt;li&gt;列出session&lt;br /&gt;
-tmux ls&lt;/li&gt;
-&lt;li&gt;进入已存在的session&lt;br /&gt;
-tmux a -t $session_name&lt;/li&gt;
-&lt;li&gt;删除所有session&lt;br /&gt;
-Ctrl+b :kill-server&lt;/li&gt;
-&lt;li&gt;删除指定session&lt;br /&gt;
-tmux kill-session -t $session_name&lt;/li&gt;
-&lt;li&gt;删除指定window&lt;br /&gt;
-Ctrl+b : &amp;amp;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;settings 鼠标滚动接管tmux历史窗口&lt;/p&gt;
-
-&lt;ul&gt;&lt;li&gt;vi ~/.tmux.conf&lt;/li&gt;
-&lt;li&gt;set-window-option -g mode-mouse on&lt;/li&gt;
-&lt;li&gt;tmux source-file ~/.tmux.conf&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-
-
-&lt;/ul&gt;
-</description>
-				<pubDate>Sat, 02 Mar 2019 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2019/03/tmux</link>
-				<guid isPermaLink="true">http://localhost:4000/2019/03/tmux</guid>
 			</item>
 		
 	</channel>

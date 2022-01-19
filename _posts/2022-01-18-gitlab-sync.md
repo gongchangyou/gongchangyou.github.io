@@ -15,4 +15,4 @@ tag: [java]
 
 
 
-
+lsyncd 配置完事就能跑了

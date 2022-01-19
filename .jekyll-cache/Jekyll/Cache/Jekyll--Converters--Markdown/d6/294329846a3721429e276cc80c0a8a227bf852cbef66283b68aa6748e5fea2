@@ -1,0 +1,86 @@
+I"�<h1 id="gitlab-install">gitlab-install</h1>
+
+<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
+
+<ol>
+  <li>
+    <p>sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix</p>
+  </li>
+  <li>
+    <p>cd /tmp
+ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+
+    <p>less /tmp/script.deb.sh</p>
+
+    <p>sudo bash /tmp/script.deb.sh</p>
+
+    <p>sudo apt install gitlab-ce</p>
+  </li>
+</ol>
+
+<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+
+<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
+<p>则需要去修改配置文件</p>
+
+<p>vim /etc/gitlab/gitlab.rb</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+
+ puma['port'] =9092
+</code></pre></div></div>
+
+<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+
+<p>gitlab-ctl reconfigure</p>
+
+<p>gitlab-ctl restart</p>
+
+<h2 id="查看日志命令">查看日志命令：</h2>
+
+<p>gitlab-ctl tail</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>gitlab-ctl tail</td>
+      <td>grep -i error</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="查看端口命令">查看端口命令：</h2>
+
+<p>lsof -i:9091</p>
+
+<h2 id="推荐-docker-安装">推荐 docker 安装</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 
+
+
+postgresql['shared_buffers'] = "256MB"
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = "http://localhost:8888"
+
+
+
+
+
+
+
+
+</code></pre></div></div>
+:ET
