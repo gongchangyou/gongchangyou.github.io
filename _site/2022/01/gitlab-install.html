@@ -138,22 +138,103 @@
 
         </div>
         <div class="col-md-9">
-            <!-- This page provides the sidebar links for mobile, where the sidebar is hidden -->
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
+            
+            <div class="post-content">
+            <h1 id="gitlab-install">gitlab-install</h1>
 
-<div class="well">
-  <h1>Links</h1>
-<ul>
-  <li><a href="#">One</a></li>
-  <li><a href="#">Two</a></li>
-  <li><a href="#">Three</a></li>
-  <li><a href="#">Four</a></li>
-</ul>
+<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
 
+<ol>
+  <li>
+    <p>sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix</p>
+  </li>
+  <li>
+    <p>cd /tmp
+ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+
+    <p>less /tmp/script.deb.sh</p>
+
+    <p>sudo bash /tmp/script.deb.sh</p>
+
+    <p>sudo apt install gitlab-ce</p>
+  </li>
+</ol>
+
+<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+
+<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
+<p>则需要去修改配置文件</p>
+
+<p>vim /etc/gitlab/gitlab.rb</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+
+ puma['port'] =9092
+</code></pre></div></div>
+
+<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+
+<p>gitlab-ctl reconfigure</p>
+
+<p>gitlab-ctl restart</p>
+
+<h2 id="查看日志命令">查看日志命令：</h2>
+
+<p>gitlab-ctl tail</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>gitlab-ctl tail</td>
+      <td>grep -i error</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="查看端口命令">查看端口命令：</h2>
+
+<p>lsof -i:9091</p>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/01/nacos-service-providerconsumer" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-01-gitlab-install';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">
