@@ -1,0 +1,16 @@
+I"\<h1 id="jenkins-install">Jenkins-install</h1>
+
+<p><a href="https://www.jenkins.io/zh/doc/book/installing/">https://www.jenkins.io/zh/doc/book/installing/</a></p>
+
+<h2 id="记得把timezone设置成东8区">记得把timezone设置成东8区</h2>
+<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
+
+<p>docker ps</p>
+
+<p>docker exec -it  ad5f918f0e58 bash</p>
+
+<p>bash-5.1# cat /var/jenkins_home/secrets/initialAdminPassword</p>
+
+<p>10.10.48.192:8080/</p>
+
+:ET
