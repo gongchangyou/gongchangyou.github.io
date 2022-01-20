@@ -1,0 +1,15 @@
+I"�<h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+
+<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+
+<p>lsyncd 配置完事就能跑了</p>
+
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
+
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f 
+</code></pre></div></div>
+:ET

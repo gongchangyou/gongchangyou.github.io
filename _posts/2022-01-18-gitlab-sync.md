@@ -16,3 +16,26 @@ tag: [java]
 
 
 lsyncd 配置完事就能跑了
+
+
+
+配置
+
+```
+cat /etc/lsyncd.conf 
+```
+
+日志
+```
+tail -f /var/log/lsyncd/lsyncd.log
+```
+
+
+
+问题： 创建了一个新的project， 从库没显示
+
+我显式重启了docker容器才在从库看到
+
+```
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+```

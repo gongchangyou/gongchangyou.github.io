@@ -149,6 +149,22 @@
 
 <p>lsyncd 配置完事就能跑了</p>
 
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
+
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
+</code></pre></div></div>
+
+<p>问题： 创建了一个新的project， 从库没显示</p>
+
+<p>我显式重启了docker容器才在从库看到</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+</code></pre></div></div>
+
             </div>
             
             <div id="disqus_thread">
