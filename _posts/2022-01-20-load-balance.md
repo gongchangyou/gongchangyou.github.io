@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ribbon"
+title: "load balance"
 date: 2022-01-20 10:25:06 +0800
 comments: true
 category: java
