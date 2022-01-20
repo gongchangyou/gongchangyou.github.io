@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/01/nacos">ribbon</a></li>
+        
           <li><a href="/2022/01/ribbon">ribbon</a></li>
         
           <li><a href="/2022/01/jenkins">jenkins-install</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/gitlab-sync">gitlab-sync</a></li>
         
           <li><a href="/2022/01/gitlab-install">gitlab-install</a></li>
-        
-          <li><a href="/2022/01/nacos-service-providerconsumer">nacos 3 服务注册和订阅</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>9</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>10</sup></a></li>
 			
 		
 			
@@ -139,6 +139,54 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/nacos">Jan 20, 2022 - ribbon</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
+
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+
+<ol>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
+</ol>
+
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+
+<ol>
+  <li>
+    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
+  </li>
+  <li>
+    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
+  </li>
+  <li>
+    <p>重启nacos</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
+</code></pre></div></div>
+
+<h2 id="又-如果-第2步选择了内置数据源">又： 如果 第2步选择了内置数据源</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh -p embedded
+</code></pre></div></div>
+
+<h2 id="如果第1步选择ip直连那么可以使用-配置-clusterconf-的方式">如果第1步选择ip直连，那么可以使用 配置 cluster.conf 的方式</h2>
+<p>nacos应该会将注册服务同步给其他ip</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#it is ip
+#example
+192.168.1.145:8848
+192.168.1.146:8848
+
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/ribbon">Jan 20, 2022 - ribbon</a></h1>
@@ -242,25 +290,10 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
-        
-        <div class="content">
-            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
-
-<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
-
-<p>lsyncd 配置完事就能跑了</p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 24</span>
+  <span class="page_number ">Page: 1 of 25</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   

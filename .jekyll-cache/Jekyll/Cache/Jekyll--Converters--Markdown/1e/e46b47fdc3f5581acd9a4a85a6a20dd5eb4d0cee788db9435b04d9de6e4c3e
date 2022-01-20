@@ -1,0 +1,34 @@
+I"<h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
+
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+
+<ol>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
+</ol>
+
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+
+<ol>
+  <li>
+    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
+  </li>
+  <li>
+    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
+  </li>
+  <li>
+    <p>重启nacos</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
+</code></pre></div></div>
+
+<h2 id="又-如果-第一步选择了-ip直连那么可以使用-配置-clusterconf-的方式--nacos应该会将注册服务同步给其他ip">又： 如果 第一步选择了 ip直连，那么可以使用 配置 cluster.conf 的方式  nacos应该会将注册服务同步给其他ip</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#it is ip
+#example
+192.168.16.101:8847
+192.168.16.102
+192.168.16.103
+</code></pre></div></div>
+:ET

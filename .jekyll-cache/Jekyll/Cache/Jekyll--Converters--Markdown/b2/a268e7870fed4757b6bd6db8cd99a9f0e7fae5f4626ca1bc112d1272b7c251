@@ -1,0 +1,14 @@
+I"�<h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
+
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+
+<ol>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
+</ol>
+
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+
+<ol>
+  <li>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></li>
+</ol>
+:ET

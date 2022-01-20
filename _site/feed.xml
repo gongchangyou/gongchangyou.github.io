@@ -8,6 +8,52 @@
 		
 			<item>
 				<title>ribbon</title>
+				<description>&lt;h1 id=&quot;spring-cloud-alibaba---nacos-5-集群部署&quot;&gt;Spring Cloud Alibaba - nacos 5 集群部署&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html&quot;&gt;https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202201/deployDnsVipMode.jpeg&quot; alt=&quot;embbed&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;线上环境使用 外置数据源 &lt;a href=&quot;https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql&quot;&gt;https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改 db的url和帐号密码  并打jar包 &lt;a href=&quot;https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties&quot;&gt;https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;重启nacos&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sh startup.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;又-如果-第2步选择了内置数据源&quot;&gt;又： 如果 第2步选择了内置数据源&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sh startup.sh -p embedded
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;如果第1步选择ip直连那么可以使用-配置-clusterconf-的方式&quot;&gt;如果第1步选择ip直连，那么可以使用 配置 cluster.conf 的方式&lt;/h2&gt;
+&lt;p&gt;nacos应该会将注册服务同步给其他ip&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#it is ip
+#example
+192.168.1.145:8848
+192.168.1.146:8848
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+				<pubDate>Thu, 20 Jan 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/01/nacos</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/01/nacos</guid>
+			</item>
+		
+			<item>
+				<title>ribbon</title>
 				<description>&lt;h1 id=&quot;spring-cloud-alibaba---nacos-4-负载均衡&quot;&gt;Spring Cloud Alibaba - nacos 4 负载均衡&lt;/h1&gt;
 
 &lt;ol&gt;
@@ -504,50 +550,6 @@ https://github.com/apache/dubbo/issues/7274&lt;/p&gt;
 				<pubDate>Sat, 25 Dec 2021 15:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2021/12/kotlin</link>
 				<guid isPermaLink="true">http://localhost:4000/2021/12/kotlin</guid>
-			</item>
-		
-			<item>
-				<title>java-selenium</title>
-				<description>&lt;h1 id=&quot;下载-chrome-driver&quot;&gt;下载 chrome-driver&lt;/h1&gt;
-&lt;p&gt;https://chromedriver.chromium.org/downloads&lt;/p&gt;
-
-&lt;h2 id=&quot;拷贝到-usrlocalbin-并-chmod-777&quot;&gt;拷贝到 /usr/local/bin/ 并 chmod 777&lt;/h2&gt;
-
-&lt;p&gt;MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
-MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver&lt;/p&gt;
-
-&lt;h2 id=&quot;可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开&quot;&gt;可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”&lt;/h2&gt;
-
-&lt;h1 id=&quot;添加依赖&quot;&gt;添加依赖&lt;/h1&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-   &amp;lt;groupId&amp;gt;org.seleniumhq.selenium&amp;lt;/groupId&amp;gt;
-   &amp;lt;artifactId&amp;gt;selenium-java&amp;lt;/artifactId&amp;gt;
-   &amp;lt;version&amp;gt;3.14.0&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;编写代码&quot;&gt;编写代码&lt;/h1&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        log.info(&quot;args = {}&quot;, args);
-        val driver = new ChromeDriver();
-        driver.get(&quot;https://leetcode-cn.com/tag/dynamic-programming/problemset/&quot;);
-        val problemList = driver.findElementsByCssSelector(&quot;#lc-content &amp;gt; div &amp;gt; div.css-1ezka95-TableContainer.ermji1u1 &amp;gt; div &amp;gt; section &amp;gt; div &amp;gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; div &amp;gt; table &amp;gt; tbody &amp;gt; tr:nth-child(1) &amp;gt; td:nth-child(2) &amp;gt; div &amp;gt; div &amp;gt; div&quot;);
-        log.info(&quot;problemList={}&quot;, problemList);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;如果难以打开新的标签页&quot;&gt;如果难以打开新的标签页&lt;/h1&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JavascriptExecutor js = (JavascriptExecutor) driver;  
-js.executeScript(&quot;window.open();&quot;);
-
-JavascriptExecutor js = (JavascriptExecutor) driver;
-js.executeScript(&quot;window.open(\&quot;http://www.baidu.com\&quot;);&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-				<pubDate>Mon, 20 Dec 2021 15:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2021/12/selenium-java</link>
-				<guid isPermaLink="true">http://localhost:4000/2021/12/selenium-java</guid>
 			</item>
 		
 	</channel>
