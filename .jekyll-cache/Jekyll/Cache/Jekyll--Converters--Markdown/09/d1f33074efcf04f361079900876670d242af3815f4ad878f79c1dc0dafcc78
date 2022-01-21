@@ -1,0 +1,33 @@
+I"�<h1 id="rocketmq-部署">RocketMQ 部署</h1>
+
+<p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
+
+<ol>
+  <li>下载RocketMQ zip包 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip</a></li>
+  <li>先启动 name service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> nohup sh bin/mqnamesrv &amp;
+</code></pre></div>    </div>
+  </li>
+  <li>再启动 broker service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqbroker -n localhost:9876 &amp;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>注意 vi bin/runbroker.sh 里面的 -Xms 内存要求是8g</p>
+
+<ol>
+  <li>测试下 是否可以正常生产、消费
+  ```
+  export NAMESRV_ADDR=localhost:9876
+  sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</li>
+</ol>
+
+<p>sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer	
+	```</p>
+
+<ol>
+  <li>下载 控制台安装包</li>
+</ol>
+
+:ET

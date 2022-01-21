@@ -1,0 +1,63 @@
+I"O
+<h1 id="rocketmq-部署">RocketMQ 部署</h1>
+
+<p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
+
+<ol>
+  <li>下载RocketMQ zip包 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip</a></li>
+  <li>先启动 name service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> nohup sh bin/mqnamesrv &amp;
+</code></pre></div>    </div>
+  </li>
+  <li>再启动 broker service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqbroker -n localhost:9876 &amp;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>注意 vi bin/runbroker.sh 里面的 -Xms 内存要求是8g</p>
+
+<ol>
+  <li>测试下 是否可以正常生产、消费
+  ```
+  export NAMESRV_ADDR=localhost:9876
+  sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer</li>
+</ol>
+
+<p>sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer	
+	```</p>
+
+<ol>
+  <li>关闭服务器
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>停止 broker：sh bin/mqshutdown broker
+停止 nameserver：sh bin/mqshutdown namesrv
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="控制台启动">控制台启动</h2>
+
+<ol>
+  <li>下载 控制台安装包 注意现在拆分出来了 <a href="https://github.com/apache/rocketmq-dashboard">https://github.com/apache/rocketmq-dashboard</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:apache/rocketmq-dashboard.git
+</code></pre></div>    </div>
+  </li>
+  <li>看  readme 直接 docker 搞起</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull apacherocketmq/rocketmq-dashboard:latest
+
+## 注意这里看看本地端口哪个可用，我这里用了8081
+docker run -d --name rocketmq-dashboard -e "JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.1.145:9876" -p 8081:8080 -t apacherocketmq/rocketmq-dashboard:latest
+</code></pre></div></div>
+
+<p>如果是docker启动的话，上面Drocketmq.namesrv.addr参数直接用127.0.0.1:9876 会让dashboard无法连接到本地的9876端口，只能说docker容器中的 127.0.0.1 9876 不是宿主机的那个</p>
+
+<p>如果是自行打包并且启动jar包的话，应该是用127.0.0.1 没问题的</p>
+
+<ol>
+  <li>浏览器打开 localhost:8081</li>
+</ol>
+
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+:ET
