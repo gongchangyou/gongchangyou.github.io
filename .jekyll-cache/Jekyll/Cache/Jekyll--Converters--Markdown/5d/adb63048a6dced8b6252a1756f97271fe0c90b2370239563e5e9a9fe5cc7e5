@@ -1,0 +1,10 @@
+I"r<h1 id="matomo-部署">Matomo 部署</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull matomo
+</code></pre></div></div>
+
+<p>但是因为宿主机已经安装了 mysql 。所以需要matomo能够访问宿主机的</p>
+
+<p>在宿主机 ifconfig 命令后 。发现一个docker0 的网桥，记住他的ip 172.17.0.1</p>
+
+:ET

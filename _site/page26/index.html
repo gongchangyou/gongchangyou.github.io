@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2022/01/jira">jira</a></li>
+        
+          <li><a href="/2022/01/matomo">matomo</a></li>
+        
+          <li><a href="/2022/01/RocketMQ">rocket mq</a></li>
+        
+          <li><a href="/2022/01/nacos">cluster</a></li>
+        
+          <li><a href="/2022/01/load-balance">load balance</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/java" title="java">java<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+            
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
+        
+        <div class="content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>OC代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page25" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 26 of 26</span>
+  
+</div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+

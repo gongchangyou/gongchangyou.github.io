@@ -1,0 +1,28 @@
+I"P<h1 id="jira-部署">Jira 部署</h1>
+
+<ol>
+  <li>
+    <p>下载bin文件 <a href="https://www.atlassian.com/software/jira/update">https://www.atlassian.com/software/jira/update</a></p>
+  </li>
+  <li>
+    <p>创建db</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database jira
+
+create user 'jira'@'%' IDENTIFIED BY 'password';
+
+grant all privileges on jira.* to 'jira'@'%';
+
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>mysql connector jar包  <a href="https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27">https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27</a></p>
+  </li>
+  <li>
+    <p>破解jar包 <a href="https://www.cnblogs.com/houchaoying/p/9096118.html">https://www.cnblogs.com/houchaoying/p/9096118.html</a> 拉到最下面</p>
+  </li>
+</ol>
+:ET

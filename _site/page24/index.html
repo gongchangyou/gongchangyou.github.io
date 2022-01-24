@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/01/jira">jira</a></li>
+        
+          <li><a href="/2022/01/matomo">matomo</a></li>
+        
           <li><a href="/2022/01/RocketMQ">rocket mq</a></li>
         
           <li><a href="/2022/01/nacos">cluster</a></li>
         
           <li><a href="/2022/01/load-balance">load balance</a></li>
-        
-          <li><a href="/2022/01/jenkins">jenkins-install</a></li>
-        
-          <li><a href="/2022/01/gitlab-sync">gitlab-sync</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>11</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>13</sup></a></li>
 			
 		
 			
@@ -141,6 +141,76 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2013/09/journey_day1">Sep 25, 2013 - 成都第一日</a></h1>
+        
+        <div class="content">
+            <p>宽窄巷子里品尝了若干小吃：茶马江湖的担担面、粉蒸排骨、粉蒸牛肉都很不错。豆花就不行了，太老，哪里是豆花，分明是豆腐啊！凤爪很大很好吃。这里应该是宰外地人的地方，以上这些花费77元。看在好吃的份上暂且接受啦。不能让我接受的是有很多宅邸在门口用不锈钢的铭牌标注私人宅邸，门却又虚掩着或者半开着，看起来像是高级会所的样子。顿时让我等屌丝生出屌丝与狗不得入内的挫败感。想到上海的新天地或者杭州的清河坊街都没有这样多的私人宅邸，觉得以上两个城市的权贵还是很低调的，尽量照顾民众的感受，私人会所都在隐蔽的位置而不是在游人如织的地方显摆。</p>
+
+<p>晚饭在连锁火锅店蜀九香吃了顶级牛肉，因为之前在创智天地曾经沧海，吃起来也就那样。当然厨师的刀功了得，乌江鱼的鱼片能做到下水即熟。汤底也比较鲜，俩人花销260左右，性价比不是很高，等我们吃完出来一看，队伍跟辛香汇差不多，感叹商家只要肯在各大攻略上投钱，一定会有丰厚回报啊！</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8java%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95">Aug 30, 2013 - c++新建thread 调用java静态方法</a></h1>
+        
+        <div class="content">
+            <p>首先需要3个静态变量</p>
+
+<p>static JavaVM *gs_jvm=NULL;//这个是JavaVM 两个线程共享这个变量</p>
+
+<p>static jobject gs_createFolder = NULL;//通过 gs_createFolder = env-&gt;NewGlobalRef(ret);可以做到让两个线程共享一个jobject</p>
+
+<p>static jmethodID gs_methodId = NULL;</p>
+
+<p>在新建thread之前做以下事情：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">gs_jvm</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getJavaVM</span><span class="p">();</span>
+
+<span class="n">CCLog</span><span class="p">(</span><span class="s">"save javavm after"</span><span class="p">);</span>
+
+<span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">;</span>
+
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="n">AttachCurrentThread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">env</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">jclass</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">FindClass</span><span class="p">(</span><span class="s">"com/gumichina/lib/Storage"</span><span class="p">);</span>
+
+<span class="n">gs_createFolder</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">NewGlobalRef</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+
+<span class="n">gs_methodId</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">GetStaticMethodID</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="s">"createExternalFolder"</span><span class="p">,</span> <span class="s">"(Ljava/lang/String;)Z"</span><span class="p">);</span>
+
+<span class="c1">//接下来就开你的thread吧：</span>
+<span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_zipThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">unzipFileOnThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span></code></pre></figure>
+
+<p>在thread中这样获取:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nc">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="o">;</span>
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="nc">AttachCurrentThread</span><span class="o">(&amp;</span><span class="n">env</span><span class="o">,</span> <span class="no">NULL</span><span class="o">);</span><span class="c1">//这里就获取了JavaVM的env</span>
+<span class="n">jclass</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">GetObjectClass</span><span class="o">(</span><span class="n">gs_createFolder</span><span class="o">);</span><span class="c1">//把class巧妙的拿过来了</span>
+
+<span class="c1">//调用的时候</span>
+
+<span class="nl">std:</span><span class="o">:</span><span class="n">string</span> <span class="n">tempPath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">substr</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">path</span><span class="o">.</span><span class="na">rfind</span><span class="o">(</span><span class="s">"/"</span><span class="o">));</span>
+
+<span class="n">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+<span class="n">jstring</span> <span class="nc">StringArg1</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">NewStringUTF</span><span class="o">(</span><span class="n">tempPath</span><span class="o">.</span><span class="na">c_str</span><span class="o">());</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">CallStaticBooleanMethod</span><span class="o">(</span><span class="n">cls</span><span class="o">,</span> <span class="n">gs_methodId</span><span class="o">,</span> <span class="nc">StringArg1</span><span class="o">);</span><span class="c1">//cls 和methodId 齐活了！</span>
+
+<span class="n">env</span><span class="o">-&gt;</span><span class="nc">DeleteLocalRef</span><span class="o">(</span><span class="nc">StringArg1</span><span class="o">);</span></code></pre></figure>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC">Aug 16, 2013 - 草坪婚礼</a></h1>
         
         <div class="content">
@@ -153,42 +223,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
-        
-        <div class="content">
-            <h3>将文件内容复制到剪贴板</h3>
-<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
-
-<h3>启动虚拟机</h3>
-
-<p>$ virtualenv –system-site-packages ~/tensorflow</p>
-
-<p>$ cd ~/tensorflow</p>
-
-<p>source bin/activate</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
-        
-        <div class="content">
-            <p>以下两种都可以</p>
-
-<figure class="highlight"><pre><code class="language-c" data-lang="c"> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个pad上开不了iphone的应用</span>
- 
- <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个不同device都可以打开那个应用 推荐！</span>
- </code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -196,7 +230,7 @@
         <a class="btn btn-default" href="/page23" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 24 of 25</span>
+  <span class="page_number ">Page: 24 of 26</span>
   
     <a class="btn btn-default" href="/page25" class="next">Older</a>
   

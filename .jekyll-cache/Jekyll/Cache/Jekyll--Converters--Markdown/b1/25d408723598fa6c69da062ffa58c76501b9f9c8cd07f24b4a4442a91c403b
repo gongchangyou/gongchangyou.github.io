@@ -1,0 +1,23 @@
+I"�<h1 id="jira-部署">Jira 部署</h1>
+
+<ol>
+  <li>
+    <p>下载bin文件 <a href="https://www.atlassian.com/software/jira/update">https://www.atlassian.com/software/jira/update</a></p>
+  </li>
+  <li>
+    <p>创建db</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database jira
+
+create user 'jira'@'%' IDENTIFIED BY 'password';
+
+grant all privileges on jira.* to 'jira'@'%';
+
+</code></pre></div></div>
+
+<ol>
+  <li>mysql connector jar包</li>
+</ol>
+:ET
