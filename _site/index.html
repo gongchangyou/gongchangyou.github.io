@@ -219,6 +219,20 @@ vi /var/www/html/config/config.ini.php</p>
 trusted_hosts[] = "10.10.48.194:7777"
 </code></pre></div></div>
 
+<p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static function getIpFromHeader()
+{
+    ...
+    
+    if(isset($_SERVER['HTTP_X_REAL_IP'])) { //获取header中的ip
+        $default = $_SERVER['HTTP_X_REAL_IP'];
+    }
+    
+    ...
+}
+</code></pre></div></div>
+
 
         </div>
     </div>

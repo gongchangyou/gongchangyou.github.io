@@ -81,6 +81,20 @@ vi /var/www/html/config/config.ini.php&lt;/p&gt;
 trusted_hosts[] = &quot;10.10.48.194:7777&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public static function getIpFromHeader()
+{
+    ...
+    
+    if(isset($_SERVER['HTTP_X_REAL_IP'])) { //获取header中的ip
+        $default = $_SERVER['HTTP_X_REAL_IP'];
+    }
+    
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 </description>
 				<pubDate>Mon, 24 Jan 2022 14:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/matomo</link>

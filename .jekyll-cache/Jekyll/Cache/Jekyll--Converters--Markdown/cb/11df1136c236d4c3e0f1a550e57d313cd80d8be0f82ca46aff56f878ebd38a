@@ -1,0 +1,36 @@
+I"_<h1 id="matomo-部署">Matomo 部署</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull matomo
+
+docker run --restart=always -d --name matomo -p 7777:80 -v /opt/matomo/data:/data -v /opt/matomo/html:/var/www/html matomo
+</code></pre></div></div>
+
+<p>mysql新建db 和用户</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database matomo
+
+create user 'matomo'@'%' IDENTIFIED BY 'password';
+
+grant all privileges on matomo.* to 'matomo'@'%';
+
+</code></pre></div></div>
+
+<p>但是因为宿主机已经安装了 mysql 。 所以需要matomo能够访问宿主机的db</p>
+
+<p>在宿主机 ifconfig 命令后 。发现一个docker0 的网桥，记住他的ip 172.17.0.1</p>
+
+<p>在localhost:7777 中设置 database的时候 将 刚刚的ip[172.17.0.1]当成 host贴进去，应该就ok了.</p>
+
+<p>因为默认端口是80，咱们这里改成了7777 所以有可能需要去配置下
+vi /var/www/html/config/config.ini.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[General]
+trusted_hosts[] = "10.10.48.194:7777"
+</code></pre></div></div>
+
+<p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+:ET
