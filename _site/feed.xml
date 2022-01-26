@@ -43,6 +43,7 @@ grant all privileges on jira.* to 'jira'@'%';
 &lt;p&gt;卸载是在 /opt/atlassian/jira/uninstall&lt;/p&gt;
 
 &lt;p&gt;关闭是在  /opt/atlassian/jira/bin/shutdown.sh&lt;/p&gt;
+
 </description>
 				<pubDate>Mon, 24 Jan 2022 14:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/jira</link>
