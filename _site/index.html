@@ -246,6 +246,18 @@ trusted_hosts[] = "10.10.48.194:7777"
         <div class="content">
             <h1 id="rocketmq-部署">RocketMQ 部署</h1>
 
+<p>基础术语：</p>
+
+<ol>
+  <li>生产者(Producer)</li>
+  <li>消费者(Consumer)</li>
+  <li>主题（Topic)  一类消息的集合</li>
+  <li>生产者组（Producer Group) 这类Producer 发送同一类消息。如果发送事务消息，且原始生产者在发送后崩溃，Broker Server 会联系同一组的生产者实例提交或回溯消费</li>
+  <li>消费者组（Consumer Group) 消费同一类消息，注意同一个group的消费者必须订阅相同的topic。可以方便的负载均衡和容错</li>
+  <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
+  <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
+</ol>
+
 <p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
 
 <ol>
