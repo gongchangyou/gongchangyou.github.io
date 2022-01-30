@@ -1,0 +1,52 @@
+I"�<h1 id="spring-cloud-stream---rocketmq">Spring Cloud Stream  &amp; RocketMQ</h1>
+
+<h2 id="rocketmq有两种实现方式">RocketMQ有两种实现方式</h2>
+
+<ol>
+  <li>
+    <p>Rocketmq-spring-boot-starter 框架 (rocketmq &amp;&amp; spring-boot)</p>
+  </li>
+  <li>
+    <p>Spring-cloud-starter-stream-rocketmq 框架。推荐使用这个，因为spring-cloud-stream 集成多种MQ <a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></p>
+  </li>
+</ol>
+
+<p>依赖: <a href="https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq">https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq</a></p>
+
+<p>注意处理冲突</p>
+
+<p>我选择版本2.2.7.RELEASE</p>
+
+<p>sample <a href="https://github.com/spring-cloud/spring-cloud-stream-samples">https://github.com/spring-cloud/spring-cloud-stream-samples</a></p>
+
+<p>网上资料到处都是Output注解， 现在已经deprecated，目前推荐使用 StreamBridge</p>
+
+<p>生产者</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Component
+public class Producer {
+
+    @Autowired
+    private StreamBridge messageChannel;
+
+    public boolean sendMsg(String msg) {
+        return messageChannel.send("test-topic", MessageBuilder.withPayload(msg).build());
+    }
+}
+</code></pre></div></div>
+
+<p>奇怪这个 send 的结果始终返回true ，怀疑现在是异步发送。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RocketMQMessageHandler 中sync默认是 false
+	private boolean sync = false;
+
+</code></pre></div></div>
+
+<p>所以需要把rocket的sync 置位成true</p>
+
+<p>注意这里是懒加载,   StreamBridge.send的时候才会去读取RocketMQ 的配置</p>
+
+<p><img src="/images/202201/1643423202295.jpg" alt="embbed" /></p>
+
+<p>这里bindingName就是主题，如果跟application.properties中的不一样，则会重新创建一个新的 RocketMQProducerProperties</p>
+:ET
