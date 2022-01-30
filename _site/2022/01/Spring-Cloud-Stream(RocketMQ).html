@@ -152,7 +152,7 @@
     <p>Rocketmq-spring-boot-starter 框架 (rocketmq &amp;&amp; spring-boot)</p>
   </li>
   <li>
-    <p>Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ <a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></p>
+    <p>Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ ,推荐使用<a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></p>
   </li>
 </ol>
 
@@ -169,26 +169,36 @@
 
 <p>sample <a href="https://github.com/spring-cloud/spring-cloud-stream-samples">https://github.com/spring-cloud/spring-cloud-stream-samples</a></p>
 
-<p>网上资料到处都是Output注解， 现在已经deprecated，目前推荐使用 StreamBridge</p>
+<p>代码很简单
+<img src="/images/202201/1643521131415.jpg" alt="embbed" />
+<img src="/images/202201/1643521145955.jpg" alt="embbed" />
+<img src="/images/202201/1643521166242.jpg" alt="embbed" /></p>
 
-<p>生产者</p>
+<p>配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
+spring.cloud.stream.bindings.output1.content-type=application/json
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Component
-public class Producer {
-
-    @Autowired
-    private StreamBridge messageChannel;
-
-    public boolean sendMsg(String msg) {
-        return messageChannel.send("test-topic", MessageBuilder.withPayload(msg).build());
-    }
-}
 </code></pre></div></div>
 
-<p>问题1： Dispatcher has no subscribers 异常
-<img src="/images/202201//Users/gongchangyou/Downloads/1643437768640.jpg" alt="embbed" /></p>
+<h2 id="消费者">消费者</h2>
 
-<h2 id="这个问题没解决考虑到未来也不太可能切换消息中间件考虑直接使用-rocketmq-spring-boot-starter-框架-吧">这个问题没解决，考虑到未来也不太可能切换消息中间件，考虑直接使用 Rocketmq-spring-boot-starter 框架 吧。</h2>
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.input1.destination=test-topic
+spring.cloud.stream.bindings.input1.content-type=application/json
+spring.cloud.stream.bindings.input1.group=group
+</code></pre></div></div>
+
+<p>代码</p>
+
+<p><img src="/images/202201/1643523658805.jpg" alt="embbed" />
+<img src="/images/202201/1643523559576.jpg" alt="embbed" />
+<img src="/images/202201/1643523584792.jpg" alt="embbed" /></p>
+
+<p>调试ok</p>
+
 
             </div>
             

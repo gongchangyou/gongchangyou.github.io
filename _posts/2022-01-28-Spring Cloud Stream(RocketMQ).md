@@ -15,7 +15,7 @@ tag: [java]
 
 1. Rocketmq-spring-boot-starter 框架 (rocketmq && spring-boot)
 
-2. Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ [https://spring.io/projects/spring-cloud-stream](https://spring.io/projects/spring-cloud-stream)
+2. Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ ,推荐使用[https://spring.io/projects/spring-cloud-stream](https://spring.io/projects/spring-cloud-stream)
 
 我选择版本2.2.7.RELEASE: [https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq](https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq)
 
@@ -32,28 +32,39 @@ tag: [java]
 
   sample [https://github.com/spring-cloud/spring-cloud-stream-samples](https://github.com/spring-cloud/spring-cloud-stream-samples)
 
+代码很简单
+![embbed]({{ site.baseurl}}/images/202201/1643521131415.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643521145955.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643521166242.jpg)
 
-
-
-
-网上资料到处都是Output注解， 现在已经deprecated，目前推荐使用 StreamBridge
-
-生产者
+配置
+```
+spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
+spring.cloud.stream.bindings.output1.content-type=application/json
 
 ```
-@Component
-public class Producer {
 
-    @Autowired
-    private StreamBridge messageChannel;
 
-    public boolean sendMsg(String msg) {
-        return messageChannel.send("test-topic", MessageBuilder.withPayload(msg).build());
-    }
-}
+
+## 消费者
+
+配置
+
+```
+spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.input1.destination=test-topic
+spring.cloud.stream.bindings.input1.content-type=application/json
+spring.cloud.stream.bindings.input1.group=group
 ```
 
-问题1： Dispatcher has no subscribers 异常
-![embbed]({{ site.baseurl}}/images/202201//Users/gongchangyou/Downloads/1643437768640.jpg)
 
-## 这个问题没解决，考虑到未来也不太可能切换消息中间件，考虑直接使用 Rocketmq-spring-boot-starter 框架 吧。
+代码
+
+![embbed]({{ site.baseurl}}/images/202201/1643523658805.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643523559576.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643523584792.jpg)
+
+
+调试ok
+

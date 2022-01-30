@@ -17,7 +17,7 @@
     &lt;p&gt;Rocketmq-spring-boot-starter 框架 (rocketmq &amp;amp;&amp;amp; spring-boot)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ &lt;a href=&quot;https://spring.io/projects/spring-cloud-stream&quot;&gt;https://spring.io/projects/spring-cloud-stream&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ ,推荐使用&lt;a href=&quot;https://spring.io/projects/spring-cloud-stream&quot;&gt;https://spring.io/projects/spring-cloud-stream&lt;/a&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -34,26 +34,36 @@
 
 &lt;p&gt;sample &lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-stream-samples&quot;&gt;https://github.com/spring-cloud/spring-cloud-stream-samples&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;网上资料到处都是Output注解， 现在已经deprecated，目前推荐使用 StreamBridge&lt;/p&gt;
+&lt;p&gt;代码很简单
+&lt;img src=&quot;/images/202201/1643521131415.jpg&quot; alt=&quot;embbed&quot; /&gt;
+&lt;img src=&quot;/images/202201/1643521145955.jpg&quot; alt=&quot;embbed&quot; /&gt;
+&lt;img src=&quot;/images/202201/1643521166242.jpg&quot; alt=&quot;embbed&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;生产者&lt;/p&gt;
+&lt;p&gt;配置&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
+spring.cloud.stream.bindings.output1.content-type=application/json
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Component
-public class Producer {
-
-    @Autowired
-    private StreamBridge messageChannel;
-
-    public boolean sendMsg(String msg) {
-        return messageChannel.send(&quot;test-topic&quot;, MessageBuilder.withPayload(msg).build());
-    }
-}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;问题1： Dispatcher has no subscribers 异常
-&lt;img src=&quot;/images/202201//Users/gongchangyou/Downloads/1643437768640.jpg&quot; alt=&quot;embbed&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;消费者&quot;&gt;消费者&lt;/h2&gt;
 
-&lt;h2 id=&quot;这个问题没解决考虑到未来也不太可能切换消息中间件考虑直接使用-rocketmq-spring-boot-starter-框架-吧&quot;&gt;这个问题没解决，考虑到未来也不太可能切换消息中间件，考虑直接使用 Rocketmq-spring-boot-starter 框架 吧。&lt;/h2&gt;
+&lt;p&gt;配置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.input1.destination=test-topic
+spring.cloud.stream.bindings.input1.content-type=application/json
+spring.cloud.stream.bindings.input1.group=group
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;代码&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202201/1643523658805.jpg&quot; alt=&quot;embbed&quot; /&gt;
+&lt;img src=&quot;/images/202201/1643523559576.jpg&quot; alt=&quot;embbed&quot; /&gt;
+&lt;img src=&quot;/images/202201/1643523584792.jpg&quot; alt=&quot;embbed&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;调试ok&lt;/p&gt;
+
 </description>
 				<pubDate>Fri, 28 Jan 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/Spring-Cloud-Stream(RocketMQ)</link>
