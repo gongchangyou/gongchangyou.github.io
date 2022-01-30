@@ -13,12 +13,8 @@
 &lt;h2 id=&quot;rocketmq有两种实现方式&quot;&gt;RocketMQ有两种实现方式&lt;/h2&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Rocketmq-spring-boot-starter 框架 (rocketmq &amp;amp;&amp;amp; spring-boot)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ ,推荐使用&lt;a href=&quot;https://spring.io/projects/spring-cloud-stream&quot;&gt;https://spring.io/projects/spring-cloud-stream&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Rocketmq-spring-boot-starter 框架 (rocketmq &amp;amp;&amp;amp; spring-boot)&lt;/li&gt;
+  &lt;li&gt;Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ &lt;a href=&quot;https://spring.io/projects/spring-cloud-stream&quot;&gt;https://spring.io/projects/spring-cloud-stream&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;我选择版本2.2.7.RELEASE: &lt;a href=&quot;https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq&quot;&gt;https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq&lt;/a&gt;&lt;/p&gt;

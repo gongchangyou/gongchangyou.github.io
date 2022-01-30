@@ -14,8 +14,9 @@ tag: [java]
 ## RocketMQ有两种实现方式
 
 1. Rocketmq-spring-boot-starter 框架 (rocketmq && spring-boot)
+2. Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ [https://spring.io/projects/spring-cloud-stream](https://spring.io/projects/spring-cloud-stream)
 
-2. Spring-cloud-starter-stream-rocketmq 框架。spring-cloud-stream 集成多种MQ ,推荐使用[https://spring.io/projects/spring-cloud-stream](https://spring.io/projects/spring-cloud-stream)
+
 
 我选择版本2.2.7.RELEASE: [https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq](https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq)
 
