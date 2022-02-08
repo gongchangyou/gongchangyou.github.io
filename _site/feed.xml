@@ -7,6 +7,95 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>slf4j</title>
+				<description>&lt;h1 id=&quot;slf4j--logback&quot;&gt;slf4j &amp;amp; logback&lt;/h1&gt;
+
+&lt;p&gt;slf4j是基于门面模式的日志模块，logback是其中的一个实现，另个常用的是log4j&lt;/p&gt;
+
+&lt;p&gt;去年log4j 的漏洞整怕了，还是用logback实现吧。&lt;/p&gt;
+
+&lt;p&gt;有几个常用的slf4j和logback相关模块&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;logback-classic 日志的实现 ，内置logback-core&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;logback-access &lt;a href=&quot;https://logback.qos.ch/access.html#configuration&quot;&gt;https://logback.qos.ch/access.html#configuration&lt;/a&gt; 可以在 &lt;em&gt;$TOMCAT_HOME/conf/server.xml&lt;/em&gt; 中添加&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;Connector port=&quot;8050&quot; 
+  handler.list=&quot;mx&quot;
+  mx.enabled=&quot;true&quot; 
+  mx.httpHost=&quot;localhost&quot; 
+  mx.httpPort=&quot;8082&quot; 
+  protocol=&quot;AJP/1.3&quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;访问模块与 Servlet 容器集成提供通过 Http 来访问日记的功能。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;logstash-logback-encoder 以json格式来保存日志&lt;/li&gt;
+  &lt;li&gt;lombok 可以使用@Slf4j注解，避免每个类中都写LoggerFactory&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Logback-spring.xml&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;debug=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 控制台输出 --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;conversionRule&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;conversionWord=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;clr&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;converterClass=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.springframework.boot.logging.logback.ColorConverter&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;conversionRule&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;conversionWord=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;wex&quot;&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;converterClass=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;conversionRule&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;conversionWord=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;wEx&quot;&lt;/span&gt;
+                    &lt;span class=&quot;na&quot;&gt;converterClass=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 按照每天生成日志文件 --&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;FILE&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;file&amp;gt;&lt;/span&gt;${LOGS_DIR}/service.log&lt;span class=&quot;nt&quot;&gt;&amp;lt;/file&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;rollingPolicy&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;c&quot;&gt;&amp;lt;!--日志文件输出的文件名--&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;FileNamePattern&amp;gt;&lt;/span&gt;${LOGS_DIR}/service.%d{yyyy-MM-dd}.%i.log&lt;span class=&quot;nt&quot;&gt;&amp;lt;/FileNamePattern&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;c&quot;&gt;&amp;lt;!--日志文件保留天数--&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;maxFileSize&amp;gt;&lt;/span&gt;5GB&lt;span class=&quot;nt&quot;&gt;&amp;lt;/maxFileSize&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/rollingPolicy&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;c&quot;&gt;&amp;lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;pattern&amp;gt;&lt;/span&gt;%d{yyyy-MM-dd HH:mm:ss.SSS}┇%-5level┇[%thread]┇%logger{50}┇%msg%n&lt;span class=&quot;nt&quot;&gt;&amp;lt;/pattern&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/encoder&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;filter&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 在日志配置级别的基础上过滤掉warn级别以下的日志 --&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;level&amp;gt;&lt;/span&gt;WARN&lt;span class=&quot;nt&quot;&gt;&amp;lt;/level&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/filter&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.core.ConsoleAppender&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;encoder&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nt&quot;&gt;&amp;lt;pattern&amp;gt;&lt;/span&gt;%d{yyyy-MM-dd HH:mm:ss.SSS}┇%-5level┇[%thread]┇%logger{50}┇%msg%n&lt;span class=&quot;nt&quot;&gt;&amp;lt;/pattern&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/encoder&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appender&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;springProfile&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dev&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;root&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;level=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;INFO&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;STDOUT&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;appender-ref&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;ref=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;FILE&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/springProfile&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;记得在 application.properties中添加如下参数，或者启动项中添加，这样springProfile能生效&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.profiles.active=dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Tue, 08 Feb 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/02/slf4j-logback</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/02/slf4j-logback</guid>
+			</item>
+		
+			<item>
 				<title>spring cloud stream</title>
 				<description>&lt;h1 id=&quot;spring-cloud-stream---rocketmq&quot;&gt;Spring Cloud Stream  &amp;amp; RocketMQ&lt;/h1&gt;
 
@@ -502,185 +591,6 @@ sudo apt install ca-certificates curl openssh-server postfix&lt;/p&gt;
 				<pubDate>Mon, 17 Jan 2022 13:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/01/gitlab-install</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/01/gitlab-install</guid>
-			</item>
-		
-			<item>
-				<title>nacos 3 服务注册和订阅</title>
-				<description>&lt;h1 id=&quot;spring-cloud-alibaba---nacos-3-服务注册和订阅&quot;&gt;Spring Cloud Alibaba - nacos 3 服务注册和订阅&lt;/h1&gt;
-
-&lt;h2 id=&quot;http调用&quot;&gt;HTTP调用&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;            return restTemplate.getForObject(&quot;http://service-provider/echo/&quot; + str, String.class);
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;dubbo服务&quot;&gt;Dubbo服务&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;dubbo服务 注册  nacos 接口汇总 &lt;a href=&quot;https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html&quot;&gt;https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;问题： @DubboService 添加 不管用？&lt;/p&gt;
-
-&lt;p&gt;注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
-我们来看看为啥注册不成功&lt;/p&gt;
-
-&lt;p&gt;正常情况下 应该是能注册成功的&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;amp;ip=192.168.1.145&amp;amp;port=20880'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;但是我的代码偏偏多了几个参数&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;amp;ip=192.168.1.145&amp;amp;port=20880&amp;amp;app=unknown&amp;amp;healthy=true&amp;amp;clusterName=null&amp;amp;enable=true&amp;amp;ephemeral=true&amp;amp;groupName=dubbo-demo-service&amp;amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;dubbo RPC调用 TODO&lt;/p&gt;
-
-    &lt;p&gt;问题1&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
-https://github.com/apache/dubbo/issues/7274&lt;/p&gt;
-
-    &lt;p&gt;问题2 明明服务已经注册到nacos中了，但是消费端报错&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;amp;dubbo=2.0.2&amp;amp;group=dubbo-demo&amp;amp;init=false&amp;amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;amp;metadata-type=remote&amp;amp;methods=add&amp;amp;pid=67340&amp;amp;register.ip=192.168.1.145&amp;amp;release=2.7.8&amp;amp;revision=0.0.1-SNAPSHOT&amp;amp;side=consumer&amp;amp;sticky=false&amp;amp;timestamp=1642129445698&amp;amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
-	
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了&lt;/p&gt;
-
-&lt;p&gt;dubbo-spring-boot-starter  加进去就好了&lt;/p&gt;
-
-&lt;h2 id=&quot;最佳实践&quot;&gt;最佳实践&lt;/h2&gt;
-&lt;p&gt;以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-producer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-producer&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-consumer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-consumer&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- &amp;lt;settings&amp;gt;
-  &amp;lt;localRepository&amp;gt;/Users/suixinyu/Documents/java/repository/repository&amp;lt;/localRepository&amp;gt;
-&amp;lt;/settings&amp;gt;
-
- --&amp;gt;
- &amp;lt;settings&amp;gt;
-&amp;lt;servers&amp;gt;
-  &amp;lt;server&amp;gt;
-    &amp;lt;id&amp;gt;nexus-releases&amp;lt;/id&amp;gt;
-    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
-    &amp;lt;password&amp;gt;naozhi123&amp;lt;/password&amp;gt;
-  &amp;lt;/server&amp;gt;
-  &amp;lt;server&amp;gt;
-    &amp;lt;id&amp;gt;nexus-snapshots&amp;lt;/id&amp;gt;
-    &amp;lt;username&amp;gt;admin&amp;lt;/username&amp;gt;
-    &amp;lt;password&amp;gt;naozhi123&amp;lt;/password&amp;gt;
-  &amp;lt;/server&amp;gt;  
-&amp;lt;/servers&amp;gt;
-
-  &amp;lt;mirrors&amp;gt;
-      &amp;lt;mirror&amp;gt;
-      &amp;lt;id&amp;gt;alimaven&amp;lt;/id&amp;gt;
-      &amp;lt;name&amp;gt;aliyun maven&amp;lt;/name&amp;gt;
-      &amp;lt;url&amp;gt;http://maven.aliyun.com/nexus/content/groups/public/&amp;lt;/url&amp;gt;
-      &amp;lt;mirrorOf&amp;gt;central&amp;lt;/mirrorOf&amp;gt;        
-    &amp;lt;/mirror&amp;gt;
-  
-  &amp;lt;/mirrors&amp;gt;
-  
-  &amp;lt;profiles&amp;gt;
-    &amp;lt;profile&amp;gt;
-      &amp;lt;id&amp;gt;development&amp;lt;/id&amp;gt;
-      &amp;lt;repositories&amp;gt;
-        &amp;lt;repository&amp;gt;
-          &amp;lt;id&amp;gt;central&amp;lt;/id&amp;gt;
-          &amp;lt;url&amp;gt;http://central&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
-        &amp;lt;/repository&amp;gt;
-      &amp;lt;/repositories&amp;gt;
-     &amp;lt;pluginRepositories&amp;gt;
-        &amp;lt;pluginRepository&amp;gt;
-          &amp;lt;id&amp;gt;central&amp;lt;/id&amp;gt;
-          &amp;lt;url&amp;gt;http://central&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
-        &amp;lt;/pluginRepository&amp;gt;
-      &amp;lt;/pluginRepositories&amp;gt;
-    &amp;lt;/profile&amp;gt;
-    &amp;lt;profile&amp;gt;
-      &amp;lt;!--this profile will allow snapshots to be searched when activated--&amp;gt;
-      &amp;lt;id&amp;gt;public-snapshots&amp;lt;/id&amp;gt;
-      &amp;lt;repositories&amp;gt;
-        &amp;lt;repository&amp;gt;
-      &amp;lt;id&amp;gt;ali&amp;lt;/id&amp;gt;
-          &amp;lt;name&amp;gt;ali Maven repository&amp;lt;/name&amp;gt;
-          &amp;lt;url&amp;gt;https://maven.aliyun.com/nexus/content/groups/public/&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
-      &amp;lt;/repository&amp;gt;  
-       &amp;lt;repository&amp;gt;
-      &amp;lt;id&amp;gt;ali-snapshot&amp;lt;/id&amp;gt;
-          &amp;lt;name&amp;gt;ali Maven repository snapshot&amp;lt;/name&amp;gt;
-          &amp;lt;url&amp;gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
-      &amp;lt;/repository&amp;gt; 
-    &amp;lt;repository&amp;gt;
-      &amp;lt;id&amp;gt;local&amp;lt;/id&amp;gt;
-          &amp;lt;name&amp;gt;Local Maven repository&amp;lt;/name&amp;gt;
-          &amp;lt;url&amp;gt;http://10.10.48.192:8081/nexus/content/groups/public/&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;/snapshots&amp;gt;
-      &amp;lt;/repository&amp;gt;  
-      &amp;lt;/repositories&amp;gt;
-     &amp;lt;pluginRepositories&amp;gt;
-        &amp;lt;pluginRepository&amp;gt;
-          &amp;lt;id&amp;gt;public-snapshots&amp;lt;/id&amp;gt;
-          &amp;lt;url&amp;gt;http://public-snapshots&amp;lt;/url&amp;gt;
-          &amp;lt;releases&amp;gt;&amp;lt;enabled&amp;gt;false&amp;lt;/enabled&amp;gt;&amp;lt;/releases&amp;gt;
-          &amp;lt;snapshots&amp;gt;&amp;lt;enabled&amp;gt;true&amp;lt;/enabled&amp;gt;&amp;lt;updatePolicy&amp;gt;always&amp;lt;/updatePolicy&amp;gt;&amp;lt;/snapshots&amp;gt;
-        &amp;lt;/pluginRepository&amp;gt;
-      &amp;lt;/pluginRepositories&amp;gt;
-    &amp;lt;/profile&amp;gt;
-  &amp;lt;profile&amp;gt;
-    &amp;lt;id&amp;gt;sonar&amp;lt;/id&amp;gt;
-    &amp;lt;activation&amp;gt;
-      &amp;lt;activeByDefault&amp;gt;true&amp;lt;/activeByDefault&amp;gt;
-    &amp;lt;/activation&amp;gt;
-    &amp;lt;properties&amp;gt;
-      &amp;lt;sonar.jdbc.url&amp;gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&amp;lt;/sonar.jdbc.url&amp;gt;
-      &amp;lt;sonar.jdbc.driverClassName&amp;gt;com.mysql.jdbc.Driver&amp;lt;/sonar.jdbc.driverClassName&amp;gt;
-      &amp;lt;sonar.jdbc.username&amp;gt;sonar&amp;lt;/sonar.jdbc.username&amp;gt;
-      &amp;lt;sonar.jdbc.password&amp;gt;sonar&amp;lt;/sonar.jdbc.password&amp;gt;
-      &amp;lt;sonar.host.url&amp;gt;http://10.58.156.108:9000/&amp;lt;/sonar.host.url&amp;gt;
-    &amp;lt;/properties&amp;gt;
-  &amp;lt;/profile&amp;gt;
-  &amp;lt;/profiles&amp;gt;
-  &amp;lt;activeProfiles&amp;gt;
-    &amp;lt;activeProfile&amp;gt;development&amp;lt;/activeProfile&amp;gt;
-    &amp;lt;activeProfile&amp;gt;public-snapshots&amp;lt;/activeProfile&amp;gt;
-  &amp;lt;/activeProfiles&amp;gt;
-
-&amp;lt;/settings&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Fri, 14 Jan 2022 15:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/01/nacos-service-providerconsumer</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/01/nacos-service-providerconsumer</guid>
 			</item>
 		
 	</channel>

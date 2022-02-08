@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/slf4j-logback">slf4j</a></li>
+        
           <li><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">spring cloud stream</a></li>
         
           <li><a href="/2022/01/jira">jira</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/matomo">matomo</a></li>
         
           <li><a href="/2022/01/RocketMQ">rocket mq</a></li>
-        
-          <li><a href="/2022/01/nacos">cluster</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>14</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>15</sup></a></li>
 			
 		
 			
@@ -139,6 +139,52 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2021/12/selenium-java">Dec 20, 2021 - java-selenium</a></h1>
+        
+        <div class="content">
+            <h1 id="下载-chrome-driver">下载 chrome-driver</h1>
+<p>https://chromedriver.chromium.org/downloads</p>
+
+<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
+
+<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
+MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
+
+<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
+
+<h1 id="添加依赖">添加依赖</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+   &lt;version&gt;3.14.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<h1 id="编写代码">编写代码</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
+        val driver = new ChromeDriver();
+        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
+        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
+        log.info("problemList={}", problemList);
+</code></pre></div></div>
+
+<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
+js.executeScript("window.open();");
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("window.open(\"http://www.baidu.com\");");
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">Apr 24, 2021 - 爷爷</a></h1>
@@ -172,46 +218,6 @@
   </li>
 </ol>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>创建并指定session名字<br />
-		tmux new -s $session_name</li>
-&lt;/li&gt;
-<li>删除session<br />
- Ctrl+b :kill-session</li>
-<li>临时退出session<br />
-Ctrl+b d</li>
-<li>列出session<br />
-tmux ls</li>
-<li>进入已存在的session<br />
-tmux a -t $session_name</li>
-<li>删除所有session<br />
-Ctrl+b :kill-server</li>
-<li>删除指定session<br />
-tmux kill-session -t $session_name</li>
-<li>删除指定window<br />
-Ctrl+b : &amp;</li>
-</ul>
-
-<p>settings 鼠标滚动接管tmux历史窗口</p>
-
-<ul><li>vi ~/.tmux.conf</li>
-<li>set-window-option -g mode-mouse on</li>
-<li>tmux source-file ~/.tmux.conf</li>
-<li></li>
-<li></li>
-
-
-</ul>
 
         </div>
     </div>
