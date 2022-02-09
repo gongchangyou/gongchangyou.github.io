@@ -138,116 +138,63 @@
 
         </div>
         <div class="col-md-9">
-          <div class="article">
-            <div class="well">
-                <h1><a href="/2013/08/git-command">Aug 13, 2013 - git 常用命令</a></h1>
             
-            <div class="post-content">
-            <h3>git ignore</h3>
-<p>不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令</p>
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
+        
+        <div class="content">
+            <p>C++代码</p>
 
-<p>% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<p>% git update-index –really-refresh /path/to/file</p>
+<p>OC代码</p>
 
-<p>% git update-index –skip-worktree /path/to/file 不更新这个文件</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
-<p>git update-index –no-assume-unchanged</p>
 
-<h3>git patch</h3>
-<ul>
-<h4>生成patch:</h4>
-<li>
-1.先commit
-</li>
-<li>	
-2.git format-patch version/HEAD^
-</li>
-<h4>使用patch:</h4>
-git am XXX.patch
-</ul>
+        </div>
+    </div>
+</div>
 
-<h3>git 删除所有tag</h3>
-<p>git tag |xargs git tag -d</p>
 
-<h3>git cherry-pick</h3>
-<p>git cherry-pick c2f3d52e7^..d0c9463f4</p>
-
-<p>注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。</p>
-
-<h3>git 添加文件到最近的一次commit中</h3>
-<p>漏掉了一些文件，但是已经提交了怎么办？</p>
-
-<p>git add forgotten_files</p>
-
-<p>git commit --amend</p>
-
-<h3>在A branch查看 B branch的log</h3>
-<p>有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录</p>
-
-<p>只需要 git log -p branch_name path/to/file</p>
-
-<h3>git diff 无视win和macos 换行的</h3>
-<p>git config –global core.autocrlf true</p>
-
-<h3>git 查找 注释 文本</h3>
-<p>git log -S “test”<br />
-git log --grep=“test”</p>
-
-<h3>git st 中文乱码问题</h3>
-<p>git config --global core.quotepath false</p>
-
-<h3>git 将tag push到远程</h3>
-<p>git push origin --tags</p>
-
-<h3>查看远程标签</h3>
-<p>git ls-remote --tags</p>
-
-<h3>删除远程标签</h3>
-<p>git push origin --delete tag v0.1
-或 git push origin :refs/tags/v0.1</p>
-
-<h3>删除本地标签</h3>
-<p>git tag -d [标签名]</p>
-
-            </div>
-            
-            <div id="disqus_thread">
-                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-            </div>
-            
-            </div>
-          </div>
-          <div class="pagination">
-              
-                <a class="btn btn-default" href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0" class="next">Newer Post</a>
-              
-              
-                <a class="btn btn-default" href="/2013/08/c++%E8%B0%83%E7%94%A8oc" class="previous">Older Post</a>
-              
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page26" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 27 of 27</span>
+  
 </div>
 
         </div>
     </div>
 </div>
-<!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
-
-  <script type="text/javascript">
-    var disqus_shortname = '';
-
-    var disqus_config = function () {
-        this.page.identifier = '2013-08-git-command';
-    };
-
-   (function() {
-     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-
 
 <div class="container-fluid">
     <div class="row-fluid">

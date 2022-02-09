@@ -140,75 +140,36 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/08/git-command">Aug 13, 2013 - git 常用命令</a></h1>
+                <h1><a href="/2022/02/spring-cloud-gateway">Feb 9, 2022 - spring-cloud-gateway</a></h1>
             
             <div class="post-content">
-            <h3>git ignore</h3>
-<p>不想上传的文件 除了首次建立仓库可以修改.gitignore文件以外，还可以如下命令</p>
+            <h1 id="spring-cloud-gateway">Spring-cloud-gateway</h1>
 
-<p>% git update-index –assume-unchanged /path/to/file  无视这个文件上的修改 不上传</p>
+<h2 id="路由规则如果配置在applicationyaml中那么每次新增路由都需要部署重启gateway所以这个路由规则必须动态读取例如存放到nacos中">路由规则如果配置在application.yaml中，那么每次新增路由都需要部署重启gateway，所以这个路由规则必须动态读取，例如存放到nacos中</h2>
 
-<p>% git update-index –really-refresh /path/to/file</p>
+<p>代码仓库:   <a href="https://github.com/gongchangyou/gateway">https://github.com/gongchangyou/gateway</a></p>
 
-<p>% git update-index –skip-worktree /path/to/file 不更新这个文件</p>
+<p>http服务 <a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
 
-<p>git update-index –no-assume-unchanged</p>
+<p>RouteDefinitionWriter 负责修改路由， RouteDefinitionLocator 接口只有一个方法 getRouteDefinitions，获取所有路由。</p>
 
-<h3>git patch</h3>
-<ul>
-<h4>生成patch:</h4>
-<li>
-1.先commit
-</li>
-<li>	
-2.git format-patch version/HEAD^
-</li>
-<h4>使用patch:</h4>
-git am XXX.patch
-</ul>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre></div></div>
 
-<h3>git 删除所有tag</h3>
-<p>git tag |xargs git tag -d</p>
+<p><img src="/images/202202/1644386286460.jpg" alt="code" /></p>
 
-<h3>git cherry-pick</h3>
-<p>git cherry-pick c2f3d52e7^..d0c9463f4</p>
+<p>重点是 routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();</p>
 
-<p>注意 “..”前面的那个hash是不被包括在内的，如果要c2f3d52e7这个commit 那么后面要跟上^表示之前的一个提交。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//        this.publisher.publishEvent(new RefreshRoutesEvent(this)); 这句好像没啥用
+</code></pre></div></div>
 
-<h3>git 添加文件到最近的一次commit中</h3>
-<p>漏掉了一些文件，但是已经提交了怎么办？</p>
-
-<p>git add forgotten_files</p>
-
-<p>git commit --amend</p>
-
-<h3>在A branch查看 B branch的log</h3>
-<p>有时候merge 中出现conflict 又想看看各个branch中这个文件的修改记录</p>
-
-<p>只需要 git log -p branch_name path/to/file</p>
-
-<h3>git diff 无视win和macos 换行的</h3>
-<p>git config –global core.autocrlf true</p>
-
-<h3>git 查找 注释 文本</h3>
-<p>git log -S “test”<br />
-git log --grep=“test”</p>
-
-<h3>git st 中文乱码问题</h3>
-<p>git config --global core.quotepath false</p>
-
-<h3>git 将tag push到远程</h3>
-<p>git push origin --tags</p>
-
-<h3>查看远程标签</h3>
-<p>git ls-remote --tags</p>
-
-<h3>删除远程标签</h3>
-<p>git push origin --delete tag v0.1
-或 git push origin :refs/tags/v0.1</p>
-
-<h3>删除本地标签</h3>
-<p>git tag -d [标签名]</p>
 
             </div>
             
@@ -221,10 +182,8 @@ git log --grep=“test”</p>
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/08/c++%E8%B0%83%E7%94%A8oc" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/02/slf4j-logback" class="previous">Older Post</a>
               
 </div>
 
@@ -232,13 +191,13 @@ git log --grep=“test”</p>
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-08-git-command';
+        this.page.identifier = '2022-02-spring-cloud-gateway';
     };
 
    (function() {

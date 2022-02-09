@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/spring-cloud-gateway">spring-cloud-gateway</a></li>
+        
           <li><a href="/2022/02/slf4j-logback">slf4j</a></li>
         
           <li><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">spring cloud stream</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/jira">jira</a></li>
         
           <li><a href="/2022/01/matomo">matomo</a></li>
-        
-          <li><a href="/2022/01/RocketMQ">rocket mq</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>15</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>16</sup></a></li>
 			
 		
 			
@@ -139,6 +139,58 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
+
+<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
+
+<p>问题：mvn deploy -X</p>
+<ol>
+  <li>405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</li>
+</ol>
+
+<p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
+
+        &lt;repository&gt;
+
+            &lt;id&gt;nexus-releases&lt;/id&gt;
+
+            &lt;url&gt;
+				就是这行，要跟maven服务器上的settings中的URL保持一致
+                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
+
+            &lt;/url&gt;
+
+        &lt;/repository&gt;
+</code></pre></div></div>
+<ol>
+  <li>401错误  本地的settings.xml账号错误</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;servers&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;xxx&lt;/password&gt;
+  &lt;/server&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;xxx&lt;/password&gt;
+  &lt;/server&gt;
+&lt;/servers&gt;
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
@@ -199,22 +251,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
-        
-        <div class="content">
-            <h1 id="kotlin-语法糖">Kotlin 语法糖</h1>
-
-<p>sequence chunked 列表分块处理</p>
-
-<p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -222,7 +258,7 @@
         <a class="btn btn-default" href="/page4" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 5 of 26</span>
+  <span class="page_number ">Page: 5 of 27</span>
   
     <a class="btn btn-default" href="/page6" class="next">Older</a>
   
