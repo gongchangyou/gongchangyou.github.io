@@ -141,7 +141,7 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/02/spring-cloud-gateway">Feb 9, 2022 - spring-cloud-gateway</a></h1>
+        <h1><a href="/2022/02/spring-cloud-gateway">Feb 10, 2022 - spring-cloud-gateway</a></h1>
         
         <div class="content">
             <h1 id="spring-cloud-gateway">Spring-cloud-gateway</h1>
@@ -171,6 +171,89 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//        this.publisher.publishEvent(new RefreshRoutesEvent(this)); 这句好像没啥用
 </code></pre></div></div>
 
+<h2 id="nacos-代码只需要添加nacos的listener又因为数据变更时只会执行一次回调没有心跳我们需要自行编写心跳逻辑">Nacos: 代码只需要添加nacos的listener，又因为数据变更时只会执行一次回调，没有心跳，我们需要自行编写心跳逻辑</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+			&lt;exclusions&gt;
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+					&lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+			&lt;/exclusions&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-loadbalancer&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Component
+@Slf4j
+public class NacosRouteDynamicDataSource implements ApplicationRunner {
+    @Autowired
+    private NacosConfigManager configManager;
+
+    private ConfigService configService;
+    @PostConstruct
+    void init () {
+        configService = configManager.getConfigService();
+    }
+    /**
+     * Callback used to run the bean.
+     *
+     * @param args incoming application arguments
+     * @throws Exception on error
+     */
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        log.info(args.toString());
+        //监听nacos配置变化
+        dynamicRouteByNacosListener("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule");
+        //心跳 顺便 初始化
+        while (true) {
+            String configInfo = configService.getConfig("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule", 4000);
+            log.info("configInfo = {}", configInfo);
+            Thread.sleep(2000);
+        }
+    }
+
+    /**
+     * 监听nacos的配置
+     * @param dataId
+     * @param group
+     */
+    public void dynamicRouteByNacosListener (String dataId, String group){
+        try {
+            configService.addListener(dataId, group, new Listener()  {
+                @Override
+                public void receiveConfigInfo(String configInfo) {
+                    log.info("进行网关更新:\n\r{}",configInfo);
+                }
+                @Override
+                public Executor getExecutor() {
+                    log.info("getExecutor\n\r");
+                    return null;
+                }
+            });
+        } catch (NacosException e) {
+            log.error("从nacos接收动态路由配置出错!!!",e);
+        }
+    }
+}
+
+</code></pre></div></div>
+
+<p>在nacos手动配置路由</p>
+
+<p><img src="/images/202202/1644471609530.jpg" alt="nacos config" /></p>
 
         </div>
     </div>
