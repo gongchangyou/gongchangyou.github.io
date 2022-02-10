@@ -32,7 +32,7 @@ RouteDefinitionWriter 负责修改路由， RouteDefinitionLocator 接口只有�
 
 
 
-![code]({{ site.baseurl}}/images/202202/1644386286460.jpg)
+![code]({{ site.baseurl}}/images/202202/1644386286460.jpg){: width="1000" }
 
 
 
@@ -135,4 +135,4 @@ public class NacosRouteDynamicDataSource implements ApplicationRunner {
 
 在nacos手动配置路由
 
-![nacos config]({{ site.baseurl}}/images/202202/1644471609530.jpg)
+![nacos config]({{ site.baseurl}}/images/202202/1644471609530.jpg){: width="1000" }

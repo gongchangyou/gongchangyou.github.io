@@ -34,9 +34,9 @@ tag: [java]
   sample [https://github.com/spring-cloud/spring-cloud-stream-samples](https://github.com/spring-cloud/spring-cloud-stream-samples)
 
 代码很简单
-![embbed]({{ site.baseurl}}/images/202201/1643521131415.jpg)
-![embbed]({{ site.baseurl}}/images/202201/1643521145955.jpg)
-![embbed]({{ site.baseurl}}/images/202201/1643521166242.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643521131415.jpg){: width="1000" }
+![embbed]({{ site.baseurl}}/images/202201/1643521145955.jpg){: width="1000" }
+![embbed]({{ site.baseurl}}/images/202201/1643521166242.jpg){: width="1000" }
 
 配置
 ```
@@ -62,9 +62,9 @@ spring.cloud.stream.bindings.input1.group=group
 
 代码
 
-![embbed]({{ site.baseurl}}/images/202201/1643523658805.jpg)
-![embbed]({{ site.baseurl}}/images/202201/1643523559576.jpg)
-![embbed]({{ site.baseurl}}/images/202201/1643523584792.jpg)
+![embbed]({{ site.baseurl}}/images/202201/1643523658805.jpg){: width="1000" }
+![embbed]({{ site.baseurl}}/images/202201/1643523559576.jpg){: width="1000" }
+![embbed]({{ site.baseurl}}/images/202201/1643523584792.jpg){: width="1000" }
 
 
 调试ok

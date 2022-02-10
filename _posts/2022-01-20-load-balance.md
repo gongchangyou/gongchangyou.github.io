@@ -78,7 +78,7 @@ line 257 会根据服务名去注册中心获取ip
 
 Line 258 获取loadbalance
 
-![lb]({{ site.baseurl}}/images/202201/1642651014052.jpg)
+![lb]({{ site.baseurl}}/images/202201/1642651014052.jpg){: width="1000" }
 
 
 
