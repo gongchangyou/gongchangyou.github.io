@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/dubbo-kryo">kryo</a></li>
+        
           <li><a href="/2022/02/spring-cloud-gateway">spring-cloud-gateway</a></li>
         
           <li><a href="/2022/02/slf4j-logback">slf4j</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">spring cloud stream</a></li>
         
           <li><a href="/2022/01/jira">jira</a></li>
-        
-          <li><a href="/2022/01/matomo">matomo</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>16</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>17</sup></a></li>
 			
 		
 			
@@ -140,16 +140,50 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2021/04/%E7%88%B7%E7%88%B7%E5%8E%BB%E4%B8%96">Apr 24, 2021 - 爷爷</a></h1>
+                <h1><a href="/2022/01/nacos-cluster">Jan 20, 2022 - cluster</a></h1>
             
             <div class="post-content">
-            <h1 id="爷爷">爷爷</h1>
+            <h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
 
-<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
 
-<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
+<ol>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
+</ol>
 
-<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+
+<p>配置 cluster.conf
+nacos应该会将注册服务同步给其他ip</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+#it is ip
+#example
+192.168.1.145:8848
+192.168.1.146:8848
+
+```
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
+  </li>
+  <li>
+    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
+  </li>
+  <li>
+    <p>重启nacos</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
+</code></pre></div></div>
+
+<h2 id="又-如果-第2步选择了内置数据源">又： 如果 第2步选择了内置数据源</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh -p embedded
+</code></pre></div></div>
+
 
             </div>
             
@@ -162,10 +196,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2021/12/selenium-java" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2022/01/RocketMQ" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2019/12/%E9%87%91%E9%92%B1%E6%9A%97%E6%B5%81" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/01/load-balance" class="previous">Older Post</a>
               
 </div>
 
@@ -179,7 +213,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2021-04-e7-88-b7-e7-88-b7-e5-8e-bb-e4-b8-96';
+        this.page.identifier = '2022-01-nacos-cluster';
     };
 
    (function() {

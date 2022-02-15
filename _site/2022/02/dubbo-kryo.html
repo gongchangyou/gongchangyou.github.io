@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/dubbo-kryo">kryo</a></li>
+        
           <li><a href="/2022/02/spring-cloud-gateway">spring-cloud-gateway</a></li>
         
           <li><a href="/2022/02/slf4j-logback">slf4j</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">spring cloud stream</a></li>
         
           <li><a href="/2022/01/jira">jira</a></li>
-        
-          <li><a href="/2022/01/matomo">matomo</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>16</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>17</sup></a></li>
 			
 		
 			
@@ -140,43 +140,27 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2018/01/%E4%BF%AE%E6%94%B9mysql%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+                <h1><a href="/2022/02/dubbo-kryo">Feb 15, 2022 - kryo</a></h1>
             
             <div class="post-content">
-            <ol>
-  <li>
-    <p>mysql stop</p>
-  </li>
-  <li>
-    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
-  </li>
-  <li>
-    <p>mysql -u root mysql</p>
-  </li>
-  <li>
-    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
-  </li>
-  <li>
-    <p>flush privileges;</p>
-  </li>
-  <li>
-    <p>unset TMPDIR</p>
-  </li>
-  <li>
-    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
-  </li>
-</ol>
+            <h1 id="kryo">Kryo</h1>
 
-<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+<p>注意版本要跟  dubbo-spring-boot-starter 相同,2.7.8</p>
 
-<ol>
-  <li>
-    <p>mysql.server start</p>
-  </li>
-  <li>
-    <p>mysql -uroot -proot 进去啦！！</p>
-  </li>
-</ol>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo-serialization-kryo&lt;/artifactId&gt;
+    &lt;version&gt;2.7.8&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+
+<p>在producer 和 consumer加一句配置即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.protocol.serialization=kryo
+</code></pre></div></div>
+
 
             </div>
             
@@ -189,10 +173,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2018/04/python-keyring" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2017/12/curl%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/02/spring-cloud-gateway" class="previous">Older Post</a>
               
 </div>
 
@@ -200,13 +182,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2018-01-e4-bf-ae-e6-94-b9mysql-e9-bb-98-e8-ae-a4-e5-af-86-e7-a0-81';
+        this.page.identifier = '2022-02-dubbo-kryo';
     };
 
    (function() {

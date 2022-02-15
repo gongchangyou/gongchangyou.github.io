@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/dubbo-kryo">kryo</a></li>
+        
           <li><a href="/2022/02/spring-cloud-gateway">spring-cloud-gateway</a></li>
         
           <li><a href="/2022/02/slf4j-logback">slf4j</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">spring cloud stream</a></li>
         
           <li><a href="/2022/01/jira">jira</a></li>
-        
-          <li><a href="/2022/01/matomo">matomo</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>16</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>17</sup></a></li>
 			
 		
 			
@@ -139,6 +139,34 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/dubbo-kryo">Feb 15, 2022 - kryo</a></h1>
+        
+        <div class="content">
+            <h1 id="kryo">Kryo</h1>
+
+<p>注意版本要跟  dubbo-spring-boot-starter 相同,2.7.8</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo-serialization-kryo&lt;/artifactId&gt;
+    &lt;version&gt;2.7.8&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+
+<p>在producer 和 consumer加一句配置即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.protocol.serialization=kryo
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/02/spring-cloud-gateway">Feb 10, 2022 - spring-cloud-gateway</a></h1>
@@ -344,68 +372,6 @@ public class NacosRouteDynamicDataSource implements ApplicationRunner {
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.profiles.active=dev
 </code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">Jan 28, 2022 - spring cloud stream</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-stream---rocketmq">Spring Cloud Stream  &amp; RocketMQ</h1>
-
-<h2 id="rocketmq有两种实现方式">RocketMQ有两种实现方式</h2>
-
-<ol>
-  <li>Rocketmq-spring-boot-starter 框架 (rocketmq &amp;&amp; spring-boot)</li>
-  <li>Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ <a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></li>
-</ol>
-
-<p>我选择版本2.2.7.RELEASE: <a href="https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq">https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq</a></p>
-
-<p>注意处理冲突和添加依赖，我这边缺少了  spring-boot-actuator-autoconfigure</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-actuator-autoconfigure --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-actuator-autoconfigure&lt;/artifactId&gt;
-            &lt;version&gt;2.3.12.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<p>sample <a href="https://github.com/spring-cloud/spring-cloud-stream-samples">https://github.com/spring-cloud/spring-cloud-stream-samples</a></p>
-
-<p>代码很简单
-<img src="/images/202201/1643521131415.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643521145955.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643521166242.jpg" alt="embbed" width="1000" /></p>
-
-<p>配置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
-spring.cloud.stream.bindings.output1.content-type=application/json
-
-</code></pre></div></div>
-
-<h2 id="消费者">消费者</h2>
-
-<p>配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-</code></pre></div></div>
-
-<p>代码</p>
-
-<p><img src="/images/202201/1643523658805.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643523559576.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643523584792.jpg" alt="embbed" width="1000" /></p>
-
-<p>调试ok</p>
 
 
         </div>
