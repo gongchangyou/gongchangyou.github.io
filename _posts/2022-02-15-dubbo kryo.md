@@ -45,9 +45,9 @@ dubbo.protocol.serialization=kryo
 
 3. ExtensionLoader 中有个属性叫 cachedClasses,  是个map，会创建type名到类的映射
 
-```
-private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
-```
+    ```
+    private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
+    ```
 
 4. 那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .  ExtensionLoader 会去扫描 文件夹 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。
 
@@ -57,20 +57,20 @@ private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
 kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
    ```
 
-```
-private Map<String, Class<?>> loadExtensionClasses() {
-        cacheDefaultExtensionName();
+    ```
+    private Map<String, Class<?>> loadExtensionClasses() {
+            cacheDefaultExtensionName();
 
-        Map<String, Class<?>> extensionClasses = new HashMap<>();
+            Map<String, Class<?>> extensionClasses = new HashMap<>();
 
-        for (LoadingStrategy strategy : strategies) {
-            loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-            loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+            for (LoadingStrategy strategy : strategies) {
+                loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+                loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+            }
+
+            return extensionClasses;
         }
-
-        return extensionClasses;
-    }
-```
+    ```
 
 5. 最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好
 
