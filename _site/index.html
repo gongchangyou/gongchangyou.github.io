@@ -162,6 +162,53 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.protocol.serialization=kryo
 </code></pre></div></div>
 
+<p>原理：</p>
+
+<ol>
+  <li>
+    <p>我们配置的序列化框架 比如 kryo , 这个字符串”kryo”是设置在了ProtocolConfig中</p>
+  </li>
+  <li>
+    <p>真正需要序列化的时候，是由AbstractCodec 根据 ExtensionLoader.getExtension 获取</p>
+  </li>
+  <li>
+    <p>ExtensionLoader 中有个属性叫 cachedClasses,  是个map，会创建type名到类的映射</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private final Holder&lt;Map&lt;String, Class&lt;?&gt;&gt;&gt; cachedClasses = new Holder&lt;&gt;();
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .  ExtensionLoader 会去扫描 文件夹 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
+kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
+kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() {
+        cacheDefaultExtensionName();
+
+        Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
+
+        for (LoadingStrategy strategy : strategies) {
+            loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+            loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+        }
+
+        return extensionClasses;
+    }
+</code></pre></div></div>
+
+<ol>
+  <li>最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好</li>
+</ol>
+
+<p><img src="/images/202202/1644917724845.jpg" alt="set class" width="1000" /></p>
 
         </div>
     </div>
