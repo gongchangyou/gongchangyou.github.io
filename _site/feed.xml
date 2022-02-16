@@ -14,15 +14,16 @@
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 生产环境的话，我们一般使用endpoint 固定域名
 2. 测试环境我们可以指定server-addr
 如下所示
-
-![config](/images/202202/1644977241350.jpg){: width=&quot;1000&quot; }
-
-![set server list](/images/202202/1644977146089.jpg){: width=&quot;1000&quot; }
-
-优先选择server list, 如果没有配置，则请求http://域名/nacos/serverlist 接口获取 nacos注册服务器列表
-
-![set server list](/images/202202/1644977321417.jpg){: width=&quot;1000&quot; }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1644977241350.jpg&quot; alt=&quot;config&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1644977146089.jpg&quot; alt=&quot;set server list&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;优先选择server list, 如果没有配置，则请求http://域名/nacos/serverlist 接口获取 nacos注册服务器列表
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1644977321417.jpg&quot; alt=&quot;set server list code&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
 
 </description>
 				<pubDate>Wed, 16 Feb 2022 10:05:06 +0800</pubDate>
@@ -93,6 +94,7 @@ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 &lt;/ol&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202202/1644917724845.jpg&quot; alt=&quot;set class&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
 </description>
 				<pubDate>Tue, 15 Feb 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/dubbo-kryo</link>

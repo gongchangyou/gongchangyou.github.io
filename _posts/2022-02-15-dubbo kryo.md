@@ -75,3 +75,4 @@ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 5. 最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好
 
 ![set class]({{ site.baseurl}}/images/202202/1644917724845.jpg){: width="1000" }
+
