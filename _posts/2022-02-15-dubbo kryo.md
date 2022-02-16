@@ -9,7 +9,7 @@ tag: [java]
 
 
 
-#  Kryo
+#  dubbo 序列化配置 Kryo
 
 
 
