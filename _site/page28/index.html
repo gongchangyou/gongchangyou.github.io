@@ -138,35 +138,60 @@
 
         </div>
         <div class="col-md-9">
-            <div class="well">
-<h1>Articles by tag :shell</h1>
-<div>
-    
-    <ul>
+            
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
         
-            <li><a href="/2019/03/tmux">tmux常用命令</a></li>
-        
-            <li><a href="/2017/12/curl-command">curl常用命令</a></li>
-        
-            <li><a href="/2017/11/sublime-command">sublime常用命令</a></li>
-        
-            <li><a href="/2017/11/docker-command">docker常用命令</a></li>
-        
-            <li><a href="/2017/11/apt-get-command">apt-get命令</a></li>
-        
-            <li><a href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab">vim 查看空格</a></li>
-        
-            <li><a href="/2016/07/ssh-%E4%BF%9D%E5%AD%98host%E5%92%8C%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D">ssh rsa</a></li>
-        
-            <li><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">nfs磁盘共享</a></li>
-        
-            <li><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">sed替换命令</a></li>
-        
-            <li><a href="/2014/05/shell-command">shell 常用命令</a></li>
-        
-    
+        <div class="content">
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>OC代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
+
+
+        </div>
+    </div>
 </div>
+
+
+<div class="pagination">
+  
+      
+        <a class="btn btn-default" href="/page27" class="previous">Newer</a>
+      
+  
+  <span class="page_number ">Page: 28 of 28</span>
+  
 </div>
+
         </div>
     </div>
 </div>
