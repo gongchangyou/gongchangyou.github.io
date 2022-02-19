@@ -76,3 +76,25 @@ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 
 ![set class]({{ site.baseurl}}/images/202202/1644917724845.jpg){: width="1000" }
 
+
+
+
+问题：
+
+本来想看看默认序列化是如何设置的，有两种方法
+
+法1，在SPI注解上加属性 ，由属性控制
+
+![1]({{ site.baseurl}}/images/202202/1645257330444.jpg){: width="1000" }
+
+法2，设置一个Constant类, 将默认值填进去
+
+![1]({{ site.baseurl}}/images/202202/1645257359049.jpg){: width="1000" }
+
+
+
+现在就是初始化的时候是根据SPI的value，但是获取实现类的时候又用到了Constant类，让人有点疑惑，两个默认值
+
+![1]({{ site.baseurl}}/images/202202/1645257426431.jpg){: width="1000" }
+
+![1]({{ site.baseurl}}/images/202202/WechatIMG587.png){: width="1000" }

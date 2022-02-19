@@ -126,6 +126,23 @@ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 
 &lt;p&gt;&lt;img src=&quot;/images/202202/1644917724845.jpg&quot; alt=&quot;set class&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;问题：&lt;/p&gt;
+
+&lt;p&gt;本来想看看默认序列化是如何设置的，有两种方法&lt;/p&gt;
+
+&lt;p&gt;法1，在SPI注解上加属性 ，由属性控制&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1645257330444.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;法2，设置一个Constant类, 将默认值填进去&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1645257359049.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;现在就是初始化的时候是根据SPI的value，但是获取实现类的时候又用到了Constant类，让人有点疑惑，两个默认值&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/1645257426431.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202202/WechatIMG587.png&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Tue, 15 Feb 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/dubbo-kryo</link>
