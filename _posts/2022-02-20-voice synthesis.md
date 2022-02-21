@@ -93,6 +93,8 @@ https://github.com/babysor/MockingBird/blob/main/README-CN.md
    ```
    git clone git@github.com:babysor/MockingBird.git
    
+   cd MockingBird
+   #安装剩余的依赖
    pip install -r requirements.txt
    ```
 
