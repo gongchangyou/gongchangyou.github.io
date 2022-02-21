@@ -136,11 +136,16 @@ pip install -r requirements.txt
 
 &lt;ol&gt;
   &lt;li&gt;
+    &lt;p&gt;如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
     &lt;p&gt;如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
 _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
 即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
+   
+不同的模型(*.pt) 这里可能还要改回去
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;

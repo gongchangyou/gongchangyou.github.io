@@ -124,12 +124,16 @@ https://github.com/babysor/MockingBird/blob/main/README-CN.md
 
 Notice：
 
-1. 如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题
+1. 如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/\__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.
+
+2. 如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题
 
    ```
    这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
    _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
    即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
+   
+   不同的模型(*.pt) 这里可能还要改回去
    ```
 
 2. 演示视频 [https://www.bilibili.com/video/BV1uh411B7AD/](https://www.bilibili.com/video/BV1uh411B7AD/)
