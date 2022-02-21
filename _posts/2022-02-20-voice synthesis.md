@@ -116,9 +116,9 @@ https://github.com/babysor/MockingBird/blob/main/README-CN.md
 
 10. 打开工具
 
-11. ```
+	```
     python demo_toolbox.py -d <datasets_root>
-    ```
+  ```
 
     
 
@@ -141,4 +141,3 @@ Notice：
 
 
 ### 可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频
-
