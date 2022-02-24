@@ -141,110 +141,40 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
+        <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
         
         <div class="content">
-            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
+            <p>C++代码</p>
 
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<p>问题：mvn deploy -X</p>
-<ol>
-  <li>405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</li>
-</ol>
+<p>OC代码</p>
 
-<p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
-
-        &lt;repository&gt;
-
-            &lt;id&gt;nexus-releases&lt;/id&gt;
-
-            &lt;url&gt;
-				就是这行，要跟maven服务器上的settings中的URL保持一致
-                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
-
-            &lt;/url&gt;
-
-        &lt;/repository&gt;
-</code></pre></div></div>
-<ol>
-  <li>401错误  本地的settings.xml账号错误</li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;servers&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-snapshots&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-&lt;/servers&gt;
-</code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
-<p>两个方法</p>
-
-<ol>
-  <li>Nacos官方用nacos client + spring boot 模式</li>
-  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
-</ol>
-
-<p>注意：如果关闭应用的话，nacos中的配置还在</p>
-
-<p>application.properties没有拷贝到target文件夹的原因？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
-</code></pre></div></div>
-<p>改成 下面，或者直接这行删掉</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
-</code></pre></div></div>
-
-<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
-<ol>
-  <li>https://github.com/alibaba/nacos/releases</li>
-</ol>
-
-<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
-
-<ol>
-  <li>
-    <p>解压缩</p>
-  </li>
-  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
-    <ol>
-      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
-    </ol>
-  </li>
-  <li>http://127.0.0.1:8848/nacos/</li>
-  <li>账号名密码是 <strong>nacos/nacos</strong></li>
-</ol>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
 
         </div>
@@ -255,12 +185,10 @@
 <div class="pagination">
   
       
-        <a class="btn btn-default" href="/page6" class="previous">Newer</a>
+        <a class="btn btn-default" href="/page28" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 7 of 29</span>
-  
-    <a class="btn btn-default" href="/page8" class="next">Older</a>
+  <span class="page_number ">Page: 29 of 29</span>
   
 </div>
 

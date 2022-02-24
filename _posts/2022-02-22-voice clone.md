@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "voice"
-date: 2022-02-20 10:05:06 +0800
+date: 2022-02-22 10:05:06 +0800
 comments: true
 category: python
 tag: [python]
@@ -23,7 +23,7 @@ pyttsx3是一套基于实现SAPI5文语合成引擎的Python封装库，该库�
 
 
 
-## [MockingBird](https://github.com/babysor/MockingBird) - 貌似这个只是学习音色
+## [MockingBird](https://github.com/babysor/MockingBird)  - 貌似这个只是学习音色
 
 https://github.com/babysor/MockingBird/blob/main/README-CN.md
 
@@ -141,3 +141,4 @@ Notice：
 
 
 ### 可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频
+

@@ -138,135 +138,60 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/02/ssh">Feb 24, 2022 - ssh</a></h1>
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
-
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
-
-<p>问题：mvn deploy -X</p>
-<ol>
-  <li>405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</li>
-</ol>
-
-<p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
-
-        &lt;repository&gt;
-
-            &lt;id&gt;nexus-releases&lt;/id&gt;
-
-            &lt;url&gt;
-				就是这行，要跟maven服务器上的settings中的URL保持一致
-                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
-
-            &lt;/url&gt;
-
-        &lt;/repository&gt;
-</code></pre></div></div>
-<ol>
-  <li>401错误  本地的settings.xml账号错误</li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;servers&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-snapshots&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-&lt;/servers&gt;
-</code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
-<p>两个方法</p>
+            <div class="post-content">
+            <h1 id="ssh-无密码访问">ssh 无密码访问</h1>
 
 <ol>
-  <li>Nacos官方用nacos client + spring boot 模式</li>
-  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
-</ol>
-
-<p>注意：如果关闭应用的话，nacos中的配置还在</p>
-
-<p>application.properties没有拷贝到target文件夹的原因？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
-</code></pre></div></div>
-<p>改成 下面，或者直接这行删掉</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
-</code></pre></div></div>
-
-<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
-<ol>
-  <li>https://github.com/alibaba/nacos/releases</li>
-</ol>
-
-<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
-
-<ol>
+  <li>apt-get install openssh-server</li>
+  <li>查看状态 service ssh status</li>
   <li>
-    <p>解压缩</p>
+    <p>启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)</p>
   </li>
-  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
-    <ol>
-      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
-    </ol>
-  </li>
-  <li>http://127.0.0.1:8848/nacos/</li>
-  <li>账号名密码是 <strong>nacos/nacos</strong></li>
+  <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
+  <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
 </ol>
 
 
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/02/voice-clone" class="previous">Older Post</a>
+              
+</div>
+
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
+  <script type="text/javascript">
+    var disqus_shortname = '';
 
-<div class="pagination">
-  
-      
-        <a class="btn btn-default" href="/page6" class="previous">Newer</a>
-      
-  
-  <span class="page_number ">Page: 7 of 29</span>
-  
-    <a class="btn btn-default" href="/page8" class="next">Older</a>
-  
-</div>
+    var disqus_config = function () {
+        this.page.identifier = '2022-02-ssh';
+    };
 
-        </div>
-    </div>
-</div>
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">

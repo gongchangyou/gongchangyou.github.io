@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/ssh">ssh</a></li>
+        
+          <li><a href="/2022/02/voice-clone">voice</a></li>
+        
           <li><a href="/2022/02/voice-synthesis">voice</a></li>
         
           <li><a href="/2022/02/spring-MVC">spring mvc</a></li>
         
           <li><a href="/2022/02/alibaba-nacos-client-server">nacos serverlist</a></li>
-        
-          <li><a href="/2022/02/dubbo-kryo">kryo</a></li>
-        
-          <li><a href="/2022/02/spring-cloud-gateway">spring-cloud-gateway</a></li>
         
     </ul>
 </div>
@@ -100,11 +100,11 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>10</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>3</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
 			
 		
 			
@@ -154,7 +154,7 @@ docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --pub
 
 vi /srv/gitlab/config/gitlab.rb
 
-external_url 
+external_url 'http://ip' 不用写port
 
 
 postgresql['shared_buffers'] = "256MB"
@@ -165,9 +165,28 @@ gitlab-ctl tail puma
 puma['port'] = 8888
 gitlab_workhorse['auth_backend'] = "http://localhost:8888"
 
-
-
 </code></pre></div></div>
+
+<h2 id="管理员账号初始化">管理员账号初始化</h2>
+<p>a、 切换目录：cd /opt/gitlab/bin</p>
+
+<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
+
+<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
+
+<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
+
+<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
+
+<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
+
+<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
+
+<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
+
+<p>i、至此大功搞成。</p>
+
+<p>https://www.jianshu.com/p/b1736c34c150</p>
 
 <h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
 

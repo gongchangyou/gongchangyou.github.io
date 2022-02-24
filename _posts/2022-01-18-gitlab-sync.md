@@ -13,6 +13,8 @@ tag: [java]
 
 [https://www.jianshu.com/p/52de6a8d29d6](https://www.jianshu.com/p/52de6a8d29d6)
 
+### lsyncd 安装在主服务器上
+
 
 
 lsyncd 配置完事就能跑了

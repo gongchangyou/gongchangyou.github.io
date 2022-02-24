@@ -22,7 +22,7 @@ docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --pub
 
 vi /srv/gitlab/config/gitlab.rb
 
-external_url 
+external_url 'http://ip' 不用写port
 
 
 postgresql['shared_buffers'] = "256MB"
@@ -33,9 +33,30 @@ gitlab-ctl tail puma
 puma['port'] = 8888
 gitlab_workhorse['auth_backend'] = "http://localhost:8888"
 
-
-
 ```
+
+## 管理员账号初始化
+a、 切换目录：cd /opt/gitlab/bin
+
+b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码
+
+c、在irb(main):001:0> 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）
+
+d、通过u.password='12345678'设置密码为12345678(这里的密码看自己喜欢)：
+
+e、通过u.password_confirmation='12345678' 再次确认密码
+
+f、通过 u.save!进行保存（切记切记 后面的 !）
+
+g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。
+
+h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了
+
+i、至此大功搞成。
+
+
+
+https://www.jianshu.com/p/b1736c34c150
 
 #  方法2（不推荐）：gitlab-install
 
