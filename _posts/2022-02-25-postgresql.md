@@ -18,7 +18,7 @@ tag: [mysql]
 2. sudo apt install postgresql postgresql-contrib
 3. service postgresql start
 4. sudo -s postgresql	 #切换用户
-5. pgsql 	#登录PostgreSQL
+5. psql 	#登录PostgreSQL
 6. ALTER USER postgres WITH PASSWORD 'password'; # 初始化密码  
 
 
@@ -44,15 +44,16 @@ tag: [mysql]
 
    问题2： no pg_hba.conf entry for host "172.17.0.4", ... SSL on connection to server at "10.10.48.194", port 5432
 
-   编辑 pg_hba.conf文件 
-
-   把报错中的host 拷贝到这个文件中：如下编写
+   编辑 pg_hba.conf文件 ， 把报错中的host 拷贝到这个文件中：如下编写。
+   因为我是docker启动的pgadmin4 所以这里host要选择 docker桥接的那个host
 
    ```
    vi /etc/postgresql/12/main/pg_hba.conf
    
    host all all 172.17.0.4/24 md5
    ```
+   
+   
 
    
 
