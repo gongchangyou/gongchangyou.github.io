@@ -14,6 +14,10 @@
 
 &lt;p&gt;一个开源的系统监控软件，尤其是GPU和slurm的监控&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&quot;https://github.com/grafana/grafana/issues/45710&quot;&gt;https://github.com/grafana/grafana/issues/45710&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;看起来纵坐标和tooltip上的数值不太一样&lt;/p&gt;
+
 &lt;p&gt;图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json&lt;/p&gt;
 
 &lt;p&gt;grep  GPU Power Usage&lt;/p&gt;
