@@ -138,78 +138,101 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/02/postgresql">Feb 25, 2022 - ssh</a></h1>
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
-        
-        <div class="content">
-            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
+            <div class="post-content">
+            <h1 id="postgresql">Postgresql</h1>
 
-<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
+<h3 id="ubuntu-安装-postgresql">ubuntu 安装 postgresql</h3>
+<p><a href="https://linux.cn/article-11480-1.html">https://linux.cn/article-11480-1.html</a></p>
+
+<ol>
+  <li>sudo apt update</li>
+  <li>sudo apt install postgresql postgresql-contrib</li>
+  <li>service postgresql start</li>
+  <li>sudo -s postgresql	 #切换用户</li>
+  <li>pgsql 	#登录PostgreSQL</li>
+  <li>ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码</li>
+</ol>
+
+<h3 id="安装gui--pgadmin">安装GUI  pgadmin</h3>
+
+<ol>
+  <li>
+    <p>docker pull dpage/pgadmin4</p>
+  </li>
+  <li>
+    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4</p>
+  </li>
+  <li>
+    <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
+
+    <p>问题： create server 时发现 无法连接server</p>
+
+    <p>解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*' 
+</code></pre></div>    </div>
+
+    <p>重启postgresql : service postgresql restart</p>
+
+    <p>问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “10.10.48.194”, port 5432</p>
+
+    <p>编辑 pg_hba.conf文件</p>
+
+    <p>把报错中的host 拷贝到这个文件中：如下编写</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postgresql/12/main/pg_hba.conf
+   
+host all all 172.17.0.4/24 md5
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把 安装postgresql 设置好的password 填入即可</p>
+  </li>
+</ol>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+                <a class="btn btn-default" href="/2022/02/grafana" class="next">Newer Post</a>
+              
+              
+                <a class="btn btn-default" href="/2022/02/ssh" class="previous">Older Post</a>
+              
+</div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/12/%E9%BE%9A%E4%B8%80%E5%B3%B0%E5%87%BA%E7%94%9F%E5%95%A6">Dec 16, 2015 - 龚一峰出生啦！</a></h1>
-        
-        <div class="content">
-            <p>12月10日17:20，龚一峰出生，人生第一泡尿尿在了自己脸上。</p>
+  <script type="text/javascript">
+    var disqus_shortname = '';
 
-<p><img src="/images/201512/IMG_20151210_234301.jpg" alt="" /></p>
+    var disqus_config = function () {
+        this.page.identifier = '2022-02-postgresql';
+    };
 
-<object id="STK_137687746371535" style="visibility: visible;" width="440" height="356" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="allowscriptaccess" value="never" /><param name="pluginspage" value="http://get.adobe.com/cn/flashplayer/" /><param name="flashvars" value="playMovie=true&amp;auto=1" /><param name="allowfullscreen" value="true" /><param name="quality" value="high" /><param name="src" value="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" /><param name="wmode" value="transparent" /><embed id="STK_137687746371535" style="visibility: visible;" width="440" height="356" type="application/x-shockwave-flash" src="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" allowscriptaccess="never" pluginspage="http://get.adobe.com/cn/flashplayer/" flashvars="playMovie=true&amp;auto=1" allowfullscreen="true" quality="high" wmode="transparent" /></object>
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
 
-<p>名字取自</p>
-
-<p>会当凌绝顶，一览众山小</p>
-
-<p>海到无边天作岸，山登绝顶我为峰</p>
-
-<p>是你爹我喜欢的句子，少年就应该有这种豪气，是你姑奶奶取了其中两个字哦。</p>
-
-<p><img src="/images/201512/mmexport1453695205909.jpg" alt="" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
-        
-        <div class="content">
-            <p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
-
-<p>通过map&lt;string, createClass&gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass</p>
-
-<p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
-
-<p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="pagination">
-  
-      
-        <a class="btn btn-default" href="/page18" class="previous">Newer</a>
-      
-  
-  <span class="page_number ">Page: 19 of 29</span>
-  
-    <a class="btn btn-default" href="/page20" class="next">Older</a>
-  
-</div>
-
-        </div>
-    </div>
-</div>
 
 <div class="container-fluid">
     <div class="row-fluid">

@@ -8,6 +8,89 @@
 		
 			<item>
 				<title>ssh</title>
+				<description>&lt;h1 id=&quot;grafana&quot;&gt;grafana&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/grafana/grafana/&quot;&gt;https://github.com/grafana/grafana/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一个开源的系统监控软件，尤其是GPU和slurm的监控&lt;/p&gt;
+
+&lt;p&gt;图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json&lt;/p&gt;
+
+&lt;p&gt;grep  GPU Power Usage&lt;/p&gt;
+
+&lt;p&gt;stack 改成 false&lt;/p&gt;
+
+&lt;p&gt;重启  grafana 。&lt;/p&gt;
+
+&lt;p&gt;root        3180  0.0  0.0 2380228 59904 ?       Ssl  Feb16   1:54 /usr/bin/docker run –rm –network host –name docker.grafana.service -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana grafana/grafana
+472         3925  0.1  0.0 796740 70028 ?        Ssl  Feb16  15:57 grafana-server –homepath=/usr/share/grafana –config=/etc/grafana/grafana.ini –packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins&lt;/p&gt;
+</description>
+				<pubDate>Fri, 25 Feb 2022 13:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/02/grafana</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/02/grafana</guid>
+			</item>
+		
+			<item>
+				<title>ssh</title>
+				<description>&lt;h1 id=&quot;postgresql&quot;&gt;Postgresql&lt;/h1&gt;
+
+&lt;h3 id=&quot;ubuntu-安装-postgresql&quot;&gt;ubuntu 安装 postgresql&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://linux.cn/article-11480-1.html&quot;&gt;https://linux.cn/article-11480-1.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;sudo apt update&lt;/li&gt;
+  &lt;li&gt;sudo apt install postgresql postgresql-contrib&lt;/li&gt;
+  &lt;li&gt;service postgresql start&lt;/li&gt;
+  &lt;li&gt;sudo -s postgresql	 #切换用户&lt;/li&gt;
+  &lt;li&gt;pgsql 	#登录PostgreSQL&lt;/li&gt;
+  &lt;li&gt;ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;安装gui--pgadmin&quot;&gt;安装GUI  pgadmin&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;docker pull dpage/pgadmin4&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;网页打开Localhost:5433 输入第二步的用户名密码&lt;/p&gt;
+
+    &lt;p&gt;问题： create server 时发现 无法连接server&lt;/p&gt;
+
+    &lt;p&gt;解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*' 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;重启postgresql : service postgresql restart&lt;/p&gt;
+
+    &lt;p&gt;问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “10.10.48.194”, port 5432&lt;/p&gt;
+
+    &lt;p&gt;编辑 pg_hba.conf文件&lt;/p&gt;
+
+    &lt;p&gt;把报错中的host 拷贝到这个文件中：如下编写&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/postgresql/12/main/pg_hba.conf
+   
+host all all 172.17.0.4/24 md5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;把 安装postgresql 设置好的password 填入即可&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<pubDate>Fri, 25 Feb 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/02/postgresql</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/02/postgresql</guid>
+			</item>
+		
+			<item>
+				<title>ssh</title>
 				<description>&lt;h1 id=&quot;ssh-无密码访问&quot;&gt;ssh 无密码访问&lt;/h1&gt;
 
 &lt;ol&gt;
@@ -685,110 +768,6 @@ public class NacosRouteDynamicDataSource implements ApplicationRunner {
 				<pubDate>Tue, 08 Feb 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/slf4j-logback</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/02/slf4j-logback</guid>
-			</item>
-		
-			<item>
-				<title>spring cloud stream</title>
-				<description>&lt;h1 id=&quot;spring-cloud-stream---rocketmq&quot;&gt;Spring Cloud Stream  &amp;amp; RocketMQ&lt;/h1&gt;
-
-&lt;h2 id=&quot;rocketmq有两种实现方式&quot;&gt;RocketMQ有两种实现方式&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Rocketmq-spring-boot-starter 框架 (rocketmq &amp;amp;&amp;amp; spring-boot)&lt;/li&gt;
-  &lt;li&gt;Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ &lt;a href=&quot;https://spring.io/projects/spring-cloud-stream&quot;&gt;https://spring.io/projects/spring-cloud-stream&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;我选择版本2.2.7.RELEASE: &lt;a href=&quot;https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq&quot;&gt;https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;注意处理冲突和添加依赖，我这边缺少了  spring-boot-actuator-autoconfigure&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-actuator-autoconfigure --&amp;gt;
-        &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;spring-boot-actuator-autoconfigure&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;2.3.12.RELEASE&amp;lt;/version&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;sample &lt;a href=&quot;https://github.com/spring-cloud/spring-cloud-stream-samples&quot;&gt;https://github.com/spring-cloud/spring-cloud-stream-samples&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;代码很简单
-&lt;img src=&quot;/images/202201/1643521131415.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;
-&lt;img src=&quot;/images/202201/1643521145955.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;
-&lt;img src=&quot;/images/202201/1643521166242.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;配置&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
-spring.cloud.stream.bindings.output1.content-type=application/json
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;消费者&quot;&gt;消费者&lt;/h2&gt;
-
-&lt;p&gt;配置&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;代码&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202201/1643523658805.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;
-&lt;img src=&quot;/images/202201/1643523559576.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;
-&lt;img src=&quot;/images/202201/1643523584792.jpg&quot; alt=&quot;embbed&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;调试ok&lt;/p&gt;
-
-</description>
-				<pubDate>Fri, 28 Jan 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/01/Spring-Cloud-Stream(RocketMQ)</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/01/Spring-Cloud-Stream(RocketMQ)</guid>
-			</item>
-		
-			<item>
-				<title>jira</title>
-				<description>&lt;h1 id=&quot;jira-部署&quot;&gt;Jira 部署&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载bin文件 &lt;a href=&quot;https://www.atlassian.com/software/jira/update&quot;&gt;https://www.atlassian.com/software/jira/update&lt;/a&gt;  8.12.0&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建db&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;creat database jira
-
-create user 'jira'@'%' IDENTIFIED BY 'password';
-
-grant all privileges on jira.* to 'jira'@'%';
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;mysql connector jar包  &lt;a href=&quot;https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27&quot;&gt;https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;破解jar包 &lt;a href=&quot;https://www.cnblogs.com/houchaoying/p/9096118.html&quot;&gt;https://www.cnblogs.com/houchaoying/p/9096118.html&lt;/a&gt; 拉到最下面&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;cd /opt/atlassian/jira/bin&lt;/li&gt;
-  &lt;li&gt;sh startup.sh&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;又&quot;&gt;又&lt;/h1&gt;
-
-&lt;p&gt;卸载是在 /opt/atlassian/jira/uninstall&lt;/p&gt;
-
-&lt;p&gt;关闭是在  /opt/atlassian/jira/bin/shutdown.sh&lt;/p&gt;
-
-</description>
-				<pubDate>Mon, 24 Jan 2022 14:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/01/jira</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/01/jira</guid>
 			</item>
 		
 	</channel>

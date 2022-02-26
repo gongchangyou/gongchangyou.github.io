@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/02/grafana">ssh</a></li>
+        
+          <li><a href="/2022/02/postgresql">ssh</a></li>
+        
           <li><a href="/2022/02/ssh">ssh</a></li>
         
           <li><a href="/2022/02/voice-clone">voice</a></li>
         
           <li><a href="/2022/02/voice-synthesis">voice</a></li>
-        
-          <li><a href="/2022/02/spring-MVC">spring mvc</a></li>
-        
-          <li><a href="/2022/02/alibaba-nacos-client-server">nacos serverlist</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>5</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>6</sup></a></li>
 			
 		
 			
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>19</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>20</sup></a></li>
 			
 		
 			
@@ -166,6 +166,8 @@
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
 </code></pre></div></div>
+
+<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
 
             </div>
             
