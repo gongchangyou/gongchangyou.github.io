@@ -42,7 +42,7 @@
   &lt;li&gt;sudo apt install postgresql postgresql-contrib&lt;/li&gt;
   &lt;li&gt;service postgresql start&lt;/li&gt;
   &lt;li&gt;sudo -s postgresql	 #切换用户&lt;/li&gt;
-  &lt;li&gt;psql 	#登录PostgreSQL&lt;/li&gt;
+  &lt;li&gt;pgsql 	#登录PostgreSQL&lt;/li&gt;
   &lt;li&gt;ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -69,8 +69,9 @@
 
     &lt;p&gt;问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “10.10.48.194”, port 5432&lt;/p&gt;
 
-    &lt;p&gt;编辑 pg_hba.conf文件 ， 把报错中的host 拷贝到这个文件中：如下编写。
-因为我是docker启动的pgadmin4 所以这里host要选择 docker桥接的那个host&lt;/p&gt;
+    &lt;p&gt;编辑 pg_hba.conf文件&lt;/p&gt;
+
+    &lt;p&gt;把报错中的host 拷贝到这个文件中：如下编写&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/postgresql/12/main/pg_hba.conf
    
@@ -78,10 +79,11 @@ host all all 172.17.0.4/24 md5
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;把 安装postgresql 设置好的password 填入即可&lt;/p&gt;
+    &lt;p&gt;把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;&lt;img src=&quot;/images/202202/WechatIMG31.png&quot; alt=&quot;set server list code&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Fri, 25 Feb 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/postgresql</link>
