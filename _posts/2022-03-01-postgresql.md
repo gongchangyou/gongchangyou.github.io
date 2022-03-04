@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "ssh"
-date: 2022-02-25 10:05:06 +0800
+title: "Postgresql"
+date: 2022-03-01 10:05:06 +0800
 comments: true
 category: mysql
 tag: [mysql]
@@ -61,5 +61,5 @@ tag: [mysql]
 4. 把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的
 
 
-![set server list code]({{ site.baseurl}}/images/202202/WechatIMG31.png){: width="1000" }
+![set server list code]({{ site.baseurl}}/images/202202/WechatIMG31.png){: width="800" }
 
