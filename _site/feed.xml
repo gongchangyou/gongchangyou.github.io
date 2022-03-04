@@ -76,7 +76,7 @@ insert into point_test (name,pt) values ('p1',ST_GeomFromText('Point(0 0 0)'));
 
 &lt;p&gt;至于用gist 还是spgist索引，取决于数据的稠密程度 &lt;a href=&quot;https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis&quot;&gt;https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;实际使用下来，1百万行，1000^3 的立方体中， 搜索在某个矩阵中的（10x10) 耗时是100ms左右，&lt;/p&gt;
+&lt;p&gt;实际使用下来，1百万行，1000^3 的立方体中， 搜索在某个矩阵中的（10x10) 耗时是100ms左右，还是非常快的。如果不加索引的话，计算超时了都，估计1分钟之后都不会有结果。&lt;/p&gt;
 
 &lt;p&gt;索引大小52M&lt;/p&gt;
 
