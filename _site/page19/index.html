@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/postgis">postgis</a></li>
+        
           <li><a href="/2022/02/grafana">ssh</a></li>
         
           <li><a href="/2022/02/postgresql">ssh</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/02/ssh">ssh</a></li>
         
           <li><a href="/2022/02/voice-clone">voice</a></li>
-        
-          <li><a href="/2022/02/voice-synthesis">voice</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>6</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>7</sup></a></li>
 			
 		
 			
@@ -141,6 +141,21 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
+        
+        <div class="content">
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
         
         <div class="content">
@@ -177,23 +192,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
-        
-        <div class="content">
-            <p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
-
-<p>通过map&lt;string, createClass&gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass</p>
-
-<p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
-
-<p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -201,7 +199,7 @@
         <a class="btn btn-default" href="/page18" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 19 of 29</span>
+  <span class="page_number ">Page: 19 of 30</span>
   
     <a class="btn btn-default" href="/page20" class="next">Older</a>
   

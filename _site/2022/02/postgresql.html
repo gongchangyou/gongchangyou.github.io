@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/postgis">postgis</a></li>
+        
           <li><a href="/2022/02/grafana">ssh</a></li>
         
           <li><a href="/2022/02/postgresql">ssh</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/02/ssh">ssh</a></li>
         
           <li><a href="/2022/02/voice-clone">voice</a></li>
-        
-          <li><a href="/2022/02/voice-synthesis">voice</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>6</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>7</sup></a></li>
 			
 		
 			
@@ -164,7 +164,9 @@
     <p>docker pull dpage/pgadmin4</p>
   </li>
   <li>
-    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4</p>
+    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4</p>
+
+    <p>注意这里的volume 绑定的位置，未来导入导出csv 可以使用</p>
   </li>
   <li>
     <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
@@ -195,6 +197,7 @@ host all all 172.17.0.4/24 md5
 </ol>
 
 <p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="1000" /></p>
+
 
             </div>
             

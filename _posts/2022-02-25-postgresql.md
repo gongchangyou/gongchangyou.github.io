@@ -26,7 +26,9 @@ tag: [mysql]
 
 1. docker pull dpage/pgadmin4
 
-2. docker run -d -p 5433:80 --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 dpage/pgadmin4
+2. docker run -d -p 5433:80 --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4 
+
+   注意这里的volume 绑定的位置，未来导入导出csv 可以使用
 
 3. 网页打开Localhost:5433 输入第二步的用户名密码
 
@@ -57,6 +59,7 @@ tag: [mysql]
    
 
 4. 把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的
-  
+
 
 ![set server list code]({{ site.baseurl}}/images/202202/WechatIMG31.png){: width="1000" }
+
