@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
+        
           <li><a href="/2022/03/postgis">postgis</a></li>
         
           <li><a href="/2022/03/postgresql">Postgresql</a></li>
         
-          <li><a href="/2022/02/grafana">ssh</a></li>
+          <li><a href="/2022/02/grafana">grafana</a></li>
         
           <li><a href="/2022/02/ssh">ssh</a></li>
-        
-          <li><a href="/2022/02/voice-clone">voice</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>2</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>3</sup></a></li>
 			
 		
 			
@@ -141,6 +141,28 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">Jun 6, 2016 - lambda捕获</a></h1>
+        
+        <div class="content">
+            <p>int x = 1, y=2;</p>
+
+<p>auto z = [x,y]{return x+ y;};</p>
+
+<p>//auto z = [x,&amp;y]{return x+ y;}; 引用就是运行时，值就是编译时</p>
+
+<p>x= 3, y = 4;</p>
+
+<p>cout « z() « endl;</p>
+
+<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
         
         <div class="content">
@@ -179,19 +201,6 @@
 <p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
 
 <p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
 
         </div>
     </div>

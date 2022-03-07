@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
+        
+          <li><a href="/2022/03/postgis">postgis</a></li>
+        
+          <li><a href="/2022/03/postgresql">Postgresql</a></li>
+        
+          <li><a href="/2022/02/grafana">grafana</a></li>
+        
+          <li><a href="/2022/02/ssh">ssh</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/java" title="java">java<sup>20</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/03/gitlab-runner">Mar 4, 2022 - gitlab-runner</a></h1>
+            
+            <div class="post-content">
+            <h1 id="gitlab-cicd">gitlab CI/CD</h1>
+
+<p>持续集成和部署，其实我更倾向于使用jenkins，因为可以自由编写脚本和手动触发，回滚也比较方便。</p>
+
+<p>gitlab CI/CD就是把部署的脚本 统一到代码仓库。</p>
+
+<p>但是因为现有项目使用 CI/CD 所以还是先熟悉起来。</p>
+
+<p><a href="https://docs.gitlab.com/ee/ci/">官方文档</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/105157319">https://zhuanlan.zhihu.com/p/105157319</a></p>
+
+<p>runner分两种，shared runner / specific runner 看名字就知道了，前者是很多工程共享的runner，后者跟工程是1对1的。</p>
+
+<p>我们先试试看 shared runner. 先打开 http://gitlab.cebsit.ac.cn/admin/runners</p>
+
+<p><img src="/images/202203/1646634355101.jpg" alt="pgadmin" width="800" /></p>
+
+<p>注册的时候把url 和token写进去</p>
+
+<p>官方文档写的很清楚了 <a href="https://docs.gitlab.com/runner/install/docker.html">https://docs.gitlab.com/runner/install/docker.html</a></p>
+
+<ol>
+  <li>docker 启动
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -d --name gitlab-runner --restart always \
+     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     gitlab/gitlab-runner:latest
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>注册 runner ，这样gitlab就知道让这台服务器执行job了</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”</p>
+
+<p><img src="/images/202203/WechatIMG37.png" alt="pgadmin" width="800" /></p>
+
+<p>问题2： remote: You are not allowed to download code from this project.</p>
+
+<p><img src="/images/202203/WechatIMG38.jpeg" alt="pgadmin" width="800" /></p>
+
+<p>尝试去docker容器中新增</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen -t RSA
+</code></pre></div></div>
+<p>把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!</p>
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/03/postgis" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-03-gitlab-runner';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+

@@ -7,6 +7,64 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>gitlab-runner</title>
+				<description>&lt;h1 id=&quot;gitlab-cicd&quot;&gt;gitlab CI/CD&lt;/h1&gt;
+
+&lt;p&gt;持续集成和部署，其实我更倾向于使用jenkins，因为可以自由编写脚本和手动触发，回滚也比较方便。&lt;/p&gt;
+
+&lt;p&gt;gitlab CI/CD就是把部署的脚本 统一到代码仓库。&lt;/p&gt;
+
+&lt;p&gt;但是因为现有项目使用 CI/CD 所以还是先熟悉起来。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/ci/&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/105157319&quot;&gt;https://zhuanlan.zhihu.com/p/105157319&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;runner分两种，shared runner / specific runner 看名字就知道了，前者是很多工程共享的runner，后者跟工程是1对1的。&lt;/p&gt;
+
+&lt;p&gt;我们先试试看 shared runner. 先打开 http://gitlab.cebsit.ac.cn/admin/runners&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/1646634355101.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注册的时候把url 和token写进去&lt;/p&gt;
+
+&lt;p&gt;官方文档写的很清楚了 &lt;a href=&quot;https://docs.gitlab.com/runner/install/docker.html&quot;&gt;https://docs.gitlab.com/runner/install/docker.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;docker 启动
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -d --name gitlab-runner --restart always \
+     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     gitlab/gitlab-runner:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;注册 runner ，这样gitlab就知道让这台服务器执行job了&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG37.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;问题2： remote: You are not allowed to download code from this project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG38.jpeg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;尝试去docker容器中新增&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh-keygen -t RSA
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!&lt;/p&gt;
+</description>
+				<pubDate>Fri, 04 Mar 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/gitlab-runner</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-runner</guid>
+			</item>
+		
+			<item>
 				<title>postgis</title>
 				<description>&lt;h1 id=&quot;postgis&quot;&gt;Postgis&lt;/h1&gt;
 
@@ -189,7 +247,7 @@ host all all 172.17.0.4/24 md5
 			</item>
 		
 			<item>
-				<title>ssh</title>
+				<title>grafana</title>
 				<description>&lt;h1 id=&quot;grafana&quot;&gt;grafana&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/grafana/grafana/&quot;&gt;https://github.com/grafana/grafana/&lt;/a&gt;&lt;/p&gt;
@@ -688,124 +746,6 @@ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 				<pubDate>Tue, 15 Feb 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/dubbo-kryo</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/02/dubbo-kryo</guid>
-			</item>
-		
-			<item>
-				<title>spring-cloud-gateway</title>
-				<description>&lt;h1 id=&quot;spring-cloud-gateway&quot;&gt;Spring-cloud-gateway&lt;/h1&gt;
-
-&lt;h2 id=&quot;路由规则如果配置在applicationyaml中那么每次新增路由都需要部署重启gateway所以这个路由规则必须动态读取例如存放到nacos中&quot;&gt;路由规则如果配置在application.yaml中，那么每次新增路由都需要部署重启gateway，所以这个路由规则必须动态读取，例如存放到nacos中&lt;/h2&gt;
-
-&lt;p&gt;代码仓库:   &lt;a href=&quot;https://github.com/gongchangyou/gateway&quot;&gt;https://github.com/gongchangyou/gateway&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;http服务 &lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-producer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-producer&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;RouteDefinitionWriter 负责修改路由， RouteDefinitionLocator 接口只有一个方法 getRouteDefinitions，获取所有路由。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-			&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
-			&amp;lt;artifactId&amp;gt;spring-boot-starter-webflux&amp;lt;/artifactId&amp;gt;
-		&amp;lt;/dependency&amp;gt;
-		&amp;lt;dependency&amp;gt;
-			&amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-			&amp;lt;artifactId&amp;gt;spring-cloud-starter-gateway&amp;lt;/artifactId&amp;gt;
-		&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1644386286460.jpg&quot; alt=&quot;code&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;重点是 routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//        this.publisher.publishEvent(new RefreshRoutesEvent(this)); 这句好像没啥用
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;nacos-代码只需要添加nacos的listener又因为数据变更时只会执行一次回调没有心跳我们需要自行编写心跳逻辑&quot;&gt;Nacos: 代码只需要添加nacos的listener，又因为数据变更时只会执行一次回调，没有心跳，我们需要自行编写心跳逻辑&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-			&amp;lt;groupId&amp;gt;com.alibaba.cloud&amp;lt;/groupId&amp;gt;
-			&amp;lt;artifactId&amp;gt;spring-cloud-starter-alibaba-nacos-discovery&amp;lt;/artifactId&amp;gt;
-			&amp;lt;version&amp;gt;2.2.7.RELEASE&amp;lt;/version&amp;gt;
-			&amp;lt;exclusions&amp;gt;
-				&amp;lt;exclusion&amp;gt;
-					&amp;lt;groupId&amp;gt;org.apache.httpcomponents&amp;lt;/groupId&amp;gt;
-					&amp;lt;artifactId&amp;gt;httpclient&amp;lt;/artifactId&amp;gt;
-				&amp;lt;/exclusion&amp;gt;
-			&amp;lt;/exclusions&amp;gt;
-		&amp;lt;/dependency&amp;gt;
-		&amp;lt;dependency&amp;gt;
-			&amp;lt;groupId&amp;gt;com.alibaba.cloud&amp;lt;/groupId&amp;gt;
-			&amp;lt;artifactId&amp;gt;spring-cloud-starter-alibaba-nacos-config&amp;lt;/artifactId&amp;gt;
-			&amp;lt;version&amp;gt;2.2.7.RELEASE&amp;lt;/version&amp;gt;
-		&amp;lt;/dependency&amp;gt;
-		&amp;lt;dependency&amp;gt;
-			&amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-			&amp;lt;artifactId&amp;gt;spring-cloud-starter-loadbalancer&amp;lt;/artifactId&amp;gt;
-		&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Component
-@Slf4j
-public class NacosRouteDynamicDataSource implements ApplicationRunner {
-    @Autowired
-    private NacosConfigManager configManager;
-
-    private ConfigService configService;
-    @PostConstruct
-    void init () {
-        configService = configManager.getConfigService();
-    }
-    /**
-     * Callback used to run the bean.
-     *
-     * @param args incoming application arguments
-     * @throws Exception on error
-     */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        log.info(args.toString());
-        //监听nacos配置变化
-        dynamicRouteByNacosListener(&quot;gateway-dynamic-route-rule.json&quot;, &quot;gateway-dynamic-route-rule&quot;);
-        //心跳 顺便 初始化
-        while (true) {
-            String configInfo = configService.getConfig(&quot;gateway-dynamic-route-rule.json&quot;, &quot;gateway-dynamic-route-rule&quot;, 4000);
-            log.info(&quot;configInfo = {}&quot;, configInfo);
-            Thread.sleep(2000);
-        }
-    }
-
-    /**
-     * 监听nacos的配置
-     * @param dataId
-     * @param group
-     */
-    public void dynamicRouteByNacosListener (String dataId, String group){
-        try {
-            configService.addListener(dataId, group, new Listener()  {
-                @Override
-                public void receiveConfigInfo(String configInfo) {
-                    log.info(&quot;进行网关更新:\n\r{}&quot;,configInfo);
-                }
-                @Override
-                public Executor getExecutor() {
-                    log.info(&quot;getExecutor\n\r&quot;);
-                    return null;
-                }
-            });
-        } catch (NacosException e) {
-            log.error(&quot;从nacos接收动态路由配置出错!!!&quot;,e);
-        }
-    }
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在nacos手动配置路由&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1644471609530.jpg&quot; alt=&quot;nacos config&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 10 Feb 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/02/spring-cloud-gateway</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/02/spring-cloud-gateway</guid>
 			</item>
 		
 	</channel>
