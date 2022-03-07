@@ -74,3 +74,7 @@ runner分两种，shared runner / specific runner 看名字就知道了，前者
 ssh-keygen -t RSA
 ```
 把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!
+
+
+
+注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml
