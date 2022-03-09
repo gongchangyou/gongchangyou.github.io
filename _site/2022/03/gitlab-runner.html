@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
+        
           <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
         
           <li><a href="/2022/03/postgis">postgis</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/postgresql">Postgresql</a></li>
         
           <li><a href="/2022/02/grafana">grafana</a></li>
-        
-          <li><a href="/2022/02/ssh">ssh</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>3</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
 			
 		
 			
@@ -196,6 +196,23 @@
 
 <p>注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml</p>
 
+<p>问题3 ：</p>
+
+<p>偶发 报错 ，重试几次又好了</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
+fatal: could not set 'core.repositoryformatversion' to '0'
+Cleaning up project directory and file based variables
+00:00
+ERROR: Job failed: exit status 1
+</code></pre></div></div>
+
+<p>有看到网上这么解，没试过。 <a href="https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0">https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --file=.git/config core.repositoryformatversion 1  
+</code></pre></div></div>
+
+
             </div>
             
             <div id="disqus_thread">
@@ -206,6 +223,8 @@
             </div>
           </div>
           <div class="pagination">
+              
+                <a class="btn btn-default" href="/2022/03/gitlab-container" class="next">Newer Post</a>
               
               
                 <a class="btn btn-default" href="/2022/03/postgis" class="previous">Older Post</a>

@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
+        
           <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
         
           <li><a href="/2022/03/postgis">postgis</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/postgresql">Postgresql</a></li>
         
           <li><a href="/2022/02/grafana">grafana</a></li>
-        
-          <li><a href="/2022/02/ssh">ssh</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>3</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
 			
 		
 			
@@ -154,6 +154,18 @@
   <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
   <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
 </ol>
+
+<p>别名</p>
+
+<p>编辑 ~/.ssh/config</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ksyun_stg
+  HostName 120.92.232.118
+  Port 10022
+  User dingsongyun
+  IdentityFile ~/.ssh/id_rsa
+
+</code></pre></div></div>
 
 
             </div>

@@ -78,3 +78,26 @@ ssh-keygen -t RSA
 
 
 注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml
+
+
+
+问题3 ：
+
+偶发 报错 ，重试几次又好了 
+
+```
+error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
+fatal: could not set 'core.repositoryformatversion' to '0'
+Cleaning up project directory and file based variables
+00:00
+ERROR: Job failed: exit status 1
+```
+
+
+
+有看到网上这么解，没试过。 [https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0](https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0)
+
+```
+git config --file=.git/config core.repositoryformatversion 1  
+```
+

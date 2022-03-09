@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
+        
           <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
         
           <li><a href="/2022/03/postgis">postgis</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/postgresql">Postgresql</a></li>
         
           <li><a href="/2022/02/grafana">grafana</a></li>
-        
-          <li><a href="/2022/02/ssh">ssh</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>3</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
 			
 		
 			
@@ -139,6 +139,46 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
+        
+        <div class="content">
+            <ul>
+<li>创建并指定session名字<br />
+		tmux new -s $session_name</li>
+&lt;/li&gt;
+<li>删除session<br />
+ Ctrl+b :kill-session</li>
+<li>临时退出session<br />
+Ctrl+b d</li>
+<li>列出session<br />
+tmux ls</li>
+<li>进入已存在的session<br />
+tmux a -t $session_name</li>
+<li>删除所有session<br />
+Ctrl+b :kill-server</li>
+<li>删除指定session<br />
+tmux kill-session -t $session_name</li>
+<li>删除指定window<br />
+Ctrl+b : &amp;</li>
+</ul>
+
+<p>settings 鼠标滚动接管tmux历史窗口</p>
+
+<ul><li>vi ~/.tmux.conf</li>
+<li>set-window-option -g mode-mouse on</li>
+<li>tmux source-file ~/.tmux.conf</li>
+<li></li>
+<li></li>
+
+
+</ul>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2018/09/GuzzleHttp">Sep 29, 2018 - GuzzleHttp</a></h1>
@@ -306,50 +346,6 @@
   </li>
 </ol>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2018/01/mod-mysql-password">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
-        
-        <div class="content">
-            <ol>
-  <li>
-    <p>mysql stop</p>
-  </li>
-  <li>
-    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
-  </li>
-  <li>
-    <p>mysql -u root mysql</p>
-  </li>
-  <li>
-    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
-  </li>
-  <li>
-    <p>flush privileges;</p>
-  </li>
-  <li>
-    <p>unset TMPDIR</p>
-  </li>
-  <li>
-    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
-  </li>
-</ol>
-
-<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
-
-<ol>
-  <li>
-    <p>mysql.server start</p>
-  </li>
-  <li>
-    <p>mysql -uroot -proot 进去啦！！</p>
-  </li>
-</ol>
 
         </div>
     </div>

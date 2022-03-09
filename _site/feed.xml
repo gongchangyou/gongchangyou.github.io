@@ -7,6 +7,37 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>gitlab-container</title>
+				<description>&lt;h1 id=&quot;gitlab-container-registry&quot;&gt;gitlab container registry&lt;/h1&gt;
+
+&lt;p&gt;官网说明 ：[https://docs.gitlab.cn/jh/administration/packages/container_registry.html](https://docs.gitlab.cn/jh/administration/packages/container_registry.html&lt;/p&gt;
+
+&lt;p&gt;即可以进到docker容器中查看配置文件，也可以先查看挂载数据卷，再看宿主机上的文件。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;docker inspect container_name&lt;/td&gt;
+      &lt;td&gt;grep Mounts -A 20&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;在这个配置中可以看到  容器的镜像仓库的port等配置&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; cat /srv/gitlab/data/gitlab-rails/etc/gitlab.yml|grep 5005 -C 20
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;每个工程的镜像在如图这个位置查看
+&lt;img src=&quot;/images/202203/WechatIMG350.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;不知道如何用docker客户端连接私有镜像库&lt;/p&gt;
+</description>
+				<pubDate>Wed, 09 Mar 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/gitlab-container</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-container</guid>
+			</item>
+		
+			<item>
 				<title>gitlab-runner</title>
 				<description>&lt;h1 id=&quot;gitlab-cicd&quot;&gt;gitlab CI/CD&lt;/h1&gt;
 
@@ -60,6 +91,23 @@
 &lt;p&gt;把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!&lt;/p&gt;
 
 &lt;p&gt;注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml&lt;/p&gt;
+
+&lt;p&gt;问题3 ：&lt;/p&gt;
+
+&lt;p&gt;偶发 报错 ，重试几次又好了&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
+fatal: could not set 'core.repositoryformatversion' to '0'
+Cleaning up project directory and file based variables
+00:00
+ERROR: Job failed: exit status 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;有看到网上这么解，没试过。 &lt;a href=&quot;https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0&quot;&gt;https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --file=.git/config core.repositoryformatversion 1  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 </description>
 				<pubDate>Fri, 04 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-runner</link>
@@ -289,6 +337,18 @@ host all all 172.17.0.4/24 md5
   &lt;li&gt;将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600&lt;/li&gt;
   &lt;li&gt;如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;别名&lt;/p&gt;
+
+&lt;p&gt;编辑 ~/.ssh/config&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host ksyun_stg
+  HostName 120.92.232.118
+  Port 10022
+  User dingsongyun
+  IdentityFile ~/.ssh/id_rsa
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 </description>
 				<pubDate>Thu, 24 Feb 2022 10:05:06 +0800</pubDate>
@@ -657,97 +717,6 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 				<pubDate>Wed, 16 Feb 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/alibaba-nacos-client-server</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/02/alibaba-nacos-client-server</guid>
-			</item>
-		
-			<item>
-				<title>kryo</title>
-				<description>&lt;h1 id=&quot;dubbo-序列化配置-kryo&quot;&gt;dubbo 序列化配置 Kryo&lt;/h1&gt;
-
-&lt;p&gt;注意版本要跟  dubbo-spring-boot-starter 相同,2.7.8&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo --&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.apache.dubbo&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;dubbo-serialization-kryo&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;2.7.8&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在producer 和 consumer加一句配置即可&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dubbo.protocol.serialization=kryo
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;原理：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;我们配置的序列化框架 比如 kryo , 这个字符串”kryo”是设置在了ProtocolConfig中&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;真正需要序列化的时候，是由AbstractCodec 根据 ExtensionLoader.getExtension 获取&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;ExtensionLoader 中有个属性叫 cachedClasses,  是个map，会创建type名到类的映射&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; private final Holder&amp;lt;Map&amp;lt;String, Class&amp;lt;?&amp;gt;&amp;gt;&amp;gt; cachedClasses = new Holder&amp;lt;&amp;gt;();
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .  ExtensionLoader 会去扫描 文件夹 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
-kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
-kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; private Map&amp;lt;String, Class&amp;lt;?&amp;gt;&amp;gt; loadExtensionClasses() {
-         cacheDefaultExtensionName();
-
-         Map&amp;lt;String, Class&amp;lt;?&amp;gt;&amp;gt; extensionClasses = new HashMap&amp;lt;&amp;gt;();
-
-         for (LoadingStrategy strategy : strategies) {
-             loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-             loadDirectory(extensionClasses, strategy.directory(), type.getName().replace(&quot;org.apache&quot;, &quot;com.alibaba&quot;), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-         }
-
-         return extensionClasses;
-     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1644917724845.jpg&quot; alt=&quot;set class&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题：&lt;/p&gt;
-
-&lt;p&gt;本来想看看默认序列化是如何设置的，有两种方法&lt;/p&gt;
-
-&lt;p&gt;法1，在SPI注解上加属性 ，由属性控制&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1645257330444.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;法2，设置一个Constants类, 将默认值填进去&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1645257359049.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;现在就是初始化的时候是根据SPI的value，但是获取实现类的时候又用到了Constants类，让人有点疑惑，两个默认值&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/1645257426431.jpg&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/WechatIMG587.png&quot; alt=&quot;1&quot; width=&quot;1000&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;当然由Constants类我们还能知道 默认的nio库是 netty&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    String DEFAULT_TRANSPORTER = &quot;netty&quot;;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-				<pubDate>Tue, 15 Feb 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/02/dubbo-kryo</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/02/dubbo-kryo</guid>
 			</item>
 		
 	</channel>
