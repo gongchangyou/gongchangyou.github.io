@@ -60,9 +60,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/03/opengl-java">java-opengl</a></li>
-        
           <li><a href="/2022/03/opengl-go">go-opengl</a></li>
+        
+          <li><a href="/2022/03/opengl-java">java-opengl</a></li>
         
           <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
         
@@ -144,10 +144,10 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2022/03/opengl-go">Mar 9, 2022 - go-opengl</a></h1>
+                <h1><a href="/2022/03/opengl-go">Mar 10, 2022 - go-opengl</a></h1>
             
             <div class="post-content">
-            <h1 id="go-opengl">Go opengl</h1>
+            <h1 id="go-opengl">Go OpenGL</h1>
 
 <ol>
   <li>
@@ -187,6 +187,55 @@
   <li>执行 go run *.go 而不是 go run main.go</li>
 </ol>
 
+<p>问题2： ubuntu缺少组件库 会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@mouse-Precision-3650-Tower:/home/mouse/Downloads/opengl-heatmap/trial# go run *.go
+# pkg-config --cflags  -- gl gl
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+pkg-config: exit status 1
+# github.com/go-gl/glfw/v3.3/glfw
+In file included from ./glfw/src/internal.h:188,
+                 from ./glfw/src/context.c:30,
+                 from /root/go/pkg/mod/github.com/go-gl/glfw/v3.3/glfw@v0.0.0-20211213063430-748e38ca8aec/c_glfw.go:4:
+./glfw/src/x11_platform.h:36:10: fatal error: X11/Xcursor/Xcursor.h: No such file or directory
+   36 | #include &lt;X11/Xcursor/Xcursor.h&gt;
+      |          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+
+</code></pre></div></div>
+
+<p><a href="https://github.com/go-gl/glfw/issues/129">https://github.com/go-gl/glfw/issues/129</a></p>
+
+<p>那就根据报错找到对应的lib 安装即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libxcursor-dev
+
+apt-get install libxinerama-dev
+
+apt-get install libxrandr-dev
+
+apt-get install libxi-dev
+
+sudo apt-get install mesa-common-dev
+sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+
+sudo apt-get install Xxf86vm*
+</code></pre></div></div>
+
+<p>问题3： ubuntu 如何查看opengl版本？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install mesa-utils
+glxinfo | grep -i opengl
+</code></pre></div></div>
+
 
             </div>
             
@@ -199,10 +248,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2022/03/opengl-java" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2022/03/gitlab-container" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/03/opengl-java" class="previous">Older Post</a>
               
 </div>
 

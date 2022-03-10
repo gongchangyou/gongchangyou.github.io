@@ -7,38 +7,8 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>java-opengl</title>
-				<description>&lt;h1 id=&quot;java-opengl&quot;&gt;java opengl&lt;/h1&gt;
-
-&lt;p&gt;Lwjgl  vs jogl ?&lt;/p&gt;
-
-&lt;p&gt;我看https://mvnrepository.com上 jogl很久没更新了，最近一次是2015年, 怕是已经没人维护了。&lt;/p&gt;
-
-&lt;p&gt;选择lwjgl试试&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.lwjgl.org/guide&quot;&gt;https://www.lwjgl.org/guide&lt;/a&gt; 官网好看&lt;/p&gt;
-
-&lt;p&gt;官方demo :&lt;a href=&quot;https://github.com/LWJGL/lwjgl3-demos&quot;&gt;https://github.com/LWJGL/lwjgl3-demos&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可以修改mainclass 查看不同的demo效果&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;transformers&amp;gt;
-	&amp;lt;transformer implementation=&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;&amp;gt;
-     &amp;lt;mainClass&amp;gt;org.lwjgl.demo.${class}&amp;lt;/mainClass&amp;gt;
-     &amp;lt;/transformer&amp;gt;
-  &amp;lt;/transformers&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;可是这个是一个专门的window， 可以播放opengl。 希望导出一个图片，后续对opengl有研究了再继续这个项目。&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 09 Mar 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/opengl-java</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/opengl-java</guid>
-			</item>
-		
-			<item>
 				<title>go-opengl</title>
-				<description>&lt;h1 id=&quot;go-opengl&quot;&gt;Go opengl&lt;/h1&gt;
+				<description>&lt;h1 id=&quot;go-opengl&quot;&gt;Go OpenGL&lt;/h1&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
@@ -78,10 +48,89 @@
   &lt;li&gt;执行 go run *.go 而不是 go run main.go&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;问题2： ubuntu缺少组件库 会报错&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+root@mouse-Precision-3650-Tower:/home/mouse/Downloads/opengl-heatmap/trial# go run *.go
+# pkg-config --cflags  -- gl gl
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+pkg-config: exit status 1
+# github.com/go-gl/glfw/v3.3/glfw
+In file included from ./glfw/src/internal.h:188,
+                 from ./glfw/src/context.c:30,
+                 from /root/go/pkg/mod/github.com/go-gl/glfw/v3.3/glfw@v0.0.0-20211213063430-748e38ca8aec/c_glfw.go:4:
+./glfw/src/x11_platform.h:36:10: fatal error: X11/Xcursor/Xcursor.h: No such file or directory
+   36 | #include &amp;lt;X11/Xcursor/Xcursor.h&amp;gt;
+      |          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/go-gl/glfw/issues/129&quot;&gt;https://github.com/go-gl/glfw/issues/129&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;那就根据报错找到对应的lib 安装即可&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install libxcursor-dev
+
+apt-get install libxinerama-dev
+
+apt-get install libxrandr-dev
+
+apt-get install libxi-dev
+
+sudo apt-get install mesa-common-dev
+sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+
+sudo apt-get install Xxf86vm*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题3： ubuntu 如何查看opengl版本？&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install mesa-utils
+glxinfo | grep -i opengl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 </description>
-				<pubDate>Wed, 09 Mar 2022 10:05:06 +0800</pubDate>
+				<pubDate>Thu, 10 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/opengl-go</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/opengl-go</guid>
+			</item>
+		
+			<item>
+				<title>java-opengl</title>
+				<description>&lt;h1 id=&quot;java-opengl&quot;&gt;java opengl&lt;/h1&gt;
+
+&lt;p&gt;Lwjgl  vs jogl ?&lt;/p&gt;
+
+&lt;p&gt;我看https://mvnrepository.com上 jogl很久没更新了，最近一次是2015年, 怕是已经没人维护了。&lt;/p&gt;
+
+&lt;p&gt;选择lwjgl试试&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.lwjgl.org/guide&quot;&gt;https://www.lwjgl.org/guide&lt;/a&gt; 官网好看&lt;/p&gt;
+
+&lt;p&gt;官方demo :&lt;a href=&quot;https://github.com/LWJGL/lwjgl3-demos&quot;&gt;https://github.com/LWJGL/lwjgl3-demos&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;可以修改mainclass 查看不同的demo效果&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;transformers&amp;gt;
+	&amp;lt;transformer implementation=&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;&amp;gt;
+     &amp;lt;mainClass&amp;gt;org.lwjgl.demo.${class}&amp;lt;/mainClass&amp;gt;
+     &amp;lt;/transformer&amp;gt;
+  &amp;lt;/transformers&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可是这个是一个专门的window， 可以播放opengl。 希望导出一个图片，后续对opengl有研究了再继续这个项目。&lt;/p&gt;
+
+</description>
+				<pubDate>Wed, 09 Mar 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/opengl-java</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/opengl-java</guid>
 			</item>
 		
 			<item>
