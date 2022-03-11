@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/go(1)">go-1</a></li>
+        
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
         
           <li><a href="/2022/03/opengl-go">go-opengl</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/opengl-java">java-opengl</a></li>
         
           <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
-        
-          <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
         
     </ul>
 </div>
@@ -124,7 +124,7 @@
 			
 		
 			
-				<li><a href="/tag/go" title="go">go<sup>2</sup></a></li>
+				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
 			
 		
 </div>
@@ -241,6 +241,21 @@ WHERE points.geom &amp;&amp; boxes.geom;
 </code></pre></div></div>
 
 <p><img src="/images/202203/WechatIMG46.png" alt="pgadmin" width="500" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WITH xyz AS (
+SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
+FROM generate_series(1, 1000)),
+boxes AS (
+  SELECT ST_3DMakeBox(ST_MakePoint(x-0.1, y-5, z-5),
+    ST_MakePoint(x+0.1 ,y+5.1875, z+15)) AS geom
+  FROM xyz
+)
+SELECT ST_AsText(points.geom), ST_AsText(boxes.geom)
+FROM points, boxes
+WHERE  ST_3DIntersects(boxes.geom ,points.geom) 
+</code></pre></div></div>
+
+<p>//之前那个 &amp;&amp; 操作会有重复数据，这个 ST_3DIntersects 函数可以给出在这个box中的点, 返回2000个点 耗时差不多 500ms</p>
 
 <h3 id="法2以下的甭看了">法2：以下的甭看了</h3>
 
