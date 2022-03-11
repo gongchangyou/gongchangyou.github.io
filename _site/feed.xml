@@ -7,6 +7,20 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>go-opengl-1</title>
+				<description>&lt;h1 id=&quot;go-opengl1&quot;&gt;Go OpenGL（1）&lt;/h1&gt;
+
+&lt;p&gt;官网教程 &lt;a href=&quot;https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3&quot;&gt;https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;学习使用的代码仓库 &lt;a href=&quot;https://github.com/gongchangyou/opengl-learn&quot;&gt;https://github.com/gongchangyou/opengl-learn&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 10 Mar 2022 11:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/opengl-go-1</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/opengl-go-1</guid>
+			</item>
+		
+			<item>
 				<title>go-opengl</title>
 				<description>&lt;h1 id=&quot;go-opengl&quot;&gt;Go OpenGL&lt;/h1&gt;
 
@@ -332,6 +346,12 @@ WHERE points.geom &amp;amp;&amp;amp; boxes.geom;
 
 &lt;p&gt;&lt;a href=&quot;https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope&quot;&gt;https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;但是因为我们的数据是在亿级， 按照 &lt;a href=&quot;https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;amp;file=20160119_01.md&quot;&gt;PostgreSQL 百亿地理位置数据 近邻查询性能&lt;/a&gt;  建立索引确实要花点时间,1亿行gis数据大约5GB索引&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select pg_relation_size('gist2')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG46.png&quot; alt=&quot;pgadmin&quot; width=&quot;500&quot; /&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;法2以下的甭看了&quot;&gt;法2：以下的甭看了&lt;/h3&gt;
 
 &lt;p&gt;源 /etc/apt/sources.list ， 如果无法安装，请变更源&lt;/p&gt;
@@ -635,159 +655,6 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 				<pubDate>Tue, 22 Feb 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/voice-clone</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/02/voice-clone</guid>
-			</item>
-		
-			<item>
-				<title>voice</title>
-				<description>&lt;h1 id=&quot;python-ai语音合成&quot;&gt;python AI语音合成&lt;/h1&gt;
-
-&lt;p&gt;https://mp.weixin.qq.com/s/ROETeFo4Q__8hkX9Ss-CAw 看到这篇报道。觉得可以试试将自己的语音变成语音包，这样就可以给自己读文章了，或者去喜马拉雅领任务。&lt;/p&gt;
-
-&lt;p&gt;pyttsx3是一套基于实现SAPI5文语合成引擎的Python封装库，该库的设计者为Natesh M Bhat，该库其实是 &lt;a href=&quot;https://pypi.org/project/pyTTS/&quot;&gt;pyTTS&lt;/a&gt; 和 &lt;a href=&quot;https://github.com/RapidWareTech/pyttsx&quot;&gt;pyttsx&lt;/a&gt; 项目的延续，pyttsx3主要是为Python3版本设计的，但同时也兼容Python2。JaysPySPEECH使用的是pyttsx3 2.7。&lt;/p&gt;
-
-&lt;p&gt;但是因为依赖的是当前PC的语音环境，所以无法将我们自己的语音导入。&lt;/p&gt;
-
-&lt;h2 id=&quot;mockingbird---貌似这个只是学习音色&quot;&gt;&lt;a href=&quot;https://github.com/babysor/MockingBird&quot;&gt;MockingBird&lt;/a&gt; - 貌似这个只是学习音色&lt;/h2&gt;
-
-&lt;p&gt;https://github.com/babysor/MockingBird/blob/main/README-CN.md&lt;/p&gt;
-
-&lt;h2 id=&quot;注意第8步下载数据集非常大建议先做&quot;&gt;注意第8步下载数据集非常大，建议先做&lt;/h2&gt;
-
-&lt;p&gt;我是ubuntu系统&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装 &lt;a href=&quot;https://pytorch.org/get-started/locally/&quot;&gt;PyTorch&lt;/a&gt;&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;先看本地有没有python.一般是python3了&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;再安装pip: apt install python3-pip&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装python torch  : pip3 install torch torchivision torchaudio&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;验证:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import torch
-x = torch.rand(5,3)
-print(x)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装 &lt;a href=&quot;https://ffmpeg.org/download.html#get-packages&quot;&gt;ffmpeg&lt;/a&gt;。&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;下载源码/source code 并解压缩&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;库的安装&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install -y autoconf automake build-essential git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt install libavformat-dev
-apt install libavcodec-dev
-apt install libswresample-dev
-apt install libswscale-dev
-apt install libavutil-dev
-apt install libsdl1.2-dev
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-
-        &lt;p&gt;如果没用的话 先 apt-get update, 再 apt-get install XXX.&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装libx264&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install libx264-dev
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;安装 yasm
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install yasm
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;安装 ffmpeg&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./configure   --enable-shared  --prefix=/usr/local/ffmpeg  --enable-gpl --enable-libx264 --extra-cflags=-I/usr/local/ffmpeg/include --extra-ldflags=-L/usr/local/ffmpeg/lib
-make
-make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装 MockingBird&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone git@github.com:babysor/MockingBird.git
-   
-cd MockingBird
-#安装剩余的依赖
-pip install -r requirements.txt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安装 webrtcvad&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install webrtcvad-wheels
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在 MockingBird/synthesizer 下新建文件夹 saved_models&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;把下载到的或者训练好的 pt文件拷贝到 saved_models文件夹下&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;浏览器访问 localhost:8080 ， 如果端口被占用的话，可以修改default.py 变更 PORT&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载数据集 &lt;a href=&quot;https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89&quot;&gt;https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将上一部的数据集 放到某个文件夹下 &lt;datasets_root&gt;, 该解压的解压&lt;/datasets_root&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;打开工具&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python demo_toolbox.py -d &amp;lt;datasets_root&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Notice：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
-_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
-即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
-   
-不同的模型(*.pt) 这里可能还要改回去
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;演示视频 &lt;a href=&quot;https://www.bilibili.com/video/BV1uh411B7AD/&quot;&gt;https://www.bilibili.com/video/BV1uh411B7AD/&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;可是实际操作下来上传了我的音频转换成一段刺耳的声音无法将中文text-转换成音频&quot;&gt;可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频&lt;/h3&gt;
-</description>
-				<pubDate>Sun, 20 Feb 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/02/voice-synthesis</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/02/voice-synthesis</guid>
 			</item>
 		
 	</channel>

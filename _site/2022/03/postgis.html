@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
+        
           <li><a href="/2022/03/opengl-go">go-opengl</a></li>
         
           <li><a href="/2022/03/opengl-java">java-opengl</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
         
           <li><a href="/2022/03/gitlab-runner">gitlab-runner</a></li>
-        
-          <li><a href="/2022/03/postgis">postgis</a></li>
         
     </ul>
 </div>
@@ -124,7 +124,7 @@
 			
 		
 			
-				<li><a href="/tag/go" title="go">go<sup>1</sup></a></li>
+				<li><a href="/tag/go" title="go">go<sup>2</sup></a></li>
 			
 		
 </div>
@@ -235,6 +235,12 @@ WHERE points.geom &amp;&amp; boxes.geom;
 <p>有些点是否在某个不规则Polygon中的功能也可以使用该数据库</p>
 
 <p><a href="https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope">https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope</a></p>
+
+<p>但是因为我们的数据是在亿级， 按照 <a href="https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;file=20160119_01.md">PostgreSQL 百亿地理位置数据 近邻查询性能</a>  建立索引确实要花点时间,1亿行gis数据大约5GB索引</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select pg_relation_size('gist2')
+</code></pre></div></div>
+
+<p><img src="/images/202203/WechatIMG46.png" alt="pgadmin" width="500" /></p>
 
 <h3 id="法2以下的甭看了">法2：以下的甭看了</h3>
 
