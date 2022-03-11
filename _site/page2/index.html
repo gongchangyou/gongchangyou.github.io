@@ -349,7 +349,7 @@ WHERE points.geom &amp;&amp; boxes.geom;
 
 <p><a href="https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope">https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope</a></p>
 
-<p>但是因为我们的数据是在亿级， 按照 <a href="https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;file=20160119_01.md">PostgreSQL 百亿地理位置数据 近邻查询性能</a>  建立索引确实要花点时间,1亿行gis数据大约5GB索引</p>
+<p>但是因为我们的数据是在亿级， 按照 <a href="https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;file=20160119_01.md">PostgreSQL 百亿地理位置数据 近邻查询性能</a>  建立索引确实要花点时间,1亿行gis数据大约5GB索引,查询上述在box中的点耗时只有100ms. 但是如果box再大一点,里面包括1kw数据时，就需要花大约10s时间。生产环境是不可能使用了，OLAP场景还行。</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select pg_relation_size('gist2')
 </code></pre></div></div>
 
