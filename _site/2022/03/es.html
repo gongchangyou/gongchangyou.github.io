@@ -149,33 +149,15 @@
             <div class="post-content">
             <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
 
-<h3 id="单独部署-es">单独部署 ES</h3>
-
-<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
-
-docker network create elastic
-
-docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-
-docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
-
-curl --cacert http_ca.crt -u elastic https://localhost:9200 
-
-输入docker run 时的password即可
-</code></pre></div></div>
-
 <h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
 
 <ol>
-  <li>docker pull</li>
-</ol>
+  <li>
+    <p>docker pull</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.elastic.co/kibana/kibana:7.11.1
-</code></pre></div></div>
-
-<ol>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull docker.elastic.co/kibana/kibana:7.11.1
+</code></pre></div>    </div>
+  </li>
   <li>
     <p>docker-compose.yml</p>
 
@@ -225,12 +207,37 @@ networks:
       <p>docker-compose up</p>
     </blockquote>
   </li>
-  <li>浏览器 访问 http://localhost:5601/</li>
+  <li>
+    <p>浏览器 访问 http://localhost:5601/</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://10.10.48.194:5601/app/dev_tools#/console #dev tool 可以直接敲命令
+</code></pre></div>    </div>
+  </li>
 </ol>
 
-<p>附： docker-compose 安装</p>
+<p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://docs.docker.com/compose/install/
+<p>可以点击inspect 看request 语句</p>
+
+<p><img src="/images/202203/WechatIMG49.png" alt="" width="800" /></p>
+
+<p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+
+<h3 id="单独部署-es">单独部署 ES</h3>
+
+<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
+
+docker network create elastic
+
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
 </code></pre></div></div>
 
 <p>问题1： 报错</p>

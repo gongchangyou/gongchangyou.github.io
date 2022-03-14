@@ -10,33 +10,15 @@
 				<title>es</title>
 				<description>&lt;h1 id=&quot;docker-install--elasticsearch&quot;&gt;Docker install  ElasticSearch&lt;/h1&gt;
 
-&lt;h3 id=&quot;单独部署-es&quot;&gt;单独部署 ES&lt;/h3&gt;
-
-&lt;p&gt;官网 ： &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.io/elasticsearch
-
-docker network create elastic
-
-docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-
-docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
-
-curl --cacert http_ca.crt -u elastic https://localhost:9200 
-
-输入docker run 时的password即可
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
 &lt;h3 id=&quot;如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;如果想部署 kibana + es ： &lt;a href=&quot;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&lt;/a&gt;&lt;/h3&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;docker pull&lt;/li&gt;
-&lt;/ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;docker pull&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.elastic.co/kibana/kibana:7.11.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker pull docker.elastic.co/kibana/kibana:7.11.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;docker-compose.yml&lt;/p&gt;
 
@@ -86,12 +68,37 @@ networks:
       &lt;p&gt;docker-compose up&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
-  &lt;li&gt;浏览器 访问 http://localhost:5601/&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;浏览器 访问 http://localhost:5601/&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.48.194:5601/app/dev_tools#/console #dev tool 可以直接敲命令
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;附： docker-compose 安装&lt;/p&gt;
+&lt;p&gt;热力图可视化  &lt;a href=&quot;https://www.freesion.com/article/72491420060/&quot;&gt;https://www.freesion.com/article/72491420060/&lt;/a&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://docs.docker.com/compose/install/
+&lt;p&gt;可以点击inspect 看request 语句&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG49.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;附： docker-compose 安装 &lt;a href=&quot;https://docs.docker.com/compose/install/&quot;&gt;https://docs.docker.com/compose/install/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;单独部署-es&quot;&gt;单独部署 ES&lt;/h3&gt;
+
+&lt;p&gt;官网 ： &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.io/elasticsearch
+
+docker network create elastic
+
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;问题1： 报错&lt;/p&gt;
