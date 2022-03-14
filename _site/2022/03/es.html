@@ -144,29 +144,112 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2017/11/docker-command">Nov 28, 2017 - docker常用命令</a></h1>
+                <h1><a href="/2022/03/es">Mar 14, 2022 - es</a></h1>
             
             <div class="post-content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
+            <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
 
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
+<h3 id="单独部署-es">单独部署 ES</h3>
 
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
+<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
 
-<p>启动容器  <br />
-1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
 
-<p>进入容器</p>
+docker network create elastic
 
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
 
-<p>退出 敲exit即可</p>
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
 
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
+</code></pre></div></div>
+
+<h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
+
+<ol>
+  <li>docker pull</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.elastic.co/kibana/kibana:7.11.1
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>docker-compose.yml</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2.2'
+services:
+  node01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    container_name: node01
+    environment:
+      - node.name=node01
+      - cluster.name=es-cluster-7
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - es-network
+   
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    environment:
+      ELASTICSEARCH_HOSTS: http://node01:9200
+    ports:
+      - 5601:5601
+    networks:
+      - es-network
+    depends_on:
+      - node01
+   
+volumes:
+  es-data01:
+    driver: local
+   
+networks:
+  es-network:
+    driver: bridge
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <blockquote>
+      <p>docker-compose up</p>
+    </blockquote>
+  </li>
+  <li>浏览器 访问 http://localhost:5601/</li>
+</ol>
+
+<p>附： docker-compose 安装</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://docs.docker.com/compose/install/
+</code></pre></div></div>
+
+<p>问题1： 报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
+bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
+</code></pre></div></div>
+
+<p>虚拟内存太小了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/sysctl.conf 
+vm.max_map_count=655360
+</code></pre></div></div>
+
+<p>重启</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+</code></pre></div></div>
 
 
             </div>
@@ -180,10 +263,8 @@ docker ps -a -q |xargs docker rm</p>
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2017/11/sublime-command" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2017/11/apt-get-command" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/03/go(1)" class="previous">Older Post</a>
               
 </div>
 
@@ -191,13 +272,13 @@ docker ps -a -q |xargs docker rm</p>
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2017-11-docker-command';
+        this.page.identifier = '2022-03-es';
     };
 
    (function() {

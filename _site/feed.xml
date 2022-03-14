@@ -7,6 +7,118 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>es</title>
+				<description>&lt;h1 id=&quot;docker-install--elasticsearch&quot;&gt;Docker install  ElasticSearch&lt;/h1&gt;
+
+&lt;h3 id=&quot;单独部署-es&quot;&gt;单独部署 ES&lt;/h3&gt;
+
+&lt;p&gt;官网 ： &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.io/elasticsearch
+
+docker network create elastic
+
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;如果想部署 kibana + es ： &lt;a href=&quot;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;docker pull&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.elastic.co/kibana/kibana:7.11.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;docker-compose.yml&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2.2'
+services:
+  node01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    container_name: node01
+    environment:
+      - node.name=node01
+      - cluster.name=es-cluster-7
+      - discovery.type=single-node
+      - &quot;ES_JAVA_OPTS=-Xms128m -Xmx128m&quot;
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - es-network
+   
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    environment:
+      ELASTICSEARCH_HOSTS: http://node01:9200
+    ports:
+      - 5601:5601
+    networks:
+      - es-network
+    depends_on:
+      - node01
+   
+volumes:
+  es-data01:
+    driver: local
+   
+networks:
+  es-network:
+    driver: bridge
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;docker-compose up&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;浏览器 访问 http://localhost:5601/&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;附： docker-compose 安装&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://docs.docker.com/compose/install/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题1： 报错&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
+bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;虚拟内存太小了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim /etc/sysctl.conf 
+vm.max_map_count=655360
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;重启&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Mon, 14 Mar 2022 11:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/es</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/es</guid>
+			</item>
+		
+			<item>
 				<title>go-1</title>
 				<description>&lt;h1 id=&quot;go1&quot;&gt;Go（1）&lt;/h1&gt;
 
@@ -496,38 +608,6 @@ host all all 172.17.0.4/24 md5
 				<pubDate>Fri, 25 Feb 2022 13:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/02/grafana</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/02/grafana</guid>
-			</item>
-		
-			<item>
-				<title>ssh</title>
-				<description>&lt;h1 id=&quot;ssh-无密码访问&quot;&gt;ssh 无密码访问&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;apt-get install openssh-server&lt;/li&gt;
-  &lt;li&gt;查看状态 service ssh status&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600&lt;/li&gt;
-  &lt;li&gt;如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;别名&lt;/p&gt;
-
-&lt;p&gt;编辑 ~/.ssh/config&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host ksyun_stg
-  HostName 120.92.232.118
-  Port 10022
-  User dingsongyun
-  IdentityFile ~/.ssh/id_rsa
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Thu, 24 Feb 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/02/ssh</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/02/ssh</guid>
 			</item>
 		
 	</channel>

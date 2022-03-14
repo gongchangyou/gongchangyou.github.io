@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/es">es</a></li>
+        
           <li><a href="/2022/03/go(1)">go-1</a></li>
         
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/opengl-go">go-opengl</a></li>
         
           <li><a href="/2022/03/opengl-java">java-opengl</a></li>
-        
-          <li><a href="/2022/03/gitlab-container">gitlab-container</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>7</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>8</sup></a></li>
 			
 		
 			
@@ -143,6 +143,36 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
+<ol>
+  <li>https://github.com/alibaba/nacos/releases</li>
+</ol>
+
+<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
+
+<ol>
+  <li>
+    <p>解压缩</p>
+  </li>
+  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
+    <ol>
+      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
+    </ol>
+  </li>
+  <li>http://127.0.0.1:8848/nacos/</li>
+  <li>账号名密码是 <strong>nacos/nacos</strong></li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
@@ -200,23 +230,6 @@ js.executeScript("window.open();");
 JavascriptExecutor js = (JavascriptExecutor) driver;
 js.executeScript("window.open(\"http://www.baidu.com\");");
 </code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
-        
-        <div class="content">
-            <h1 id="爷爷">爷爷</h1>
-
-<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
-
-<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
-
-<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
 
         </div>
     </div>
