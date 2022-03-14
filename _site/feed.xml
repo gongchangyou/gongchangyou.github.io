@@ -82,6 +82,54 @@ networks:
 
 &lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG49.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET users/_search 
+{
+  &quot;aggs&quot;: {
+    &quot;2&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;: &quot;country.keyword&quot;,
+        &quot;order&quot;: {
+          &quot;_count&quot;: &quot;desc&quot;
+        },
+        &quot;size&quot;: 2
+      },
+      &quot;aggs&quot;: {
+        &quot;3&quot;: {
+          &quot;terms&quot;: {
+            &quot;field&quot;: &quot;age&quot;,
+            &quot;order&quot;: {
+              &quot;_count&quot;: &quot;desc&quot;
+            },
+            &quot;size&quot;: 2
+          }
+        }
+      }
+    }
+  },
+  &quot;size&quot;: 0,
+  &quot;fields&quot;: [],
+  &quot;script_fields&quot;: {},
+  &quot;stored_fields&quot;: [
+    &quot;*&quot;
+  ],
+  &quot;_source&quot;: {
+    &quot;excludes&quot;: []
+  },
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [],
+      &quot;filter&quot;: [
+        {
+          &quot;match_all&quot;: {}
+        }
+      ],
+      &quot;should&quot;: [],
+      &quot;must_not&quot;: []
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;附： docker-compose 安装 &lt;a href=&quot;https://docs.docker.com/compose/install/&quot;&gt;https://docs.docker.com/compose/install/&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;单独部署-es&quot;&gt;单独部署 ES&lt;/h3&gt;
