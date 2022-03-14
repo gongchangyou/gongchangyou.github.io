@@ -270,6 +270,86 @@ networks:
 }
 </code></pre></div></div>
 
+<p>坐标系的热力图的 query</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get users/_search
+{
+  "aggs": {
+    "2": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "to": 10,
+            "from": 0
+          },
+          {
+            "to": 20,
+            "from": 10
+          },
+          {
+            "to": 30,
+            "from": 20
+          },
+          {
+            "to": 37,
+            "from": 30
+          }
+        ],
+        "keyed": true
+      },
+      "aggs": {
+        "2": {
+          "range": {
+            "field": "age",
+            "ranges": [
+              {
+                "to": 10,
+                "from": 0
+              },
+              {
+                "to": 20,
+                "from": 10
+              },
+              {
+                "to": 30,
+                "from": 20
+              },
+              {
+                "to": 40,
+                "from": 30
+              }
+            ],
+            "keyed": true
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "fields": [],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+</code></pre></div></div>
+
 <p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
 
 <h3 id="单独部署-es">单独部署 ES</h3>
