@@ -20,7 +20,7 @@
 
 &lt;p&gt;1000000 个点 热力图,&lt;/p&gt;
 
-&lt;p&gt;100000000 个点 热力图， 搜索10*10的矩形， 首次查询3.5s，生成缓存后 200ms即可查询到结果，效果还是非常不错的。&lt;/p&gt;
+&lt;p&gt;7kw 个点 热力图， 搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。&lt;/p&gt;
 
 &lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
 
