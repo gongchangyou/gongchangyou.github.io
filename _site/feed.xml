@@ -7,7 +7,7 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>es</title>
+				<title>es-heatmap</title>
 				<description>&lt;h1 id=&quot;elasticsearch-热力图性能测评&quot;&gt;ElasticSearch 热力图性能测评&lt;/h1&gt;
 
 &lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/elasticsearch-test&quot;&gt;https://github.com/gongchangyou/elasticsearch-test&lt;/a&gt;&lt;/p&gt;
@@ -60,7 +60,7 @@
 			</item>
 		
 			<item>
-				<title>es</title>
+				<title>es-install</title>
 				<description>&lt;h1 id=&quot;docker-install--elasticsearch&quot;&gt;Docker install  ElasticSearch&lt;/h1&gt;
 
 &lt;h3 id=&quot;如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;如果想部署 kibana + es ： &lt;a href=&quot;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&lt;/a&gt;&lt;/h3&gt;
