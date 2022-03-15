@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/es-import">es</a></li>
+        
           <li><a href="/2022/03/es">es</a></li>
         
           <li><a href="/2022/03/go(1)">go-1</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
         
           <li><a href="/2022/03/opengl-go">go-opengl</a></li>
-        
-          <li><a href="/2022/03/opengl-java">java-opengl</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>8</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>9</sup></a></li>
 			
 		
 			
@@ -143,6 +143,33 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/es-import">Mar 15, 2022 - es</a></h1>
+        
+        <div class="content">
+            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
+
+<p>代码仓库：</p>
+
+<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
+        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
+        &lt;java.version&gt;11&lt;/java.version&gt;
+    &lt;/properties&gt;
+</code></pre></div></div>
+
+<p>问题2： Missing [X-Elastic-Product] header.</p>
+
+<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/es">Mar 14, 2022 - es</a></h1>
@@ -215,6 +242,8 @@ networks:
 </code></pre></div>    </div>
   </li>
 </ol>
+
+<p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
 
 <p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
 
@@ -400,22 +429,6 @@ vm.max_map_count=655360
             <h1 id="go1">Go（1）</h1>
 
 <p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/opengl-go-1">Mar 10, 2022 - go-opengl-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go-opengl1">Go OpenGL（1）</h1>
-
-<p>官网教程 <a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3</a></p>
-
-<p>学习使用的代码仓库 <a href="https://github.com/gongchangyou/opengl-learn">https://github.com/gongchangyou/opengl-learn</a></p>
 
 
         </div>

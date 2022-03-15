@@ -8,6 +8,31 @@
 		
 			<item>
 				<title>es</title>
+				<description>&lt;h1 id=&quot;elasticsearch-热力图性能测评&quot;&gt;ElasticSearch 热力图性能测评&lt;/h1&gt;
+
+&lt;p&gt;代码仓库：&lt;/p&gt;
+
+&lt;p&gt;java客户端 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &amp;lt;properties&amp;gt;
+        &amp;lt;jakarta-json.version&amp;gt;2.0.1&amp;lt;/jakarta-json.version&amp;gt; #这里把版本号设置成2.0.1
+        &amp;lt;java.version&amp;gt;11&amp;lt;/java.version&amp;gt;
+    &amp;lt;/properties&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题2： Missing [X-Elastic-Product] header.&lt;/p&gt;
+
+&lt;p&gt;解决2： elasticsearch 升级下版本，7.17.0+&lt;/p&gt;
+</description>
+				<pubDate>Tue, 15 Mar 2022 11:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/es-import</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/es-import</guid>
+			</item>
+		
+			<item>
+				<title>es</title>
 				<description>&lt;h1 id=&quot;docker-install--elasticsearch&quot;&gt;Docker install  ElasticSearch&lt;/h1&gt;
 
 &lt;h3 id=&quot;如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;如果想部署 kibana + es ： &lt;a href=&quot;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&lt;/a&gt;&lt;/h3&gt;
@@ -75,6 +100,8 @@ networks:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;注意：最好把版本升级下 7.11.1 -&amp;gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.&lt;/p&gt;
 
 &lt;p&gt;热力图可视化  &lt;a href=&quot;https://www.freesion.com/article/72491420060/&quot;&gt;https://www.freesion.com/article/72491420060/&lt;/a&gt;&lt;/p&gt;
 
@@ -715,34 +742,6 @@ host all all 172.17.0.4/24 md5
 				<pubDate>Tue, 01 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/postgresql</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/postgresql</guid>
-			</item>
-		
-			<item>
-				<title>grafana</title>
-				<description>&lt;h1 id=&quot;grafana&quot;&gt;grafana&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/grafana/grafana/&quot;&gt;https://github.com/grafana/grafana/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;一个开源的系统监控软件，尤其是GPU和slurm的监控&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/grafana/grafana/issues/45710&quot;&gt;https://github.com/grafana/grafana/issues/45710&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;看起来纵坐标和tooltip上的数值不太一样&lt;/p&gt;
-
-&lt;p&gt;图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json&lt;/p&gt;
-
-&lt;p&gt;grep  GPU Power Usage&lt;/p&gt;
-
-&lt;p&gt;stack 改成 false&lt;/p&gt;
-
-&lt;p&gt;重启  grafana 。&lt;/p&gt;
-
-&lt;p&gt;root        3180  0.0  0.0 2380228 59904 ?       Ssl  Feb16   1:54 /usr/bin/docker run –rm –network host –name docker.grafana.service -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana grafana/grafana
-472         3925  0.1  0.0 796740 70028 ?        Ssl  Feb16  15:57 grafana-server –homepath=/usr/share/grafana –config=/etc/grafana/grafana.ini –packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins&lt;/p&gt;
-</description>
-				<pubDate>Fri, 25 Feb 2022 13:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/02/grafana</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/02/grafana</guid>
 			</item>
 		
 	</channel>
