@@ -166,7 +166,9 @@
 
 <p>搜索100*100的矩形， 首次查询10-11s.</p>
 
-<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点。实测23s左右耗时</p>
+<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点。实测23s左右耗时。</p>
+
+<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
 {"persistent": {"search.max_buckets": 2000000}}
