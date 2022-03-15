@@ -16,6 +16,8 @@
 
 &lt;p&gt;创建索引: &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;测试服务器8核,  线上环境会更好&lt;/p&gt;
+
 &lt;p&gt;10000个点热力图40ms&lt;/p&gt;
 
 &lt;p&gt;1000000 个点 热力图, 不测了。直接上7kw个点&lt;/p&gt;
@@ -27,6 +29,8 @@
 &lt;p&gt;搜索100*100的矩形， 首次查询10-11s.&lt;/p&gt;
 
 &lt;p&gt;搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG51.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.&lt;/p&gt;
 
