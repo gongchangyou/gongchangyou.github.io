@@ -149,9 +149,17 @@
             <div class="post-content">
             <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
 
-<p>代码仓库：</p>
+<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
 
 <p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
+
+<p>10000个点热力图40ms</p>
+
+<p>1000000 个点 热力图,</p>
+
+<p>100000000 个点 热力图， 搜索10*10的矩形， 首次查询3.5s，生成缓存后 200ms即可查询到结果，效果还是非常不错的。</p>
 
 <p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
 

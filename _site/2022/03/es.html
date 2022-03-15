@@ -217,7 +217,11 @@ networks:
 
 <p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
 
+<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧</p>
+
 <p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
+
+<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
 
 <p>可以点击inspect 看request 语句</p>
 

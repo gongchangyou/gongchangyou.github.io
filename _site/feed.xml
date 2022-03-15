@@ -10,9 +10,17 @@
 				<title>es</title>
 				<description>&lt;h1 id=&quot;elasticsearch-热力图性能测评&quot;&gt;ElasticSearch 热力图性能测评&lt;/h1&gt;
 
-&lt;p&gt;代码仓库：&lt;/p&gt;
+&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/elasticsearch-test&quot;&gt;https://github.com/gongchangyou/elasticsearch-test&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;java客户端 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;创建索引: &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;10000个点热力图40ms&lt;/p&gt;
+
+&lt;p&gt;1000000 个点 热力图,&lt;/p&gt;
+
+&lt;p&gt;100000000 个点 热力图， 搜索10*10的矩形， 首次查询3.5s，生成缓存后 200ms即可查询到结果，效果还是非常不错的。&lt;/p&gt;
 
 &lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
 
@@ -103,7 +111,11 @@ networks:
 
 &lt;p&gt;注意：最好把版本升级下 7.11.1 -&amp;gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.&lt;/p&gt;
 
+&lt;p&gt;如果要压测的话，上面的jvm内存调大一点，至少10G吧&lt;/p&gt;
+
 &lt;p&gt;热力图可视化  &lt;a href=&quot;https://www.freesion.com/article/72491420060/&quot;&gt;https://www.freesion.com/article/72491420060/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面&lt;/p&gt;
 
 &lt;p&gt;可以点击inspect 看request 语句&lt;/p&gt;
 

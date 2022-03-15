@@ -150,9 +150,17 @@
         <div class="content">
             <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
 
-<p>代码仓库：</p>
+<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
 
 <p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
+
+<p>10000个点热力图40ms</p>
+
+<p>1000000 个点 热力图,</p>
+
+<p>100000000 个点 热力图， 搜索10*10的矩形， 首次查询3.5s，生成缓存后 200ms即可查询到结果，效果还是非常不错的。</p>
 
 <p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
 
@@ -245,7 +253,11 @@ networks:
 
 <p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
 
+<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧</p>
+
 <p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
+
+<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
 
 <p>可以点击inspect 看request 语句</p>
 
