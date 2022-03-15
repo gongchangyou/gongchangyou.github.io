@@ -12,6 +12,8 @@
 
 &lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/elasticsearch-test&quot;&gt;https://github.com/gongchangyou/elasticsearch-test&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好&lt;/p&gt;
+
 &lt;p&gt;java客户端 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;创建索引: &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&lt;/a&gt;&lt;/p&gt;
@@ -53,10 +55,30 @@
 &lt;p&gt;问题2： Missing [X-Elastic-Product] header.&lt;/p&gt;
 
 &lt;p&gt;解决2： elasticsearch 升级下版本，7.17.0+&lt;/p&gt;
+
+&lt;p&gt;问题3：  返回值大于100M&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;解决3:  别人的解决方案 &lt;a href=&quot;https://www.cnblogs.com/wwjj4811/p/15261125.html&quot;&gt;https://www.cnblogs.com/wwjj4811/p/15261125.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /**
+     * 保留小数点后4位
+     */
+    private String decimal(float x){
+        return String.format(&quot;%.4f&quot;, x);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG52.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Tue, 15 Mar 2022 11:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/es-import</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/es-import</guid>
+				<link>http://localhost:4000/2022/03/es-heatmap</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/es-heatmap</guid>
 			</item>
 		
 			<item>

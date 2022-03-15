@@ -11,7 +11,7 @@ tag: [mysql]
 
 代码仓库：[https://github.com/gongchangyou/elasticsearch-test](https://github.com/gongchangyou/elasticsearch-test)
 
-
+上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好
 
 
 
@@ -63,6 +63,36 @@ PUT /_cluster/settings
 
 
 
+
+
 问题2： Missing [X-Elastic-Product] header. 
 
 解决2： elasticsearch 升级下版本，7.17.0+
+
+
+
+
+
+问题3：  返回值大于100M 
+
+```
+java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
+
+```
+
+解决3:  别人的解决方案 [https://www.cnblogs.com/wwjj4811/p/15261125.html](https://www.cnblogs.com/wwjj4811/p/15261125.html)
+
+解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可
+
+```
+ /**
+     * 保留小数点后4位
+     */
+    private String decimal(float x){
+        return String.format("%.4f", x);
+    }
+```
+
+
+
+![]({{ site.baseurl}}/images/202203/WechatIMG52.png){: width="800" }
