@@ -18,9 +18,19 @@
 
 &lt;p&gt;10000个点热力图40ms&lt;/p&gt;
 
-&lt;p&gt;1000000 个点 热力图,&lt;/p&gt;
+&lt;p&gt;1000000 个点 热力图, 不测了。直接上7kw个点&lt;/p&gt;
 
-&lt;p&gt;7kw 个点 热力图， 搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。&lt;/p&gt;
+&lt;p&gt;7kw 个点 热力图&lt;/p&gt;
+
+&lt;p&gt;搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。&lt;/p&gt;
+
+&lt;p&gt;搜索100*100的矩形， 首次查询10-11s.&lt;/p&gt;
+
+&lt;p&gt;搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点。实测23s左右耗时&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT /_cluster/settings
+{&quot;persistent&quot;: {&quot;search.max_buckets&quot;: 2000000}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
 
