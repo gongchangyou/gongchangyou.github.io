@@ -26,13 +26,17 @@
 
 &lt;p&gt;搜索100*100的矩形， 首次查询10-11s.&lt;/p&gt;
 
-&lt;p&gt;搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点。实测23s左右耗时。&lt;/p&gt;
+&lt;p&gt;搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。&lt;/p&gt;
 
 &lt;p&gt;当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT /_cluster/settings
 {&quot;persistent&quot;: {&quot;search.max_buckets&quot;: 2000000}}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG50.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
 
