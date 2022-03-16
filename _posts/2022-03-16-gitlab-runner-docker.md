@@ -45,11 +45,11 @@ docker exec -it gitlab-runner bash
 ```
 
 
-然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个
+然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.
 
 
 
-
+### 打包
 
 修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了
 
@@ -80,3 +80,54 @@ build-job:
 
 ### 上传docker镜像
 
+
+
+在.gitlab-ci.yml中添加如下配置
+
+```
+publish:
+  stage: publish
+  only:
+    - master
+  image: docker:19.03.14
+  services:
+    - name: docker:19.03.14-dind
+      alias: docker
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
+
+```
+
+问题1：  msg="failed to dial gRPC: cannot connect to the Docker daemon. Is 'docker daemon' running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host"
+
+![]({{ site.baseurl}}/images/202203/WechatIMG54.png){: width="800" }
+
+往上翻到一个warning，应该是dind service没成功启动
+
+![]({{ site.baseurl}}/images/202203/WechatIMG55.png){: width="800" }
+
+解决1：[https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544](https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544) 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner
+
+
+问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?
+
+![]({{ site.baseurl}}/images/202203/WechatIMG56.png){: width="800" }
+
+解决2： 害得是业界良心啊 [https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem](https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem)
+
+```
+ services:
+    - name: docker:19.03.14-dind
+      alias: docker-dind #这个别名下面有用
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://docker-dind:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+```

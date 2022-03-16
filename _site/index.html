@@ -177,7 +177,9 @@
      --docker-image docker:latest
 </code></pre></div></div>
 
-<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个</p>
+<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.</p>
+
+<h3 id="打包">打包</h3>
 
 <p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
 
@@ -203,6 +205,52 @@ build-job:
 
 <h3 id="上传docker镜像">上传docker镜像</h3>
 
+<p>在.gitlab-ci.yml中添加如下配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>publish:
+  stage: publish
+  only:
+    - master
+  image: docker:19.03.14
+  services:
+    - name: docker:19.03.14-dind
+      alias: docker
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+<p>问题1：  msg=”failed to dial gRPC: cannot connect to the Docker daemon. Is ‘docker daemon’ running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host”</p>
+
+<p><img src="/images/202203/WechatIMG54.png" alt="" width="800" /></p>
+
+<p>往上翻到一个warning，应该是dind service没成功启动</p>
+
+<p><img src="/images/202203/WechatIMG55.png" alt="" width="800" /></p>
+
+<p>解决1：<a href="https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544">https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544</a> 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner</p>
+
+<p>问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?</p>
+
+<p><img src="/images/202203/WechatIMG56.png" alt="" width="800" /></p>
+
+<p>解决2： 害得是业界良心啊 <a href="https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem">https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> services:
+    - name: docker:19.03.14-dind
+      alias: docker-dind #这个别名下面有用
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://docker-dind:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+</code></pre></div></div>
 
         </div>
     </div>
@@ -280,6 +328,7 @@ build-job:
 </code></pre></div></div>
 
 <p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
+
 
         </div>
     </div>

@@ -37,7 +37,9 @@
      --docker-image docker:latest
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个&lt;/p&gt;
+&lt;p&gt;然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.&lt;/p&gt;
+
+&lt;h3 id=&quot;打包&quot;&gt;打包&lt;/h3&gt;
 
 &lt;p&gt;修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了&lt;/p&gt;
 
@@ -63,6 +65,52 @@ build-job:
 
 &lt;h3 id=&quot;上传docker镜像&quot;&gt;上传docker镜像&lt;/h3&gt;
 
+&lt;p&gt;在.gitlab-ci.yml中添加如下配置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;publish:
+  stage: publish
+  only:
+    - master
+  image: docker:19.03.14
+  services:
+    - name: docker:19.03.14-dind
+      alias: docker
+      command: [&quot;--insecure-registry=172.16.102.20:5005&quot;]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题1：  msg=”failed to dial gRPC: cannot connect to the Docker daemon. Is ‘docker daemon’ running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG54.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;往上翻到一个warning，应该是dind service没成功启动&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG55.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;解决1：&lt;a href=&quot;https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544&quot;&gt;https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544&lt;/a&gt; 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner&lt;/p&gt;
+
+&lt;p&gt;问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG56.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;解决2： 害得是业界良心啊 &lt;a href=&quot;https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem&quot;&gt;https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; services:
+    - name: docker:19.03.14-dind
+      alias: docker-dind #这个别名下面有用
+      command: [&quot;--insecure-registry=172.16.102.20:5005&quot;]
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://docker-dind:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: &quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Wed, 16 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-runner-docker</link>
@@ -138,6 +186,7 @@ build-job:
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG52.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
 </description>
 				<pubDate>Tue, 15 Mar 2022 11:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/es-heatmap</link>
