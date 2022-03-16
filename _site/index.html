@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
+        
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
         
           <li><a href="/2022/03/es">es-install</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/go(1)">go-1</a></li>
         
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
-        
-          <li><a href="/2022/03/opengl-go">go-opengl</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
 			
 		
 			
@@ -143,6 +143,68 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/gitlab-runner-docker">Mar 16, 2022 - gitlab-runner-docker</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-runner-docker">gitlab runner docker</h1>
+
+<h3 id="docker容器集成">docker容器集成</h3>
+
+<p><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner">https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner</a></p>
+
+<p>一般来说除了shell，我们还希望集成docker容器，在docker中编译打包，并且打包成docker镜像，供k8s部署。</p>
+
+<ol>
+  <li>注册一个新的runner，executor是docker的那种，不是上期说的shell</li>
+  <li>编辑你的.gitlab-ci.yml， 把image添加进去。</li>
+</ol>
+
+<p>因为我们的gitlab-runner是docker启动的，所以先进入容器</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it gitlab-runner bash
+</code></pre></div></div>
+
+<p>敲下面的命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   gitlab-runner register \
+     --url "https://gitlab.example.com/" \
+     --registration-token "PROJECT_REGISTRATION_TOKEN" \
+     --description "docker 各种描述" \
+     --executor "docker" \
+     --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
+     --docker-image docker:latest
+</code></pre></div></div>
+
+<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个</p>
+
+<p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
+
+<p>一个springboot项目打包时间约4m.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - build
+  - publish
+  - deploy
+
+#打包
+build-job:
+  stage: build
+  image: maven:3-jdk-11
+#  script: "mvn package -B"
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - mvn package -B
+  artifacts:
+    paths:
+      - target/*.jar
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
@@ -475,24 +537,10 @@ vm.max_map_count=655360
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go1">Go（1）</h1>
-
-<p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 32</span>
+  <span class="page_number ">Page: 1 of 33</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   

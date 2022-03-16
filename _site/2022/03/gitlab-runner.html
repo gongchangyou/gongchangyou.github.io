@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
+        
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
         
           <li><a href="/2022/03/es">es-install</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/go(1)">go-1</a></li>
         
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
-        
-          <li><a href="/2022/03/opengl-go">go-opengl</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
 			
 		
 			
@@ -185,9 +185,10 @@
   </li>
 </ol>
 
-<p>给现有的工程添加runner:</p>
+<p>给现有的工程添加runner:
+<img src="/images/202203/WechatIMG53.png" alt="pgadmin" width="800" /></p>
 
-<p><img src="/images/202203/WechatIMG53.png" alt="pgadmin" width="800" /></p>
+<p>测试.gitlab-ci.yml文件 CI-Lint 按钮。 <a href="http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint">http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint</a></p>
 
 <p>问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”</p>
 

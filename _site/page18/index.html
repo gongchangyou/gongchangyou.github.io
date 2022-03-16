@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
+        
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
         
           <li><a href="/2022/03/es">es-install</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/go(1)">go-1</a></li>
         
           <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
-        
-          <li><a href="/2022/03/opengl-go">go-opengl</a></li>
         
     </ul>
 </div>
@@ -80,7 +80,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>4</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
 			
 		
 			
@@ -145,6 +145,17 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab">Aug 26, 2016 - vim 查看空格</a></h1>
+        
+        <div class="content">
+            <p>set listchars=tab:&gt;-,trail:-</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/08/mysqldump-%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E5%89%AF%E6%9C%AC">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
         
         <div class="content">
@@ -188,50 +199,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">Jul 7, 2016 - nfs磁盘共享</a></h1>
-        
-        <div class="content">
-            <p>A机器磁盘太小了  希望通过A机器的路径访问到 有剩余空间的B机器</p>
-
-<p>0.先进入到B机器，发现没有安装nfs service</p>
-
-<p>1，配置NFS服务端</p>
-
-<p>$ sudo yum install nfs-utils portmap  （适用centos 5）
-$ sudo yum install nfs-utils rpcbind  （适用centos 6）</p>
-
-<p>2.sudo vi /etc/exports</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/big_query 10.140.69.97(rw)  //前面的是本地的路径 后面是A机器的ip rw是读写权限 
-</code></pre></div></div>
-
-<p>参数说明：
-rw：read-write，可读写；
-ro：read-only，只读；
-sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合
-async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；
-root_squash（默认）：将来访的root用户映射为匿名用户或用户组；
-no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；
-no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；
-all_squash：将来访的所有用户映射为匿名用户或用户组；
-secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；
-insecure：允许客户端从大于1024的tcp/ip端口连接服务器；
-anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；
-anongid：匿名用户的GID值；
-no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
-
-<p>3.sudo service nfs start //启动nfs服务 可以通过sudo service nfs status来查看当前状态</p>
-
-<p>4.激动人心的来了 去A服务器
-	mount  10.140.99.122:/var/log/big_query  /var/path/of/local //前面的ip是B的ip 路径就是第2步中的路径 后面那个是A本地路径</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -239,7 +206,7 @@ no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父�
         <a class="btn btn-default" href="/page17" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 18 of 32</span>
+  <span class="page_number ">Page: 18 of 33</span>
   
     <a class="btn btn-default" href="/page19" class="next">Older</a>
   

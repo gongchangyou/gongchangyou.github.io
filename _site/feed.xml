@@ -7,6 +7,66 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>gitlab-runner-docker</title>
+				<description>&lt;h1 id=&quot;gitlab-runner-docker&quot;&gt;gitlab runner docker&lt;/h1&gt;
+
+&lt;h3 id=&quot;docker容器集成&quot;&gt;docker容器集成&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner&quot;&gt;https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一般来说除了shell，我们还希望集成docker容器，在docker中编译打包，并且打包成docker镜像，供k8s部署。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;注册一个新的runner，executor是docker的那种，不是上期说的shell&lt;/li&gt;
+  &lt;li&gt;编辑你的.gitlab-ci.yml， 把image添加进去。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;因为我们的gitlab-runner是docker启动的，所以先进入容器&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it gitlab-runner bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;敲下面的命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   gitlab-runner register \
+     --url &quot;https://gitlab.example.com/&quot; \
+     --registration-token &quot;PROJECT_REGISTRATION_TOKEN&quot; \
+     --description &quot;docker 各种描述&quot; \
+     --executor &quot;docker&quot; \
+     --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
+     --docker-image docker:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个&lt;/p&gt;
+
+&lt;p&gt;修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了&lt;/p&gt;
+
+&lt;p&gt;一个springboot项目打包时间约4m.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stages:
+  - build
+  - publish
+  - deploy
+
+#打包
+build-job:
+  stage: build
+  image: maven:3-jdk-11
+#  script: &quot;mvn package -B&quot;
+  script:
+    - echo &quot;Hello, $GITLAB_USER_LOGIN!&quot;
+    - mvn package -B
+  artifacts:
+    paths:
+      - target/*.jar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+				<pubDate>Wed, 16 Mar 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/gitlab-runner-docker</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-runner-docker</guid>
+			</item>
+		
+			<item>
 				<title>es-heatmap</title>
 				<description>&lt;h1 id=&quot;elasticsearch-热力图性能测评&quot;&gt;ElasticSearch 热力图性能测评&lt;/h1&gt;
 
@@ -558,9 +618,10 @@ glxinfo | grep -i opengl
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;给现有的工程添加runner:&lt;/p&gt;
+&lt;p&gt;给现有的工程添加runner:
+&lt;img src=&quot;/images/202203/WechatIMG53.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG53.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;测试.gitlab-ci.yml文件 CI-Lint 按钮。 &lt;a href=&quot;http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint&quot;&gt;http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”&lt;/p&gt;
 
@@ -737,69 +798,6 @@ make install
 				<pubDate>Wed, 02 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/postgis</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/postgis</guid>
-			</item>
-		
-			<item>
-				<title>Postgresql</title>
-				<description>&lt;h1 id=&quot;postgresql&quot;&gt;Postgresql&lt;/h1&gt;
-
-&lt;h3 id=&quot;ubuntu-安装-postgresql&quot;&gt;ubuntu 安装 postgresql&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://linux.cn/article-11480-1.html&quot;&gt;https://linux.cn/article-11480-1.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;sudo apt update&lt;/li&gt;
-  &lt;li&gt;sudo apt install postgresql postgresql-contrib&lt;/li&gt;
-  &lt;li&gt;service postgresql start&lt;/li&gt;
-  &lt;li&gt;sudo -s postgresql	 #切换用户&lt;/li&gt;
-  &lt;li&gt;pgsql 	#登录PostgreSQL&lt;/li&gt;
-  &lt;li&gt;ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;安装gui--pgadmin&quot;&gt;安装GUI  pgadmin&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;docker pull dpage/pgadmin4&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4&lt;/p&gt;
-
-    &lt;p&gt;注意这里的volume 绑定的位置，未来导入导出csv 可以使用&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;网页打开Localhost:5433 输入第二步的用户名密码&lt;/p&gt;
-
-    &lt;p&gt;问题： create server 时发现 无法连接server&lt;/p&gt;
-
-    &lt;p&gt;解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen_addresses = '*' 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;重启postgresql : service postgresql restart&lt;/p&gt;
-
-    &lt;p&gt;问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “10.10.48.194”, port 5432&lt;/p&gt;
-
-    &lt;p&gt;编辑 pg_hba.conf文件&lt;/p&gt;
-
-    &lt;p&gt;把报错中的host 拷贝到这个文件中：如下编写&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi /etc/postgresql/12/main/pg_hba.conf
-   
-host all all 172.17.0.4/24 md5
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202202/WechatIMG31.png&quot; alt=&quot;set server list code&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 01 Mar 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/postgresql</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/postgresql</guid>
 			</item>
 		
 	</channel>

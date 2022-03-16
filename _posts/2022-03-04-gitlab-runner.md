@@ -64,15 +64,10 @@ runner分两种，shared runner / specific runner 看名字就知道了，前者
 
 
 给现有的工程添加runner:
-
-
-
 ![pgadmin]({{ site.baseurl}}/images/202203/WechatIMG53.png){: width="800" }
 
 
-
-
-
+测试.gitlab-ci.yml文件 CI-Lint 按钮。 [http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint](http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint)
 
 
 问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 "Run untagged jobs"
