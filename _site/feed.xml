@@ -558,6 +558,10 @@ glxinfo | grep -i opengl
   &lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;给现有的工程添加runner:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG53.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG37.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;

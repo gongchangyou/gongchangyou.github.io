@@ -61,6 +61,20 @@ runner分两种，shared runner / specific runner 看名字就知道了，前者
    docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
    ```
 
+
+
+给现有的工程添加runner:
+
+
+
+![pgadmin]({{ site.baseurl}}/images/202203/WechatIMG53.png){: width="800" }
+
+
+
+
+
+
+
 问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 "Run untagged jobs"
 
 ![pgadmin]({{ site.baseurl}}/images/202203/WechatIMG37.png){: width="800" }
