@@ -42,7 +42,7 @@ docker exec -it gitlab-runner bash
      --executor "docker" \
      --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
      --docker-image docker:latest
-   ```
+```
 
 
 然后跟第一期一样，去gitlab的配置界面把工程的runner设置成这个
@@ -73,3 +73,10 @@ build-job:
     paths:
       - target/*.jar
 ```
+
+
+
+
+
+### 上传docker镜像
+
