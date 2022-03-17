@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
+        
           <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
         
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/es">es-install</a></li>
         
           <li><a href="/2022/03/go(1)">go-1</a></li>
-        
-          <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
         
     </ul>
 </div>
@@ -127,6 +127,10 @@
 				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
 			
 		
+			
+				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
+			
+		
 </div>
 <!-- 
 <div class="sidebar well">
@@ -182,7 +186,7 @@
 
 <p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
 
-<p>一个springboot项目打包时间约4m.</p>
+<p>一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 <a href="https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml">https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml</a> 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
   - build
@@ -251,6 +255,67 @@ build-job:
     DOCKER_TLS_CERTDIR: ""
 </code></pre></div></div>
 
+<h3 id="部署">部署</h3>
+
+<p>现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？</p>
+
+<p>网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - deploy
+
+docker-deploy:
+  stage: deploy  # 执行Job内容
+  script:    # 通过Dockerfile生成cicd-demo镜像
+    - docker build -t cicd-demo .    # 删除已经在运行的容器
+    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
+    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
+    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
+  tags:    # 执行Job的服务器
+    - kun
+  only:    # 只有在master分支才会执行
+    - master
+</code></pre></div></div>
+
+<p>我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？</p>
+
+<ol>
+  <li>
+    <p>先在gitlab添加 k8s cluster  <img src="/images/202203/WechatIMG57.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>用k8s 设置deployment  neuroviz-server-java</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. kubectl create deployment neuroviz-server-java 
+2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
+3. kubectl get services neuroviz-server-java
+   
+   
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 <a href="http://docs.kubernetes.org.cn/670.html#i-2">http://docs.kubernetes.org.cn/670.html#i-2</a></p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deploy:
+  only:
+    - master
+  stage: deploy
+  image:     
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  script:
+    - export HOME=/tmp
+    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
+    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
+    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
+    - kubectl config use-context k8s
+    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+
             </div>
             
             <div id="disqus_thread">
@@ -261,6 +326,8 @@ build-job:
             </div>
           </div>
           <div class="pagination">
+              
+                <a class="btn btn-default" href="/2022/03/k8s" class="next">Newer Post</a>
               
               
                 <a class="btn btn-default" href="/2022/03/es-heatmap" class="previous">Older Post</a>

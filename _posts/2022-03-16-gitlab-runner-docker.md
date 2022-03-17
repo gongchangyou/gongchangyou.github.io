@@ -53,7 +53,7 @@ docker exec -it gitlab-runner bash
 
 修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了
 
-一个springboot项目打包时间约4m.
+一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 [https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml](https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml) 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。
 
 ```
 stages:
@@ -131,3 +131,70 @@ publish:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
 ```
+
+
+
+
+
+### 部署
+
+现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？
+
+网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。
+
+```
+stages:
+  - deploy
+
+docker-deploy:
+  stage: deploy  # 执行Job内容
+  script:    # 通过Dockerfile生成cicd-demo镜像
+    - docker build -t cicd-demo .    # 删除已经在运行的容器
+    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
+    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
+    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
+  tags:    # 执行Job的服务器
+    - kun
+  only:    # 只有在master分支才会执行
+    - master
+```
+
+我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？
+
+
+1. 先在gitlab添加 k8s cluster  ![]({{ site.baseurl}}/images/202203/WechatIMG57.png){: width="800" }
+
+2. 用k8s 设置deployment  neuroviz-server-java 
+
+   ```
+   1. kubectl create deployment neuroviz-server-java 
+   2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
+   3. kubectl get services neuroviz-server-java
+   
+   
+   ```
+
+   
+
+3. 把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 [http://docs.kubernetes.org.cn/670.html#i-2](http://docs.kubernetes.org.cn/670.html#i-2)
+
+```
+deploy:
+  only:
+    - master
+  stage: deploy
+  image:     
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  script:
+    - export HOME=/tmp
+    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
+    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
+    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
+    - kubectl config use-context k8s
+    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+```
+
+
+

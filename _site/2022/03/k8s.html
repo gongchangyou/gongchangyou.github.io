@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
+        
+          <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
+        
+          <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
+        
+          <li><a href="/2022/03/es">es-install</a></li>
+        
+          <li><a href="/2022/03/go(1)">go-1</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/java" title="java">java<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/03/k8s">Mar 17, 2022 - gitlab-runner-docker</a></h1>
+            
+            <div class="post-content">
+            <h1 id="k8s">k8s</h1>
+
+<p>文档1 <a href="http://docs.kubernetes.org.cn/475.html">http://docs.kubernetes.org.cn/475.html</a></p>
+
+<p>文档2  <a href="https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/</a></p>
+
+<h3 id="常用的几个命令">常用的几个命令:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>查看各种对象
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose #将资源暴露为新的Kubernetes Service。在这里可以实现将宿主机的端口映射给容器,容器端口8000
+kubectl expose rc nginx --port=80 --target-port=8000 
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create # 创建一个Deployment
+$ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
+deployment "nginx-deployment" created
+</code></pre></div></div>
+
+<h3 id="回退到历史版本-这个可以用jenkins做个job">回退到历史版本, 这个可以用jenkins做个job</h3>
+
+<p>现在，我们可以决定回退当前的 rollout 到之前的版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+<p>也可以使用 –revision参数指定某个历史版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment --to-revision=2
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+
+<h3 id="扩容-这个可以用jenkins做个job手动扩容">扩容, 这个可以用jenkins做个job手动扩容</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl scale deployment nginx-deployment --replicas 10
+deployment "nginx-deployment" scaled
+
+$ kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+deployment "nginx-deployment" autoscaled
+</code></pre></div></div>
+
+<h3 id="灰度或者蓝绿发布-可以使用ingress">灰度或者蓝绿发布 可以使用ingress</h3>
+
+<p>命令表 <a href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
+
+<p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/03/gitlab-runner-docker" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-03-k8s';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+

@@ -8,6 +8,60 @@
 		
 			<item>
 				<title>gitlab-runner-docker</title>
+				<description>&lt;h1 id=&quot;k8s&quot;&gt;k8s&lt;/h1&gt;
+
+&lt;p&gt;文档1 &lt;a href=&quot;http://docs.kubernetes.org.cn/475.html&quot;&gt;http://docs.kubernetes.org.cn/475.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;文档2  &lt;a href=&quot;https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/&quot;&gt;https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;常用的几个命令&quot;&gt;常用的几个命令:&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;查看各种对象
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl expose #将资源暴露为新的Kubernetes Service。在这里可以实现将宿主机的端口映射给容器,容器端口8000
+kubectl expose rc nginx --port=80 --target-port=8000 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl create # 创建一个Deployment
+$ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
+deployment &quot;nginx-deployment&quot; created
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;回退到历史版本-这个可以用jenkins做个job&quot;&gt;回退到历史版本, 这个可以用jenkins做个job&lt;/h3&gt;
+
+&lt;p&gt;现在，我们可以决定回退当前的 rollout 到之前的版本：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ kubectl rollout undo deployment/nginx-deployment
+deployment &quot;nginx-deployment&quot; rolled back
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;也可以使用 –revision参数指定某个历史版本：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ kubectl rollout undo deployment/nginx-deployment --to-revision=2
+deployment &quot;nginx-deployment&quot; rolled back
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;扩容-这个可以用jenkins做个job手动扩容&quot;&gt;扩容, 这个可以用jenkins做个job手动扩容&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ kubectl scale deployment nginx-deployment --replicas 10
+deployment &quot;nginx-deployment&quot; scaled
+
+$ kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+deployment &quot;nginx-deployment&quot; autoscaled
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;灰度或者蓝绿发布-可以使用ingress&quot;&gt;灰度或者蓝绿发布 可以使用ingress&lt;/h3&gt;
+
+&lt;p&gt;命令表 &lt;a href=&quot;http://docs.kubernetes.org.cn/683.html&quot;&gt;http://docs.kubernetes.org.cn/683.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Minikube 体验 &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/start/&quot;&gt;https://minikube.sigs.k8s.io/docs/start/&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 17 Mar 2022 10:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/k8s</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/k8s</guid>
+			</item>
+		
+			<item>
+				<title>gitlab-runner-docker</title>
 				<description>&lt;h1 id=&quot;gitlab-runner-docker&quot;&gt;gitlab runner docker&lt;/h1&gt;
 
 &lt;h3 id=&quot;docker容器集成&quot;&gt;docker容器集成&lt;/h3&gt;
@@ -43,7 +97,7 @@
 
 &lt;p&gt;修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了&lt;/p&gt;
 
-&lt;p&gt;一个springboot项目打包时间约4m.&lt;/p&gt;
+&lt;p&gt;一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 &lt;a href=&quot;https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml&quot;&gt;https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml&lt;/a&gt; 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stages:
   - build
@@ -111,6 +165,67 @@ build-job:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: &quot;&quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;部署&quot;&gt;部署&lt;/h3&gt;
+
+&lt;p&gt;现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？&lt;/p&gt;
+
+&lt;p&gt;网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;stages:
+  - deploy
+
+docker-deploy:
+  stage: deploy  # 执行Job内容
+  script:    # 通过Dockerfile生成cicd-demo镜像
+    - docker build -t cicd-demo .    # 删除已经在运行的容器
+    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
+    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
+    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
+  tags:    # 执行Job的服务器
+    - kun
+  only:    # 只有在master分支才会执行
+    - master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;先在gitlab添加 k8s cluster  &lt;img src=&quot;/images/202203/WechatIMG57.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;用k8s 设置deployment  neuroviz-server-java&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. kubectl create deployment neuroviz-server-java 
+2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
+3. kubectl get services neuroviz-server-java
+   
+   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 &lt;a href=&quot;http://docs.kubernetes.org.cn/670.html#i-2&quot;&gt;http://docs.kubernetes.org.cn/670.html#i-2&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deploy:
+  only:
+    - master
+  stage: deploy
+  image:     
+    name: bitnami/kubectl:latest
+    entrypoint: [&quot;&quot;]
+  script:
+    - export HOME=/tmp
+    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
+    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
+    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
+    - kubectl config use-context k8s
+    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 </description>
 				<pubDate>Wed, 16 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-runner-docker</link>
@@ -710,146 +825,6 @@ ERROR: Job failed: exit status 1
 				<pubDate>Fri, 04 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-runner</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-runner</guid>
-			</item>
-		
-			<item>
-				<title>postgis</title>
-				<description>&lt;h1 id=&quot;postgis&quot;&gt;Postgis&lt;/h1&gt;
-
-&lt;p&gt;一个postgresql的扩展，空间数据库&lt;/p&gt;
-
-&lt;h3 id=&quot;法1-docker安装&quot;&gt;法1： docker安装&lt;/h3&gt;
-
-&lt;p&gt;1 &lt;a href=&quot;https://www.cnblogs.com/6324/p/11947388.html&quot;&gt;https://www.cnblogs.com/6324/p/11947388.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run
--v $(pwd)/data:/var/lib/postgresql/data -e POSTGRES_DB=&quot;openmaptiles&quot; -e POSTGRES_USER=&quot;test&quot; -e POSTGRES_PASSWORD=&quot;test&quot; -p 15432:5432 -d openmaptiles/postgis
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;2  因为上一步里面各种扩展都安装好了， 所以 这里我们就直接 操作DDL 和DML即可&lt;a href=&quot;https://zhuanlan.zhihu.com/p/43374582&quot;&gt;https://zhuanlan.zhihu.com/p/43374582&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;具体操作面板在这&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/1646357982434.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;3 如何批量导入数据？&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/1646358797595.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#单个的写入point语句是这样的
-insert into point_test (name,pt) values ('p1',ST_GeomFromText('Point(0 0 0)'));
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;4 如何批量导入geometry字段类型的数据。以下可以看到 pt geometry字段是一堆字符串，如果已知三维坐标 恐怕无法自行写出那样的字符串.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/1646364305354.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;只能曲线救国了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 先在表里新增字段x, y，z （numeric）
-
-2. 用csv把 x,y,z 字段导入
-
-3. update 一把，将x,y,z 生成的point 写到pt字段中
-
-    ```
-    update point_test set pt = ST_SetSRID(ST_MakePoint(x,y,z),0) [where id=5];
-    ```
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这里导入的时候注意 csv中如果有标题的话 header，记得勾选header&lt;/p&gt;
-
-&lt;p&gt;column 必须匹配，多一列pgsql就不认识了，导入不了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/1646369341367.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;500&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;5 如何查看执行效率？性能？&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	explain Analyze select id,name,ST_3DDistance(ST_GeomFromText('Point(0 0 0)'),pt)  from point_test;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;压测结果，导入了17000个点， 搜索距离最远的两个点&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select p1.id,p2.id, p1.name,p2.name,ST_3DDistance(p1.pt,p2.pt) as distance  from point_test as p1,point_test as p2 where p1.id &amp;gt; p2.id order by distance desc limit 1;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;不加索引的情况下是53.4s,加了gist索引 还是 53.4s。 没生效？&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://postgis.net/workshops/postgis-intro/indexing.html&quot;&gt;http://postgis.net/workshops/postgis-intro/indexing.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;因为这个索引不是所有函数都能生效的，因为索引还是根据空间划分矩形，大部分是cover，intersect之类的功能&lt;/p&gt;
-
-&lt;p&gt;至于用gist 还是spgist索引，取决于数据的稠密程度 &lt;a href=&quot;https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis&quot;&gt;https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;实际使用下来，1百万行，1000^3 的立方体中， 搜索在某个矩阵中的（10x10) 耗时是100ms左右，还是非常快的。如果不加索引的话，计算超时了都，估计1分钟之后都不会有结果。&lt;/p&gt;
-
-&lt;p&gt;索引大小52M&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WITH xyz AS (
-SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
-FROM generate_series(1, 1000)),
-boxes AS (
-  SELECT ST_3DMakeBox(ST_MakePoint(x-5, y-5, z-5),
-    ST_MakePoint(x+5 ,y+5.1875, z+15)) AS geom
-  FROM xyz
-)
-SELECT Count(*)
-FROM points, boxes
-WHERE points.geom &amp;amp;&amp;amp; boxes.geom;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;有些点是否在某个不规则Polygon中的功能也可以使用该数据库&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope&quot;&gt;https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;但是因为我们的数据是在亿级， 按照 &lt;a href=&quot;https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;amp;file=20160119_01.md&quot;&gt;PostgreSQL 百亿地理位置数据 近邻查询性能&lt;/a&gt;  建立索引确实要花点时间,1亿行gis数据大约5GB索引,查询上述在box中的点耗时只有100ms. 但是如果box再大一点,里面包括1kw数据时，就需要花大约10s时间。生产环境是不可能使用了，OLAP场景还行。&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select pg_relation_size('gist2')
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG46.png&quot; alt=&quot;pgadmin&quot; width=&quot;500&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WITH xyz AS (
-SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
-FROM generate_series(1, 1000)),
-boxes AS (
-  SELECT ST_3DMakeBox(ST_MakePoint(x-0.1, y-5, z-5),
-    ST_MakePoint(x+0.1 ,y+5.1875, z+15)) AS geom
-  FROM xyz
-)
-SELECT ST_AsText(points.geom), ST_AsText(boxes.geom)
-FROM points, boxes
-WHERE  ST_3DIntersects(boxes.geom ,points.geom) 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;//之前那个 &amp;amp;&amp;amp; 操作会有重复数据，这个 ST_3DIntersects 函数可以给出在这个box中的点, 返回2000个点 耗时差不多 500ms&lt;/p&gt;
-
-&lt;h3 id=&quot;法2以下的甭看了&quot;&gt;法2：以下的甭看了&lt;/h3&gt;
-
-&lt;p&gt;源 /etc/apt/sources.list ， 如果无法安装，请变更源&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-cache search postgis
-apt-get install postgis
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;以上这个一般来说搞不定因为源没有postgis-只能下载各种源码-比如postgis的源码-tar包解压缩之后&quot;&gt;以上这个一般来说搞不定，因为源没有postgis ，只能下载各种源码 ,比如postgis的源码 ，tar包解压缩之后&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./configure
-make
-make install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;完事之后-还需要安装&quot;&gt;完事之后 还需要安装&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install postgresql-9.5-postgis-2.2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;一通折腾之后，算是安装完成了。&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 02 Mar 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/postgis</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/postgis</guid>
 			</item>
 		
 	</channel>

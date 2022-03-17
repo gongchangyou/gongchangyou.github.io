@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
+        
           <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
         
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/es">es-install</a></li>
         
           <li><a href="/2022/03/go(1)">go-1</a></li>
-        
-          <li><a href="/2022/03/opengl-go-1">go-opengl-1</a></li>
         
     </ul>
 </div>
@@ -127,6 +127,10 @@
 				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
 			
 		
+			
+				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
+			
+		
 </div>
 <!-- 
 <div class="sidebar well">
@@ -143,6 +147,45 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">Oct 20, 2017 - memcache过期时间</a></h1>
+        
+        <div class="content">
+            <p>memcache 过期时间的设置</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#define REALTIME_MAXDELTA 60*60*24*30  </span>
+   <span class="n">static</span> <span class="n">rel_time_t</span> <span class="n">realtime</span><span class="p">(</span><span class="n">const</span> <span class="n">time_t</span> <span class="n">exptime</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&gt;</span> <span class="no">REALTIME_MAXDELTA</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">#如果超过30天  </span>
+               <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&lt;=</span> <span class="n">process_started</span><span class="p">)</span>   <span class="c1">#又小于进程启动时间，直接失效  </span>
+                      <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>   
+               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">-</span> <span class="n">process_started</span><span class="p">);</span>   <span class="c1">#返回相对时间 exptime时间戳 - 进程启动时间  </span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>   <span class="c1">#没超过30天的秒数，就是用当前运行时间+exptime  </span>
+               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">+</span> <span class="n">current_time</span><span class="p">);</span>   <span class="c1">#返回相对时间 服务器运行时间(从启动到现在的时间) + exptime  </span>
+        <span class="p">}</span>  
+ <span class="p">}</span>  </code></pre></figure>
+
+<p>当memcache的current_time不对，当(process_started + current_time)落后系统时间戳时，导致cache迟迟不过期,</p>
+
+<p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
+
+<p>uptime就是运行时间<br />
+time是当前时间 （memcache启动时间 + uptime)</p>
+<font color="red">当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！</font>
+<p>(uptime就是代码中的current_time)</p>
+
+<font color="blue">如何处理？ 重启memcache  </font>
+
+<p>ps aux|grep memcache<br />
+kill -9 pid<br />
+/usr/bin/memcached -d restart -m 64 -p 11211 -u memcache -l 127.0.0.1</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2017/09/php_beautifier">Sep 30, 2017 - 在sublime 2中添加php_beautifer </a></h1>
@@ -200,29 +243,6 @@ secure-file-priv=”/data/xlive/tools/masterdata/”</p>
 UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
 SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
 WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">Nov 11, 2016 - 光照模型</a></h1>
-        
-        <div class="content">
-            <p>标准光照模型</p>
-
-<p>漫反射</p>
-
-<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
-
-<p>高光反射</p>
-
-<p>r = 2(n . l)n - l;</p>
-
-<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
-
-<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
 
         </div>
     </div>
