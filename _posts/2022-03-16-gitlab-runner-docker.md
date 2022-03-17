@@ -164,7 +164,7 @@ docker-deploy:
 
 1. 先在gitlab添加 k8s cluster  ![]({{ site.baseurl}}/images/202203/WechatIMG57.png){: width="800" }
 
-2. 用k8s 设置deployment  neuroviz-server-java 
+2. 用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊
 
    ```
    1. kubectl create deployment neuroviz-server-java 

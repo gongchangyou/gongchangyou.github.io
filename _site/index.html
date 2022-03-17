@@ -173,6 +173,10 @@ $ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml 
 deployment "nginx-deployment" created
 </code></pre></div></div>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Listen on port 8888 locally, forwarding to 5000 in the pod #端口转发
+kubectl port-forward mypod 8888:5000
+</code></pre></div></div>
+
 <h3 id="回退到历史版本-这个可以用jenkins做个job">回退到历史版本, 这个可以用jenkins做个job</h3>
 
 <p>现在，我们可以决定回退当前的 rollout 到之前的版本：</p>
@@ -197,6 +201,15 @@ deployment "nginx-deployment" autoscaled
 <p>命令表 <a href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
 
 <p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
+
+<p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
+
+<p>主要步骤：</p>
+
+ 	1.  创建两个yaml文件。 分别对应RS和Service .kubectl create 
+ 	2. 创建Ingress Controller. 相当于是个内置的nginx，这样不需要外部配置nginx.conf
+ 	3. 创建Ingress ,定义规则，将不同域名的路由对应到不同的service
+ 	4. 测试效果，请求试试
 
 
         </div>
@@ -341,7 +354,7 @@ docker-deploy:
     <p>先在gitlab添加 k8s cluster  <img src="/images/202203/WechatIMG57.png" alt="" width="800" /></p>
   </li>
   <li>
-    <p>用k8s 设置deployment  neuroviz-server-java</p>
+    <p>用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊</p>
 
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. kubectl create deployment neuroviz-server-java 
 2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080

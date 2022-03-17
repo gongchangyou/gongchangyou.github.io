@@ -29,6 +29,10 @@ $ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml 
 deployment &quot;nginx-deployment&quot; created
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Listen on port 8888 locally, forwarding to 5000 in the pod #端口转发
+kubectl port-forward mypod 8888:5000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;回退到历史版本-这个可以用jenkins做个job&quot;&gt;回退到历史版本, 这个可以用jenkins做个job&lt;/h3&gt;
 
 &lt;p&gt;现在，我们可以决定回退当前的 rollout 到之前的版本：&lt;/p&gt;
@@ -53,6 +57,15 @@ deployment &quot;nginx-deployment&quot; autoscaled
 &lt;p&gt;命令表 &lt;a href=&quot;http://docs.kubernetes.org.cn/683.html&quot;&gt;http://docs.kubernetes.org.cn/683.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Minikube 体验 &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/start/&quot;&gt;https://minikube.sigs.k8s.io/docs/start/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;如何 利用 nginx-ingress 请求spring boot项目 &lt;a href=&quot;https://blog.csdn.net/weixin_39637921/article/details/111281873&quot;&gt;https://blog.csdn.net/weixin_39637921/article/details/111281873&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主要步骤：&lt;/p&gt;
+
+ 	1.  创建两个yaml文件。 分别对应RS和Service .kubectl create 
+ 	2. 创建Ingress Controller. 相当于是个内置的nginx，这样不需要外部配置nginx.conf
+ 	3. 创建Ingress ,定义规则，将不同域名的路由对应到不同的service
+ 	4. 测试效果，请求试试
 
 </description>
 				<pubDate>Thu, 17 Mar 2022 10:05:06 +0800</pubDate>
@@ -195,7 +208,7 @@ docker-deploy:
     &lt;p&gt;先在gitlab添加 k8s cluster  &lt;img src=&quot;/images/202203/WechatIMG57.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;用k8s 设置deployment  neuroviz-server-java&lt;/p&gt;
+    &lt;p&gt;用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊&lt;/p&gt;
 
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. kubectl create deployment neuroviz-server-java 
 2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
