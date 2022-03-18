@@ -58,6 +58,40 @@ deployment &quot;nginx-deployment&quot; autoscaled
 
 &lt;p&gt;Minikube 体验 &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/start/&quot;&gt;https://minikube.sigs.k8s.io/docs/start/&lt;/a&gt;&lt;/p&gt;
 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#进入minikube终端
+minikube ssh 
+#如果docker pull 拉镜像太慢的话 可以直接进入终端 docker pull XXX
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题1：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Exiting due to DRV_AS_ROOT: The &quot;docker&quot; driver should not be used with root privileges.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;解决1:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;minikube start --force --driver=docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题2: k8s.gcr.io/echoserver:1.4 这个镜像拉不到，导致pod启动失败&lt;/p&gt;
+
+&lt;p&gt;解决2： &lt;a href=&quot;https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91&quot;&gt;https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl get pods  -o wide
+查看pod状态是 ImagePullBackOff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;minikube ssh
+docker pull cilium/echoserver #换个镜像
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题3:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;an error occurred forwarding 7080 -&amp;gt; 8080: error forwarding port 8080 to pod b86addc13b414f05be12d736ee1904cc02d78c6e7e1889c6e45a76c3a1563e58, uid : exit status 1: 2022/03/18 07:14:31 socat[12900] E connect(5, AF=2 127.0.0.1:8080, 16): Connection refused
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;解决3: &lt;a href=&quot;https://github.com/kubernetes/minikube/issues/13176&quot;&gt;https://github.com/kubernetes/minikube/issues/13176&lt;/a&gt; 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。&lt;/p&gt;
+
 &lt;p&gt;如何 利用 nginx-ingress 请求spring boot项目 &lt;a href=&quot;https://blog.csdn.net/weixin_39637921/article/details/111281873&quot;&gt;https://blog.csdn.net/weixin_39637921/article/details/111281873&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;主要步骤：&lt;/p&gt;

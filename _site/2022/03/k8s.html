@@ -201,6 +201,40 @@ deployment "nginx-deployment" autoscaled
 
 <p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#进入minikube终端
+minikube ssh 
+#如果docker pull 拉镜像太慢的话 可以直接进入终端 docker pull XXX
+</code></pre></div></div>
+
+<p>问题1：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exiting due to DRV_AS_ROOT: The "docker" driver should not be used with root privileges.
+</code></pre></div></div>
+
+<p>解决1:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start --force --driver=docker
+</code></pre></div></div>
+
+<p>问题2: k8s.gcr.io/echoserver:1.4 这个镜像拉不到，导致pod启动失败</p>
+
+<p>解决2： <a href="https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91">https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods  -o wide
+查看pod状态是 ImagePullBackOff
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube ssh
+docker pull cilium/echoserver #换个镜像
+</code></pre></div></div>
+
+<p>问题3:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>an error occurred forwarding 7080 -&gt; 8080: error forwarding port 8080 to pod b86addc13b414f05be12d736ee1904cc02d78c6e7e1889c6e45a76c3a1563e58, uid : exit status 1: 2022/03/18 07:14:31 socat[12900] E connect(5, AF=2 127.0.0.1:8080, 16): Connection refused
+</code></pre></div></div>
+
+<p>解决3: <a href="https://github.com/kubernetes/minikube/issues/13176">https://github.com/kubernetes/minikube/issues/13176</a> 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。</p>
+
 <p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
 
 <p>主要步骤：</p>
