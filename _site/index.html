@@ -236,6 +236,13 @@ docker pull cilium/echoserver #换个镜像
 
 <p>解决3: <a href="https://github.com/kubernetes/minikube/issues/13176">https://github.com/kubernetes/minikube/issues/13176</a> 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。</p>
 
+<p>问题4: ❌  Exiting due to DRV_NOT_HEALTHY: Found driver(s) but none were healthy. See above for suggestions how to fix installed drivers.  上面会给出解决方案，就是把用户加到docker组</p>
+
+<p>解决4:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo usermod -aG docker $USER &amp;&amp; newgrp docker
+</code></pre></div></div>
+
 <p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
 
 <p>主要步骤：</p>
@@ -496,6 +503,71 @@ docker-deploy:
 </code></pre></div></div>
 
 <p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
+
+<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则查询的时候会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat": 400,
+              "lon": 100
+            },
+            "bottom_right": {
+              "lat": 30,
+              "lon": 71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "query_shard_exception",
+        "reason" : "couldn't validate latitude/ longitude values",
+        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+        "index" : "map_geo"
+      }
+    ],
+    "type" : "search_phase_execution_exception",
+    "reason" : "all shards failed",
+    "phase" : "query",
+    "grouped" : true,
+    "failed_shards" : [
+      {
+        "shard" : 0,
+        "index" : "map_geo",
+        "node" : "h6XPf8XwQla0HPzsoZa4KA",
+        "reason" : {
+          "type" : "query_shard_exception",
+          "reason" : "couldn't validate latitude/ longitude values",
+          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+          "index" : "map_geo",
+          "caused_by" : {
+            "type" : "query_validation_exception",
+            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
+          }
+        }
+      }
+    ]
+  },
+  "status" : 400
+}
+
+</code></pre></div></div>
 
 
         </div>

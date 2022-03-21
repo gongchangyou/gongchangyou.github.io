@@ -97,3 +97,72 @@ java.io.IOException: entity content is too long [107665275] for the configured b
 
 ![]({{ site.baseurl}}/images/202203/WechatIMG52.png){: width="800" }
 
+
+
+注意： 如果没做归一化的话，不需要使用geo_point 类别，否则查询的时候会报错
+
+```
+GET map_geo/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat": 400,
+              "lon": 100
+            },
+            "bottom_right": {
+              "lat": 30,
+              "lon": 71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+```
+{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "query_shard_exception",
+        "reason" : "couldn't validate latitude/ longitude values",
+        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+        "index" : "map_geo"
+      }
+    ],
+    "type" : "search_phase_execution_exception",
+    "reason" : "all shards failed",
+    "phase" : "query",
+    "grouped" : true,
+    "failed_shards" : [
+      {
+        "shard" : 0,
+        "index" : "map_geo",
+        "node" : "h6XPf8XwQla0HPzsoZa4KA",
+        "reason" : {
+          "type" : "query_shard_exception",
+          "reason" : "couldn't validate latitude/ longitude values",
+          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+          "index" : "map_geo",
+          "caused_by" : {
+            "type" : "query_validation_exception",
+            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
+          }
+        }
+      }
+    ]
+  },
+  "status" : 400
+}
+
+```
+
