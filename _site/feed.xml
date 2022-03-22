@@ -7,6 +7,63 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>mongodb</title>
+				<description>&lt;h1 id=&quot;mongodb-geo搜索测评&quot;&gt;MongoDB geo搜索测评&lt;/h1&gt;
+
+&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/mongodb-test&quot;&gt;https://github.com/gongchangyou/mongodb-test&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker 安装MongoDB &lt;a href=&quot;https://www.runoob.com/docker/docker-install-mongodb.html&quot;&gt;https://www.runoob.com/docker/docker-install-mongodb.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;mongodb命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如果刚刚创建了用户，进入db操作CRUD的之前记得认证
+db.auth('admin','123456')
+
+#查看所有db
+show dbs
+
+#写入
+db.records.insertOne( {
+  id:1,
+  loc :  [ 55.5, 42.3 ]
+} )
+
+
+#find all
+db.records.find( {} )
+
+#创建地理索引
+db.records.createIndex( { &quot;loc&quot;: &quot;2d&quot; } )
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;box搜索 &lt;a href=&quot;https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0&quot;&gt;https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.records.find( {
+   loc: { $geoWithin: { $box:  [ [ 0, 0 ], [ 100, 100 ] ] } }
+} )
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可惜没办法搜索热力图，即多个box 一起查询。1亿数据查询速度约20ms，单个box还行。&lt;/p&gt;
+
+&lt;p&gt;注意： 默认的范围是 [-180,180] ，如果需要修改起止点范围&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;删除索引
+dropIndex(”loc_2d&quot;)
+重建索引
+reIndex()
+
+创建索引
+db.records.createIndex( { &quot;loc&quot;: &quot;2d&quot; } , { min : 0, max : 100000 } )
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Mon, 21 Mar 2022 11:05:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/mongodb-geo</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/mongodb-geo</guid>
+			</item>
+		
+			<item>
 				<title>gitlab-runner-docker</title>
 				<description>&lt;h1 id=&quot;k8s&quot;&gt;k8s&lt;/h1&gt;
 
@@ -862,88 +919,6 @@ glxinfo | grep -i opengl
 				<pubDate>Wed, 09 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-container</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-container</guid>
-			</item>
-		
-			<item>
-				<title>gitlab-runner</title>
-				<description>&lt;h1 id=&quot;gitlab-cicd&quot;&gt;gitlab CI/CD&lt;/h1&gt;
-
-&lt;p&gt;持续集成和部署，其实我更倾向于使用jenkins，因为可以自由编写脚本和手动触发，回滚也比较方便。&lt;/p&gt;
-
-&lt;p&gt;gitlab CI/CD就是把部署的脚本 统一到代码仓库。&lt;/p&gt;
-
-&lt;p&gt;但是因为现有项目使用 CI/CD 所以还是先熟悉起来。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/ci/&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/105157319&quot;&gt;https://zhuanlan.zhihu.com/p/105157319&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;runner分两种，shared runner / specific runner 看名字就知道了，前者是很多工程共享的runner，后者跟工程是1对1的。&lt;/p&gt;
-
-&lt;p&gt;我们先试试看 shared runner. 先打开 http://gitlab.cebsit.ac.cn/admin/runners&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/1646634355101.jpg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;注册的时候把url 和token写进去&lt;/p&gt;
-
-&lt;p&gt;官方文档写的很清楚了 &lt;a href=&quot;https://docs.gitlab.com/runner/install/docker.html&quot;&gt;https://docs.gitlab.com/runner/install/docker.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;docker 启动
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  docker run -d --name gitlab-runner --restart always \
-     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-     -v /var/run/docker.sock:/var/run/docker.sock \
-     gitlab/gitlab-runner:latest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;注册 runner ，这样gitlab就知道让这台服务器执行job了&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;给现有的工程添加runner:
-&lt;img src=&quot;/images/202203/WechatIMG53.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;测试.gitlab-ci.yml文件 CI-Lint 按钮。 &lt;a href=&quot;http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint&quot;&gt;http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG37.png&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题2： remote: You are not allowed to download code from this project.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG38.jpeg&quot; alt=&quot;pgadmin&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;尝试去docker容器中新增&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh-keygen -t RSA
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!&lt;/p&gt;
-
-&lt;p&gt;注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml&lt;/p&gt;
-
-&lt;p&gt;问题3 ：&lt;/p&gt;
-
-&lt;p&gt;偶发 报错 ，重试几次又好了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
-fatal: could not set 'core.repositoryformatversion' to '0'
-Cleaning up project directory and file based variables
-00:00
-ERROR: Job failed: exit status 1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;有看到网上这么解，没试过。 &lt;a href=&quot;https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0&quot;&gt;https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --file=.git/config core.repositoryformatversion 1  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Fri, 04 Mar 2022 10:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/gitlab-runner</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-runner</guid>
 			</item>
 		
 	</channel>

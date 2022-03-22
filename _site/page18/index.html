@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/mongodb-geo">mongodb</a></li>
+        
           <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
         
           <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
         
           <li><a href="/2022/03/es">es-install</a></li>
-        
-          <li><a href="/2022/03/go(1)">go-1</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>9</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -149,6 +149,34 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - csv文件导入mysql</a></h1>
+        
+        <div class="content">
+            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” <br />
+into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
+
+<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
+错误咋办？</p>
+
+<p>在/etc/my.cnf中添加
+secure-file-priv=”/data/xlive/tools/masterdata/”</p>
+
+<font style="color:red">注意： csv文件中，逗号隔开，不要有空格</font>
+<p><br />
+<br />
+<a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a></p>
+
+<p>将cdb_pms表subject字段中的Welcom to替换成 欢迎光临<br />
+UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
+SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
+WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">Nov 11, 2016 - 光照模型</a></h1>
         
         <div class="content">
@@ -176,25 +204,6 @@
         
         <div class="content">
             <p>set listchars=tab:&gt;-,trail:-</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/08/mysqldump-%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E5%89%AF%E6%9C%AC">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
-        
-        <div class="content">
-            <p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
-
-<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
-
-<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
-
-<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
-
-<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
 
         </div>
     </div>
