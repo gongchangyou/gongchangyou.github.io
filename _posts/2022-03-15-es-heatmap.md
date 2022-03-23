@@ -168,8 +168,7 @@ GET map_geo/_search
 
 
 
-为啥范围查询那么快？ [https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html)
+如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。
 
+ [https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html)
 
-
-因为ES会把这次查询的范围，比如10-100 当做keyword保存下来，下次利用FST就可以很快速的定位到这个文档了。
