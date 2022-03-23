@@ -494,7 +494,7 @@ docker-deploy:
   &lt;li&gt;
     &lt;p&gt;docker pull&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker pull docker.elastic.co/kibana/kibana:7.11.1
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker pull docker.elastic.co/kibana/kibana:8.1.0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
@@ -503,13 +503,14 @@ docker-deploy:
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2.2'
 services:
   node01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.0
     container_name: node01
     environment:
       - node.name=node01
       - cluster.name=es-cluster-7
       - discovery.type=single-node
-      - &quot;ES_JAVA_OPTS=-Xms128m -Xmx128m&quot;
+      - xpack.security.enabled=false
+      - &quot;ES_JAVA_OPTS=-Xms12G -Xmx12G&quot;
     ulimits:
       memlock:
         soft: -1
@@ -556,7 +557,7 @@ networks:
 
 &lt;p&gt;注意：最好把版本升级下 7.11.1 -&amp;gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.&lt;/p&gt;
 
-&lt;p&gt;如果要压测的话，上面的jvm内存调大一点，至少10G吧&lt;/p&gt;
+&lt;p&gt;如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0.&lt;/p&gt;
 
 &lt;p&gt;热力图可视化  &lt;a href=&quot;https://www.freesion.com/article/72491420060/&quot;&gt;https://www.freesion.com/article/72491420060/&lt;/a&gt;&lt;/p&gt;
 
