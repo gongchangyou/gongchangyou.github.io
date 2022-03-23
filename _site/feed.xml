@@ -413,7 +413,7 @@ docker-deploy:
 
 &lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG52.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;注意： 如果没做归一化的话，不需要使用geo_point 类别，否则查询的时候会报错&lt;/p&gt;
+&lt;p&gt;注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET map_geo/_search
 {
@@ -478,6 +478,9 @@ docker-deploy:
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;为啥范围查询那么快？ &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;因为ES会把这次查询的范围，比如10-100 当做keyword保存下来，下次利用FST就可以很快速的定位到这个文档了。&lt;/p&gt;
 </description>
 				<pubDate>Tue, 15 Mar 2022 11:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/es-heatmap</link>

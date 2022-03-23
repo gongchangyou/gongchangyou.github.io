@@ -99,7 +99,7 @@ java.io.IOException: entity content is too long [107665275] for the configured b
 
 
 
-注意： 如果没做归一化的话，不需要使用geo_point 类别，否则查询的时候会报错
+注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错
 
 ```
 GET map_geo/_search
@@ -166,3 +166,10 @@ GET map_geo/_search
 
 ```
 
+
+
+为啥范围查询那么快？ [https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html)
+
+
+
+因为ES会把这次查询的范围，比如10-100 当做keyword保存下来，下次利用FST就可以很快速的定位到这个文档了。

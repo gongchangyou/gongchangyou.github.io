@@ -220,7 +220,7 @@
 
 <p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
 
-<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则查询的时候会报错</p>
+<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
 {
@@ -285,6 +285,9 @@
 
 </code></pre></div></div>
 
+<p>为啥范围查询那么快？ <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
+
+<p>因为ES会把这次查询的范围，比如10-100 当做keyword保存下来，下次利用FST就可以很快速的定位到这个文档了。</p>
 
         </div>
     </div>
