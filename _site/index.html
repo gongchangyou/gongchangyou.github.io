@@ -384,6 +384,36 @@ flushDiskType=ASYNC_FLUSH
 <h3 id="解决方式2-brokerip1-设置宿主机ip不要使用docker-内部ip">解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP</h3>
 <h3 id="brokerip11921680253">brokerIP1=192.168.0.253</h3>
 
+<h2 id="延迟消息">延迟消息</h2>
+
+<p>一般是在header中添加 delay 信息</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
+     * RabbitMQ header设置 x-delay 延迟5000ms
+     * @param msg
+     * @return
+     */
+    public boolean sendMsgDelay(String msg) {
+        return messageSource.output1().send(MessageBuilder.withPayload(msg)
+                        .setHeader("x-delay", 5000)
+                .build());
+    }
+
+    /**
+     * RocketMQ header设置 DELAY
+     * 每个延迟级别对应的延迟时间可以通过配置messageDelayLevel
+     * 默认值为“1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h”。
+     * 该配置属于 Broker，对所有 Topic 有效！默认的level值为 0，代表非延迟消息，超过 18 按最大值 18 计算。
+     * @param msg
+     * @return
+     */
+    public boolean sendMsgDelayViaRocketMQ(String msg) {
+        return messageSource.output1().send(MessageBuilder.withPayload(msg)
+                .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, 2)
+                .build());
+    }
+</code></pre></div></div>
+
 
         </div>
     </div>
@@ -432,7 +462,7 @@ db.records.createIndex( { "loc": "2d" } )
 
 <p>可惜没办法搜索热力图，即多个box 一起查询。1亿数据查询速度约20ms，单个box还行。</p>
 
-<p>注意： 默认的范围是 [-180,180] ，如果需要修改起止点范围</p>
+<p>注意： 默认的范围是 [-180,180] ，如果需要, 可以修改起止点范围</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>删除索引
 dropIndex(”loc_2d")
