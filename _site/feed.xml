@@ -233,41 +233,65 @@ flushDiskType=ASYNC_FLUSH
 # pullMessageThreadPoolNums=128
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 ,&lt;/p&gt;
-&lt;h3 id=&quot;解决方式1-加上一句-producersetvipchannelenabledfalse&quot;&gt;解决方式1 加上一句 producer.setVipChannelEnabled(false);&lt;/h3&gt;
-&lt;h3 id=&quot;解决方式2-brokerip1-设置宿主机ip不要使用docker-内部ip&quot;&gt;解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP&lt;/h3&gt;
-&lt;h3 id=&quot;brokerip11921680253&quot;&gt;brokerIP1=192.168.0.253&lt;/h3&gt;
+&lt;div style=&quot;color: #ff0000;&quot;&gt;
+	注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 &lt;br /&gt;
+    解决方式1: 加上一句 producer.setVipChannelEnabled(false);&lt;br /&gt;
+    解决方式2: brokerIP1 设置宿主机IP，不要使用docker 内部IP&lt;br /&gt;
+
+&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brokerIP1=192.168.0.253 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;延迟消息&quot;&gt;延迟消息&lt;/h2&gt;
 
 &lt;p&gt;一般是在header中添加 delay 信息&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /**
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt; &lt;span class=&quot;cm&quot;&gt;/**
      * RabbitMQ header设置 x-delay 延迟5000ms
      * @param msg
      * @return
-     */
-    public boolean sendMsgDelay(String msg) {
-        return messageSource.output1().send(MessageBuilder.withPayload(msg)
-                        .setHeader(&quot;x-delay&quot;, 5000)
-                .build());
-    }
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sendMsgDelay&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;messageSource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;output1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MessageBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPayload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setHeader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x-delay&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-    /**
+    &lt;span class=&quot;cm&quot;&gt;/**
      * RocketMQ header设置 DELAY
      * 每个延迟级别对应的延迟时间可以通过配置messageDelayLevel
      * 默认值为“1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h”。
      * 该配置属于 Broker，对所有 Topic 有效！默认的level值为 0，代表非延迟消息，超过 18 按最大值 18 计算。
      * @param msg
      * @return
-     */
-    public boolean sendMsgDelayViaRocketMQ(String msg) {
-        return messageSource.output1().send(MessageBuilder.withPayload(msg)
-                .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, 2)
-                .build());
-    }
+     */&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sendMsgDelayViaRocketMQ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;messageSource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;output1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MessageBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPayload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setHeader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;MessageConst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;PROPERTY_DELAY_TIME_LEVEL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;ack机制&quot;&gt;ack机制&lt;/h3&gt;
+
+&lt;p&gt;参考文章 : &lt;a href=&quot;https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html&quot;&gt;https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.alibaba.cloud&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;spring-cloud-starter-stream-rocketmq&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.2.7.RELEASE&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;RocketMQInboundChannelAdapter 这个类，注册监听事件有两个回调，一个失败，一个成功。 所以成功的话就自动ack了,失败会重新投递.&lt;br /&gt;
+&lt;img src=&quot;/images/202203/WechatIMG62.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;
+那何时算失败呢？ 那就是在消费中抛出任何异常就算失败了。
+&lt;img src=&quot;/images/202203/WechatIMG63.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在这个例子中 我做了个NPE，所以就无限reconsume了.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG63.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Wed, 23 Mar 2022 14:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/RocketMQ-docker</link>

@@ -187,18 +187,22 @@ flushDiskType=ASYNC_FLUSH
 # pullMessageThreadPoolNums=128
 ```
 
-注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 ,
-### 解决方式1 加上一句 producer.setVipChannelEnabled(false);
-### 解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP
-### brokerIP1=192.168.0.253 
+<div style="color: #ff0000;">
+	注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 <br>
+    解决方式1: 加上一句 producer.setVipChannelEnabled(false);<br>
+    解决方式2: brokerIP1 设置宿主机IP，不要使用docker 内部IP<br>
 
+</div>
+```
+brokerIP1=192.168.0.253 
+```
 
 
 ## 延迟消息
 
 一般是在header中添加 delay 信息
 
-```
+{% highlight java %}
  /**
      * RabbitMQ header设置 x-delay 延迟5000ms
      * @param msg
@@ -223,5 +227,32 @@ flushDiskType=ASYNC_FLUSH
                 .setHeader(MessageConst.PROPERTY_DELAY_TIME_LEVEL, 2)
                 .build());
     }
+    {% endhighlight %}
+
+
+
+
+
+### ack机制
+
+参考文章 : [https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html](https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html)
+
+```
+  <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+            <version>2.2.7.RELEASE</version>
+        </dependency>
 ```
 
+RocketMQInboundChannelAdapter 这个类，注册监听事件有两个回调，一个失败，一个成功。 所以成功的话就自动ack了,失败会重新投递.  
+![]({{ site.baseurl}}/images/202203/WechatIMG62.png){: width="800" }
+那何时算失败呢？ 那就是在消费中抛出任何异常就算失败了。
+![]({{ site.baseurl}}/images/202203/WechatIMG63.png){: width="800" }
+
+
+
+在这个例子中 我做了个NPE，所以就无限reconsume了.
+
+![]({{ site.baseurl}}/images/202203/WechatIMG63.png){: width="800" }
