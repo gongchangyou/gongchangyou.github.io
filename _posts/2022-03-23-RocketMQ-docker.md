@@ -52,12 +52,12 @@ services:
     volumes:
       - ./data/logs:/opt/logs
       - ./data/store:/opt/store
-      - ./data/brokerconf/broker.conf:/etc/rocketmq/broker.conf
+      - ./data/brokerconf:/etc/rocketmq
     environment:
         NAMESRV_ADDR: "rmqnamesrv:9876"
         JAVA_OPTS: " -Duser.home=/opt"
         JAVA_OPT_EXT: "-server -Xms128m -Xmx128m -Xmn128m"
-    command: mqbroker -c ./data/brokerconf/broker.conf
+    #command: mqbroker -c /etc/rocketmq/broker.conf
     depends_on:
       - rmqnamesrv
     networks:
@@ -87,7 +87,7 @@ networks:
 
 
 
-sudo vi /etc/rocketmq/broker.conf
+sudo vi ./data/brokerconf/broker.conf
 ```
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -187,11 +187,9 @@ flushDiskType=ASYNC_FLUSH
 # pullMessageThreadPoolNums=128
 ```
 
-
-
-```
-docker-compose up --privileged=true
-```
-
+注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 ,
+### 解决方式1 加上一句 producer.setVipChannelEnabled(false);
+### 解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP
+### brokerIP1=192.168.0.253 
 
 

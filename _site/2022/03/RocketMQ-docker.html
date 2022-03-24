@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/es-scroll">es-scroll</a></li>
+        
           <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
           <li><a href="/2022/03/mongodb-geo">mongodb</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
         
           <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
-        
-          <li><a href="/2022/03/es-heatmap">es-heatmap</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
 			
 		
 			
@@ -191,12 +191,12 @@ services:
     volumes:
       - ./data/logs:/opt/logs
       - ./data/store:/opt/store
-      - ./data/brokerconf/broker.conf:/etc/rocketmq/broker.conf
+      - ./data/brokerconf:/etc/rocketmq
     environment:
         NAMESRV_ADDR: "rmqnamesrv:9876"
         JAVA_OPTS: " -Duser.home=/opt"
         JAVA_OPT_EXT: "-server -Xms128m -Xmx128m -Xmn128m"
-    command: mqbroker -c ./data/brokerconf/broker.conf
+    #command: mqbroker -c /etc/rocketmq/broker.conf
     depends_on:
       - rmqnamesrv
     networks:
@@ -224,7 +224,7 @@ networks:
     driver: bridge
 </code></pre></div></div>
 
-<p>sudo vi /etc/rocketmq/broker.conf</p>
+<p>sudo vi ./data/brokerconf/broker.conf</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -323,8 +323,10 @@ flushDiskType=ASYNC_FLUSH
 # pullMessageThreadPoolNums=128
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up --privileged=true
-</code></pre></div></div>
+<p>注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 ,</p>
+<h3 id="解决方式1-加上一句-producersetvipchannelenabledfalse">解决方式1 加上一句 producer.setVipChannelEnabled(false);</h3>
+<h3 id="解决方式2-brokerip1-设置宿主机ip不要使用docker-内部ip">解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP</h3>
+<h3 id="brokerip11921680253">brokerIP1=192.168.0.253</h3>
 
 
             </div>
@@ -337,6 +339,8 @@ flushDiskType=ASYNC_FLUSH
             </div>
           </div>
           <div class="pagination">
+              
+                <a class="btn btn-default" href="/2022/03/es-scroll" class="next">Newer Post</a>
               
               
                 <a class="btn btn-default" href="/2022/03/mongodb-geo" class="previous">Older Post</a>
