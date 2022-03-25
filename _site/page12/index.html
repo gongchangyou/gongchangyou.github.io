@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
+        
           <li><a href="/2022/03/es-scroll">es-scroll</a></li>
         
           <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/mongodb-geo">mongodb</a></li>
         
           <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
-        
-          <li><a href="/2022/03/gitlab-runner-docker">gitlab-runner-docker</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
 			
 		
 			
@@ -147,6 +147,116 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
+        
+        <div class="content">
+            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 'http://ip' 不用写port
+
+
+postgresql['shared_buffers'] = "256MB"
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = "http://localhost:8888"
+
+</code></pre></div></div>
+
+<h2 id="管理员账号初始化">管理员账号初始化</h2>
+<p>a、 切换目录：cd /opt/gitlab/bin</p>
+
+<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
+
+<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
+
+<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
+
+<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
+
+<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
+
+<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
+
+<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
+
+<p>i、至此大功搞成。</p>
+
+<p>https://www.jianshu.com/p/b1736c34c150</p>
+
+<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
+
+<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
+
+<ol>
+  <li>
+    <p>sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix</p>
+  </li>
+  <li>
+    <p>cd /tmp
+ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+
+    <p>less /tmp/script.deb.sh</p>
+
+    <p>sudo bash /tmp/script.deb.sh</p>
+
+    <p>sudo apt install gitlab-ce</p>
+  </li>
+</ol>
+
+<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+
+<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
+<p>则需要去修改配置文件</p>
+
+<p>vim /etc/gitlab/gitlab.rb</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+
+ puma['port'] =9092
+</code></pre></div></div>
+
+<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+
+<p>gitlab-ctl reconfigure</p>
+
+<p>gitlab-ctl restart</p>
+
+<h2 id="查看日志命令">查看日志命令：</h2>
+
+<p>gitlab-ctl tail</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>gitlab-ctl tail</td>
+      <td>grep -i error</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="查看端口命令">查看端口命令：</h2>
+
+<p>lsof -i:9091</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
@@ -375,36 +485,6 @@ https://github.com/apache/dubbo/issues/7274</p>
   &lt;/server&gt;
 &lt;/servers&gt;
 </code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
-<p>两个方法</p>
-
-<ol>
-  <li>Nacos官方用nacos client + spring boot 模式</li>
-  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
-</ol>
-
-<p>注意：如果关闭应用的话，nacos中的配置还在</p>
-
-<p>application.properties没有拷贝到target文件夹的原因？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
-</code></pre></div></div>
-<p>改成 下面，或者直接这行删掉</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
-</code></pre></div></div>
-
-<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
-
 
         </div>
     </div>
