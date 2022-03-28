@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/minIO">minIO-docker</a></li>
+        
           <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
           <li><a href="/2022/03/es-scroll">es-scroll</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
           <li><a href="/2022/03/mongodb-geo">mongodb</a></li>
-        
-          <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -147,6 +147,180 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/gitlab-runner-docker">Mar 16, 2022 - gitlab-runner-docker</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-runner-docker">gitlab runner docker</h1>
+
+<h3 id="docker容器集成">docker容器集成</h3>
+
+<p><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner">https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner</a></p>
+
+<p>一般来说除了shell，我们还希望集成docker容器，在docker中编译打包，并且打包成docker镜像，供k8s部署。</p>
+
+<ol>
+  <li>注册一个新的runner，executor是docker的那种，不是上期说的shell</li>
+  <li>编辑你的.gitlab-ci.yml， 把image添加进去。</li>
+</ol>
+
+<p>因为我们的gitlab-runner是docker启动的，所以先进入容器</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it gitlab-runner bash
+</code></pre></div></div>
+
+<p>敲下面的命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   gitlab-runner register \
+     --url "https://gitlab.example.com/" \
+     --registration-token "PROJECT_REGISTRATION_TOKEN" \
+     --description "docker 各种描述" \
+     --executor "docker" \
+     --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
+     --docker-image docker:latest
+</code></pre></div></div>
+
+<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.</p>
+
+<h3 id="打包">打包</h3>
+
+<p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
+
+<p>一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 <a href="https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml">https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml</a> 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - build
+  - publish
+  - deploy
+
+#打包
+build-job:
+  stage: build
+  image: maven:3-jdk-11
+#  script: "mvn package -B"
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - mvn package -B
+  artifacts:
+    paths:
+      - target/*.jar
+</code></pre></div></div>
+
+<h3 id="上传docker镜像">上传docker镜像</h3>
+
+<p>在.gitlab-ci.yml中添加如下配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>publish:
+  stage: publish
+  only:
+    - master
+  image: docker:19.03.14
+  services:
+    - name: docker:19.03.14-dind
+      alias: docker
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+<p>问题1：  msg=”failed to dial gRPC: cannot connect to the Docker daemon. Is ‘docker daemon’ running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host”</p>
+
+<p><img src="/images/202203/WechatIMG54.png" alt="" width="800" /></p>
+
+<p>往上翻到一个warning，应该是dind service没成功启动</p>
+
+<p><img src="/images/202203/WechatIMG55.png" alt="" width="800" /></p>
+
+<p>解决1：<a href="https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544">https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544</a> 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner</p>
+
+<p>问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?</p>
+
+<p><img src="/images/202203/WechatIMG56.png" alt="" width="800" /></p>
+
+<p>解决2： 害得是业界良心啊 <a href="https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem">https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> services:
+    - name: docker:19.03.14-dind
+      alias: docker-dind #这个别名下面有用
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://docker-dind:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+</code></pre></div></div>
+
+<h3 id="部署">部署</h3>
+
+<p>现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？</p>
+
+<p>网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - deploy
+
+docker-deploy:
+  stage: deploy  # 执行Job内容
+  script:    # 通过Dockerfile生成cicd-demo镜像
+    - docker build -t cicd-demo .    # 删除已经在运行的容器
+    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
+    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
+    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
+  tags:    # 执行Job的服务器
+    - kun
+  only:    # 只有在master分支才会执行
+    - master
+</code></pre></div></div>
+
+<p>我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？</p>
+
+<ol>
+  <li>
+    <p>先在gitlab添加 k8s cluster  <img src="/images/202203/WechatIMG57.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. kubectl create deployment neuroviz-server-java 
+2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
+3. kubectl get services neuroviz-server-java
+   
+   
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 <a href="http://docs.kubernetes.org.cn/670.html#i-2">http://docs.kubernetes.org.cn/670.html#i-2</a></p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deploy:
+  only:
+    - master
+  stage: deploy
+  image:     
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  script:
+    - export HOME=/tmp
+    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
+    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
+    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
+    - kubectl config use-context k8s
+    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
@@ -550,20 +724,6 @@ vm.max_map_count=655360
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go1">Go（1）</h1>
-
-<p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -571,7 +731,7 @@ vm.max_map_count=655360
         <a class="btn btn-default" href="/page2" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 3 of 34</span>
+  <span class="page_number ">Page: 3 of 35</span>
   
     <a class="btn btn-default" href="/page4" class="next">Older</a>
   

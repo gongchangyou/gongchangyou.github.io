@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/03/minIO">minIO-docker</a></li>
+        
           <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
           <li><a href="/2022/03/es-scroll">es-scroll</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
           <li><a href="/2022/03/mongodb-geo">mongodb</a></li>
-        
-          <li><a href="/2022/03/k8s">gitlab-runner-docker</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -147,6 +147,41 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+
+<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+
+<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
+
+<p>lsyncd 配置完事就能跑了</p>
+
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
+
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
+</code></pre></div></div>
+
+<p>问题： 创建了一个新的project， 从库没显示</p>
+
+<p>我显式重启了docker容器才在从库看到</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+</code></pre></div></div>
+
+<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
@@ -438,58 +473,6 @@ https://github.com/apache/dubbo/issues/7274</p>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
-
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
-
-<p>问题：mvn deploy -X</p>
-<ol>
-  <li>405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</li>
-</ol>
-
-<p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
-
-        &lt;repository&gt;
-
-            &lt;id&gt;nexus-releases&lt;/id&gt;
-
-            &lt;url&gt;
-				就是这行，要跟maven服务器上的settings中的URL保持一致
-                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
-
-            &lt;/url&gt;
-
-        &lt;/repository&gt;
-</code></pre></div></div>
-<ol>
-  <li>401错误  本地的settings.xml账号错误</li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;servers&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-snapshots&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;xxx&lt;/password&gt;
-  &lt;/server&gt;
-&lt;/servers&gt;
-</code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -497,7 +480,7 @@ https://github.com/apache/dubbo/issues/7274</p>
         <a class="btn btn-default" href="/page11" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 12 of 34</span>
+  <span class="page_number ">Page: 12 of 35</span>
   
     <a class="btn btn-default" href="/page13" class="next">Older</a>
   
