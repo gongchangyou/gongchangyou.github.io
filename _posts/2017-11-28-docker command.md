@@ -30,3 +30,9 @@ docker ps -a -q |xargs docker rm
     退出需要ctrl+p+q
 
 
+
+跟docker容器一起启动
+
+--restart=always
+
+
