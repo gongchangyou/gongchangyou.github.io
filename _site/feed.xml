@@ -7,6 +7,86 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>arthas</title>
+				<description>&lt;h1 id=&quot;arthas使用&quot;&gt;Arthas使用&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://www.jianshu.com/p/507f7e0cc3a3&quot;&gt;https://www.jianshu.com/p/507f7e0cc3a3&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;查看java进程&quot;&gt;查看java进程&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jps -mlVv
+或
+ps -ef| grep java
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;查看火焰图&quot;&gt;查看火焰图&lt;/h3&gt;
+
+&lt;p&gt;下载arthas&lt;a href=&quot;https://arthas.aliyun.com/doc/profiler.html&quot;&gt; https://arthas.aliyun.com/doc/profiler.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;启动，一般用 “java -jar arthas-boot.jar” 。我这里端口冲突了，可以指定端口&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java -jar arthas-boot.jar --telnet-port 9998 --http-port -1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;启动profiler&quot;&gt;启动profiler&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ profiler start
+Started [cpu] profiling
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;默认情况下，生成的是cpu的火焰图，即event为&lt;code class=&quot;highlighter-rouge&quot;&gt;cpu&lt;/code&gt;。可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;--event&lt;/code&gt;参数来指定。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;获取已采集的sample的数量&quot;&gt;获取已采集的sample的数量&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ profiler getSamples
+23
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;查看profiler状态&quot;&gt;查看profiler状态&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ profiler status
+[cpu] profiling is running for 4 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;可以查看当前profiler在采样哪种&lt;code class=&quot;highlighter-rouge&quot;&gt;event&lt;/code&gt;和采样时间。&lt;/p&gt;
+
+&lt;h2 id=&quot;停止profiler&quot;&gt;停止profiler&lt;/h2&gt;
+
+&lt;h3 id=&quot;生成html格式结果&quot;&gt;生成html格式结果&lt;/h3&gt;
+
+&lt;p&gt;默认情况下，结果文件是&lt;code class=&quot;highlighter-rouge&quot;&gt;html&lt;/code&gt;格式，也可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;--format&lt;/code&gt;参数指定：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ profiler stop --format html
+profiler output file: /tmp/test/arthas-output/20211207-111550.html
+OK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;默认情况下，arthas使用3658端口，则可以打开： http://localhost:3658/arthas-output/ 查看到arthas-output目录下面的profiler结果：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG71.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG70.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;font color=&quot;red&quot; size=&quot;4&quot;&gt;
+分析思路总结只有一句话：火焰图里，横条越长，代表使用的越多，从下到上是调用堆栈信息
+
+越宽表示被调用越多执行时间长，越高表示调用栈越深
+&lt;/font&gt;
+
+&lt;h3 id=&quot;profiler默认采样cpu的时间如果需要采样内存则使用event参数&quot;&gt;profiler默认采样cpu的时间，如果需要采样内存，则使用event参数&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;profiler start --duration 30 --event alloc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Tue, 29 Mar 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/03/arthas</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/03/arthas</guid>
+			</item>
+		
+			<item>
 				<title>minIO-docker</title>
 				<description>&lt;h1 id=&quot;minio-docker-部署&quot;&gt;MinIO docker 部署&lt;/h1&gt;
 
@@ -1439,18 +1519,6 @@ vm.max_map_count=655360
 				<pubDate>Mon, 14 Mar 2022 11:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/es</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/es</guid>
-			</item>
-		
-			<item>
-				<title>go-1</title>
-				<description>&lt;h1 id=&quot;go1&quot;&gt;Go（1）&lt;/h1&gt;
-
-&lt;p&gt;学习网站 &lt;a href=&quot;https://tiancaiamao.gitbooks.io/go-internals/content/zh/&quot;&gt;https://tiancaiamao.gitbooks.io/go-internals/content/zh/&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Fri, 11 Mar 2022 11:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/go(1)</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/go(1)</guid>
 			</item>
 		
 	</channel>
