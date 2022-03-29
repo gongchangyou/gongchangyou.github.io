@@ -197,7 +197,7 @@ docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
 docker ps -a -q |xargs docker rm</p>
 
 <p>启动容器  <br />
-1.docker run -dit --name container_name image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
+1.docker run -dit --name container_name -v /tmp/outer:/tmp/inner image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
 
 <p>进入容器</p>
 
@@ -212,6 +212,15 @@ docker ps -a -q |xargs docker rm</p>
 
 <p>–restart=always</p>
 
+<p>存储/载入</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker save -o 要保存的文件名  要保存的镜像
+
+
+docker load --input 文件
+
+docker load &lt; 文件名
+</code></pre></div></div>
 
         </div>
     </div>
