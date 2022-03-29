@@ -12,6 +12,8 @@
 
 &lt;p&gt;参考文章: &lt;a href=&quot;https://www.jianshu.com/p/507f7e0cc3a3&quot;&gt;https://www.jianshu.com/p/507f7e0cc3a3&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;官方文档: &lt;a href=&quot;https://arthas.aliyun.com/doc/profiler.html#id4&quot;&gt;https://arthas.aliyun.com/doc/profiler.html#id4&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;查看java进程&quot;&gt;查看java进程&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jps -mlVv
