@@ -178,7 +178,7 @@ grant all privileges on matomo.* to 'matomo'@'%';
 vi /var/www/html/config/config.ini.php</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[General]
-trusted_hosts[] = "10.10.48.194:7777"
+trusted_hosts[] = "localhost:7777"
 </code></pre></div></div>
 
 <p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
@@ -195,6 +195,15 @@ trusted_hosts[] = "10.10.48.194:7777"
 }
 </code></pre></div></div>
 
+<p>问题1： IP依然错误，后两位是0.0, 且无法获取到remote_addr 。</p>
+
+<p>原因1: nginx 的 X-Real-IP 设置没生效</p>
+
+<p>原因2: matomo的隐私政策</p>
+
+<p>privacy 里面有个配置</p>
+
+<p><img src="/images/202204/WechatIMG176.png" alt="" width="800" /></p>
 
             </div>
             

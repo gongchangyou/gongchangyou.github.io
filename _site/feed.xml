@@ -1335,7 +1335,7 @@ networks:
   &lt;li&gt;
     &lt;p&gt;浏览器 访问 http://localhost:5601/&lt;/p&gt;
 
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://10.10.48.194:5601/app/dev_tools#/console #dev tool 可以直接敲命令
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ol&gt;

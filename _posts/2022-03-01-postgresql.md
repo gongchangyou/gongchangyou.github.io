@@ -44,7 +44,7 @@ tag: [mysql]
 
    
 
-   问题2： no pg_hba.conf entry for host "172.17.0.4", ... SSL on connection to server at "10.10.48.194", port 5432
+   问题2： no pg_hba.conf entry for host "172.17.0.4", ... SSL on connection to server at "localhost", port 5432
 
    编辑 pg_hba.conf文件 
 
