@@ -314,3 +314,28 @@ public class DBTest {
     }
 }
               {% endhighlight %}
+
+
+
+
+
+如果需要用分页插件的话，需要添加配置 
+
+官网文档: [https://baomidou.com/pages/2976a3/#spring](https://baomidou.com/pages/2976a3/#spring)
+
+```
+@Configuration
+@MapperScan("com.braindata.api.repository.db.mapper")
+public class MybatisPlusConfig {
+    /**
+     * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+        return interceptor;
+    }
+}
+```
+
