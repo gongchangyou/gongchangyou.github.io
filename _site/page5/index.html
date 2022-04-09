@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/webgl">webgl</a></li>
+        
+          <li><a href="/2022/04/charles">Charles</a></li>
+        
           <li><a href="/2022/03/arthas">arthas</a></li>
         
           <li><a href="/2022/03/minIO">minIO-docker</a></li>
         
           <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
-        
-          <li><a href="/2022/03/es-scroll">es-scroll</a></li>
-        
-          <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
 			
 		
 			
@@ -131,6 +131,10 @@
 				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
 			
 		
+			
+				<li><a href="/tag/webgl" title="webgl">webgl<sup>1</sup></a></li>
+			
+		
 </div>
 <!-- 
 <div class="sidebar well">
@@ -147,6 +151,36 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
+        
+        <div class="content">
+            <h1 id="go1">Go（1）</h1>
+
+<p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/opengl-go-1">Mar 10, 2022 - go-opengl-1</a></h1>
+        
+        <div class="content">
+            <h1 id="go-opengl1">Go OpenGL（1）</h1>
+
+<p>官网教程 <a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3</a></p>
+
+<p>学习使用的代码仓库 <a href="https://github.com/gongchangyou/opengl-learn">https://github.com/gongchangyou/opengl-learn</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/opengl-go">Mar 10, 2022 - go-opengl</a></h1>
@@ -246,71 +280,6 @@ glxinfo | grep -i opengl
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/opengl-java">Mar 9, 2022 - java-opengl</a></h1>
-        
-        <div class="content">
-            <h1 id="java-opengl">java opengl</h1>
-
-<p>Lwjgl  vs jogl ?</p>
-
-<p>我看https://mvnrepository.com上 jogl很久没更新了，最近一次是2015年, 怕是已经没人维护了。</p>
-
-<p>选择lwjgl试试</p>
-
-<p><a href="https://www.lwjgl.org/guide">https://www.lwjgl.org/guide</a> 官网好看</p>
-
-<p>官方demo :<a href="https://github.com/LWJGL/lwjgl3-demos">https://github.com/LWJGL/lwjgl3-demos</a></p>
-
-<p>可以修改mainclass 查看不同的demo效果</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;transformers&gt;
-	&lt;transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"&gt;
-     &lt;mainClass&gt;org.lwjgl.demo.${class}&lt;/mainClass&gt;
-     &lt;/transformer&gt;
-  &lt;/transformers&gt;
-</code></pre></div></div>
-
-<p>可是这个是一个专门的window， 可以播放opengl。 希望导出一个图片，后续对opengl有研究了再继续这个项目。</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/gitlab-container">Mar 9, 2022 - gitlab-container</a></h1>
-        
-        <div class="content">
-            <h1 id="gitlab-container-registry">gitlab container registry</h1>
-
-<p>官网说明 ：[https://docs.gitlab.cn/jh/administration/packages/container_registry.html](https://docs.gitlab.cn/jh/administration/packages/container_registry.html</p>
-
-<p>即可以进到docker容器中查看配置文件，也可以先查看挂载数据卷，再看宿主机上的文件。</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>docker inspect container_name</td>
-      <td>grep Mounts -A 20</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>在这个配置中可以看到  容器的镜像仓库的port等配置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat /srv/gitlab/data/gitlab-rails/etc/gitlab.yml|grep 5005 -C 20
-</code></pre></div></div>
-
-<p>每个工程的镜像在如图这个位置查看
-<img src="/images/202203/WechatIMG350.png" alt="" width="800" /></p>
-
-<p>不知道如何用docker客户端连接私有镜像库</p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -318,7 +287,7 @@ glxinfo | grep -i opengl
         <a class="btn btn-default" href="/page4" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 5 of 35</span>
+  <span class="page_number ">Page: 5 of 36</span>
   
     <a class="btn btn-default" href="/page6" class="next">Older</a>
   

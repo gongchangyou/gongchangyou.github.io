@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/webgl">webgl</a></li>
+        
+          <li><a href="/2022/04/charles">Charles</a></li>
+        
           <li><a href="/2022/03/arthas">arthas</a></li>
         
           <li><a href="/2022/03/minIO">minIO-docker</a></li>
         
           <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
-        
-          <li><a href="/2022/03/es-scroll">es-scroll</a></li>
-        
-          <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
 			
 		
 			
@@ -129,6 +129,10 @@
 		
 			
 				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/webgl" title="webgl">webgl<sup>1</sup></a></li>
 			
 		
 </div>
@@ -178,7 +182,7 @@ grant all privileges on matomo.* to 'matomo'@'%';
 vi /var/www/html/config/config.ini.php</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[General]
-trusted_hosts[] = "localhost:7777"
+trusted_hosts[] = "10.10.48.194:7777"
 </code></pre></div></div>
 
 <p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
@@ -204,6 +208,26 @@ trusted_hosts[] = "localhost:7777"
 <p>privacy 里面有个配置</p>
 
 <p><img src="/images/202204/WechatIMG176.png" alt="" width="800" /></p>
+
+<p>js客户端 代码： <a href="https://developer.matomo.org/guides/tracking-javascript-guide">https://developer.matomo.org/guides/tracking-javascript-guide</a></p>
+
+<p>[Recording a click as a download] 手动指定某个链接是下载类型  <a href="https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download">https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download</a></p>
+
+<p>详细的访问路径在表 matomo_log_action 中 ,其中type=3是下载</p>
+
+<p>界面上看到的visitor ID是 matomo_log_visit.idvisitor 注意数据库中的字母是大写的</p>
+
+<p>外键：</p>
+
+<p>matomo_log_visit.idvisit  = matomo_log_link_visit_action.idvisit</p>
+
+<p>matomo_log_link_visit_action.idaction_url = matomo_log_action.idaction</p>
+
+<p>但是表  matomo_log_action 中的id是复用的，有时候会删除无用的记录，所以时间上后访问的url可能反而比前面访问的url的id要小。</p>
+
+<p>所以如果要监控访问的url type =3 ，不可以遍历 matomo_log_action 表。</p>
+
+<p>而还是应该遍历 matomo_log_link_visit_action，查看单位时间内相同  idvisit 产生的matomo_log_action的type=3的记录数.</p>
 
             </div>
             

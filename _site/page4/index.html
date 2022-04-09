@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/webgl">webgl</a></li>
+        
+          <li><a href="/2022/04/charles">Charles</a></li>
+        
           <li><a href="/2022/03/arthas">arthas</a></li>
         
           <li><a href="/2022/03/minIO">minIO-docker</a></li>
         
           <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
-        
-          <li><a href="/2022/03/es-scroll">es-scroll</a></li>
-        
-          <li><a href="/2022/03/RocketMQ-docker">rocketmq-docker</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>4</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
 			
 		
 			
@@ -131,6 +131,10 @@
 				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
 			
 		
+			
+				<li><a href="/tag/webgl" title="webgl">webgl<sup>1</sup></a></li>
+			
+		
 </div>
 <!-- 
 <div class="sidebar well">
@@ -147,6 +151,327 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/gitlab-runner-docker">Mar 16, 2022 - gitlab-runner-docker</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-runner-docker">gitlab runner docker</h1>
+
+<h3 id="docker容器集成">docker容器集成</h3>
+
+<p><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner">https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner</a></p>
+
+<p>一般来说除了shell，我们还希望集成docker容器，在docker中编译打包，并且打包成docker镜像，供k8s部署。</p>
+
+<ol>
+  <li>注册一个新的runner，executor是docker的那种，不是上期说的shell</li>
+  <li>编辑你的.gitlab-ci.yml， 把image添加进去。</li>
+</ol>
+
+<p>因为我们的gitlab-runner是docker启动的，所以先进入容器</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it gitlab-runner bash
+</code></pre></div></div>
+
+<p>敲下面的命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   gitlab-runner register \
+     --url "https://gitlab.example.com/" \
+     --registration-token "PROJECT_REGISTRATION_TOKEN" \
+     --description "docker 各种描述" \
+     --executor "docker" \
+     --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
+     --docker-image docker:latest
+</code></pre></div></div>
+
+<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.</p>
+
+<h3 id="打包">打包</h3>
+
+<p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
+
+<p>一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 <a href="https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml">https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml</a> 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - build
+  - publish
+  - deploy
+
+#打包
+build-job:
+  stage: build
+  image: maven:3-jdk-11
+#  script: "mvn package -B"
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - mvn package -B
+  artifacts:
+    paths:
+      - target/*.jar
+</code></pre></div></div>
+
+<h3 id="上传docker镜像">上传docker镜像</h3>
+
+<p>在.gitlab-ci.yml中添加如下配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>publish:
+  stage: publish
+  only:
+    - master
+  image: docker:19.03.14
+  services:
+    - name: docker:19.03.14-dind
+      alias: docker
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+<p>问题1：  msg=”failed to dial gRPC: cannot connect to the Docker daemon. Is ‘docker daemon’ running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host”</p>
+
+<p><img src="/images/202203/WechatIMG54.png" alt="" width="800" /></p>
+
+<p>往上翻到一个warning，应该是dind service没成功启动</p>
+
+<p><img src="/images/202203/WechatIMG55.png" alt="" width="800" /></p>
+
+<p>解决1：<a href="https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544">https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544</a> 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner</p>
+
+<p>问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?</p>
+
+<p><img src="/images/202203/WechatIMG56.png" alt="" width="800" /></p>
+
+<p>解决2： 害得是业界良心啊 <a href="https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem">https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> services:
+    - name: docker:19.03.14-dind
+      alias: docker-dind #这个别名下面有用
+      command: ["--insecure-registry=172.16.102.20:5005"]
+  variables:
+    # Tell docker CLI how to talk to Docker daemon; see
+    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+    DOCKER_HOST: tcp://docker-dind:2375/
+    # Use the overlayfs driver for improved performance:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+</code></pre></div></div>
+
+<h3 id="部署">部署</h3>
+
+<p>现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？</p>
+
+<p>网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
+  - deploy
+
+docker-deploy:
+  stage: deploy  # 执行Job内容
+  script:    # 通过Dockerfile生成cicd-demo镜像
+    - docker build -t cicd-demo .    # 删除已经在运行的容器
+    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
+    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
+    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
+  tags:    # 执行Job的服务器
+    - kun
+  only:    # 只有在master分支才会执行
+    - master
+</code></pre></div></div>
+
+<p>我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？</p>
+
+<ol>
+  <li>
+    <p>先在gitlab添加 k8s cluster  <img src="/images/202203/WechatIMG57.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. kubectl create deployment neuroviz-server-java 
+2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
+3. kubectl get services neuroviz-server-java
+   
+   
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 <a href="http://docs.kubernetes.org.cn/670.html#i-2">http://docs.kubernetes.org.cn/670.html#i-2</a></p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deploy:
+  only:
+    - master
+  stage: deploy
+  image:     
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  script:
+    - export HOME=/tmp
+    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
+    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
+    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
+    - kubectl config use-context k8s
+    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
+        
+        <div class="content">
+            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
+
+<p>上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好</p>
+
+<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
+
+<p>测试服务器8核,  线上环境会更好</p>
+
+<p>10000个点热力图40ms</p>
+
+<p>1000000 个点 热力图, 不测了。直接上7kw个点</p>
+
+<p>7kw 个点 热力图</p>
+
+<p>搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。</p>
+
+<p>搜索100*100的矩形， 首次查询10-11s.</p>
+
+<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。</p>
+
+<p><img src="/images/202203/WechatIMG51.png" alt="" width="800" /></p>
+
+<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
+{"persistent": {"search.max_buckets": 2000000}}
+</code></pre></div></div>
+
+<p>现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。</p>
+
+<p><img src="/images/202203/WechatIMG50.png" alt="" width="800" /></p>
+
+<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
+        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
+        &lt;java.version&gt;11&lt;/java.version&gt;
+    &lt;/properties&gt;
+</code></pre></div></div>
+
+<p>问题2： Missing [X-Elastic-Product] header.</p>
+
+<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
+
+<p>问题3：  返回值大于100M</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
+
+</code></pre></div></div>
+
+<p>解决3:  别人的解决方案 <a href="https://www.cnblogs.com/wwjj4811/p/15261125.html">https://www.cnblogs.com/wwjj4811/p/15261125.html</a></p>
+
+<p>解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
+     * 保留小数点后4位
+     */
+    private String decimal(float x){
+        return String.format("%.4f", x);
+    }
+</code></pre></div></div>
+
+<p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
+
+<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat": 400,
+              "lon": 100
+            },
+            "bottom_right": {
+              "lat": 30,
+              "lon": 71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "query_shard_exception",
+        "reason" : "couldn't validate latitude/ longitude values",
+        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+        "index" : "map_geo"
+      }
+    ],
+    "type" : "search_phase_execution_exception",
+    "reason" : "all shards failed",
+    "phase" : "query",
+    "grouped" : true,
+    "failed_shards" : [
+      {
+        "shard" : 0,
+        "index" : "map_geo",
+        "node" : "h6XPf8XwQla0HPzsoZa4KA",
+        "reason" : {
+          "type" : "query_shard_exception",
+          "reason" : "couldn't validate latitude/ longitude values",
+          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+          "index" : "map_geo",
+          "caused_by" : {
+            "type" : "query_validation_exception",
+            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
+          }
+        }
+      }
+    ]
+  },
+  "status" : 400
+}
+
+</code></pre></div></div>
+
+<p>如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。</p>
+
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
@@ -403,36 +728,6 @@ vm.max_map_count=655360
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go1">Go（1）</h1>
-
-<p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/opengl-go-1">Mar 10, 2022 - go-opengl-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go-opengl1">Go OpenGL（1）</h1>
-
-<p>官网教程 <a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3</a></p>
-
-<p>学习使用的代码仓库 <a href="https://github.com/gongchangyou/opengl-learn">https://github.com/gongchangyou/opengl-learn</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -440,7 +735,7 @@ vm.max_map_count=655360
         <a class="btn btn-default" href="/page3" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 4 of 35</span>
+  <span class="page_number ">Page: 4 of 36</span>
   
     <a class="btn btn-default" href="/page5" class="next">Older</a>
   

@@ -7,6 +7,45 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>webgl</title>
+				<description>&lt;h1 id=&quot;webgl&quot;&gt;WebGL&lt;/h1&gt;
+
+&lt;p&gt;参考文章:&lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL&quot;&gt;https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;IDEA Debug&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG76.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Wed, 06 Apr 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/04/webgl</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/04/webgl</guid>
+			</item>
+		
+			<item>
+				<title>Charles</title>
+				<description>&lt;h1 id=&quot;charles&quot;&gt;Charles&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/binbinfighting/article/details/107313811&quot;&gt;https://blog.csdn.net/binbinfighting/article/details/107313811&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG75.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;然后手机再连上 这个代理即可抓包 http请求&lt;/p&gt;
+
+&lt;p&gt;https还需要安装证书，这个在参考文章中。&lt;/p&gt;
+
+&lt;p&gt;因为charles 生成的证书是pem文件， 转换成其他证书的命令: https://cloud.tencent.com/developer/article/1887914?from=15425&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl x509 -inform pem -in 你的证书名字.pem -outform der -out 你的新证书.cer
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Tue, 05 Apr 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/04/charles</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/04/charles</guid>
+			</item>
+		
+			<item>
 				<title>arthas</title>
 				<description>&lt;h1 id=&quot;arthas使用&quot;&gt;Arthas使用&lt;/h1&gt;
 
@@ -1142,405 +1181,6 @@ docker-deploy:
 				<pubDate>Wed, 16 Mar 2022 10:05:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/03/gitlab-runner-docker</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/03/gitlab-runner-docker</guid>
-			</item>
-		
-			<item>
-				<title>es-heatmap</title>
-				<description>&lt;h1 id=&quot;elasticsearch-热力图性能测评&quot;&gt;ElasticSearch 热力图性能测评&lt;/h1&gt;
-
-&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/elasticsearch-test&quot;&gt;https://github.com/gongchangyou/elasticsearch-test&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好&lt;/p&gt;
-
-&lt;p&gt;java客户端 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;创建索引: &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;测试服务器8核,  线上环境会更好&lt;/p&gt;
-
-&lt;p&gt;10000个点热力图40ms&lt;/p&gt;
-
-&lt;p&gt;1000000 个点 热力图, 不测了。直接上7kw个点&lt;/p&gt;
-
-&lt;p&gt;7kw 个点 热力图&lt;/p&gt;
-
-&lt;p&gt;搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。&lt;/p&gt;
-
-&lt;p&gt;搜索100*100的矩形， 首次查询10-11s.&lt;/p&gt;
-
-&lt;p&gt;搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG51.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT /_cluster/settings
-{&quot;persistent&quot;: {&quot;search.max_buckets&quot;: 2000000}}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG50.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题1： JacksonJsonpMapper NoClassDefFoundError&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &amp;lt;properties&amp;gt;
-        &amp;lt;jakarta-json.version&amp;gt;2.0.1&amp;lt;/jakarta-json.version&amp;gt; #这里把版本号设置成2.0.1
-        &amp;lt;java.version&amp;gt;11&amp;lt;/java.version&amp;gt;
-    &amp;lt;/properties&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题2： Missing [X-Elastic-Product] header.&lt;/p&gt;
-
-&lt;p&gt;解决2： elasticsearch 升级下版本，7.17.0+&lt;/p&gt;
-
-&lt;p&gt;问题3：  返回值大于100M&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;解决3:  别人的解决方案 &lt;a href=&quot;https://www.cnblogs.com/wwjj4811/p/15261125.html&quot;&gt;https://www.cnblogs.com/wwjj4811/p/15261125.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /**
-     * 保留小数点后4位
-     */
-    private String decimal(float x){
-        return String.format(&quot;%.4f&quot;, x);
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG52.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET map_geo/_search
-{
-  &quot;query&quot;: {
-    &quot;bool&quot;: {
-      &quot;must&quot;: {
-        &quot;match_all&quot;: {}
-      },
-      &quot;filter&quot;: {
-        &quot;geo_bounding_box&quot;: {
-          &quot;location&quot;: {
-            &quot;top_left&quot;: {
-              &quot;lat&quot;: 400,
-              &quot;lon&quot;: 100
-            },
-            &quot;bottom_right&quot;: {
-              &quot;lat&quot;: 30,
-              &quot;lon&quot;: 71.12
-            }
-          }
-        }
-      }
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-  &quot;error&quot; : {
-    &quot;root_cause&quot; : [
-      {
-        &quot;type&quot; : &quot;query_shard_exception&quot;,
-        &quot;reason&quot; : &quot;couldn't validate latitude/ longitude values&quot;,
-        &quot;index_uuid&quot; : &quot;zVEWBGbYSjO70J7-gmSGDQ&quot;,
-        &quot;index&quot; : &quot;map_geo&quot;
-      }
-    ],
-    &quot;type&quot; : &quot;search_phase_execution_exception&quot;,
-    &quot;reason&quot; : &quot;all shards failed&quot;,
-    &quot;phase&quot; : &quot;query&quot;,
-    &quot;grouped&quot; : true,
-    &quot;failed_shards&quot; : [
-      {
-        &quot;shard&quot; : 0,
-        &quot;index&quot; : &quot;map_geo&quot;,
-        &quot;node&quot; : &quot;h6XPf8XwQla0HPzsoZa4KA&quot;,
-        &quot;reason&quot; : {
-          &quot;type&quot; : &quot;query_shard_exception&quot;,
-          &quot;reason&quot; : &quot;couldn't validate latitude/ longitude values&quot;,
-          &quot;index_uuid&quot; : &quot;zVEWBGbYSjO70J7-gmSGDQ&quot;,
-          &quot;index&quot; : &quot;map_geo&quot;,
-          &quot;caused_by&quot; : {
-            &quot;type&quot; : &quot;query_validation_exception&quot;,
-            &quot;reason&quot; : &quot;Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;&quot;
-          }
-        }
-      }
-    ]
-  },
-  &quot;status&quot; : 400
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 15 Mar 2022 11:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/es-heatmap</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/es-heatmap</guid>
-			</item>
-		
-			<item>
-				<title>es-install</title>
-				<description>&lt;h1 id=&quot;docker-install--elasticsearch&quot;&gt;Docker install  ElasticSearch&lt;/h1&gt;
-
-&lt;h3 id=&quot;如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;如果想部署 kibana + es ： &lt;a href=&quot;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&quot;&gt;https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851&lt;/a&gt;&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;docker pull&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker pull docker.elastic.co/kibana/kibana:8.1.0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;docker-compose.yml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2.2'
-services:
-  node01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-    container_name: node01
-    environment:
-      - node.name=node01
-      - cluster.name=es-cluster-7
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - &quot;ES_JAVA_OPTS=-Xms12G -Xmx12G&quot;
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - es-data01:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-    networks:
-      - es-network
-   
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.1.0
-    environment:
-      ELASTICSEARCH_HOSTS: http://node01:9200
-    ports:
-      - 5601:5601
-    networks:
-      - es-network
-    depends_on:
-      - node01
-   
-volumes:
-  es-data01:
-    driver: local
-   
-networks:
-  es-network:
-    driver: bridge
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;blockquote&gt;
-      &lt;p&gt;docker-compose up&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;浏览器 访问 http://localhost:5601/&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;注意：最好把版本升级下 7.11.1 -&amp;gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.&lt;/p&gt;
-
-&lt;p&gt;如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0. &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;热力图可视化  &lt;a href=&quot;https://www.freesion.com/article/72491420060/&quot;&gt;https://www.freesion.com/article/72491420060/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面&lt;/p&gt;
-
-&lt;p&gt;可以点击inspect 看request 语句&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202203/WechatIMG49.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GET users/_search 
-{
-  &quot;aggs&quot;: {
-    &quot;2&quot;: {
-      &quot;terms&quot;: {
-        &quot;field&quot;: &quot;country.keyword&quot;,
-        &quot;order&quot;: {
-          &quot;_count&quot;: &quot;desc&quot;
-        },
-        &quot;size&quot;: 2
-      },
-      &quot;aggs&quot;: {
-        &quot;3&quot;: {
-          &quot;terms&quot;: {
-            &quot;field&quot;: &quot;age&quot;,
-            &quot;order&quot;: {
-              &quot;_count&quot;: &quot;desc&quot;
-            },
-            &quot;size&quot;: 2
-          }
-        }
-      }
-    }
-  },
-  &quot;size&quot;: 0,
-  &quot;fields&quot;: [],
-  &quot;script_fields&quot;: {},
-  &quot;stored_fields&quot;: [
-    &quot;*&quot;
-  ],
-  &quot;_source&quot;: {
-    &quot;excludes&quot;: []
-  },
-  &quot;query&quot;: {
-    &quot;bool&quot;: {
-      &quot;must&quot;: [],
-      &quot;filter&quot;: [
-        {
-          &quot;match_all&quot;: {}
-        }
-      ],
-      &quot;should&quot;: [],
-      &quot;must_not&quot;: []
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;坐标系的热力图的 query&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;get users/_search
-{
-  &quot;aggs&quot;: {
-    &quot;2&quot;: {
-      &quot;range&quot;: {
-        &quot;field&quot;: &quot;age&quot;,
-        &quot;ranges&quot;: [
-          {
-            &quot;to&quot;: 10,
-            &quot;from&quot;: 0
-          },
-          {
-            &quot;to&quot;: 20,
-            &quot;from&quot;: 10
-          },
-          {
-            &quot;to&quot;: 30,
-            &quot;from&quot;: 20
-          },
-          {
-            &quot;to&quot;: 37,
-            &quot;from&quot;: 30
-          }
-        ],
-        &quot;keyed&quot;: true
-      },
-      &quot;aggs&quot;: {
-        &quot;2&quot;: {
-          &quot;range&quot;: {
-            &quot;field&quot;: &quot;age&quot;,
-            &quot;ranges&quot;: [
-              {
-                &quot;to&quot;: 10,
-                &quot;from&quot;: 0
-              },
-              {
-                &quot;to&quot;: 20,
-                &quot;from&quot;: 10
-              },
-              {
-                &quot;to&quot;: 30,
-                &quot;from&quot;: 20
-              },
-              {
-                &quot;to&quot;: 40,
-                &quot;from&quot;: 30
-              }
-            ],
-            &quot;keyed&quot;: true
-          }
-        }
-      }
-    }
-  },
-  &quot;size&quot;: 0,
-  &quot;fields&quot;: [],
-  &quot;script_fields&quot;: {},
-  &quot;stored_fields&quot;: [
-    &quot;*&quot;
-  ],
-  &quot;_source&quot;: {
-    &quot;excludes&quot;: []
-  },
-  &quot;query&quot;: {
-    &quot;bool&quot;: {
-      &quot;must&quot;: [],
-      &quot;filter&quot;: [
-        {
-          &quot;match_all&quot;: {}
-        }
-      ],
-      &quot;should&quot;: [],
-      &quot;must_not&quot;: []
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;附： docker-compose 安装 &lt;a href=&quot;https://docs.docker.com/compose/install/&quot;&gt;https://docs.docker.com/compose/install/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;单独部署-es&quot;&gt;单独部署 ES&lt;/h3&gt;
-
-&lt;p&gt;官网 ： &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull docker.io/elasticsearch
-
-docker network create elastic
-
-docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-
-docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
-
-curl --cacert http_ca.crt -u elastic https://localhost:9200 
-
-输入docker run 时的password即可
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题1： 报错&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
-bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;虚拟内存太小了。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim /etc/sysctl.conf 
-vm.max_map_count=655360
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;重启&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Mon, 14 Mar 2022 11:05:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/03/es</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/03/es</guid>
 			</item>
 		
 	</channel>
