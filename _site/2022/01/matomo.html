@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/state">state</a></li>
+        
+          <li><a href="/2022/04/tar">tar</a></li>
+        
+          <li><a href="/2022/04/jsch">jsch</a></li>
+        
+          <li><a href="/2022/04/websocket">websocket</a></li>
+        
           <li><a href="/2022/04/webgl">webgl</a></li>
-        
-          <li><a href="/2022/04/charles">Charles</a></li>
-        
-          <li><a href="/2022/03/arthas">arthas</a></li>
-        
-          <li><a href="/2022/03/minIO">minIO-docker</a></li>
-        
-          <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>23</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>27</sup></a></li>
 			
 		
 			
@@ -164,7 +164,7 @@ docker run --restart=always -d --name matomo -p 7777:80 -v /opt/matomo/data:/dat
 
 <p>mysql新建db 和用户</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database matomo
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create database matomo;
 
 create user 'matomo'@'%' IDENTIFIED BY 'password';
 
@@ -213,6 +213,8 @@ trusted_hosts[] = "10.10.48.194:7777"
 
 <p>[Recording a click as a download] 手动指定某个链接是下载类型  <a href="https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download">https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download</a></p>
 
+<h3 id="具体问题如何想看单位时间中某个用户的下载量">具体问题：如何想看单位时间中某个用户的下载量？</h3>
+
 <p>详细的访问路径在表 matomo_log_action 中 ,其中type=3是下载</p>
 
 <p>界面上看到的visitor ID是 matomo_log_visit.idvisitor 注意数据库中的字母是大写的</p>
@@ -223,7 +225,7 @@ trusted_hosts[] = "10.10.48.194:7777"
 
 <p>matomo_log_link_visit_action.idaction_url = matomo_log_action.idaction</p>
 
-<p>但是表  matomo_log_action 中的id是复用的，有时候会删除无用的记录，所以时间上后访问的url可能反而比前面访问的url的id要小。</p>
+<p>但是表  matomo_log_action 中的url是去重的可复用的，有时候会删除无用的记录，所以时间上后访问的url可能反而比前面访问的url的id要小。</p>
 
 <p>所以如果要监控访问的url type =3 ，不可以遍历 matomo_log_action 表。</p>
 

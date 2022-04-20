@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/state">state</a></li>
+        
+          <li><a href="/2022/04/tar">tar</a></li>
+        
+          <li><a href="/2022/04/jsch">jsch</a></li>
+        
+          <li><a href="/2022/04/websocket">websocket</a></li>
+        
           <li><a href="/2022/04/webgl">webgl</a></li>
-        
-          <li><a href="/2022/04/charles">Charles</a></li>
-        
-          <li><a href="/2022/03/arthas">arthas</a></li>
-        
-          <li><a href="/2022/03/minIO">minIO-docker</a></li>
-        
-          <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>23</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>27</sup></a></li>
 			
 		
 			
@@ -153,18 +153,34 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2018/04/python-keyring">Apr 11, 2018 - python keyring 在macos的cron中无效</a></h1>
+        <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
         
         <div class="content">
-            <p>写了个定时定会议室的脚本，要利用keyring模块获取chrome中的cookie。
-在终端中执行python没问题，写到cron中就报错 Can’t fetch password from system</p>
+            <h1 id="爷爷">爷爷</h1>
+
+<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
+
+<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
+
+<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2019/12/money">Dec 1, 2019 - 金钱暗流</a></h1>
+        
+        <div class="content">
+            <h1 id="第一章-科赫家族史">第一章 科赫家族史</h1>
 
 <ol>
-  <li>
-    <p>解锁钥匙串 在cron中先执行 security unlock-keychain -p MYPASS /path/to/login.keychain</p>
-  </li>
-  <li>
-    <p>代码中设置钥匙串的路径    keyring.get_keyring().keychain = ‘/Users/gongchangyou/Library/Keychains/login.keychain-db’</p>
+  <li>弗雷德·科赫  MIT读化学工程，生命中有两个贵人，一个是约瑟夫·斯大林，另一个是阿道夫·希特勒，先后帮助苏联和纳粹建立炼油厂。可见在利益面前，什么党派，什么思想那都不是资本家考虑的。</li>
+  <li>兄弟阋墙，大哥弗雷迪和二哥查尔斯争夺遗产，双胞胎弟弟 大卫和比尔，一个站队大哥，一个站队二哥，让我想起九子夺嫡。最后醉心艺术的大哥败下阵，继承父亲保守主义思想的二哥掌舵科赫集团。
+    <ul>
+      <li>大卫被人问起巨额财产，他的回答：“在我小时候，我父亲给了我一个苹果，我很快卖了5块钱，买了两个苹果，卖了10块钱，日复一日，年复一年，直到父亲去世，留给我3亿美元！”</li>
+    </ul>
   </li>
 </ol>
 
@@ -175,58 +191,39 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2018/01/mod-mysql-password">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+        <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
         
         <div class="content">
-            <ol>
-  <li>
-    <p>mysql stop</p>
-  </li>
-  <li>
-    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
-  </li>
-  <li>
-    <p>mysql -u root mysql</p>
-  </li>
-  <li>
-    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
-  </li>
-  <li>
-    <p>flush privileges;</p>
-  </li>
-  <li>
-    <p>unset TMPDIR</p>
-  </li>
-  <li>
-    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
-  </li>
-</ol>
+            <ul>
+<li>创建并指定session名字<br />
+		tmux new -s $session_name</li>
+&lt;/li&gt;
+<li>删除session<br />
+ Ctrl+b :kill-session</li>
+<li>临时退出session<br />
+Ctrl+b d</li>
+<li>列出session<br />
+tmux ls</li>
+<li>进入已存在的session<br />
+tmux a -t $session_name</li>
+<li>删除所有session<br />
+Ctrl+b :kill-server</li>
+<li>删除指定session<br />
+tmux kill-session -t $session_name</li>
+<li>删除指定window<br />
+Ctrl+b : &amp;</li>
+</ul>
 
-<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+<p>settings 鼠标滚动接管tmux历史窗口</p>
 
-<ol>
-  <li>
-    <p>mysql.server start</p>
-  </li>
-  <li>
-    <p>mysql -uroot -proot 进去啦！！</p>
-  </li>
-</ol>
+<ul><li>vi ~/.tmux.conf</li>
+<li>set-window-option -g mode-mouse on</li>
+<li>tmux source-file ~/.tmux.conf</li>
+<li></li>
+<li></li>
 
-        </div>
-    </div>
-</div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/12/curl-command">Dec 14, 2017 - curl常用命令</a></h1>
-        
-        <div class="content">
-            <p>模拟队列插入
-curl -d ‘{“id”:853098,”event”:”update”,”timestamp”:1463641228622}’ ‘http://nydus.tj.a.ajkdns.com/publish?tunnel=service.internal.community&amp;routingKey=service.internal.community.data_change’</p>
-
-<p>上传图片
-curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg” ‘http://upd1.anjuke.com/upload’</p>
+</ul>
 
         </div>
     </div>
@@ -239,7 +236,7 @@ curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg
         <a class="btn btn-default" href="/page16" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 17 of 36</span>
+  <span class="page_number ">Page: 17 of 37</span>
   
     <a class="btn btn-default" href="/page18" class="next">Older</a>
   

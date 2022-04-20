@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/state">state</a></li>
+        
+          <li><a href="/2022/04/tar">tar</a></li>
+        
+          <li><a href="/2022/04/jsch">jsch</a></li>
+        
+          <li><a href="/2022/04/websocket">websocket</a></li>
+        
           <li><a href="/2022/04/webgl">webgl</a></li>
-        
-          <li><a href="/2022/04/charles">Charles</a></li>
-        
-          <li><a href="/2022/03/arthas">arthas</a></li>
-        
-          <li><a href="/2022/03/minIO">minIO-docker</a></li>
-        
-          <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>23</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>27</sup></a></li>
 			
 		
 			
@@ -153,143 +153,77 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
+        <h1><a href="/2022/01/RocketMQ">Jan 21, 2022 - rocket mq</a></h1>
         
         <div class="content">
-            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+            <h1 id="rocketmq-部署">RocketMQ 部署</h1>
 
-<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+<p>基础术语：</p>
 
-<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
+<ol>
+  <li>生产者(Producer)</li>
+  <li>消费者(Consumer)</li>
+  <li>主题（Topic)  一类消息的集合</li>
+  <li>生产者组（Producer Group) 这类Producer 发送同一类消息。如果发送事务消息，且原始生产者在发送后崩溃，Broker Server 会联系同一组的生产者实例提交或回溯消费</li>
+  <li>消费者组（Consumer Group) 消费同一类消息，注意同一个group的消费者必须订阅相同的topic。可以方便的负载均衡和容错</li>
+  <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
+  <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
+</ol>
 
-<p>lsyncd 配置完事就能跑了</p>
-
-<p>配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
-</code></pre></div></div>
-
-<p>日志</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
-</code></pre></div></div>
-
-<p>问题： 创建了一个新的project， 从库没显示</p>
-
-<p>我显式重启了docker容器才在从库看到</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-</code></pre></div></div>
-
-<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
-        
-        <div class="content">
-            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
-
-docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-
-
-可能需要改一些配置
-
-vi /srv/gitlab/config/gitlab.rb
-
-external_url 'http://ip' 不用写port
-
-
-postgresql['shared_buffers'] = "256MB"
-
-如果puma 启动不了 看到pid不停变大
-gitlab-ctl tail puma
-
-puma['port'] = 8888
-gitlab_workhorse['auth_backend'] = "http://localhost:8888"
-
-</code></pre></div></div>
-
-<h2 id="管理员账号初始化">管理员账号初始化</h2>
-<p>a、 切换目录：cd /opt/gitlab/bin</p>
-
-<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
-
-<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
-
-<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
-
-<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
-
-<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
-
-<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
-
-<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
-
-<p>i、至此大功搞成。</p>
-
-<p>https://www.jianshu.com/p/b1736c34c150</p>
-
-<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
-
-<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
+<p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
 
 <ol>
   <li>
-    <p>sudo apt update
-sudo apt install ca-certificates curl openssh-server postfix</p>
+    <p>下载RocketMQ zip包 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip</a></p>
+  </li>
+  <li>先启动 name service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqnamesrv &amp;
+</code></pre></div>    </div>
+  </li>
+  <li>再启动 broker service. 注意 vi bin/runbroker.sh 里面的 -Xms 内存要求是8g
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqbroker -n localhost:9876 &amp;
+</code></pre></div>    </div>
   </li>
   <li>
-    <p>cd /tmp
- curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+    <p>测试下 是否可以正常生产、消费</p>
 
-    <p>less /tmp/script.deb.sh</p>
-
-    <p>sudo bash /tmp/script.deb.sh</p>
-
-    <p>sudo apt install gitlab-ce</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export NAMESRV_ADDR=localhost:9876
+sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer
+   
+sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer	
+</code></pre></div>    </div>
+  </li>
+  <li>关闭服务器
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>停止 broker：sh bin/mqshutdown broker
+停止 nameserver：sh bin/mqshutdown namesrv
+</code></pre></div>    </div>
   </li>
 </ol>
 
-<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+<h2 id="控制台启动">控制台启动</h2>
 
-<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
-<p>则需要去修改配置文件</p>
+<ol>
+  <li>下载 控制台安装包 注意现在拆分出来了 <a href="https://github.com/apache/rocketmq-dashboard">https://github.com/apache/rocketmq-dashboard</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:apache/rocketmq-dashboard.git
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>看  readme 直接 docker 搞起</p>
 
-<p>vim /etc/gitlab/gitlab.rb</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull apacherocketmq/rocketmq-dashboard:latest
 
- puma['port'] =9092
-</code></pre></div></div>
+ ## 注意这里看看本地端口哪个可用，我这里用了8081
+ docker run -d --name rocketmq-dashboard -e "JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.1.145:9876" -p 8081:8080 -t apacherocketmq/rocketmq-dashboard:latest
+</code></pre></div>    </div>
 
-<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+    <p>如果是docker启动的话，上面Drocketmq.namesrv.addr参数直接用127.0.0.1:9876 会让dashboard无法连接到本地的9876端口，只能说docker容器中的 127.0.0.1 9876 不是宿主机的那个</p>
 
-<p>gitlab-ctl reconfigure</p>
+    <p>如果是自行打包并且启动jar包的话，应该是用127.0.0.1 没问题的</p>
+  </li>
+  <li>浏览器打开 localhost:8081</li>
+</ol>
 
-<p>gitlab-ctl restart</p>
-
-<h2 id="查看日志命令">查看日志命令：</h2>
-
-<p>gitlab-ctl tail</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>gitlab-ctl tail</td>
-      <td>grep -i error</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="查看端口命令">查看端口命令：</h2>
-
-<p>lsof -i:9091</p>
+<p><img src="/images/202201/1642757861082.jpg" alt="embbed" width="1000" /></p>
 
 
         </div>
@@ -298,179 +232,128 @@ sudo apt install ca-certificates curl openssh-server postfix</p>
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
+        <h1><a href="/2022/01/nacos-cluster">Jan 20, 2022 - cluster</a></h1>
         
         <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
+            <h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
 
-<h2 id="http调用">HTTP调用</h2>
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
 
 <ol>
-  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通</li>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
 
+<p>配置 cluster.conf
+nacos应该会将注册服务同步给其他ip</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+#it is ip
+#example
+192.168.1.145:8848
+192.168.1.146:8848
+
+```
 </code></pre></div></div>
-
-<h2 id="dubbo服务">Dubbo服务</h2>
-<ol>
-  <li>dubbo服务 注册  nacos 接口汇总 <a href="https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html">https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html</a></li>
-</ol>
-
-<p>问题： @DubboService 添加 不管用？</p>
-
-<p>注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
-我们来看看为啥注册不成功</p>
-
-<p>正常情况下 应该是能注册成功的</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880'
-</code></pre></div></div>
-
-<p>但是我的代码偏偏多了几个参数</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880&amp;app=unknown&amp;healthy=true&amp;clusterName=null&amp;enable=true&amp;ephemeral=true&amp;groupName=dubbo-demo-service&amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
-</code></pre></div></div>
-<p>尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了</p>
 
 <ol>
   <li>
-    <p>dubbo RPC调用 TODO</p>
-
-    <p>问题1</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
-
-</code></pre></div>    </div>
-    <p>解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
-https://github.com/apache/dubbo/issues/7274</p>
-
-    <p>问题2 明明服务已经注册到nacos中了，但是消费端报错</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;dubbo=2.0.2&amp;group=dubbo-demo&amp;init=false&amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;metadata-type=remote&amp;methods=add&amp;pid=67340&amp;register.ip=192.168.1.145&amp;release=2.7.8&amp;revision=0.0.1-SNAPSHOT&amp;side=consumer&amp;sticky=false&amp;timestamp=1642129445698&amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
-	
-</code></pre></div>    </div>
+    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
+  </li>
+  <li>
+    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
+  </li>
+  <li>
+    <p>重启nacos</p>
   </li>
 </ol>
 
-<p>注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了</p>
-
-<p>dubbo-spring-boot-starter  加进去就好了</p>
-
-<h2 id="最佳实践">最佳实践</h2>
-<p>以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip</p>
-
-<p><a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
-
-<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
-
-<p>注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- &lt;settings&gt;
-  &lt;localRepository&gt;/Users/suixinyu/Documents/java/repository/repository&lt;/localRepository&gt;
-&lt;/settings&gt;
-
- --&gt;
- &lt;settings&gt;
-&lt;servers&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-releases&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;naozhi123&lt;/password&gt;
-  &lt;/server&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-snapshots&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;naozhi123&lt;/password&gt;
-  &lt;/server&gt;  
-&lt;/servers&gt;
-
-  &lt;mirrors&gt;
-      &lt;mirror&gt;
-      &lt;id&gt;alimaven&lt;/id&gt;
-      &lt;name&gt;aliyun maven&lt;/name&gt;
-      &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
-    &lt;/mirror&gt;
-  
-  &lt;/mirrors&gt;
-  
-  &lt;profiles&gt;
-    &lt;profile&gt;
-      &lt;id&gt;development&lt;/id&gt;
-      &lt;repositories&gt;
-        &lt;repository&gt;
-          &lt;id&gt;central&lt;/id&gt;
-          &lt;url&gt;http://central&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/repository&gt;
-      &lt;/repositories&gt;
-     &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-          &lt;id&gt;central&lt;/id&gt;
-          &lt;url&gt;http://central&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-      &lt;/pluginRepositories&gt;
-    &lt;/profile&gt;
-    &lt;profile&gt;
-      &lt;!--this profile will allow snapshots to be searched when activated--&gt;
-      &lt;id&gt;public-snapshots&lt;/id&gt;
-      &lt;repositories&gt;
-        &lt;repository&gt;
-      &lt;id&gt;ali&lt;/id&gt;
-          &lt;name&gt;ali Maven repository&lt;/name&gt;
-          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt;  
-       &lt;repository&gt;
-      &lt;id&gt;ali-snapshot&lt;/id&gt;
-          &lt;name&gt;ali Maven repository snapshot&lt;/name&gt;
-          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt; 
-    &lt;repository&gt;
-      &lt;id&gt;local&lt;/id&gt;
-          &lt;name&gt;Local Maven repository&lt;/name&gt;
-          &lt;url&gt;http://10.10.48.192:8081/nexus/content/groups/public/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt;  
-      &lt;/repositories&gt;
-     &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-          &lt;id&gt;public-snapshots&lt;/id&gt;
-          &lt;url&gt;http://public-snapshots&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-      &lt;/pluginRepositories&gt;
-    &lt;/profile&gt;
-  &lt;profile&gt;
-    &lt;id&gt;sonar&lt;/id&gt;
-    &lt;activation&gt;
-      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
-    &lt;/activation&gt;
-    &lt;properties&gt;
-      &lt;sonar.jdbc.url&gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&lt;/sonar.jdbc.url&gt;
-      &lt;sonar.jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driverClassName&gt;
-      &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
-      &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
-      &lt;sonar.host.url&gt;http://10.58.156.108:9000/&lt;/sonar.host.url&gt;
-    &lt;/properties&gt;
-  &lt;/profile&gt;
-  &lt;/profiles&gt;
-  &lt;activeProfiles&gt;
-    &lt;activeProfile&gt;development&lt;/activeProfile&gt;
-    &lt;activeProfile&gt;public-snapshots&lt;/activeProfile&gt;
-  &lt;/activeProfiles&gt;
-
-&lt;/settings&gt;
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
 </code></pre></div></div>
+
+<h2 id="又-如果-第2步选择了内置数据源">又： 如果 第2步选择了内置数据源</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh -p embedded
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/load-balance">Jan 20, 2022 - load balance</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-4-负载均衡">Spring Cloud Alibaba - nacos 4 负载均衡</h1>
+
+<ol>
+  <li>
+    <p>创建两个不同端口的 producer</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    	<span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">braindata</span><span class="p">.</span><span class="n">dubbodemo</span><span class="p">.</span><span class="n">config</span><span class="p">;</span>
+       
+     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">.</span><span class="n">Entry</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">javax</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">PostConstruct</span><span class="p">;</span>
+
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">common</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">NetUtils</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">ProtocolConfig</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">BeansException</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">Autowired</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContext</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContextAware</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ConfigurableApplicationContext</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Component</span><span class="p">;</span>
+
+     <span class="p">/**</span>
+      <span class="p">*</span> <span class="err">一个机器部署两个</span><span class="n">dubbo</span><span class="err">生产者会产生端口占用问题，为了解决这个问题，在加载</span><span class="n">dubbo</span><span class="err">配置文件之前，先设置没被占用的端口</span>
+      <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">cookie</span>
+      <span class="p">*/</span>
+     <span class="p">@</span><span class="n">Component</span>
+     <span class="k">public</span> <span class="n">class</span> <span class="n">DynamicDubboPortReader</span> <span class="n">implements</span> <span class="n">ApplicationContextAware</span><span class="p">{</span>
+         <span class="p">@</span><span class="n">Autowired</span>
+         <span class="n">private</span> <span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">;</span>
+
+         <span class="n">private</span> <span class="n">int</span> <span class="n">port</span> <span class="p">=</span> <span class="m">20880</span><span class="p">;</span>
+
+         <span class="p">@</span><span class="n">PostConstruct</span>
+         <span class="k">public</span> <span class="n">void</span> <span class="n">init</span><span class="p">(){</span>
+             <span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">map</span> <span class="p">=</span> <span class="n">applicationContext</span><span class="p">.</span><span class="n">getBeansOfType</span><span class="p">(</span><span class="n">ProtocolConfig</span><span class="p">.</span><span class="n">class</span><span class="p">);</span>
+             <span class="n">for</span><span class="p">(</span><span class="n">Entry</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span><span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">con</span><span class="p">:</span> <span class="n">map</span><span class="p">.</span><span class="n">entrySet</span><span class="p">()){</span>
+                 <span class="n">port</span> <span class="p">=</span> <span class="n">NetUtils</span><span class="p">.</span><span class="n">getAvailablePort</span><span class="p">();</span>
+                 <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"=========="</span><span class="p">+</span><span class="n">port</span><span class="p">);</span>
+                 <span class="n">con</span><span class="p">.</span><span class="nf">getValue</span><span class="p">().</span><span class="n">setPort</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+
+         <span class="p">@</span><span class="n">Override</span>
+         <span class="k">public</span> <span class="n">void</span> <span class="n">setApplicationContext</span><span class="p">(</span><span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">)</span> <span class="n">throws</span> <span class="n">BeansException</span> <span class="p">{</span>
+             <span class="n">this</span><span class="p">.</span><span class="n">applicationContext</span> <span class="p">=</span> <span class="p">(</span><span class="n">ConfigurableApplicationContext</span><span class="p">)</span><span class="n">applicationContext</span><span class="p">;</span>
+         <span class="p">}</span>
+
+     <span class="p">}</span>
+
+</code></pre></div>    </div>
+  </li>
+  <li>如果producer 还有 server.port 可以通过设置启动项 -Dserver.port=7824 来改变</li>
+  <li>启动consumer ，测试发现 DubboReference 注解已经集成负载均衡功能了， 如果想指定某一个producer，可以通过 sticky=true 来设置。</li>
+</ol>
+
+<p>那dubbo是如何实现负载均衡的呢？ 我们来看下源代码 <a href="https://github.com/apache/dubbo">https://github.com/apache/dubbo</a></p>
+
+<p><a href="https://blog.csdn.net/caoyuanyenang/article/details/114837786">https://blog.csdn.net/caoyuanyenang/article/details/114837786</a> 这篇文章说的很详尽了</p>
+
+<p>我使用dubbo 2.7.8</p>
+
+<p>其中 AbstractClusterInvoker</p>
+
+<p>line 257 会根据服务名去注册中心获取ip</p>
+
+<p>Line 258 获取loadbalance</p>
+
+<p><img src="/images/202201/1642651014052.jpg" alt="lb" width="1000" /></p>
 
 
         </div>
@@ -484,7 +367,7 @@ https://github.com/apache/dubbo/issues/7274</p>
         <a class="btn btn-default" href="/page12" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 13 of 36</span>
+  <span class="page_number ">Page: 13 of 37</span>
   
     <a class="btn btn-default" href="/page14" class="next">Older</a>
   

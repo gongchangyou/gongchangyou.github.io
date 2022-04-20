@@ -339,3 +339,4 @@ public class MybatisPlusConfig {
 }
 ```
 
+注意： LambdaQuery 不支持kotlin 。没法在kotlin中愉快的使用方法引用

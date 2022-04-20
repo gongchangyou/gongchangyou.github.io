@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/state">state</a></li>
+        
+          <li><a href="/2022/04/tar">tar</a></li>
+        
+          <li><a href="/2022/04/jsch">jsch</a></li>
+        
+          <li><a href="/2022/04/websocket">websocket</a></li>
+        
           <li><a href="/2022/04/webgl">webgl</a></li>
-        
-          <li><a href="/2022/04/charles">Charles</a></li>
-        
-          <li><a href="/2022/03/arthas">arthas</a></li>
-        
-          <li><a href="/2022/03/minIO">minIO-docker</a></li>
-        
-          <li><a href="/2022/03/Mysql-docker">mysql-docker</a></li>
         
     </ul>
 </div>
@@ -116,7 +116,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>23</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>27</sup></a></li>
 			
 		
 			
@@ -153,14 +153,179 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
+        <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
         
         <div class="content">
-            <h1 id="kotlin-语法糖">Kotlin 语法糖</h1>
+            <h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
 
-<p>sequence chunked 列表分块处理</p>
+<h2 id="http调用">HTTP调用</h2>
 
-<p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
+<ol>
+  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
+
+</code></pre></div></div>
+
+<h2 id="dubbo服务">Dubbo服务</h2>
+<ol>
+  <li>dubbo服务 注册  nacos 接口汇总 <a href="https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html">https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html</a></li>
+</ol>
+
+<p>问题： @DubboService 添加 不管用？</p>
+
+<p>注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
+我们来看看为啥注册不成功</p>
+
+<p>正常情况下 应该是能注册成功的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880'
+</code></pre></div></div>
+
+<p>但是我的代码偏偏多了几个参数</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880&amp;app=unknown&amp;healthy=true&amp;clusterName=null&amp;enable=true&amp;ephemeral=true&amp;groupName=dubbo-demo-service&amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
+</code></pre></div></div>
+<p>尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了</p>
+
+<ol>
+  <li>
+    <p>dubbo RPC调用 TODO</p>
+
+    <p>问题1</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
+
+</code></pre></div>    </div>
+    <p>解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
+https://github.com/apache/dubbo/issues/7274</p>
+
+    <p>问题2 明明服务已经注册到nacos中了，但是消费端报错</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;dubbo=2.0.2&amp;group=dubbo-demo&amp;init=false&amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;metadata-type=remote&amp;methods=add&amp;pid=67340&amp;register.ip=192.168.1.145&amp;release=2.7.8&amp;revision=0.0.1-SNAPSHOT&amp;side=consumer&amp;sticky=false&amp;timestamp=1642129445698&amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
+	
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了</p>
+
+<p>dubbo-spring-boot-starter  加进去就好了</p>
+
+<h2 id="最佳实践">最佳实践</h2>
+<p>以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip</p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
+
+<p>注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- &lt;settings&gt;
+  &lt;localRepository&gt;/Users/suixinyu/Documents/java/repository/repository&lt;/localRepository&gt;
+&lt;/settings&gt;
+
+ --&gt;
+ &lt;settings&gt;
+&lt;servers&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;  
+&lt;/servers&gt;
+
+  &lt;mirrors&gt;
+      &lt;mirror&gt;
+      &lt;id&gt;alimaven&lt;/id&gt;
+      &lt;name&gt;aliyun maven&lt;/name&gt;
+      &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
+    &lt;/mirror&gt;
+  
+  &lt;/mirrors&gt;
+  
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;development&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+    &lt;profile&gt;
+      &lt;!--this profile will allow snapshots to be searched when activated--&gt;
+      &lt;id&gt;public-snapshots&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+      &lt;id&gt;ali&lt;/id&gt;
+          &lt;name&gt;ali Maven repository&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+       &lt;repository&gt;
+      &lt;id&gt;ali-snapshot&lt;/id&gt;
+          &lt;name&gt;ali Maven repository snapshot&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt; 
+    &lt;repository&gt;
+      &lt;id&gt;local&lt;/id&gt;
+          &lt;name&gt;Local Maven repository&lt;/name&gt;
+          &lt;url&gt;http://10.10.48.192:8081/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;public-snapshots&lt;/id&gt;
+          &lt;url&gt;http://public-snapshots&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+  &lt;profile&gt;
+    &lt;id&gt;sonar&lt;/id&gt;
+    &lt;activation&gt;
+      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+    &lt;/activation&gt;
+    &lt;properties&gt;
+      &lt;sonar.jdbc.url&gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&lt;/sonar.jdbc.url&gt;
+      &lt;sonar.jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driverClassName&gt;
+      &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
+      &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
+      &lt;sonar.host.url&gt;http://10.58.156.108:9000/&lt;/sonar.host.url&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;development&lt;/activeProfile&gt;
+    &lt;activeProfile&gt;public-snapshots&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+
+&lt;/settings&gt;
+
+</code></pre></div></div>
 
 
         </div>
@@ -169,44 +334,50 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2021/12/selenium-java">Dec 20, 2021 - java-selenium</a></h1>
+        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
         
         <div class="content">
-            <h1 id="下载-chrome-driver">下载 chrome-driver</h1>
-<p>https://chromedriver.chromium.org/downloads</p>
+            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
 
-<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
+<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
 
-<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
-MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
+<p>问题：mvn deploy -X</p>
+<ol>
+  <li>405错误  Failed to transfer file http://10.10.48.192:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</li>
+</ol>
 
-<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
+<p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
 
-<h1 id="添加依赖">添加依赖</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;distributionManagement&gt;
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-   &lt;version&gt;3.14.0&lt;/version&gt;
-&lt;/dependency&gt;
+        &lt;repository&gt;
+
+            &lt;id&gt;nexus-releases&lt;/id&gt;
+
+            &lt;url&gt;
+				就是这行，要跟maven服务器上的settings中的URL保持一致
+                http://10.10.48.192:8081/nexus/repository/maven-releases/ 
+
+            &lt;/url&gt;
+
+        &lt;/repository&gt;
 </code></pre></div></div>
+<ol>
+  <li>401错误  本地的settings.xml账号错误</li>
+</ol>
 
-<h1 id="编写代码">编写代码</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
-        val driver = new ChromeDriver();
-        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
-        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
-        log.info("problemList={}", problemList);
-</code></pre></div></div>
-
-<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
-js.executeScript("window.open();");
-
-JavascriptExecutor js = (JavascriptExecutor) driver;
-js.executeScript("window.open(\"http://www.baidu.com\");");
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;servers&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;xxx&lt;/password&gt;
+  &lt;/server&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;xxx&lt;/password&gt;
+  &lt;/server&gt;
+&lt;/servers&gt;
 </code></pre></div></div>
 
         </div>
@@ -215,16 +386,29 @@ js.executeScript("window.open(\"http://www.baidu.com\");");
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
+        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
         
         <div class="content">
-            <h1 id="爷爷">爷爷</h1>
+            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
+<p>两个方法</p>
 
-<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
+<ol>
+  <li>Nacos官方用nacos client + spring boot 模式</li>
+  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
+</ol>
 
-<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
+<p>注意：如果关闭应用的话，nacos中的配置还在</p>
 
-<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
+<p>application.properties没有拷贝到target文件夹的原因？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
+</code></pre></div></div>
+<p>改成 下面，或者直接这行删掉</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
+</code></pre></div></div>
+
+<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
+
 
         </div>
     </div>
@@ -237,7 +421,7 @@ js.executeScript("window.open(\"http://www.baidu.com\");");
         <a class="btn btn-default" href="/page14" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 15 of 36</span>
+  <span class="page_number ">Page: 15 of 37</span>
   
     <a class="btn btn-default" href="/page16" class="next">Older</a>
   
