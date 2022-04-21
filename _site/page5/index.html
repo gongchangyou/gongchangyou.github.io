@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/matomo_archive">matomo</a></li>
+        
           <li><a href="/2022/04/xdebug">xdebug</a></li>
         
           <li><a href="/2022/04/email">email</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/04/state">state</a></li>
         
           <li><a href="/2022/04/tar">tar</a></li>
-        
-          <li><a href="/2022/04/jsch">jsch</a></li>
         
     </ul>
 </div>
@@ -112,7 +112,7 @@
 			
 		
 			
-				<li><a href="/tag/php" title="php">php<sup>4</sup></a></li>
+				<li><a href="/tag/php" title="php">php<sup>5</sup></a></li>
 			
 		
 			
@@ -151,6 +151,61 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/es-scroll">Mar 24, 2022 - es-scroll</a></h1>
+        
+        <div class="content">
+            <h1 id="elasticsearch-scroll">ElasticSearch Scroll</h1>
+
+<p>因为ES from+size 有10000限制，当然也可以通过修改index.max_result_window参数来修改，但是有更好的工具scroll。咱们就不修改参数了。 使用方式很简单， 只需在请求后加scroll字段，缓存上下文1m(1分钟). query中的”from”字段去掉即可。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map1c/_search?scroll=1m
+{
+  "query":{
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "x": {
+              "gte": 0,
+              "lte": 0.1
+            }
+          }
+        },
+         {
+          "range": {
+            "y": {
+              "gte": 0,
+              "lte": 0.1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size":10000
+}
+</code></pre></div></div>
+
+<p>注意返回值里有个游标, “_scroll_id”. 下次请求带上他就能继续往下翻页了。</p>
+
+<p><img src="/images/202203/WechatIMG61.png" alt="" width="800" /></p>
+
+<h3 id="下个请求就这么简单对不用写表名和query和size因为这个scroll_id中已经保存了上下文">下个请求就这么简单，对，不用写表名和query和size。因为这个scroll_id中已经保存了上下文。</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST _search/scroll 
+{
+  "scroll":"10m",
+  "scroll_id":"FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFmIyRklwWWUyVFNDd1BFcHhxZjk3VEEAAAAAAAFaDxZoNlhQZjhYd1FsYTBIUHpzb1phNEtB"
+}
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/RocketMQ-docker">Mar 23, 2022 - rocketmq-docker</a></h1>
@@ -445,116 +500,6 @@ reIndex()
 创建索引
 db.records.createIndex( { "loc": "2d" } , { min : 0, max : 100000 } )
 </code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/k8s">Mar 17, 2022 - gitlab-runner-docker</a></h1>
-        
-        <div class="content">
-            <h1 id="k8s">k8s</h1>
-
-<p>文档1 <a href="http://docs.kubernetes.org.cn/475.html">http://docs.kubernetes.org.cn/475.html</a></p>
-
-<p>文档2  <a href="https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/</a></p>
-
-<h3 id="常用的几个命令">常用的几个命令:</h3>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>查看各种对象
-kubectl get deployments
-kubectl get rs
-kubectl get pods
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose #将资源暴露为新的Kubernetes Service。在这里可以实现将宿主机的端口映射给容器,容器端口8000
-kubectl expose rc nginx --port=80 --target-port=8000 
-</code></pre></div></div>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create # 创建一个Deployment
-$ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
-deployment "nginx-deployment" created
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Listen on port 8888 locally, forwarding to 5000 in the pod #端口转发
-kubectl port-forward mypod 8888:5000
-</code></pre></div></div>
-
-<h3 id="回退到历史版本-这个可以用jenkins做个job">回退到历史版本, 这个可以用jenkins做个job</h3>
-
-<p>现在，我们可以决定回退当前的 rollout 到之前的版本：</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment
-deployment "nginx-deployment" rolled back
-</code></pre></div></div>
-<p>也可以使用 –revision参数指定某个历史版本：</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment --to-revision=2
-deployment "nginx-deployment" rolled back
-</code></pre></div></div>
-
-<h3 id="扩容-这个可以用jenkins做个job手动扩容">扩容, 这个可以用jenkins做个job手动扩容</h3>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl scale deployment nginx-deployment --replicas 10
-deployment "nginx-deployment" scaled
-
-$ kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
-deployment "nginx-deployment" autoscaled
-</code></pre></div></div>
-
-<h3 id="灰度或者蓝绿发布-可以使用ingress">灰度或者蓝绿发布 可以使用ingress</h3>
-
-<p>命令表 <a href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
-
-<p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#进入minikube终端
-minikube ssh 
-#如果docker pull 拉镜像太慢的话 可以直接进入终端 docker pull XXX
-</code></pre></div></div>
-
-<p>问题1：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exiting due to DRV_AS_ROOT: The "docker" driver should not be used with root privileges.
-</code></pre></div></div>
-
-<p>解决1:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start --force --driver=docker
-</code></pre></div></div>
-
-<p>问题2: k8s.gcr.io/echoserver:1.4 这个镜像拉不到，导致pod启动失败</p>
-
-<p>解决2： <a href="https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91">https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods  -o wide
-查看pod状态是 ImagePullBackOff
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube ssh
-docker pull cilium/echoserver #换个镜像
-</code></pre></div></div>
-
-<p>问题3:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>an error occurred forwarding 7080 -&gt; 8080: error forwarding port 8080 to pod b86addc13b414f05be12d736ee1904cc02d78c6e7e1889c6e45a76c3a1563e58, uid : exit status 1: 2022/03/18 07:14:31 socat[12900] E connect(5, AF=2 127.0.0.1:8080, 16): Connection refused
-</code></pre></div></div>
-
-<p>解决3: <a href="https://github.com/kubernetes/minikube/issues/13176">https://github.com/kubernetes/minikube/issues/13176</a> 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。</p>
-
-<p>问题4: ❌  Exiting due to DRV_NOT_HEALTHY: Found driver(s) but none were healthy. See above for suggestions how to fix installed drivers.  上面会给出解决方案，就是把用户加到docker组</p>
-
-<p>解决4:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo usermod -aG docker $USER &amp;&amp; newgrp docker
-</code></pre></div></div>
-
-<p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
-
-<p>主要步骤：</p>
-
- 	1.  创建两个yaml文件。 分别对应RS和Service .kubectl create 
- 	2. 创建Ingress Controller. 相当于是个内置的nginx，这样不需要外部配置nginx.conf
- 	3. 创建Ingress ,定义规则，将不同域名的路由对应到不同的service
- 	4. 测试效果，请求试试
 
 
         </div>
