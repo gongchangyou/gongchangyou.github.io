@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/theme.css" rel="stylesheet" type="text/css">
+    <link href="/css/syntax.css" rel="stylesheet" type="text/css">
+    
+    <link rel="icon" href="/images/favicon.ico">
+    
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Mouse的博客</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li class="active visible-xs-block"><a href="/links.html">Links</a></li>
+                    <li class="active"><a href="/archive.html">Archive</a></li>
+                    <li class="active"><a href="/about.html">About</a></li>
+                    <li class="active"><a href="/feed.xml">RSS</a></li>
+                    
+                      <li class="active"><a href="https://github.com/gongchangyou/gongchangyou.github.io">Github</a></li>
+                    
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container container-left">
+    <div class="row">
+        <div class="col-md-3 hidden-xs">
+            <div class="sidebar well" align="center">
+<img src="/images/favicon.ico" alt=""/>
+<h4>
+记录学习生活工作的点滴
+</h4>
+</div>
+
+<div class="sidebar well">
+    <h1>Recent Posts</h1>
+    <ul>
+        
+          <li><a href="/2022/04/xdebug">xdebug</a></li>
+        
+          <li><a href="/2022/04/email">email</a></li>
+        
+          <li><a href="/2022/04/state">state</a></li>
+        
+          <li><a href="/2022/04/tar">tar</a></li>
+        
+          <li><a href="/2022/04/jsch">jsch</a></li>
+        
+    </ul>
+</div>
+<div class="sidebar well">
+	<h1>标签</h1>
+		
+			
+				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/ios" title="ios">ios<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mac" title="mac">mac<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/shader" title="shader">shader<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/php" title="php">php<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/java" title="java">java<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/k8s" title="k8s">k8s<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/webgl" title="webgl">webgl<sup>1</sup></a></li>
+			
+		
+</div>
+<!-- 
+<div class="sidebar well">
+<h1>Links</h1>
+<ul>
+  <li><a href="#">One</a></li>
+  <li><a href="#">Two</a></li>
+  <li><a href="#">Three</a></li>
+  <li><a href="#">Four</a></li>
+</ul>
+
+</div> -->
+
+        </div>
+        <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/04/xdebug">Apr 21, 2022 - xdebug</a></h1>
+            
+            <div class="post-content">
+            <h1 id="xdebug">Xdebug</h1>
+
+<p><a href="http://xdebug.org/">http://xdebug.org/</a></p>
+
+<p>因为最近想看看matomo 源码，里面php的调用比较深，直接看代码不是很直观，所以需要有个工具debug</p>
+
+<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1591505">https://cloud.tencent.com/developer/article/1591505</a></p>
+
+<p><a href="https://www.yisu.com/zixun/376908.html">https://www.yisu.com/zixun/376908.html</a></p>
+
+<h2 id="容器内部操作">容器内部操作</h2>
+
+<ol>
+  <li>在容器内部安装xdebug</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pecl install xdebug
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>修改php.ini</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20200930/xdebug.so
+   
+   
+#xdebug.remote_enable=1
+#xdebug.remote_host=192.168.1.2
+#xdebug.remote_port=9000
+#xdebug.idekey=PHPSTORM
+   
+   
+xdebug.mode=debug
+xdebug.client_host=192.168.1.2
+xdebug.client_port=9000
+xdebug.collect_return=On
+xdebug.idekey="PHPSTORM"
+xdebug.log="/tmp/xdebug.log"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重启docker 让php配置生效</p>
+  </li>
+</ol>
+
+<h2 id="phpstorm-的配置-操作">Phpstorm 的配置 操作</h2>
+
+<ol>
+  <li>选择你的php interpreter (这步好像不需要)</li>
+</ol>
+
+<p><img src="/images/202204/WechatIMG107.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG108.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG109.png" alt="" width="800" /></p>
+
+<ol>
+  <li>
+    <p>配置xdebug port</p>
+
+    <p><img src="/images/202204/WechatIMG110.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置 DBGp Proxy （这步好像也不需要)</p>
+
+    <p><img src="/images/202204/WechatIMG104.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置server  注意右边的是容器内的路径</p>
+
+    <p><img src="/images/202204/WechatIMG2424.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>调试</p>
+  </li>
+</ol>
+
+<p>按照如下步骤</p>
+
+<p><img src="/images/202204/WechatIMG105.png" alt="" width="800" /></p>
+
+<p>点击validate</p>
+
+<p><img src="/images/202204/WechatIMG2417.png" alt="" width="800" /></p>
+
+<p>配置好path和url</p>
+
+<p><img src="/images/202204/WechatIMG2419.png" alt="" width="800" /></p>
+
+<p>点击Validate ，看到xdebug安装好了就行了，如果有异常再针对解决</p>
+
+<p><img src="/images/202204/WechatIMG2417.png" alt="" width="800" /></p>
+
+<h2 id="chrome-插件安装">chrome 插件安装</h2>
+
+<p><a href="https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2">https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2</a></p>
+
+<h2 id="加断点试试成功">加断点试试,成功!</h2>
+
+<p><img src="/images/202204/WechatIMG2427.png" alt="" width="800" /></p>
+
+<h3 id="以下不用看">以下不用看</h3>
+
+<p>安装步骤 : <a href="http://xdebug.org/wizard">http://xdebug.org/wizard</a></p>
+
+<p>因为我是用docker启动的matomo，所以需要进到docker容器中安装xdebug</p>
+
+<p>问题1： 直接卡在第二步，apt-get install php-dev 找不到package</p>
+
+<p>推测是source 不对， 疯狂找源.</p>
+
+<p>看报错应该是 php-dev这个包过期了</p>
+
+
+            </div>
+            
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/04/email" class="previous">Older Post</a>
+              
+</div>
+
+        </div>
+    </div>
+</div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-04-xdebug';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            under
+            <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
+
