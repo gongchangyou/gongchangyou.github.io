@@ -60,6 +60,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/MinIO_policy">minio_policy</a></li>
+        
           <li><a href="/2022/04/matomo_archive">matomo</a></li>
         
           <li><a href="/2022/04/xdebug">xdebug</a></li>
@@ -67,8 +69,6 @@
           <li><a href="/2022/04/email">email</a></li>
         
           <li><a href="/2022/04/state">state</a></li>
-        
-          <li><a href="/2022/04/tar">tar</a></li>
         
     </ul>
 </div>
@@ -96,7 +96,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
 			
 		
 			
@@ -124,7 +124,7 @@
 			
 		
 			
-				<li><a href="/tag/go" title="go">go<sup>3</sup></a></li>
+				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
 			
 		
 			
@@ -151,6 +151,43 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/06/c++%E5%BF%AB%E6%8E%92">Jun 17, 2015 - c++  快排</a></h1>
+        
+        <div class="content">
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="nf">partition</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span> <span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span><span class="c1">//慢速下标</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">x</span><span class="p">){</span>
+            <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">){</span>
+                <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span><span class="c1">//发现小的跟j交换</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="n">j</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">swap</span><span class="p">(</span><span class="kt">int</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">q</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">q</span><span class="p">;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">quickSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">partition</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+        <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">quickSort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2015/02/journey_day8">Feb 14, 2015 - 2月14日布拉格</a></h1>
@@ -263,42 +300,6 @@
 <p>结束已经是9点半也不知道10点，天已完全黑了，从地铁口出来走回宾馆的路咋那么荒凉的感觉，行人道就半米宽，偶尔朝一家18禁的酒吧瞄了几眼，旁边黑人保安就很热心的招呼我们进去看看，我们连连摆手，老婆责备我不该瞎看，我说也是，生怕呼吸到带有艾滋病毒的空气。</p>
 
 <p>晚上回到宾馆挨到1点值完机才睡，挑个好位子还省得去机场排队。</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/02/journey_day6">Feb 12, 2015 - 2月12日维也纳购物和去布拉格</a></h1>
-        
-        <div class="content">
-            <p>因为计划乘坐下午1点半的火车去布拉格，所以我们打算利用这半天时间坐有轨电车绕城一圈，最后欣赏下维也纳的建筑艺术和多瑙河风光。结果在换乘2次不知道该乘坐几路车之后老婆决定去城西边的街上去（老婆补充街道名称）购物。街上有levis专卖店，断码的裤子很便宜，一条200rmb左右。一般要7，800rmb，虽然比国内动辄上千要便宜些，对我来说这样的也太贵了，钱包款式很少，就两三种，样子也不好看，2、300rmb的售价还是比国内500+要容易接受些。</p>
-
-<p>在那边的5块10块店我们买齐了给大家的礼物。逛到差不多10点该回宾馆退房了。唉，时光过的太快了。这座城我还远远没有看够，没去多瑙河边走走，令人眼花缭乱的室外雕刻，各种博物馆还没参观，甚至金色大厅的表演都没看到。相比布达佩斯，这座城市的人们更加懂得利用晚上时间来欣赏古典艺术。</p>
-
-<p>在维也纳的站台上结识了一位克罗地亚的小哥，音乐世家，自己玩大提琴。跟我们介绍了一下克罗地亚的风光，消费比这低，还有地中海沿岸的沙滩，强烈推荐下次我们自由行去那边。对中国文化也很感兴趣，居然知道华为小米，还有魅族！！跟我们侃了一路！唉，话唠伤不起啊。</p>
-
-<p>到达布拉格已经是晚上，建议在火车站附近先兑换一点捷克布朗坐地铁，兑换布朗最划算的还是在市区中各种标记0%手续费的柜台。因为晚上我忍受不了身上没几块捷克克朗的恐惧，所以去宾馆附近查理大桥桥头的兑换点兑换，给家庭造成了200rmb的手续费损失。</p>
-
-<p>一出地铁，布拉格已是华灯初上，各种夜店五光十色，天哪，欢迎来到欧洲的丽江，约炮之所布拉格，路边还有各种18禁的表演钢管舞的酒吧。相比静谧的布达佩斯，优雅的维也纳，这座城市简直让人难以忍受，第一印象太差了，接下来要花两天时间来改观了。</p>
-
-<p>从地铁站走了10分钟到达宾馆，因为事先得知布拉格是此行的治安最差的城市，所以我们特意选择了4星级的宾馆，不求别的就是希望安全一些。</p>
-
-<p><a href="http://hotels.ctrip.com/international/650658.html">布拉格宫帕奇图威马梅森套房酒店</a></p>
-
-<p>订了一个小型套房，国内的套房就是多了一间客厅嘛，我想这个套房也应该如此吧，但是一进门，我就傻眼了！这……这是我们订的？面积比我们家还大，客厅就不止20平吧，还带小厨房，2个卧室，2个厕所。我都不知道该睡哪儿了。后来事实证明，他的价值也仅仅是大，跟维也纳<a href="http://hotels.ctrip.com/international/656871.html">阿尔法酒店</a>的细致简直没法比，装修的太不讲究了，主卧的梳妆台大镜子就在床边，晚上咋睡啊？淋浴房的天花板太低，浴缸简直是多余，垫高了地面导致淋浴时腰都伸不直，还有洗手台，老婆的那些护肤品根本找不到地方放，临走时发现都被溅到水，维也纳的卫生间不大，但是摆放这些东西的位置还是考虑的很到位。</p>
-
-<p><img src="/images/201502/IMG_20150212_185609.jpg" alt="" />
-<img src="/images/201502/IMG_20150212_184923.jpg" alt="" /></p>
-
-<p>稍事收拾我们立马出去找吃的，刚刚从地铁站走过来的时候路过一家叫cozel酒馆，服务生不管是捷克小哥还是小妹，精力似乎异常充沛，转着圈就来给你点单了。我们要了牛肉汤和烤肉，对了，来布拉格怎么能不品尝号称德国啤酒起源的捷克啤酒呢？上海捷克旅游局的帅小伙局长说了，他最推崇捷克的啤酒。上来一喝，果然有小麦的清香，但是回味怎么有尿味？大概是我欣赏不了吧。牛肉汤是盛在一个掏空的大圆面包中的，好吃不油腻。</p>
-
-<p><img src="/images/201502/IMG_20150212_200738.jpg" alt="" /></p>
-
-<p>吃饱以后走回查理大桥，因为住在这附近，所以感觉随时可以逛，结果一次也没走过……</p>
-
-<p>最终我们还是选择睡在小卧室里，晚安，布拉格。</p>
 
         </div>
     </div>
