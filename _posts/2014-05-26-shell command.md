@@ -14,7 +14,7 @@ rename 's/([0-9]).txt/file_$1.txt/' *.txt
 
 压缩率更大的压缩:tar cvjf  解压:tar xvjf tar.bz2
 
-压缩:tar cvzf 解压:tar xvzf tar.gz
+压缩:tar -cvzf  xxx.tar.gz xxx 解压:tar xvzf tar.gz
 
 如果有不想进包的部分
 

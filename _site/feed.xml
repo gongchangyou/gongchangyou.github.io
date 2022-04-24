@@ -7,6 +7,18 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>minio_python</title>
+				<description>&lt;h1 id=&quot;minio-python&quot;&gt;MinIO-python&lt;/h1&gt;
+
+&lt;p&gt;python client : &lt;a href=&quot;http://docs.minio.org.cn/docs/master/python-client-api-reference&quot;&gt;http://docs.minio.org.cn/docs/master/python-client-api-reference&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Sun, 24 Apr 2022 14:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/04/MinIO_python</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/04/MinIO_python</guid>
+			</item>
+		
+			<item>
 				<title>user</title>
 				<description>&lt;h1 id=&quot;python-user&quot;&gt;python-User&lt;/h1&gt;
 
@@ -642,20 +654,6 @@ session.connect(30000);   // making a connection with timeout.
 				<pubDate>Mon, 18 Apr 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/04/jsch</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/04/jsch</guid>
-			</item>
-		
-			<item>
-				<title>websocket</title>
-				<description>&lt;h1 id=&quot;websocket&quot;&gt;Websocket&lt;/h1&gt;
-
-&lt;p&gt;代码地址: &lt;a href=&quot;https://github.com/gongchangyou/websocket-test&quot;&gt;https://github.com/gongchangyou/websocket-test&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;postman 调试: &lt;a href=&quot;https://blog.postman.com/postman-supports-websocket-apis/&quot;&gt;https://blog.postman.com/postman-supports-websocket-apis/&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 13 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/websocket</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/websocket</guid>
 			</item>
 		
 	</channel>

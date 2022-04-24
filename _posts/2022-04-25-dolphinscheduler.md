@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "user"
-date: 2022-04-25 12:25:06 +0800
+title: "dolphinscheduler"
+date: 2022-04-25 10:25:06 +0800
 comments: true
-category: python
-tag: [python]
+category: java
+tag: [java]
 ---
 
 #  Dolphinscheduler
@@ -33,7 +33,7 @@ docker pull dolphinscheduler.docker.scarf.sh/apache/dolphinscheduler
 
 ”worker 执行该任务的时候，会生成一个临时shell脚本， 并使用与租户同名的 linux 用户执行这个脚本。“
 
-"如果Worker所在节点没有这个用户，Worker会在执行任务时创建这个用户。" //这个待确认
+"如果Worker所在节点没有这个用户，Worker会在执行任务时创建这个用户。"
 
 按照这个说法，Dolphinscheduler权限很大，都可以创建用户了。
 
@@ -48,3 +48,23 @@ https://dolphinscheduler.apache.org/zh-cn/docs/1.3.1/user_doc/cluster-deployment
 
 
 <font color=red>所以没有黑科技，要么就是有root权限，要么用user 账号密码登录worker服务器</font>
+
+
+
+在这个循环中，从queue里不停的获取task， 并交给taskExecuteThread去run
+
+![]({{ site.baseurl}}/images/202204/WechatIMG120.png){: width="800" }
+
+![]({{ site.baseurl}}/images/202204/WechatIMG119.png){: width="800" }
+
+```
+TaskExecuteThread.run
+TaskExecuteThread.task.handle()
+ShellTask.handle()
+AbstractCommandExecutor.run
+AbstractCommandExecutor.buildProcess 在这里面会切换用户执行cmd sudo -s username cmd
+```
+
+
+
+FAQ :  [https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md](https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md)
