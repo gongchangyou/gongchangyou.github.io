@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/python_user">user</a></li>
+        
+          <li><a href="/2022/04/conda">conda</a></li>
+        
           <li><a href="/2022/04/MinIO_policy">minio_policy</a></li>
         
           <li><a href="/2022/04/matomo_archive">matomo</a></li>
         
           <li><a href="/2022/04/xdebug">xdebug</a></li>
-        
-          <li><a href="/2022/04/email">email</a></li>
-        
-          <li><a href="/2022/04/state">state</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>7</sup></a></li>
 			
 		
 			
@@ -421,6 +421,36 @@
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="使用rsa-私钥登录">使用rsa 私钥登录</h3>
+
+<ol>
+  <li>因为jsch目前不更新了，所以不兼容最新版本 openssh 的key</li>
+</ol>
+
+<p>需要先将 id_rsa 转换成低版本的 <a href="https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch">https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen -p -f file -m pem -P passphrase -N passphrase
+
+# 如果密码为空字符串 就敲下面的命令
+ssh-keygen -p -f path/to/rsa_file  -m pem -P  "" -N ""  
+</code></pre></div></div>
+
+<ol>
+  <li>代码</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session session = jsch.getSession(username, host, port);
+
+         jsch.addIdentity(this.getClass().getClassLoader().getResource(rsa_file).getPath());
+
+java.util.Properties config = new java.util.Properties();
+config.put("StrictHostKeyChecking", "no");
+session.setConfig(config);
+
+session.connect(30000);   // making a connection with timeout.
+
 </code></pre></div></div>
 
 

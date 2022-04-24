@@ -7,6 +7,45 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>user</title>
+				<description>&lt;h1 id=&quot;python-user&quot;&gt;python-User&lt;/h1&gt;
+
+&lt;p&gt;获取当前用户&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/&quot;&gt;https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Sun, 24 Apr 2022 12:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/04/python_user</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/04/python_user</guid>
+			</item>
+		
+			<item>
+				<title>conda</title>
+				<description>&lt;h1 id=&quot;conda&quot;&gt;Conda&lt;/h1&gt;
+
+&lt;p&gt;是个python虚拟环境&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/coder_oldgeek/article/details/122239755&quot;&gt;https://blog.csdn.net/coder_oldgeek/article/details/122239755&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/64100305&quot;&gt;https://zhuanlan.zhihu.com/p/64100305&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;常用命令：&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;conda create --name ancillary python=3.7
+
+conda env list
+
+conda activate ancillary
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Sat, 23 Apr 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/04/conda</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/04/conda</guid>
+			</item>
+		
+			<item>
 				<title>minio_policy</title>
 				<description>&lt;h1 id=&quot;minio-policy&quot;&gt;MinIO-policy&lt;/h1&gt;
 
@@ -53,7 +92,7 @@
 
 &lt;p&gt;$minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
 &lt;br /&gt;
-ArchiveSelector 中判断archive的时间和  $minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。&lt;/p&gt;
+ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG112.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
@@ -569,6 +608,36 @@ xdebug.log=&quot;/tmp/xdebug.log&quot;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h3 id=&quot;使用rsa-私钥登录&quot;&gt;使用rsa 私钥登录&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;因为jsch目前不更新了，所以不兼容最新版本 openssh 的key&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;需要先将 id_rsa 转换成低版本的 &lt;a href=&quot;https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch&quot;&gt;https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh-keygen -p -f file -m pem -P passphrase -N passphrase
+
+# 如果密码为空字符串 就敲下面的命令
+ssh-keygen -p -f path/to/rsa_file  -m pem -P  &quot;&quot; -N &quot;&quot;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;代码&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Session session = jsch.getSession(username, host, port);
+
+         jsch.addIdentity(this.getClass().getClassLoader().getResource(rsa_file).getPath());
+
+java.util.Properties config = new java.util.Properties();
+config.put(&quot;StrictHostKeyChecking&quot;, &quot;no&quot;);
+session.setConfig(config);
+
+session.connect(30000);   // making a connection with timeout.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 </description>
 				<pubDate>Mon, 18 Apr 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/04/jsch</link>
@@ -587,45 +656,6 @@ xdebug.log=&quot;/tmp/xdebug.log&quot;
 				<pubDate>Wed, 13 Apr 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/04/websocket</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/04/websocket</guid>
-			</item>
-		
-			<item>
-				<title>webgl</title>
-				<description>&lt;h1 id=&quot;webgl&quot;&gt;WebGL&lt;/h1&gt;
-
-&lt;p&gt;参考文章:&lt;a href=&quot;https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL&quot;&gt;https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;IDEA Debug&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG76.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 06 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/webgl</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/webgl</guid>
-			</item>
-		
-			<item>
-				<title>Charles</title>
-				<description>&lt;h1 id=&quot;charles&quot;&gt;Charles&lt;/h1&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/binbinfighting/article/details/107313811&quot;&gt;https://blog.csdn.net/binbinfighting/article/details/107313811&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG75.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;然后手机再连上 这个代理即可抓包 http请求&lt;/p&gt;
-
-&lt;p&gt;https还需要安装证书，这个在参考文章中。&lt;/p&gt;
-
-&lt;p&gt;因为charles 生成的证书是pem文件， 转换成其他证书的命令: https://cloud.tencent.com/developer/article/1887914?from=15425&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl x509 -inform pem -in 你的证书名字.pem -outform der -out 你的新证书.cer
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Tue, 05 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/charles</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/charles</guid>
 			</item>
 		
 	</channel>

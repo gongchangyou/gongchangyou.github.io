@@ -60,15 +60,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/python_user">user</a></li>
+        
+          <li><a href="/2022/04/conda">conda</a></li>
+        
           <li><a href="/2022/04/MinIO_policy">minio_policy</a></li>
         
           <li><a href="/2022/04/matomo_archive">matomo</a></li>
         
           <li><a href="/2022/04/xdebug">xdebug</a></li>
-        
-          <li><a href="/2022/04/email">email</a></li>
-        
-          <li><a href="/2022/04/state">state</a></li>
         
     </ul>
 </div>
@@ -104,7 +104,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>5</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>7</sup></a></li>
 			
 		
 			
@@ -153,6 +153,162 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/04/matomo_archive">Apr 21, 2022 - matomo</a></h1>
+        
+        <div class="content">
+            <h1 id="matomo-archive">Matomo archive</h1>
+
+<p>研究下这个档案缓存 900s是如何生效的</p>
+
+<p><img src="/images/202204/WechatIMG114.png" alt="" width="800" /></p>
+
+<p>namespace Piwik\Plugins\Actions; API.getDownloads</p>
+
+<p>这里根据archive返回数据
+<img src="/images/202204/WechatIMG113.png" alt="" width="800" /></p>
+
+<p>$minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
+<br />
+ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。</p>
+
+<p><img src="/images/202204/WechatIMG112.png" alt="" width="800" /></p>
+
+<p>如果archive失效 ，则新增
+<img src="/images/202204/WechatIMG116.png" alt="" width="800" /></p>
+
+<p>matomo_archive_blob_2022_04 中的就是对应的二进制缓存
+<img src="/images/202204/WechatIMG117.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/xdebug">Apr 21, 2022 - xdebug</a></h1>
+        
+        <div class="content">
+            <h1 id="xdebug">Xdebug</h1>
+
+<p><a href="http://xdebug.org/">http://xdebug.org/</a></p>
+
+<p>因为最近想看看matomo 源码，里面php的调用比较深，直接看代码不是很直观，所以需要有个工具debug</p>
+
+<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1591505">https://cloud.tencent.com/developer/article/1591505</a></p>
+
+<p><a href="https://www.yisu.com/zixun/376908.html">https://www.yisu.com/zixun/376908.html</a></p>
+
+<h2 id="容器内部操作">容器内部操作</h2>
+
+<ol>
+  <li>在容器内部安装xdebug</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pecl install xdebug
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>修改php.ini</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20200930/xdebug.so
+   
+   
+#xdebug.remote_enable=1
+#xdebug.remote_host=192.168.1.2
+#xdebug.remote_port=9000
+#xdebug.idekey=PHPSTORM
+   
+   
+xdebug.mode=debug
+xdebug.client_host=192.168.1.2
+xdebug.client_port=9000
+xdebug.collect_return=On
+xdebug.idekey="PHPSTORM"
+xdebug.log="/tmp/xdebug.log"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重启docker 让php配置生效</p>
+  </li>
+</ol>
+
+<h2 id="phpstorm-的配置-操作">Phpstorm 的配置 操作</h2>
+
+<ol>
+  <li>选择你的php interpreter (这步好像不需要)</li>
+</ol>
+
+<p><img src="/images/202204/WechatIMG107.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG108.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG109.png" alt="" width="800" /></p>
+
+<ol>
+  <li>
+    <p>配置xdebug port</p>
+
+    <p><img src="/images/202204/WechatIMG110.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置 DBGp Proxy （这步好像也不需要)</p>
+
+    <p><img src="/images/202204/WechatIMG104.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置server  注意右边的是容器内的路径</p>
+
+    <p><img src="/images/202204/WechatIMG2424.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>调试</p>
+  </li>
+</ol>
+
+<p>按照如下步骤</p>
+
+<p><img src="/images/202204/WechatIMG105.png" alt="" width="800" /></p>
+
+<p>点击validate</p>
+
+<p><img src="/images/202204/WechatIMG2417.png" alt="" width="800" /></p>
+
+<p>配置好path和url</p>
+
+<p><img src="/images/202204/WechatIMG2419.png" alt="" width="800" /></p>
+
+<p>点击Validate ，看到xdebug安装好了就行了，如果有异常再针对解决</p>
+
+<p><img src="/images/202204/WechatIMG2421.png" alt="" width="800" /></p>
+
+<h2 id="chrome-插件安装">chrome 插件安装</h2>
+
+<p><a href="https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2">https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2</a></p>
+
+<h2 id="加断点试试成功">加断点试试,成功!</h2>
+
+<p><img src="/images/202204/WechatIMG2427.png" alt="" width="800" /></p>
+
+<h3 id="以下不用看">以下不用看</h3>
+
+<p>安装步骤 : <a href="http://xdebug.org/wizard">http://xdebug.org/wizard</a></p>
+
+<p>因为我是用docker启动的matomo，所以需要进到docker容器中安装xdebug</p>
+
+<p>问题1： 直接卡在第二步，apt-get install php-dev 找不到package</p>
+
+<p>推测是source 不对， 疯狂找源.</p>
+
+<p>看报错应该是 php-dev这个包过期了</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/04/email">Apr 21, 2022 - email</a></h1>
         
         <div class="content">
@@ -188,84 +344,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/state">Apr 19, 2022 - state</a></h1>
-        
-        <div class="content">
-            <h1 id="状态机">状态机</h1>
-
-<p>参考文章:</p>
-
-<p><a href="https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine">https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine</a></p>
-
-<p><a href="https://zhuanlan.zhihu.com/p/47434856">https://zhuanlan.zhihu.com/p/47434856</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/tar">Apr 19, 2022 - tar</a></h1>
-        
-        <div class="content">
-            <h1 id="将多个文件打包并压缩">将多个文件打包并压缩</h1>
-
-<p><a href="https://mkyong.com/java/how-to-create-tar-gz-in-java/">https://mkyong.com/java/how-to-create-tar-gz-in-java/</a></p>
-
-<p>kotlin 代码</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">xxx</span>
-
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveEntry</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">compressors</span><span class="p">.</span><span class="n">gzip</span><span class="p">.</span><span class="n">GzipCompressorOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Service</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">BufferedOutputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Files</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Path</span>
-
-
-<span class="p">@</span><span class="n">Service</span>
-<span class="n">class</span> <span class="n">TarGzipService</span> <span class="p">{</span>
-    <span class="p">//</span> <span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="n">few</span> <span class="n">files</span>
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">IOException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">createTarGzipFiles</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="k">List</span><span class="p">&lt;</span><span class="n">Path</span><span class="p">&gt;,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Path</span><span class="p">?)</span> <span class="p">{</span>
-        <span class="n">Files</span><span class="p">.</span><span class="n">newOutputStream</span><span class="p">(</span><span class="n">output</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">fOut</span> <span class="p">-&gt;</span>
-            <span class="n">BufferedOutputStream</span><span class="p">(</span><span class="n">fOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">buffOut</span> <span class="p">-&gt;</span>
-                <span class="n">GzipCompressorOutputStream</span><span class="p">(</span><span class="n">buffOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">gzOut</span> <span class="p">-&gt;</span>
-                    <span class="n">TarArchiveOutputStream</span><span class="p">(</span><span class="n">gzOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">tOut</span> <span class="p">-&gt;</span>
-                        <span class="n">for</span> <span class="p">(</span><span class="n">path</span> <span class="k">in</span> <span class="n">paths</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="k">if</span> <span class="p">(</span><span class="c1">!Files.isRegularFile(path)) {
-</span>                                <span class="n">throw</span> <span class="n">IOException</span><span class="p">(</span><span class="s2">"Support only file! $path"</span><span class="p">)</span>
-                            <span class="p">}</span>
-                            <span class="n">val</span> <span class="n">tarEntry</span> <span class="p">=</span> <span class="n">TarArchiveEntry</span><span class="p">(</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">toFile</span><span class="p">(),</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">fileName</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
-                            <span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">putArchiveEntry</span><span class="p">(</span><span class="n">tarEntry</span><span class="p">)</span>
-
-                            <span class="p">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="k">to</span> <span class="n">TarArchiveOutputStream</span>
-                            <span class="n">Files</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">tOut</span><span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">closeArchiveEntry</span><span class="p">()</span>
-                        <span class="p">}</span>
-                        <span class="n">tOut</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -273,7 +351,7 @@
         <a class="btn btn-default" href="/index.html" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 2 of 38</span>
+  <span class="page_number ">Page: 2 of 39</span>
   
     <a class="btn btn-default" href="/page3" class="next">Older</a>
   

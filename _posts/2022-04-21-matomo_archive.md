@@ -23,7 +23,7 @@ namespace Piwik\Plugins\Actions; API.getDownloads
 
 $minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
 <br>
-ArchiveSelector 中判断archive的时间和  $minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。
+ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。
 
 ![]({{ site.baseurl}}/images/202204/WechatIMG112.png){: width="800" }
 
