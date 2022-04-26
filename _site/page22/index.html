@@ -46,6 +46,20 @@
 </div>
 
 
+<style>
+  table{
+    border-left:1px solid #000000;border-top:1px solid #000000;
+    width: 100%;
+    word-wrap:break-word; word-break:break-all;
+  }
+  table th{
+  text-align:center;
+  }
+  table th,td{
+    border-right:1px solid #000000;border-bottom:1px solid #000000;
+  }
+</style>
+
 <div class="container container-left">
     <div class="row">
         <div class="col-md-3 hidden-xs">
@@ -60,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
+        
+          <li><a href="/2022/04/xxl-job">dolphinscheduler</a></li>
+        
+          <li><a href="/2022/04/dolphinscheduler">dolphinscheduler</a></li>
+        
           <li><a href="/2022/04/MinIO_python">minio_python</a></li>
         
           <li><a href="/2022/04/python_user">user</a></li>
-        
-          <li><a href="/2022/04/conda">conda</a></li>
-        
-          <li><a href="/2022/04/MinIO_policy">minio_policy</a></li>
-        
-          <li><a href="/2022/04/matomo_archive">matomo</a></li>
         
     </ul>
 </div>
@@ -116,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>28</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>31</sup></a></li>
 			
 		
 			
@@ -153,43 +167,43 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/docker-command">Nov 28, 2017 - docker常用命令</a></h1>
+        <h1><a href="/2018/01/mod-mysql-password">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
         
         <div class="content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
+            <ol>
+  <li>
+    <p>mysql stop</p>
+  </li>
+  <li>
+    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
+  </li>
+  <li>
+    <p>mysql -u root mysql</p>
+  </li>
+  <li>
+    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
+  </li>
+  <li>
+    <p>flush privileges;</p>
+  </li>
+  <li>
+    <p>unset TMPDIR</p>
+  </li>
+  <li>
+    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
+  </li>
+</ol>
 
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
+<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
 
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
-
-<p>启动容器  <br />
-1.docker run -dit --name container_name -v /tmp/outer:/tmp/inner image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
-
-<p>进入容器</p>
-
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
-
-<p>退出 敲exit即可</p>
-
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
-
-<p>跟docker容器一起启动</p>
-
-<p>–restart=always</p>
-
-<p>存储/载入</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker save -o 要保存的文件名  要保存的镜像
-
-
-docker load --input 文件
-
-docker load &lt; 文件名
-</code></pre></div></div>
+<ol>
+  <li>
+    <p>mysql.server start</p>
+  </li>
+  <li>
+    <p>mysql -uroot -proot 进去啦！！</p>
+  </li>
+</ol>
 
         </div>
     </div>
@@ -197,50 +211,14 @@ docker load &lt; 文件名
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/apt-get-command">Nov 9, 2017 - apt-get命令</a></h1>
+        <h1><a href="/2017/12/curl-command">Dec 14, 2017 - curl常用命令</a></h1>
         
         <div class="content">
-            <p>apt-get update——在修改/etc/apt/sources.list或者/etc/apt/preferences之後运行该命令。此外您需要定期运行这一命令以确保您的软件包列表是最新的。</p>
+            <p>模拟队列插入
+curl -d ‘{“id”:853098,”event”:”update”,”timestamp”:1463641228622}’ ‘http://nydus.tj.a.ajkdns.com/publish?tunnel=service.internal.community&amp;routingKey=service.internal.community.data_change’</p>
 
-<p>apt-get install packagename——安装一个新软件包（参见下文的aptitude）</p>
-
-<p>apt-get remove packagename——卸载一个已安装的软件包（保留配置文件）</p>
-
-<p>apt-get –purge remove packagename——卸载一个已安装的软件包（删除配置文件）</p>
-
-<p>dpkg –force-all –purge packagename 有些软件很难卸载，而且还阻止了别的软件的应用，就可以用这个，不过有点冒险。</p>
-
-<p>apt-get autoclean apt会把已装或已卸的软件都备份在硬盘上，所以如果需要空间的话，可以让这个命令来删除你已经删掉的软件</p>
-
-<p>apt-get clean 这个命令会把安装的软件的备份也删除，不过这样不会影响软件的使用的。</p>
-
-<p>apt-get upgrade——更新所有已安装的软件包</p>
-
-<p>apt-get dist-upgrade——将系统升级到新版本</p>
-
-<p>apt-cache search string——在软件包列表中搜索字符串</p>
-
-<p>dpkg -l package-name-pattern——列出所有与模式相匹配的软件包。如果您不知道软件包的全名，您可以使用“<em>package-name-pattern</em>”。</p>
-
-<p>aptitude——详细查看已安装或可用的软件包。与apt-get类似，aptitude可以通过命令行方式调用，但仅限于某些命令——最常见的有安装和卸载命令。由于aptitude比apt-get了解更多信息，可以说它更适合用来进行安装和卸载。</p>
-
-<p>aptitude search XXX</p>
-
-<p>apt-cache showpkg pkgs——显示软件包信息。</p>
-
-<p>apt-cache dumpavail——打印可用软件包列表。</p>
-
-<p>apt-cache show pkgs——显示软件包记录，类似于dpkg –print-avail。</p>
-
-<p>apt-cache pkgnames——打印软件包列表中所有软件包的名称。</p>
-
-<p>dpkg -S file——这个文件属于哪个已安装软件包。</p>
-
-<p>dpkg -L package——列出软件包中的所有文件。</p>
-
-<p>apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。</p>
-
-<p>apt-get update 系统软件包更新</p>
+<p>上传图片
+curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg” ‘http://upd1.anjuke.com/upload’</p>
 
         </div>
     </div>
@@ -248,21 +226,19 @@ docker load &lt; 文件名
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/find-git-string">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
+        <h1><a href="/2017/11/sublime-command">Nov 30, 2017 - sublime常用命令</a></h1>
         
         <div class="content">
-            <p>查看我的修改中是否含有var_dump字符串</p>
+            <p>批量修改  <br />
+    1. command + F 搜索字符串  <br />
+    2. alt + enter 批量选中</p>
 
-<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
+<p>编译配置</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>find .</td>
-      <td>xargs grep -ri “example_str” -l</td>
-    </tr>
-  </tbody>
-</table>
+<p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
+
+<p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
+
 
         </div>
     </div>
@@ -275,7 +251,7 @@ docker load &lt; 文件名
         <a class="btn btn-default" href="/page21" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 22 of 39</span>
+  <span class="page_number ">Page: 22 of 40</span>
   
     <a class="btn btn-default" href="/page23" class="next">Older</a>
   

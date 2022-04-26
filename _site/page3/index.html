@@ -46,6 +46,20 @@
 </div>
 
 
+<style>
+  table{
+    border-left:1px solid #000000;border-top:1px solid #000000;
+    width: 100%;
+    word-wrap:break-word; word-break:break-all;
+  }
+  table th{
+  text-align:center;
+  }
+  table th,td{
+    border-right:1px solid #000000;border-bottom:1px solid #000000;
+  }
+</style>
+
 <div class="container container-left">
     <div class="row">
         <div class="col-md-3 hidden-xs">
@@ -60,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
+        
+          <li><a href="/2022/04/xxl-job">dolphinscheduler</a></li>
+        
+          <li><a href="/2022/04/dolphinscheduler">dolphinscheduler</a></li>
+        
           <li><a href="/2022/04/MinIO_python">minio_python</a></li>
         
           <li><a href="/2022/04/python_user">user</a></li>
-        
-          <li><a href="/2022/04/conda">conda</a></li>
-        
-          <li><a href="/2022/04/MinIO_policy">minio_policy</a></li>
-        
-          <li><a href="/2022/04/matomo_archive">matomo</a></li>
         
     </ul>
 </div>
@@ -116,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>28</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>31</sup></a></li>
 			
 		
 			
@@ -153,35 +167,32 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/email">Apr 21, 2022 - email</a></h1>
+        <h1><a href="/2022/04/MinIO_policy">Apr 22, 2022 - minio_policy</a></h1>
         
         <div class="content">
-            <h1 id="java-发送email">java 发送email</h1>
+            <h1 id="minio-policy">MinIO-policy</h1>
 
-<p>参考文章:</p>
+<p>权限控制</p>
 
-<p><a href="https://www.runoob.com/java/java-sending-email.html">https://www.runoob.com/java/java-sending-email.html</a></p>
+<h3 id="有时候场景是-只针对某个账号有权限read-先将bucket设置成privacy-再将这个账号的policy设置成-readonly">有时候场景是 只针对某个账号有权限read， 先将bucket设置成privacy, 再将这个账号的policy设置成 readonly</h3>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/javax.mail/mail --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;javax.mail&lt;/groupId&gt;
-    &lt;artifactId&gt;mail&lt;/artifactId&gt;
-    &lt;version&gt;1.4.7&lt;/version&gt;
-&lt;/dependency&gt;
+<p>policy设置如下</p>
 
-</code></pre></div></div>
+<p><img src="/images/202204/WechatIMG118.png" alt="" width="800" /></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  // 设置邮件服务器
-        properties.setProperty("mail.smtp.host", "your.mail.server")
-        properties.setProperty("mail.smtp.port", "your.port")
-        properties.setProperty("mail.smtp.auth", "true")
-        // 获取默认session对象
-        val session = Session.getInstance(properties, object: Authenticator() {
-            override fun getPasswordAuthentication(): PasswordAuthentication {
-                return PasswordAuthentication("username", "password")
-            }
-        })
-</code></pre></div></div>
+<p>S3 action: <a href="https://iam.cloudonaut.io/reference/s3.html">https://iam.cloudonaut.io/reference/s3.html</a></p>
+
+<h3 id="如何获取物理存储地址">如何获取物理存储地址？</h3>
+<p>不可能！ 因为MinIO是将一个文件拆开存放到多个物理磁盘上，不是直接放到某个磁盘。</p>
+
+<h3 id="为什么minio可以保证一半节点不可用的时候服务依然可用">为什么MinIO可以保证一半节点不可用的时候，服务依然可用？</h3>
+<p>参考文章：<a href="https://www.cnblogs.com/FLY_DREAM/p/14587022.html">https://www.cnblogs.com/FLY_DREAM/p/14587022.html</a></p>
+
+<p><a href="https://blog.csdn.net/sinat_27186785/article/details/52034588">https://blog.csdn.net/sinat_27186785/article/details/52034588</a></p>
+
+<p>纠删码</p>
+
+<p>纠删码是一种恢复丢失和损坏数据的数学算法，目前，纠删码技术在分布式存储系统中的应用主要有三类，阵列纠删码（Array Code: RAID5、RAID6 等）、RS(Reed-Solomon)里德-所罗门类纠删码和 LDPC(LowDensity Parity Check Code)低密度奇偶校验纠删码。Erasure Code 是一种编码技术，它可以将 n 份原始数据，增加 m 份数据，并能通过 n+m 份中的任意 n 份数据，还原为原始数据。即如果有任意小于等于 m 份的数据失效，仍然能通过剩下的数据还原出来</p>
 
 
         </div>
@@ -190,17 +201,31 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/state">Apr 19, 2022 - state</a></h1>
+        <h1><a href="/2022/04/matomo_archive">Apr 21, 2022 - matomo</a></h1>
         
         <div class="content">
-            <h1 id="状态机">状态机</h1>
+            <h1 id="matomo-archive">Matomo archive</h1>
 
-<p>参考文章:</p>
+<p>研究下这个档案缓存 900s是如何生效的</p>
 
-<p><a href="https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine">https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine</a></p>
+<p><img src="/images/202204/WechatIMG114.png" alt="" width="800" /></p>
 
-<p><a href="https://zhuanlan.zhihu.com/p/47434856">https://zhuanlan.zhihu.com/p/47434856</a></p>
+<p>namespace Piwik\Plugins\Actions; API.getDownloads</p>
 
+<p>这里根据archive返回数据
+<img src="/images/202204/WechatIMG113.png" alt="" width="800" /></p>
+
+<p>$minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
+<br />
+ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。</p>
+
+<p><img src="/images/202204/WechatIMG112.png" alt="" width="800" /></p>
+
+<p>如果archive失效 ，则新增
+<img src="/images/202204/WechatIMG116.png" alt="" width="800" /></p>
+
+<p>matomo_archive_blob_2022_04 中的就是对应的二进制缓存
+<img src="/images/202204/WechatIMG117.png" alt="" width="800" /></p>
 
         </div>
     </div>
@@ -208,58 +233,122 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/tar">Apr 19, 2022 - tar</a></h1>
+        <h1><a href="/2022/04/xdebug">Apr 21, 2022 - xdebug</a></h1>
         
         <div class="content">
-            <h1 id="将多个文件打包并压缩">将多个文件打包并压缩</h1>
+            <h1 id="xdebug">Xdebug</h1>
 
-<p><a href="https://mkyong.com/java/how-to-create-tar-gz-in-java/">https://mkyong.com/java/how-to-create-tar-gz-in-java/</a></p>
+<p><a href="http://xdebug.org/">http://xdebug.org/</a></p>
 
-<p>kotlin 代码</p>
+<p>因为最近想看看matomo 源码，里面php的调用比较深，直接看代码不是很直观，所以需要有个工具debug</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">xxx</span>
+<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1591505">https://cloud.tencent.com/developer/article/1591505</a></p>
 
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveEntry</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">compressors</span><span class="p">.</span><span class="n">gzip</span><span class="p">.</span><span class="n">GzipCompressorOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Service</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">BufferedOutputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Files</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Path</span>
+<p><a href="https://www.yisu.com/zixun/376908.html">https://www.yisu.com/zixun/376908.html</a></p>
 
+<h2 id="容器内部操作">容器内部操作</h2>
 
-<span class="p">@</span><span class="n">Service</span>
-<span class="n">class</span> <span class="n">TarGzipService</span> <span class="p">{</span>
-    <span class="p">//</span> <span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="n">few</span> <span class="n">files</span>
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">IOException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">createTarGzipFiles</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="k">List</span><span class="p">&lt;</span><span class="n">Path</span><span class="p">&gt;,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Path</span><span class="p">?)</span> <span class="p">{</span>
-        <span class="n">Files</span><span class="p">.</span><span class="n">newOutputStream</span><span class="p">(</span><span class="n">output</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">fOut</span> <span class="p">-&gt;</span>
-            <span class="n">BufferedOutputStream</span><span class="p">(</span><span class="n">fOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">buffOut</span> <span class="p">-&gt;</span>
-                <span class="n">GzipCompressorOutputStream</span><span class="p">(</span><span class="n">buffOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">gzOut</span> <span class="p">-&gt;</span>
-                    <span class="n">TarArchiveOutputStream</span><span class="p">(</span><span class="n">gzOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">tOut</span> <span class="p">-&gt;</span>
-                        <span class="n">for</span> <span class="p">(</span><span class="n">path</span> <span class="k">in</span> <span class="n">paths</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="k">if</span> <span class="p">(</span><span class="c1">!Files.isRegularFile(path)) {
-</span>                                <span class="n">throw</span> <span class="n">IOException</span><span class="p">(</span><span class="s2">"Support only file! $path"</span><span class="p">)</span>
-                            <span class="p">}</span>
-                            <span class="n">val</span> <span class="n">tarEntry</span> <span class="p">=</span> <span class="n">TarArchiveEntry</span><span class="p">(</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">toFile</span><span class="p">(),</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">fileName</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
-                            <span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">putArchiveEntry</span><span class="p">(</span><span class="n">tarEntry</span><span class="p">)</span>
+<ol>
+  <li>在容器内部安装xdebug</li>
+</ol>
 
-                            <span class="p">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="k">to</span> <span class="n">TarArchiveOutputStream</span>
-                            <span class="n">Files</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">tOut</span><span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">closeArchiveEntry</span><span class="p">()</span>
-                        <span class="p">}</span>
-                        <span class="n">tOut</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pecl install xdebug
 </code></pre></div></div>
+
+<ol>
+  <li>
+    <p>修改php.ini</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20200930/xdebug.so
+   
+   
+#xdebug.remote_enable=1
+#xdebug.remote_host=192.168.1.2
+#xdebug.remote_port=9000
+#xdebug.idekey=PHPSTORM
+   
+   
+xdebug.mode=debug
+xdebug.client_host=192.168.1.2
+xdebug.client_port=9000
+xdebug.collect_return=On
+xdebug.idekey="PHPSTORM"
+xdebug.log="/tmp/xdebug.log"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重启docker 让php配置生效</p>
+  </li>
+</ol>
+
+<h2 id="phpstorm-的配置-操作">Phpstorm 的配置 操作</h2>
+
+<ol>
+  <li>选择你的php interpreter (这步好像不需要)</li>
+</ol>
+
+<p><img src="/images/202204/WechatIMG107.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG108.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG109.png" alt="" width="800" /></p>
+
+<ol>
+  <li>
+    <p>配置xdebug port</p>
+
+    <p><img src="/images/202204/WechatIMG110.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置 DBGp Proxy （这步好像也不需要)</p>
+
+    <p><img src="/images/202204/WechatIMG104.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置server  注意右边的是容器内的路径</p>
+
+    <p><img src="/images/202204/WechatIMG2424.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>调试</p>
+  </li>
+</ol>
+
+<p>按照如下步骤</p>
+
+<p><img src="/images/202204/WechatIMG105.png" alt="" width="800" /></p>
+
+<p>点击validate</p>
+
+<p><img src="/images/202204/WechatIMG2417.png" alt="" width="800" /></p>
+
+<p>配置好path和url</p>
+
+<p><img src="/images/202204/WechatIMG2419.png" alt="" width="800" /></p>
+
+<p>点击Validate ，看到xdebug安装好了就行了，如果有异常再针对解决</p>
+
+<p><img src="/images/202204/WechatIMG2421.png" alt="" width="800" /></p>
+
+<h2 id="chrome-插件安装">chrome 插件安装</h2>
+
+<p><a href="https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2">https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2</a></p>
+
+<h2 id="加断点试试成功">加断点试试,成功!</h2>
+
+<p><img src="/images/202204/WechatIMG2427.png" alt="" width="800" /></p>
+
+<h3 id="以下不用看">以下不用看</h3>
+
+<p>安装步骤 : <a href="http://xdebug.org/wizard">http://xdebug.org/wizard</a></p>
+
+<p>因为我是用docker启动的matomo，所以需要进到docker容器中安装xdebug</p>
+
+<p>问题1： 直接卡在第二步，apt-get install php-dev 找不到package</p>
+
+<p>推测是source 不对， 疯狂找源.</p>
+
+<p>看报错应该是 php-dev这个包过期了</p>
 
 
         </div>
@@ -273,7 +362,7 @@
         <a class="btn btn-default" href="/page2" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 3 of 39</span>
+  <span class="page_number ">Page: 3 of 40</span>
   
     <a class="btn btn-default" href="/page4" class="next">Older</a>
   
