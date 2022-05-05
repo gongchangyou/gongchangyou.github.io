@@ -7,7 +7,7 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>monitor</title>
+				<title>mqtt</title>
 				<description>&lt;h1 id=&quot;mqtt&quot;&gt;MQTT&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/yourstars/p/15247707.html&quot;&gt;https://www.cnblogs.com/yourstars/p/15247707.html&lt;/a&gt;&lt;/p&gt;
