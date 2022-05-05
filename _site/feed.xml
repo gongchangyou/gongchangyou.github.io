@@ -21,13 +21,15 @@
 &lt;p&gt;默认账号：admin
 默认密码：public&lt;/p&gt;
 
-&lt;p&gt;qos: &lt;a href=&quot;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&quot;&gt;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;QOS:&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&quot;&gt;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/qq_24505127/article/details/101701011&quot;&gt;https://blog.csdn.net/qq_24505127/article/details/101701011&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/m0_50668851/article/details/112555171&quot;&gt;https://blog.csdn.net/m0_50668851/article/details/112555171&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;QOS :&lt;/p&gt;
+&lt;p&gt;原理 :&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -59,6 +61,18 @@
 &lt;p&gt;will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线&lt;/p&gt;
 
 &lt;p&gt;那么如何知道消费端是否掉线呢？ connectionLost 方法&lt;/p&gt;
+
+&lt;p&gt;延迟消息： &lt;a href=&quot;https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html&quot;&gt;https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;特定的topic格式：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$delayed/{DelayInterval}/{TopicName}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
+$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
+$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;java代码： &lt;a href=&quot;https://github.com/gongchangyou/mqtt&quot;&gt;https://github.com/gongchangyou/mqtt&lt;/a&gt;&lt;/p&gt;
 
