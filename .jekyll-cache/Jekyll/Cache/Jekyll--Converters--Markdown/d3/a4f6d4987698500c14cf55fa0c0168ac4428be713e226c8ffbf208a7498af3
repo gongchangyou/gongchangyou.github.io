@@ -1,8 +1,0 @@
-I"�<p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
-
-<p>通过map&lt;string, createClass&gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass</p>
-
-<p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
-
-<p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
-:ET

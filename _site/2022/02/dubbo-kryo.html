@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/MQTT">monitor</a></li>
+        
+          <li><a href="/2022/05/monitor">monitor</a></li>
+        
+          <li><a href="/2022/05/redis">redis</a></li>
+        
           <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
         
           <li><a href="/2022/04/xxl-job">xxl-job</a></li>
-        
-          <li><a href="/2022/04/dolphinscheduler">dolphinscheduler</a></li>
-        
-          <li><a href="/2022/04/MinIO_python">minio_python</a></li>
-        
-          <li><a href="/2022/04/python_user">user</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>31</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>34</sup></a></li>
 			
 		
 			
@@ -201,27 +201,32 @@
 
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> private final Holder&lt;Map&lt;String, Class&lt;?&gt;&gt;&gt; cachedClasses = new Holder&lt;&gt;();
 </code></pre></div>    </div>
-  </li>
-  <li>
-    <p>那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .  ExtensionLoader 会去扫描 文件夹 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
-kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
-kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
+    <ol>
+      <li>
+        <p>那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .   ExtensionLoader(dubbo自定义的) 会去扫描  文件“org.apache.dubbo.common.extension.LoadingStrategy”。</p>
+
+        <p>获取LoadingStrategy(DubboInternalLoadingStrategy(META-INF/dubbo/internal/), ServicesLoadingStrategy(META-INF/services/) ,DubboLoadingStrategy(META-INF/dubbo/) )的所有实现类的指定的文件夹下的文件，其中包括 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。</p>
+      </li>
+    </ol>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
+ kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
+ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
 </code></pre></div>    </div>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() {
-         cacheDefaultExtensionName();
-
-         Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
-
-         for (LoadingStrategy strategy : strategies) {
-             loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-             loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-         }
-
-         return extensionClasses;
-     }
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() {
+          cacheDefaultExtensionName();
+    
+          Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
+    
+          for (LoadingStrategy strategy : strategies) {
+              loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+              loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+          }
+    
+          return extensionClasses;
+      }
 </code></pre></div>    </div>
   </li>
   <li>

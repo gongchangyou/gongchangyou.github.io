@@ -49,30 +49,32 @@ dubbo.protocol.serialization=kryo
     private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
     ```
 
-4. 那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .  ExtensionLoader 会去扫描 文件夹 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。
+    1. 那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .   ExtensionLoader(dubbo自定义的) 会去扫描  文件“org.apache.dubbo.common.extension.LoadingStrategy”。
 
-   ```
-   #文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
-   kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
-kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
-   ```
+       获取LoadingStrategy(DubboInternalLoadingStrategy(META-INF/dubbo/internal/), ServicesLoadingStrategy(META-INF/services/) ,DubboLoadingStrategy(META-INF/dubbo/) )的所有实现类的指定的文件夹下的文件，其中包括 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。
 
     ```
-    private Map<String, Class<?>> loadExtensionClasses() {
-            cacheDefaultExtensionName();
-
-            Map<String, Class<?>> extensionClasses = new HashMap<>();
-
-            for (LoadingStrategy strategy : strategies) {
-                loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-                loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-            }
-
-            return extensionClasses;
-        }
+    #文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
+    kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
+    kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
     ```
 
-5. 最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好
+     ```
+     private Map<String, Class<?>> loadExtensionClasses() {
+             cacheDefaultExtensionName();
+    
+             Map<String, Class<?>> extensionClasses = new HashMap<>();
+    
+             for (LoadingStrategy strategy : strategies) {
+                 loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+                 loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+             }
+    
+             return extensionClasses;
+         }
+     ```
+
+4. 最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好
 
 ![set class]({{ site.baseurl}}/images/202202/1644917724845.jpg){: width="1000" }
 

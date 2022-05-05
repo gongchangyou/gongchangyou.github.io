@@ -7,6 +7,102 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>monitor</title>
+				<description>&lt;h1 id=&quot;mqtt&quot;&gt;MQTT&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/yourstars/p/15247707.html&quot;&gt;https://www.cnblogs.com/yourstars/p/15247707.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull emqx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;默认账号：admin
+默认密码：public&lt;/p&gt;
+
+&lt;p&gt;qos: &lt;a href=&quot;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&quot;&gt;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/qq_24505127/article/details/101701011&quot;&gt;https://blog.csdn.net/qq_24505127/article/details/101701011&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/m0_50668851/article/details/112555171&quot;&gt;https://blog.csdn.net/m0_50668851/article/details/112555171&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;QOS :&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;QOS&lt;/th&gt;
+      &lt;th&gt;SAVE MESSAGE&lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;broker&lt;/td&gt;
+      &lt;td&gt;at most once&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;publisher  broker&lt;/td&gt;
+      &lt;td&gt;at least once&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;publisher broker subscriber&lt;/td&gt;
+      &lt;td&gt;exactly once&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线&lt;/p&gt;
+
+&lt;p&gt;那么如何知道消费端是否掉线呢？ connectionLost 方法&lt;/p&gt;
+
+&lt;p&gt;java代码： &lt;a href=&quot;https://github.com/gongchangyou/mqtt&quot;&gt;https://github.com/gongchangyou/mqtt&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 05 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/MQTT</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/MQTT</guid>
+			</item>
+		
+			<item>
+				<title>monitor</title>
+				<description>&lt;h1 id=&quot;业务监控&quot;&gt;业务监控&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.51cto.com/jackl/2797593&quot;&gt;https://blog.51cto.com/jackl/2797593&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Statsd + Graphite  +  Grafana&lt;/p&gt;
+
+&lt;p&gt;数据收集，上报 ,  展示, 推荐UDP连接&lt;/p&gt;
+
+&lt;p&gt;做的好还可以有报警（手机锁屏推送 + 邮件提醒）&lt;/p&gt;
+</description>
+				<pubDate>Wed, 04 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/monitor</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/monitor</guid>
+			</item>
+		
+			<item>
+				<title>redis</title>
+				<description>&lt;h1 id=&quot;docker-redis&quot;&gt;Docker redis&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.runoob.com/docker/docker-install-redis.html&quot;&gt;https://www.runoob.com/docker/docker-install-redis.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;lpush lpop 栈&lt;/p&gt;
+
+&lt;p&gt;lpush rpop 队列&lt;/p&gt;
+
+&lt;p&gt;lpush brpop 消息队列 （可以设置timeout. 并阻塞)&lt;/p&gt;
+</description>
+				<pubDate>Mon, 02 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/redis</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/redis</guid>
+			</item>
+		
+			<item>
 				<title>job</title>
 				<description>&lt;h1 id=&quot;任务调度系统比对&quot;&gt;任务调度系统比对&lt;/h1&gt;
 
@@ -88,6 +184,7 @@
 &lt;p&gt;ScriptUtil ，在worker的服务器上执行命令&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG123.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
 </description>
 				<pubDate>Mon, 25 Apr 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/04/xxl-job</link>
@@ -224,193 +321,6 @@ conda activate ancillary
 				<pubDate>Fri, 22 Apr 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/04/MinIO_policy</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/04/MinIO_policy</guid>
-			</item>
-		
-			<item>
-				<title>matomo</title>
-				<description>&lt;h1 id=&quot;matomo-archive&quot;&gt;Matomo archive&lt;/h1&gt;
-
-&lt;p&gt;研究下这个档案缓存 900s是如何生效的&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG114.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;namespace Piwik\Plugins\Actions; API.getDownloads&lt;/p&gt;
-
-&lt;p&gt;这里根据archive返回数据
-&lt;img src=&quot;/images/202204/WechatIMG113.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;$minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
-&lt;br /&gt;
-ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG112.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果archive失效 ，则新增
-&lt;img src=&quot;/images/202204/WechatIMG116.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;matomo_archive_blob_2022_04 中的就是对应的二进制缓存
-&lt;img src=&quot;/images/202204/WechatIMG117.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 21 Apr 2022 17:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/matomo_archive</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/matomo_archive</guid>
-			</item>
-		
-			<item>
-				<title>xdebug</title>
-				<description>&lt;h1 id=&quot;xdebug&quot;&gt;Xdebug&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://xdebug.org/&quot;&gt;http://xdebug.org/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;因为最近想看看matomo 源码，里面php的调用比较深，直接看代码不是很直观，所以需要有个工具debug&lt;/p&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://cloud.tencent.com/developer/article/1591505&quot;&gt;https://cloud.tencent.com/developer/article/1591505&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.yisu.com/zixun/376908.html&quot;&gt;https://www.yisu.com/zixun/376908.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;容器内部操作&quot;&gt;容器内部操作&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在容器内部安装xdebug&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pecl install xdebug
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;修改php.ini&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20200930/xdebug.so
-   
-   
-#xdebug.remote_enable=1
-#xdebug.remote_host=192.168.1.2
-#xdebug.remote_port=9000
-#xdebug.idekey=PHPSTORM
-   
-   
-xdebug.mode=debug
-xdebug.client_host=192.168.1.2
-xdebug.client_port=9000
-xdebug.collect_return=On
-xdebug.idekey=&quot;PHPSTORM&quot;
-xdebug.log=&quot;/tmp/xdebug.log&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;重启docker 让php配置生效&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;phpstorm-的配置-操作&quot;&gt;Phpstorm 的配置 操作&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;选择你的php interpreter (这步好像不需要)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG107.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG108.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG109.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;配置xdebug port&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG110.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;配置 DBGp Proxy （这步好像也不需要)&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG104.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;配置server  注意右边的是容器内的路径&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG2424.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;调试&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;按照如下步骤&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG105.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;点击validate&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG2417.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;配置好path和url&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG2419.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;点击Validate ，看到xdebug安装好了就行了，如果有异常再针对解决&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG2421.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;chrome-插件安装&quot;&gt;chrome 插件安装&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;amp;utm_medium=link&amp;amp;utm_campaign=PS&amp;amp;utm_content=2021.2&quot;&gt;https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;amp;utm_medium=link&amp;amp;utm_campaign=PS&amp;amp;utm_content=2021.2&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;加断点试试成功&quot;&gt;加断点试试,成功!&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202204/WechatIMG2427.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;以下不用看&quot;&gt;以下不用看&lt;/h3&gt;
-
-&lt;p&gt;安装步骤 : &lt;a href=&quot;http://xdebug.org/wizard&quot;&gt;http://xdebug.org/wizard&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;因为我是用docker启动的matomo，所以需要进到docker容器中安装xdebug&lt;/p&gt;
-
-&lt;p&gt;问题1： 直接卡在第二步，apt-get install php-dev 找不到package&lt;/p&gt;
-
-&lt;p&gt;推测是source 不对， 疯狂找源.&lt;/p&gt;
-
-&lt;p&gt;看报错应该是 php-dev这个包过期了&lt;/p&gt;
-
-</description>
-				<pubDate>Thu, 21 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/xdebug</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/xdebug</guid>
-			</item>
-		
-			<item>
-				<title>email</title>
-				<description>&lt;h1 id=&quot;java-发送email&quot;&gt;java 发送email&lt;/h1&gt;
-
-&lt;p&gt;参考文章:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.runoob.com/java/java-sending-email.html&quot;&gt;https://www.runoob.com/java/java-sending-email.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- https://mvnrepository.com/artifact/javax.mail/mail --&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;javax.mail&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;mail&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.4.7&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  // 设置邮件服务器
-        properties.setProperty(&quot;mail.smtp.host&quot;, &quot;your.mail.server&quot;)
-        properties.setProperty(&quot;mail.smtp.port&quot;, &quot;your.port&quot;)
-        properties.setProperty(&quot;mail.smtp.auth&quot;, &quot;true&quot;)
-        // 获取默认session对象
-        val session = Session.getInstance(properties, object: Authenticator() {
-            override fun getPasswordAuthentication(): PasswordAuthentication {
-                return PasswordAuthentication(&quot;username&quot;, &quot;password&quot;)
-            }
-        })
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Thu, 21 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/email</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/email</guid>
 			</item>
 		
 	</channel>

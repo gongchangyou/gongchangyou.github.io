@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/MQTT">monitor</a></li>
+        
+          <li><a href="/2022/05/monitor">monitor</a></li>
+        
+          <li><a href="/2022/05/redis">redis</a></li>
+        
           <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
         
           <li><a href="/2022/04/xxl-job">xxl-job</a></li>
-        
-          <li><a href="/2022/04/dolphinscheduler">dolphinscheduler</a></li>
-        
-          <li><a href="/2022/04/MinIO_python">minio_python</a></li>
-        
-          <li><a href="/2022/04/python_user">user</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>31</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>34</sup></a></li>
 			
 		
 			
@@ -167,12 +167,73 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
+        <h1><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">Jul 7, 2016 - sed替换命令</a></h1>
         
         <div class="content">
-            <p>Replica</p>
+            <p><a herf="http://my.oschina.net/shelllife/blog/118337"> http://my.oschina.net/shelllife/blog/118337</a></p>
 
-<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
+<p>下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。</p>
+
+<p>sed ‘:label;N;s/\n/:/;b label’ filename</p>
+
+<p>sed ‘:label;N;s/\n/:/;t label’ filename</p>
+
+<p>上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：</p>
+
+<p>:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令</p>
+
+<p>N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见</p>
+
+<p>s/\n/:/;   s是sed的替换命令，将换行符替换为冒号</p>
+
+<p>b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处</p>
+
+<p>标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘:x;N;s/\n/,/;b x’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b,c,d</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘N;s/\n/,/’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b</p>
+
+<p>c,d</p>
+
+<p><a herf="http://blog.chinaunix.net/uid-26150691-id-3054317.html">sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html</a></p>
+
+<p><a herf="https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc"> sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc</a></p>
+
+<p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在ssh之前先整理好参数 只要在ssh中 '${ESCAPE_PATH}'即可
+SCRIPT_DIR=/var/home/aiming/world_all/bin/
+ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed 's/\//\\\//g')
+echo ${ESCAPE_PATH}
+ssh aiming@lfs-cn-manage "
+cd ${SCRIPT_DIR}
+echo '${PUSH_CONTENT}' &gt; ${SCRIPT_DIR}tmp
+
+./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
+"
+#'\/var\/home\/aiming\/world_all\/bin\/tmp'
+</code></pre></div></div>
 
 
         </div>
@@ -181,21 +242,20 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/lambda-%E6%8D%95%E8%8E%B7">Jun 6, 2016 - lambda捕获</a></h1>
+        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
         
         <div class="content">
-            <p>int x = 1, y=2;</p>
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
+        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
+    &lt;activity-alias
+        android:name=".wxapi.WXEntryActivity"
+        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
+        android:exported="true" /&gt;
+</code></pre></div></div>
 
-<p>auto z = [x,y]{return x+ y;};</p>
+<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
 
-<p>//auto z = [x,&amp;y]{return x+ y;}; 引用就是运行时，值就是编译时</p>
-
-<p>x= 3, y = 4;</p>
-
-<p>cout « z() « endl;</p>
-
-<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
-
+<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
 
         </div>
     </div>
@@ -203,13 +263,24 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
+        <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
         
         <div class="content">
-            <p>安装 创建 基本命令</p>
+            <p>打开Terminal，进入到build/Debug-iphoneos</p>
 
-<p><a href="http://www.cnblogs.com/ifantastic/p/4090726.html">http://www.cnblogs.com/ifantastic/p/4090726.html</a></p>
+<p>使用命令:</p>
 
+<p>$atos -arch armv7 -o XXX.app/XXX 0xabcdef</p>
+
+<p>XXX是你的App名字，用需要解析的地址替换上面的0xabcdef</p>
+
+<p>armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386</p>
+
+<p>=====================</p>
+
+<p>上传ipa:</p>
+
+<p>利用mac自带软件 Application Loader上传ipa</p>
 
         </div>
     </div>
@@ -222,7 +293,7 @@
         <a class="btn btn-default" href="/page27" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 28 of 40</span>
+  <span class="page_number ">Page: 28 of 41</span>
   
     <a class="btn btn-default" href="/page29" class="next">Older</a>
   
