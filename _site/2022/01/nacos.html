@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/gateway">Gateway</a></li>
+        
+          <li><a href="/2022/05/SEATA">Seata</a></li>
+        
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
           <li><a href="/2022/05/monitor">monitor</a></li>
         
           <li><a href="/2022/05/redis">redis</a></li>
-        
-          <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
-        
-          <li><a href="/2022/04/xxl-job">xxl-job</a></li>
         
     </ul>
 </div>
@@ -183,6 +183,7 @@
   <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
     <ol>
       <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
+      <li>或者直接看日志 logs/start.out 。里面有启动命令，再不行就自己手动 nohup java … &amp;</li>
     </ol>
   </li>
   <li>http://127.0.0.1:8848/nacos/</li>

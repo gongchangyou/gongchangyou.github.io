@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/gateway">Gateway</a></li>
+        
+          <li><a href="/2022/05/SEATA">Seata</a></li>
+        
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
           <li><a href="/2022/05/monitor">monitor</a></li>
         
           <li><a href="/2022/05/redis">redis</a></li>
-        
-          <li><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">job</a></li>
-        
-          <li><a href="/2022/04/xxl-job">xxl-job</a></li>
         
     </ul>
 </div>
@@ -167,55 +167,87 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/04/xxl-job">Apr 25, 2022 - xxl-job</a></h1>
+        
+        <div class="content">
+            <h1 id="xxl-job">Xxl-job</h1>
+
+<p>github : <a href="https://github.com/xuxueli/xxl-job">https://github.com/xuxueli/xxl-job</a></p>
+
+<p>quick start: <a href="https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0">https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0</a></p>
+
+<p>在 ScriptJobHandler 中</p>
+
+<p><img src="/images/202204/WechatIMG122.png" alt="" width="800" /></p>
+
+<p>ScriptUtil ，在worker的服务器上执行命令</p>
+
+<p><img src="/images/202204/WechatIMG123.png" alt="" width="800" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/dolphinscheduler">Apr 25, 2022 - dolphinscheduler</a></h1>
+        
+        <div class="content">
+            <h1 id="dolphinscheduler">Dolphinscheduler</h1>
+
+<p>因为想学习下 如何绑定web用户 和 linux用户</p>
+
+<p>我们可以学习下业内主流任务调度开源系统  <a href="https://github.com/apache/dolphinscheduler">https://github.com/apache/dolphinscheduler</a></p>
+
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/start/quick-start.html">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/start/quick-start.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull dolphinscheduler.docker.scarf.sh/apache/dolphinscheduler
+</code></pre></div></div>
+
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/task/shell.html">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/task/shell.html</a></p>
+
+<p>”worker 执行该任务的时候，会生成一个临时shell脚本， 并使用与租户同名的 linux 用户执行这个脚本。“</p>
+
+<p>“如果Worker所在节点没有这个用户，Worker会在执行任务时创建这个用户。”</p>
+
+<p>按照这个说法，Dolphinscheduler权限很大，都可以创建用户了。</p>
+
+<p>https://dolphinscheduler.apache.org/zh-cn/docs/1.3.1/user_doc/cluster-deployment.html</p>
+
+<ul>
+  <li>因为是以 sudo -u {linux-user} 切换不同linux用户的方式来实现多租户运行作业，所以部署用户需要有 sudo 权限，而且是免密的。</li>
+</ul>
+
+<font color="red">所以没有黑科技，要么就是有root权限，要么用user 账号密码登录worker服务器</font>
+
+<p>在这个循环中，从queue里不停的获取task， 并交给taskExecuteThread去run</p>
+
+<p><img src="/images/202204/WechatIMG120.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG119.png" alt="" width="800" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TaskExecuteThread.run
+TaskExecuteThread.task.handle()
+ShellTask.handle()
+AbstractCommandExecutor.run
+AbstractCommandExecutor.buildProcess 在这里面会切换用户执行cmd sudo -s username cmd
+</code></pre></div></div>
+
+<p>FAQ :  <a href="https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md">https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/04/MinIO_python">Apr 24, 2022 - minio_python</a></h1>
         
         <div class="content">
             <h1 id="minio-python">MinIO-python</h1>
 
 <p>python client : <a href="http://docs.minio.org.cn/docs/master/python-client-api-reference">http://docs.minio.org.cn/docs/master/python-client-api-reference</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/python_user">Apr 24, 2022 - user</a></h1>
-        
-        <div class="content">
-            <h1 id="python-user">python-User</h1>
-
-<p>获取当前用户</p>
-
-<p>参考文章: <a href="https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/">https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/conda">Apr 23, 2022 - conda</a></h1>
-        
-        <div class="content">
-            <h1 id="conda">Conda</h1>
-
-<p>是个python虚拟环境</p>
-
-<p>参考文章: <a href="https://blog.csdn.net/coder_oldgeek/article/details/122239755">https://blog.csdn.net/coder_oldgeek/article/details/122239755</a></p>
-
-<p><a href="https://zhuanlan.zhihu.com/p/64100305">https://zhuanlan.zhihu.com/p/64100305</a></p>
-
-<p>常用命令：</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create --name ancillary python=3.7
-
-conda env list
-
-conda activate ancillary
-</code></pre></div></div>
 
 
         </div>
@@ -229,7 +261,7 @@ conda activate ancillary
         <a class="btn btn-default" href="/page2" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 3 of 41</span>
+  <span class="page_number ">Page: 3 of 42</span>
   
     <a class="btn btn-default" href="/page4" class="next">Older</a>
   
