@@ -7,7 +7,7 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>Gateway</title>
+				<title>Seata</title>
 				<description>&lt;p&gt;layout: post
 title: “seata”
 date: 2022-05-06 10:25:06 +0800
@@ -24,44 +24,34 @@ tag: [java]&lt;/p&gt;
 
 </description>
 				<pubDate>Fri, 06 May 2022 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/gateway</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/gateway</guid>
+				<link>http://localhost:4000/2022/05/seata</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/seata</guid>
 			</item>
 		
 			<item>
-				<title>Seata</title>
+				<title>Lock</title>
 				<description>&lt;p&gt;layout: post
-title: “gateway”
+title: “lock”
 date: 2022-05-06 10:25:06 +0800
 comments: true
 category: java
 tag: [java]&lt;/p&gt;
 
-&lt;h1 id=&quot;gateway-mono-flux&quot;&gt;Gateway Mono Flux&lt;/h1&gt;
+&lt;h1 id=&quot;lock&quot;&gt;Lock&lt;/h1&gt;
 
-&lt;p&gt;参考文章: &lt;a href=&quot;https://segmentfault.com/a/1190000024499748&quot;&gt;https://segmentfault.com/a/1190000024499748&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/pmc0_0/article/details/121061692&quot;&gt;https://blog.csdn.net/pmc0_0/article/details/121061692&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/littleatp/p/11515458.html&quot;&gt;https://www.cnblogs.com/littleatp/p/11515458.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/202205/912e39d231b1440aa72b1529c61e7cf2.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;冷流（从头开始消费） 和 热流(从offset处开始消费)  &lt;a href=&quot;https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b&quot;&gt;https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;重量级锁 ：借助操作系统的monitor&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/&quot;&gt;https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址&lt;/p&gt;
 
-&lt;p&gt;注意：如果热流的上个subscribe已经消费结束了，则下一个subscribe会从头开始，而不是不消费.&lt;/p&gt;
-
-&lt;p&gt;响应式编程&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;响应流必须是无阻塞的。&lt;/li&gt;
-  &lt;li&gt;响应流必须是一个数据流。&lt;/li&gt;
-  &lt;li&gt;它必须可以异步执行。&lt;/li&gt;
-  &lt;li&gt;并且它也应该能够处理背压。&lt;/li&gt;
-&lt;/ul&gt;
-
+&lt;p&gt;偏向锁:  在 mark word中 cas记录 当前线程ID&lt;/p&gt;
 </description>
 				<pubDate>Fri, 06 May 2022 00:00:00 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/SEATA</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/SEATA</guid>
+				<link>http://localhost:4000/2022/05/lock</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/lock</guid>
 			</item>
 		
 			<item>

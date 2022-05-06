@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,10 +166,41 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F">Nov 8, 2013 - cocos骨骼动画加速渲染</a></h1>
+                <h1><a href="/2013/08/c++-call-oc">Aug 13, 2013 - c++调用oc</a></h1>
             
             <div class="post-content">
-            <p><a href="http://www.cnblogs.com/mrblue/p/3442709.html">http://www.cnblogs.com/mrblue/p/3442709.html</a></p>
+            <p>C++代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
+
+<p>OC代码</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
+
 
             </div>
             
@@ -182,10 +213,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2013/08/git-command" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6" class="previous">Older Post</a>
               
 </div>
 
@@ -199,7 +228,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-11-cocos-e9-aa-a8-e9-aa-bc-e5-8a-a8-e7-94-bb-e5-8a-a0-e9-80-9f';
+        this.page.identifier = '2013-08-c-call-oc';
     };
 
    (function() {

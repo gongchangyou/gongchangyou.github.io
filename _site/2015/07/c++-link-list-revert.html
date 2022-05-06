@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,12 +166,41 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE">Apr 18, 2016 - VsVim快捷键</a></h1>
+                <h1><a href="/2015/07/c++-link-list-revert">Jul 31, 2015 - c++链表翻转</a></h1>
             
             <div class="post-content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="nf">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="n">random_access_iterator_tag</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="o">-</span><span class="err">–</span><span class="n">__last</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
+		<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
+		<span class="o">--</span><span class="n">__last</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ListNode* ReverseList(ListNode* pHead) {
+        if(pHead==nullptr)
+            return nullptr;
+        ListNode* temp=nullptr;
+        ListNode* cur=pHead;
+        ListNode* node=nullptr;
+        while(cur!=nullptr)
+        {
+            node=cur-&gt;next;
+            cur-&gt;next=temp;
+            temp=cur;
+            cur=node; 
+        }
+        return temp;
+    }
+
+</code></pre></div></div>
 
             </div>
             
@@ -184,10 +213,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/05/iOS-mobileProvision" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2015/11/c++-reflect" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2016/03/c++lamda%E5%87%BD%E6%95%B0" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/07/c++" class="previous">Older Post</a>
               
 </div>
 
@@ -201,7 +230,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-04-vsvim-e5-bf-ab-e6-8d-b7-e9-94-ae';
+        this.page.identifier = '2015-07-c-link-list-revert';
     };
 
    (function() {

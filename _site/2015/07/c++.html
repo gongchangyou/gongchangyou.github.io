@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,54 +166,28 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/11/c++%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6">Nov 8, 2013 - c++读写文件</a></h1>
+                <h1><a href="/2015/07/c++">Jul 20, 2015 - c++ 宏中 “##”的意义</a></h1>
             
             <div class="post-content">
-            <p>C++代码</p>
+            <p>字符串连接符</p>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
-
-<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
-
-<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
-
-<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
-
-<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
-
-<span class="c1">//std::string fileContent = std::string("filecontent");</span>
-
-<span class="c1">//ofile &lt;&lt; fileContent;</span>
-
-<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
-
-<p><span style="color: #ff0000;">
-注意 ofstream是写入模式，文件中原有的内容会被清空。
-ifstream ifile；是读取模式,
-</span></p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="kt">bool</span> <span class="nf">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
-<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
-
-<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+	<span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">string</span> <span class="n">boolean_</span> <span class="o">=</span> <span class="s">"boolean_"</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">boolean_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">){</span>
+<span class="cp">#define INIT(p, v) case p##type: result = v; break
+</span>	<span class="n">INIT</span><span class="p">(</span><span class="n">boolean_</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+	<span class="cp">#undef INIT
+</span><span class="nl">default:</span> <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
 
+<p>因为 type= 1 = “boolean_” + “type” . 所以 result = 2;</p>
 
             </div>
             
@@ -226,10 +200,10 @@ ifstream ifile；是读取模式,
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/11/cocos%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E5%8A%A0%E9%80%9F" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2015/07/c++-link-list-revert" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2013/09/journey_day6" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/06/c++-str-replace" class="previous">Older Post</a>
               
 </div>
 
@@ -243,7 +217,7 @@ ifstream ifile；是读取模式,
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-11-c-e8-af-bb-e5-86-99-e6-96-87-e4-bb-b6';
+        this.page.identifier = '2015-07-c';
     };
 
    (function() {

@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -192,7 +192,7 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
+        <h1><a href="/2015/11/c++-reflect">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
         
         <div class="content">
             <p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
@@ -203,30 +203,48 @@
 
 <p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
 
+
         </div>
     </div>
 </div>
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC">Jul 31, 2015 - c++链表翻转</a></h1>
+        <h1><a href="/2015/07/c++-link-list-revert">Jul 31, 2015 - c++链表翻转</a></h1>
         
         <div class="content">
-            <p>字符串连接符</p>
-
+            
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
 <span class="kt">void</span> <span class="nf">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="n">random_access_iterator_tag</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
 		<span class="k">return</span><span class="p">;</span>
-	<span class="o">-</span><span class="err">\–</span><span class="n">__last</span><span class="p">;</span>
+	<span class="o">-</span><span class="err">–</span><span class="n">__last</span><span class="p">;</span>
 	<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
 		<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
-		<span class="o">-</span><span class="err">\</span><span class="o">-</span><span class="n">__last</span><span class="p">;</span>
+		<span class="o">--</span><span class="n">__last</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ListNode* ReverseList(ListNode* pHead) {
+        if(pHead==nullptr)
+            return nullptr;
+        ListNode* temp=nullptr;
+        ListNode* cur=pHead;
+        ListNode* node=nullptr;
+        while(cur!=nullptr)
+        {
+            node=cur-&gt;next;
+            cur-&gt;next=temp;
+            temp=cur;
+            cur=node; 
+        }
+        return temp;
+    }
+
+</code></pre></div></div>
 
         </div>
     </div>

@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,14 +166,17 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2016/03/c++lamda%E5%87%BD%E6%95%B0">Mar 24, 2016 - c++ lamda函数</a></h1>
+                <h1><a href="/2015/11/c++-reflect">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
             
             <div class="post-content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
+            <p><a href="http://blog.csdn.net/cen616899547/article/details/9317323">http://blog.csdn.net/cen616899547/article/details/9317323</a></p>
+
+<p>通过map&lt;string, createClass&gt; m_classMap ;   来管理className到 class构造函数的映射，每个class要在factory 的单例中registerClass</p>
+
+<p>成员变量也是如此，利用map&lt;string, setValue&gt; m_propertyMap ; 来保存变量名 和set方法的映射</p>
+
+<p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
+
 
             </div>
             
@@ -186,10 +189,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2016/04/VsVim%E5%BF%AB%E6%8D%B7%E9%94%AE" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2015/12/born" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/07/c++-link-list-revert" class="previous">Older Post</a>
               
 </div>
 
@@ -203,7 +206,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2016-03-c-lamda-e5-87-bd-e6-95-b0';
+        this.page.identifier = '2015-11-c-reflect';
     };
 
    (function() {

@@ -11,7 +11,7 @@ int x = 1, y=2;
 
 auto z = [x,y]{return x+ y;};
 
-//auto z = [x,&y]{return x+ y;}; 引用就是运行时，值就是编译时
+//auto z = [x,&y]{return x+ y;}; //引用就是运行时，值就是编译时
 
 x= 3, y = 4;
 

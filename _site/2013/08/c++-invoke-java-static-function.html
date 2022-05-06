@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,40 +166,55 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/08/c++%E8%B0%83%E7%94%A8oc">Aug 13, 2013 - c++调用oc</a></h1>
+                <h1><a href="/2013/08/c++-invoke-java-static-function">Aug 30, 2013 - c++新建thread 调用java静态方法</a></h1>
             
             <div class="post-content">
-            <p>C++代码</p>
+            <p>首先需要3个静态变量</p>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
- <span class="c1">// MKStoreForCpp.h</span>
- <span class="c1">//</span>
-<span class="cp">#ifndef SGR_MKStoreForCpp_h
-</span> <span class="cp">#define SGR_MKStoreForCpp_h
-</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
-<span class="nl">public:</span>
- <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
- <span class="p">{</span>
- <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nl">public:</span>
- <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
-<span class="p">;</span>
-<span class="cp">#endif</span></code></pre></figure>
+<p>static JavaVM *gs_jvm=NULL;//这个是JavaVM 两个线程共享这个变量</p>
 
-<p>OC代码</p>
+<p>static jobject gs_createFolder = NULL;//通过 gs_createFolder = env-&gt;NewGlobalRef(ret);可以做到让两个线程共享一个jobject</p>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
- <span class="c1">// MKStoreForCpp.mm</span>
- <span class="c1">//</span>
-<span class="cp">#include "MKStoreForCpp.h"
-</span> <span class="cp">#include "MKStoreManager.h"
-</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
- <span class="p">{</span>
- <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
- <span class="p">}</span>
- </code></pre></figure>
+<p>static jmethodID gs_methodId = NULL;</p>
+
+<p>在新建thread之前做以下事情：</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">gs_jvm</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getJavaVM</span><span class="p">();</span>
+
+<span class="n">CCLog</span><span class="p">(</span><span class="s">"save javavm after"</span><span class="p">);</span>
+
+<span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">;</span>
+
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="n">AttachCurrentThread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">env</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">jclass</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">FindClass</span><span class="p">(</span><span class="s">"com/gumichina/lib/Storage"</span><span class="p">);</span>
+
+<span class="n">gs_createFolder</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">NewGlobalRef</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+
+<span class="n">gs_methodId</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">GetStaticMethodID</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="s">"createExternalFolder"</span><span class="p">,</span> <span class="s">"(Ljava/lang/String;)Z"</span><span class="p">);</span>
+
+<span class="c1">//接下来就开你的thread吧：</span>
+<span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s_zipThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">unzipFileOnThread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span></code></pre></figure>
+
+<p>在thread中这样获取:</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="nc">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="o">;</span>
+<span class="n">gs_jvm</span><span class="o">-&gt;</span><span class="nc">AttachCurrentThread</span><span class="o">(&amp;</span><span class="n">env</span><span class="o">,</span> <span class="no">NULL</span><span class="o">);</span><span class="c1">//这里就获取了JavaVM的env</span>
+<span class="n">jclass</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">GetObjectClass</span><span class="o">(</span><span class="n">gs_createFolder</span><span class="o">);</span><span class="c1">//把class巧妙的拿过来了</span>
+
+<span class="c1">//调用的时候</span>
+
+<span class="nl">std:</span><span class="o">:</span><span class="n">string</span> <span class="n">tempPath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">substr</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">path</span><span class="o">.</span><span class="na">rfind</span><span class="o">(</span><span class="s">"/"</span><span class="o">));</span>
+
+<span class="n">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+<span class="n">jstring</span> <span class="nc">StringArg1</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">NewStringUTF</span><span class="o">(</span><span class="n">tempPath</span><span class="o">.</span><span class="na">c_str</span><span class="o">());</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">-&gt;</span><span class="nc">CallStaticBooleanMethod</span><span class="o">(</span><span class="n">cls</span><span class="o">,</span> <span class="n">gs_methodId</span><span class="o">,</span> <span class="nc">StringArg1</span><span class="o">);</span><span class="c1">//cls 和methodId 齐活了！</span>
+
+<span class="n">env</span><span class="o">-&gt;</span><span class="nc">DeleteLocalRef</span><span class="o">(</span><span class="nc">StringArg1</span><span class="o">);</span></code></pre></figure>
 
 
             </div>
@@ -213,8 +228,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/08/git-command" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2013/09/journey_day1" class="next">Newer Post</a>
               
+              
+                <a class="btn btn-default" href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC" class="previous">Older Post</a>
               
 </div>
 
@@ -228,7 +245,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-08-c-e8-b0-83-e7-94-a8oc';
+        this.page.identifier = '2013-08-c-invoke-java-static-function';
     };
 
    (function() {

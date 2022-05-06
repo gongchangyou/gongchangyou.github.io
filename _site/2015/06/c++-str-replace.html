@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,22 +166,36 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC">Jul 31, 2015 - c++链表翻转</a></h1>
+                <h1><a href="/2015/06/c++-str-replace">Jun 26, 2015 - c++ 字符串替换</a></h1>
             
             <div class="post-content">
-            <p>字符串连接符</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
-<span class="kt">void</span> <span class="nf">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="n">random_access_iterator_tag</span><span class="p">)</span>
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include&lt;string&gt;
+#include&lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="c1">//第一种替换字符串的方法用replace()</span>
+<span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
-		<span class="k">return</span><span class="p">;</span>
-	<span class="o">-</span><span class="err">\–</span><span class="n">__last</span><span class="p">;</span>
-	<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
-		<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
-		<span class="o">-</span><span class="err">\</span><span class="o">-</span><span class="n">__last</span><span class="p">;</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">//第二种替换字符串的方法用erase()和insert()</span>
+<span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
@@ -196,10 +210,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2015/11/c++%E5%8F%8D%E5%B0%84%E5%AE%9E%E7%8E%B0,%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2015/07/c++" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2015/06/c++-quicksort" class="previous">Older Post</a>
               
 </div>
 
@@ -213,7 +227,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2015-07-c-e9-93-be-e8-a1-a8-e7-bf-bb-e8-bd-ac';
+        this.page.identifier = '2015-06-c-str-replace';
     };
 
    (function() {

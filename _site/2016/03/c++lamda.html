@@ -74,9 +74,9 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/seata">Seata</a></li>
         
-          <li><a href="/2022/05/SEATA">Seata</a></li>
+          <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
         
@@ -166,26 +166,14 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2015/07/c++-%E5%AE%8F%E4%B8%AD-%E7%9A%84%E6%84%8F%E4%B9%89">Jul 20, 2015 - c++ 宏中 “##”的意义</a></h1>
+                <h1><a href="/2016/03/c++lamda">Mar 24, 2016 - c++ lamda函数</a></h1>
             
             <div class="post-content">
-            <p>字符串连接符</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-	<span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="n">string</span> <span class="n">boolean_</span> <span class="o">=</span> <span class="s">"boolean_"</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">int</span> <span class="n">boolean_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">){</span>
-<span class="cp">#define INIT(p, v) case p##type: result = v; break
-</span>	<span class="n">INIT</span><span class="p">(</span><span class="n">boolean_</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-	<span class="cp">#undef INIT
-</span><span class="nl">default:</span> <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
 
             </div>
             
@@ -198,10 +186,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2015/07/c++%E9%93%BE%E8%A1%A8%E7%BF%BB%E8%BD%AC" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2016/04/VsVim-shortcut-key" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2015/06/c++%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC" class="previous">Older Post</a>
               
 </div>
 
@@ -215,7 +203,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2015-07-c-e5-ae-8f-e4-b8-ad-e7-9a-84-e6-84-8f-e4-b9-89';
+        this.page.identifier = '2016-03-c-lamda';
     };
 
    (function() {
