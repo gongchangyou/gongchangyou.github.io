@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/c++">C++</a></li>
+        
+          <li><a href="/2022/05/gateway">Gateway</a></li>
+        
           <li><a href="/2022/05/seata">Seata</a></li>
         
           <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
-        
-          <li><a href="/2022/05/monitor">monitor</a></li>
-        
-          <li><a href="/2022/05/redis">redis</a></li>
         
     </ul>
 </div>
@@ -167,40 +167,57 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
+        
+        <div class="content">
+            <p>安装 创建 基本命令</p>
+
+<p><a href="http://www.cnblogs.com/ifantastic/p/4090726.html">http://www.cnblogs.com/ifantastic/p/4090726.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
+        
+        <div class="content">
+            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
+
+<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
+
+<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
+
+<p>上传到appStore的时候一直报这个错：Error ITMS-90034:”Missing or invalid signature. The bundle XXX at bundle path ‘Payload/XXX.app’ is not signed using  an Apple submission certificate.”</p>
+
+<p>解决方法:</p>
+
+<ol>
+  <li>
+    <p>查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为”使用系统默认”</p>
+
+    <p>查看你的distribution 的mobileProvision 是否用对，并且将你的distribution证书信任置为”使用系统默认”。//一般这样就ok了 亲测这个ok</p>
+  </li>
+</ol>
+
+<p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
+
+<p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/04/VsVim-shortcut-key">Apr 18, 2016 - VsVim快捷键</a></h1>
         
         <div class="content">
             <ul>
 <li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
 </ul>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/03/c++lamda">Mar 24, 2016 - c++ lamda函数</a></h1>
-        
-        <div class="content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
-        
-        <div class="content">
-            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
-
-<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
 
         </div>
     </div>
@@ -213,7 +230,7 @@
         <a class="btn btn-default" href="/page30" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 31 of 42</span>
+  <span class="page_number ">Page: 31 of 43</span>
   
     <a class="btn btn-default" href="/page32" class="next">Older</a>
   

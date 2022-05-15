@@ -8,7 +8,9 @@ tag: [java]
 ---
 
 # 下载 chrome-driver
-https://chromedriver.chromium.org/downloads
+[https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads)
+
+ChromeDriver 96.0.4664.45 对应 selenium-java版本 3.14.0 (这个版本比较稳定. 最新版本4.1.4 会class not found)
 
 ## 拷贝到 /usr/local/bin/ 并 chmod 777 
 
@@ -46,3 +48,42 @@ js.executeScript("window.open();");
 JavascriptExecutor js = (JavascriptExecutor) driver;
 js.executeScript("window.open(\"http://www.baidu.com\");");
 ```
+
+### 有时候会报 chromedriver 支持的chrome版本不匹配。安装和你本地chrome对应的 chromedriver即可 [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads)
+
+```
+2022-05-08 21:21:26.810 ERROR [http-nio-8081-exec-1] o.a.c.c.C.[.[localhost].[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 96
+Current browser version is 101.0.4951.54 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+```
+
+代码中设置
+```
+System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver_101");
+```
+
+
+
+Selector 选择器语法
+
+[https://blog.csdn.net/kuangjuelian229/article/details/87868816](https://blog.csdn.net/kuangjuelian229/article/details/87868816)
+
+
+
+tab的操作
+
+[https://www.browserstack.com/guide/handling-tabs-in-selenium](https://www.browserstack.com/guide/handling-tabs-in-selenium)
+
+
+
+
+
+
+
+阿里云可能需要安装一些依赖：
+
+```
+yum install libxcb
+
+yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+```
+

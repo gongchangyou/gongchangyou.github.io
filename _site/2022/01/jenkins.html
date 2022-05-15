@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/c++">C++</a></li>
+        
+          <li><a href="/2022/05/gateway">Gateway</a></li>
+        
           <li><a href="/2022/05/seata">Seata</a></li>
         
           <li><a href="/2022/05/lock">Lock</a></li>
         
           <li><a href="/2022/05/MQTT">mqtt</a></li>
-        
-          <li><a href="/2022/05/monitor">monitor</a></li>
-        
-          <li><a href="/2022/05/redis">redis</a></li>
         
     </ul>
 </div>
@@ -174,7 +174,7 @@
 <p><a href="https://www.jenkins.io/zh/doc/book/installing/">https://www.jenkins.io/zh/doc/book/installing/</a></p>
 
 <h2 id="记得把timezone设置成东8区">记得把timezone设置成东8区</h2>
-<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
+<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v /Users/gongchangyou/learn:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
 
 <p>docker ps</p>
 
