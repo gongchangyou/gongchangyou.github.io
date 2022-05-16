@@ -167,3 +167,31 @@ IDEA 开发maven plugin . 在command line这里无需写mvn
 
 ### 每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo
 
+
+
+
+
+问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错
+
+回答1：  添加如下配置
+
+```
+ <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-descriptor</id>
+                        <phase>process-classes</phase>
+                    </execution>
+                    <!-- if you want to generate help goal -->
+                    <execution>
+                        <id>help-goal</id>
+                        <goals>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+```

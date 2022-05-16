@@ -210,6 +210,29 @@
 
 &lt;h3 id=&quot;每次编辑mojo文件后需要mvn-install-再执行-mvn-testshowprojectinfo&quot;&gt;每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo&lt;/h3&gt;
 
+&lt;p&gt;问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错&lt;/p&gt;
+
+&lt;p&gt;回答1：  添加如下配置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;plugin&amp;gt;
+                &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
+                &amp;lt;artifactId&amp;gt;maven-plugin-plugin&amp;lt;/artifactId&amp;gt;
+                &amp;lt;version&amp;gt;3.6.0&amp;lt;/version&amp;gt;
+                &amp;lt;executions&amp;gt;
+                    &amp;lt;execution&amp;gt;
+                        &amp;lt;id&amp;gt;default-descriptor&amp;lt;/id&amp;gt;
+                        &amp;lt;phase&amp;gt;process-classes&amp;lt;/phase&amp;gt;
+                    &amp;lt;/execution&amp;gt;
+                    &amp;lt;!-- if you want to generate help goal --&amp;gt;
+                    &amp;lt;execution&amp;gt;
+                        &amp;lt;id&amp;gt;help-goal&amp;lt;/id&amp;gt;
+                        &amp;lt;goals&amp;gt;
+                            &amp;lt;goal&amp;gt;helpmojo&amp;lt;/goal&amp;gt;
+                        &amp;lt;/goals&amp;gt;
+                    &amp;lt;/execution&amp;gt;
+                &amp;lt;/executions&amp;gt;
+            &amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Sat, 14 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/maven_plugin</link>

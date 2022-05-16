@@ -321,6 +321,29 @@
 
 <h3 id="每次编辑mojo文件后需要mvn-install-再执行-mvn-testshowprojectinfo">每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo</h3>
 
+<p>问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错</p>
+
+<p>回答1：  添加如下配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-plugin-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.6.0&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;default-descriptor&lt;/id&gt;
+                        &lt;phase&gt;process-classes&lt;/phase&gt;
+                    &lt;/execution&gt;
+                    &lt;!-- if you want to generate help goal --&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;help-goal&lt;/id&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;helpmojo&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+</code></pre></div></div>
 
             </div>
             
