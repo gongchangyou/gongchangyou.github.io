@@ -154,3 +154,16 @@ public class MyMojo extends AbstractMojo {
    ```
 
    
+
+
+
+IDEA 开发maven plugin . 在command line这里无需写mvn
+
+![]({{ site.baseurl}}/images/202205/WechatIMG145.png){: width="800" }
+
+
+
+
+
+### 每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo
+
