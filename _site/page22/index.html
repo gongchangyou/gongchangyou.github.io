@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/c++">C++</a></li>
+          <li><a href="/2022/05/OWASP">java security scan</a></li>
         
-          <li><a href="/2022/05/gateway">Gateway</a></li>
+          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
         
-          <li><a href="/2022/05/seata">Seata</a></li>
+          <li><a href="/2022/05/c++">c++ starter</a></li>
         
-          <li><a href="/2022/05/lock">Lock</a></li>
+          <li><a href="/2022/05/gateway">gateway</a></li>
         
-          <li><a href="/2022/05/MQTT">mqtt</a></li>
+          <li><a href="/2022/05/seata">seata</a></li>
         
     </ul>
 </div>
@@ -90,7 +90,7 @@
 	<h1>标签</h1>
 		
 			
-				<li><a href="/tag/c++" title="c++">c++<sup>12</sup></a></li>
+				<li><a href="/tag/c++" title="c++">c++<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>34</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>39</sup></a></li>
 			
 		
 			
@@ -167,6 +167,67 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
+<p>两个方法</p>
+
+<ol>
+  <li>Nacos官方用nacos client + spring boot 模式</li>
+  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
+</ol>
+
+<p>注意：如果关闭应用的话，nacos中的配置还在</p>
+
+<p>application.properties没有拷贝到target文件夹的原因？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
+</code></pre></div></div>
+<p>改成 下面，或者直接这行删掉</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
+</code></pre></div></div>
+
+<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
+<ol>
+  <li>https://github.com/alibaba/nacos/releases</li>
+</ol>
+
+<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
+
+<ol>
+  <li>
+    <p>解压缩</p>
+  </li>
+  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
+    <ol>
+      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
+      <li>或者直接看日志 logs/start.out 。里面有启动命令，再不行就自己手动 nohup java … &amp;</li>
+    </ol>
+  </li>
+  <li>http://127.0.0.1:8848/nacos/</li>
+  <li>账号名密码是 <strong>nacos/nacos</strong></li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
         
         <div class="content">
@@ -176,97 +237,6 @@
 
 <p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/12/selenium-java">Dec 20, 2021 - java-selenium</a></h1>
-        
-        <div class="content">
-            <h1 id="下载-chrome-driver">下载 chrome-driver</h1>
-<p><a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></p>
-
-<p>ChromeDriver 96.0.4664.45 对应 selenium-java版本 3.14.0 (这个版本比较稳定. 最新版本4.1.4 会class not found)</p>
-
-<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
-
-<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
-MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
-
-<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
-
-<h1 id="添加依赖">添加依赖</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-   &lt;version&gt;3.14.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<h1 id="编写代码">编写代码</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
-        val driver = new ChromeDriver();
-        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
-        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
-        log.info("problemList={}", problemList);
-</code></pre></div></div>
-
-<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
-js.executeScript("window.open();");
-
-JavascriptExecutor js = (JavascriptExecutor) driver;
-js.executeScript("window.open(\"http://www.baidu.com\");");
-</code></pre></div></div>
-
-<h3 id="有时候会报-chromedriver-支持的chrome版本不匹配安装和你本地chrome对应的-chromedriver即可-httpschromedriverchromiumorgdownloads">有时候会报 chromedriver 支持的chrome版本不匹配。安装和你本地chrome对应的 chromedriver即可 <a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-05-08 21:21:26.810 ERROR [http-nio-8081-exec-1] o.a.c.c.C.[.[localhost].[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 96
-Current browser version is 101.0.4951.54 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
-</code></pre></div></div>
-
-<p>代码中设置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver_101");
-</code></pre></div></div>
-
-<p>Selector 选择器语法</p>
-
-<p><a href="https://blog.csdn.net/kuangjuelian229/article/details/87868816">https://blog.csdn.net/kuangjuelian229/article/details/87868816</a></p>
-
-<p>tab的操作</p>
-
-<p><a href="https://www.browserstack.com/guide/handling-tabs-in-selenium">https://www.browserstack.com/guide/handling-tabs-in-selenium</a></p>
-
-<p>阿里云可能需要安装一些依赖：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install libxcb
-
-yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
-        
-        <div class="content">
-            <h1 id="爷爷">爷爷</h1>
-
-<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
-
-<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
-
-<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
 
         </div>
     </div>
