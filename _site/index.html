@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/05/OWASP">java security scan</a></li>
+          <li><a href="/2022/05/swagger">swagger</a></li>
+        
+          <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
         
           <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
         
           <li><a href="/2022/05/c++">c++ starter</a></li>
         
           <li><a href="/2022/05/gateway">gateway</a></li>
-        
-          <li><a href="/2022/05/seata">seata</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>39</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
 			
 		
 			
@@ -167,7 +167,65 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/OWASP">May 15, 2022 - java security scan</a></h1>
+        <h1><a href="/2022/05/swagger">May 17, 2022 - swagger</a></h1>
+        
+        <div class="content">
+            <h1 id="swagger">swagger</h1>
+
+<p>官网： <a href="https://swagger.io/">https://swagger.io/</a></p>
+
+<p>参考文章: <a href="https://www.jianshu.com/p/088163459147">https://www.jianshu.com/p/088163459147</a></p>
+
+<p>项目地址:  <a href="https://github.com/gongchangyou/swagger">https://github.com/gongchangyou/swagger</a></p>
+
+<ol>
+  <li>
+    <p>添加依赖</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.spring4all&lt;/groupId&gt;
+            &lt;artifactId&gt;swagger-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置swagger</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
+@Profile({"dev","local"})
+@EnableSwagger2
+@EnableWebMvc
+public class SwaggerConfig {
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port</p>
+  </li>
+  <li>
+    <p>添加注解
+<img src="/images/202205/WechatIMG148.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>再次访问，这次说明文档都展示出来了。
+<img src="/images/202205/WechatIMG147.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+<p>问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误</p>
+
+<p>回答1: <a href="https://www.cnblogs.com/rainbow70626/p/15680184.html">https://www.cnblogs.com/rainbow70626/p/15680184.html</a> 添加注解 @EnableWebMvc</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/OWASP">May 15, 2022 - java项目 依赖检查</a></h1>
         
         <div class="content">
             <h1 id="owasp">OWASP</h1>
@@ -402,26 +460,10 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/c++">May 8, 2022 - c++ starter</a></h1>
-        
-        <div class="content">
-            <h1 id="c-入门">c++ 入门</h1>
-
-<p>参考文章: <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">https://www.runoob.com/cplusplus/cpp-tutorial.html</a></p>
-
-<p>vector 初始化: https://blog.csdn.net/veghlreywg/article/details/80400382</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 43</span>
+  <span class="page_number ">Page: 1 of 44</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   

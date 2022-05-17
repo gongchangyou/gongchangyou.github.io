@@ -7,7 +7,63 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>java security scan</title>
+				<title>swagger</title>
+				<description>&lt;h1 id=&quot;swagger&quot;&gt;swagger&lt;/h1&gt;
+
+&lt;p&gt;官网： &lt;a href=&quot;https://swagger.io/&quot;&gt;https://swagger.io/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://www.jianshu.com/p/088163459147&quot;&gt;https://www.jianshu.com/p/088163459147&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;项目地址:  &lt;a href=&quot;https://github.com/gongchangyou/swagger&quot;&gt;https://github.com/gongchangyou/swagger&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加依赖&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      &amp;lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.spring4all&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;swagger-spring-boot-starter&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.0.2.RELEASE&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置swagger&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+@Profile({&quot;dev&quot;,&quot;local&quot;})
+@EnableSwagger2
+@EnableWebMvc
+public class SwaggerConfig {
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;添加注解
+&lt;img src=&quot;/images/202205/WechatIMG148.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;再次访问，这次说明文档都展示出来了。
+&lt;img src=&quot;/images/202205/WechatIMG147.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误&lt;/p&gt;
+
+&lt;p&gt;回答1: &lt;a href=&quot;https://www.cnblogs.com/rainbow70626/p/15680184.html&quot;&gt;https://www.cnblogs.com/rainbow70626/p/15680184.html&lt;/a&gt; 添加注解 @EnableWebMvc&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 17 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/swagger</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/swagger</guid>
+			</item>
+		
+			<item>
+				<title>java项目 依赖检查</title>
 				<description>&lt;h1 id=&quot;owasp&quot;&gt;OWASP&lt;/h1&gt;
 
 &lt;p&gt;官网： &lt;a href=&quot;https://owasp.org/&quot;&gt;https://owasp.org/&lt;/a&gt;&lt;/p&gt;
@@ -425,73 +481,6 @@ $delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 h
 				<pubDate>Mon, 02 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/redis</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/redis</guid>
-			</item>
-		
-			<item>
-				<title>job</title>
-				<description>&lt;h1 id=&quot;任务调度系统比对&quot;&gt;任务调度系统比对&lt;/h1&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;开源框架&lt;/th&gt;
-      &lt;th&gt;开发语言&lt;/th&gt;
-      &lt;th&gt;任务类型&lt;/th&gt;
-      &lt;th&gt;⼯作流&lt;/th&gt;
-      &lt;th&gt;能否区分用户&lt;/th&gt;
-      &lt;th&gt;可视化&lt;/th&gt;
-      &lt;th&gt;API&lt;/th&gt;
-      &lt;th&gt;⾼可⽤&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Airflow&lt;/td&gt;
-      &lt;td&gt;python&lt;/td&gt;
-      &lt;td&gt;通过operator⾃定义，⼤数据组件及Shell，不⽀持Java&lt;/td&gt;
-      &lt;td&gt;DAG&lt;/td&gt;
-      &lt;td&gt;-&lt;/td&gt;
-      &lt;td&gt;⽀持&lt;/td&gt;
-      &lt;td&gt;不⽀持&lt;/td&gt;
-      &lt;td&gt;主从&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;XXL-JOB&lt;/td&gt;
-      &lt;td&gt;Java&lt;/td&gt;
-      &lt;td&gt;Java/Shell/Python/PHP&lt;/td&gt;
-      &lt;td&gt;不⽀持&lt;/td&gt;
-      &lt;td&gt;不能, 需要做些改造Runtime.getRuntime().exec()&lt;/td&gt;
-      &lt;td&gt;⽀持&lt;/td&gt;
-      &lt;td&gt;⽀持&lt;/td&gt;
-      &lt;td&gt;主从&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DolphinScheduler&lt;/td&gt;
-      &lt;td&gt;Java&lt;/td&gt;
-      &lt;td&gt;⼤数据组件及Shell等近20种&lt;/td&gt;
-      &lt;td&gt;DAG&lt;/td&gt;
-      &lt;td&gt;能，因为内部实现是 sudo -u username&lt;/td&gt;
-      &lt;td&gt;⽀持&lt;/td&gt;
-      &lt;td&gt;⽀持&lt;/td&gt;
-      &lt;td&gt;去中⼼&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Quartz&lt;/td&gt;
-      &lt;td&gt;Java&lt;/td&gt;
-      &lt;td&gt;Java&lt;/td&gt;
-      &lt;td&gt;不⽀持&lt;/td&gt;
-      &lt;td&gt;-&lt;/td&gt;
-      &lt;td&gt;-&lt;/td&gt;
-      &lt;td&gt;-&lt;/td&gt;
-      &lt;td&gt;-&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-</description>
-				<pubDate>Tue, 26 Apr 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9</guid>
 			</item>
 		
 	</channel>
