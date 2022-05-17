@@ -175,11 +175,11 @@
 
 <p><img src="/images/202205/912e39d231b1440aa72b1529c61e7cf2.png" alt="" width="800" /></p>
 
-<p>重量级锁 ：借助操作系统的monitor</p>
+<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
 
 <p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
 
-<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
+<p>重量级锁 ：借助操作系统的monitor</p>
 
 
             </div>
