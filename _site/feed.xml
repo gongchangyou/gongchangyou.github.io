@@ -7,6 +7,324 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>es 中文分词</title>
+				<description>&lt;h1 id=&quot;es-中文分词&quot;&gt;ES 中文分词&lt;/h1&gt;
+
+&lt;p&gt;这里使用 ES 8.2.0  所以建表不需要_doc关键字了。&lt;/p&gt;
+
+&lt;h3 id=&quot;建表&quot;&gt;建表&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT /table_1 
+{
+  &quot;mappings&quot;: {
+     &quot;properties&quot;: { 
+      &quot;title&quot;:    { &quot;type&quot;: &quot;text&quot;  }, 
+      &quot;name&quot;:     { &quot;type&quot;: &quot;keyword&quot;  }, 
+      &quot;description&quot;: {&quot;type&quot;: &quot;text&quot;},
+      &quot;age&quot;:      { &quot;type&quot;: &quot;integer&quot; },  
+      &quot;created&quot;:  {
+        &quot;type&quot;:   &quot;date&quot;, 
+        &quot;format&quot;: &quot;strict_date_optional_time||epoch_millis&quot;
+      }
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;写入数据&quot;&gt;写入数据&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_doc/1
+{
+  &quot;id&quot;: 1,
+  &quot;name&quot;: &quot;什么样的人最容易犯罪？&quot;,
+  &quot;title&quot;: &quot;中文标题&quot;,
+  &quot;description&quot;:&quot;脸上有马赛克的人，和不要脸的人&quot;,
+  &quot;type&quot;:&quot;科普&quot;,
+  &quot;score&quot;: 96
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;搜索&quot;&gt;搜索&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_search
+{
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;should--or-子句&quot;&gt;should  (or) 子句&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot; : {
+      &quot;should&quot;: [
+        {&quot;term&quot;: {
+&quot;title&quot;: &quot;中&quot;
+}},
+{
+&quot;term&quot;: {
+&quot;title&quot;: &quot;文&quot;
+}
+}
+      ]
+    }
+    
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;中文搜索&quot;&gt;中文搜索&lt;/h3&gt;
+
+&lt;p&gt;keyword 是全匹配，text有analyzer可以创建分词策略 . 多个field 对应 多个analyzer &lt;a href=&quot;https://blog.csdn.net/JineD/article/details/108845906&quot;&gt;https://blog.csdn.net/JineD/article/details/108845906&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;keyword 得全匹配才行， text默认的分词策略， 默认分词  “中文” =&amp;gt; “中” “文”  ，所以输入  “中文”无法命中，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG186.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;/images/202205/WechatIMG187.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;下拉搜索的场景-可以使用whitespace-analyzer&quot;&gt;下拉搜索的场景, 可以使用whitespace analyzer&lt;/h4&gt;
+&lt;p&gt;保存的时候 写入 “中 中文 中文标 中文标题 文 文标 文标题 标题 题”&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT table_3
+{
+  &quot;mappings&quot;: {
+      &quot;properties&quot;: {
+        &quot;title&quot;: {
+          &quot;type&quot;: &quot;text&quot;,
+          &quot;analyzer&quot;: &quot;whitespace&quot;,
+          &quot;fields&quot;: {
+           
+            &quot;standard&quot;: {
+              &quot;type&quot;: &quot;text&quot;,
+              &quot;analyzer&quot;: &quot;standard&quot;
+            }
+          }
+        }
+      }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG185.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;中文分词场景&quot;&gt;中文分词场景&lt;/h4&gt;
+
+&lt;p&gt;IK分词 参考文章：&lt;a href=&quot;https://blog.csdn.net/weixin_40612128/article/details/123476150&quot;&gt;https://blog.csdn.net/weixin_40612128/article/details/123476150&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;记得把版本号改对&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;elasticsearch-plugin -v install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v8.2.0/elasticsearch-analysis-ik-8.2.0.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT table_ik
+{
+  &quot;mappings&quot;: {
+      &quot;properties&quot;: {
+        &quot;title&quot;: {
+          &quot;type&quot;: &quot;text&quot;,
+          &quot;analyzer&quot;: &quot;whitespace&quot;,
+          &quot;fields&quot;: {
+            &quot;spy&quot;: {
+              &quot;type&quot;: &quot;text&quot;,
+              &quot;analyzer&quot;: &quot;ik_smart&quot;
+            },
+            &quot;standard&quot;: {
+              &quot;type&quot;: &quot;text&quot;,
+              &quot;analyzer&quot;: &quot;standard&quot;
+            },
+            &quot;fpy&quot;: {
+              &quot;type&quot;: &quot;text&quot;,
+              &quot;analyzer&quot;: &quot;ik_smart&quot;
+            }
+          }
+        }
+      }
+    
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG188.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;after-search&quot;&gt;After Search&lt;/h3&gt;
+
+&lt;p&gt;本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG189.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+</description>
+				<pubDate>Fri, 20 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/ES-IK</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/ES-IK</guid>
+			</item>
+		
+			<item>
+				<title>cas</title>
+				<description>&lt;h1 id=&quot;cas&quot;&gt;CAS&lt;/h1&gt;
+
+&lt;p&gt;参考文章： &lt;a href=&quot;https://coderatwork.cn/posts/linux-cmpxchg/&quot;&gt;https://coderatwork.cn/posts/linux-cmpxchg/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Unsafe.compareAndSetObject&lt;/p&gt;
+
+&lt;p&gt;内部调用native cmpxchg汇编指令&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+				<pubDate>Thu, 19 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/CAS</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/CAS</guid>
+			</item>
+		
+			<item>
+				<title>disruptor</title>
+				<description>&lt;h1 id=&quot;disruptor&quot;&gt;Disruptor&lt;/h1&gt;
+
+&lt;p&gt;Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)&lt;/p&gt;
+
+&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/disruptor&quot;&gt;https://github.com/gongchangyou/disruptor&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Pom.xml&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      &amp;lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.lmax&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;disruptor&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;3.4.4&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;单生产者，单消费者&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
+     * 单生产者 单消费者
+     */
+    @Test
+    void contextLoads() {
+        // 队列中的元素
+        class Element {
+   
+            private int value;
+   
+            public int get(){
+                return value;
+            }
+   
+            public void set(int value){
+                this.value= value;
+            }
+   
+        }
+   
+        // 生产者的线程工厂
+        ThreadFactory threadFactory = new ThreadFactory(){
+            int i = 0;
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, &quot;simpleThread &quot; + i++);
+            }
+        };
+   
+        // RingBuffer生产工厂,初始化RingBuffer的时候使用
+        EventFactory&amp;lt;Element&amp;gt; factory = new EventFactory&amp;lt;Element&amp;gt;() {
+            @Override
+            public Element newInstance() {
+                return new Element();
+            }
+        };
+   
+        // 处理Event的handler
+        EventHandler&amp;lt;Element&amp;gt; handler = new EventHandler&amp;lt;Element&amp;gt;(){
+            @Override
+            public void onEvent(Element element, long sequence, boolean endOfBatch)
+            {
+                log.info(&quot;element={}, sequence={}, endOfBatch={}&quot;, element.get(), sequence, endOfBatch);
+//                System.out.println(&quot;Element: &quot; + element.get());
+            }
+        };
+   
+        // 阻塞策略
+        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
+   
+        // 指定RingBuffer的大小
+        int bufferSize = 16;
+   
+        // 创建disruptor，采用单生产者模式
+        Disruptor&amp;lt;Element&amp;gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
+   
+        // 设置EventHandler
+        disruptor.handleEventsWith(handler);
+   
+        // 启动disruptor的线程
+        disruptor.start();
+   
+        RingBuffer&amp;lt;Element&amp;gt; ringBuffer = disruptor.getRingBuffer();
+   
+        for (int l = 0; true; l++) {
+            // 获取下一个可用位置的下标
+            long sequence = ringBuffer.next();
+            try {
+                // 返回可用位置的元素
+                Element event = ringBuffer.get(sequence);
+                // 设置该位置元素的值
+                event.set(l);
+            } finally {
+                ringBuffer.publish(sequence);
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题1： 有不同的消费者依赖怎么办？
+回答1：  关键字 then&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
+        disruptor.handleEventsWith(new OrderHandler1(&quot;1&quot;)).then(new OrderHandler1(&quot;2&quot;), new OrderHandler1(&quot;3&quot;)).then(new OrderHandler1(&quot;4&quot;));
+       
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
+回答2:  handleEventsWithWorkerPool&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;disruptor.handleEventsWithWorkerPool(new OrderHandler1(&quot;1&quot;), new OrderHandler1(&quot;2&quot;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题3： 希望不同的消费者独立消费
+回答3： handleEventsWith 多个handler即可&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; disruptor.handleEventsWith(new OrderHandler1(&quot;1&quot;), new OrderHandler1(&quot;2&quot;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;官方文档: &lt;a href=&quot;https://lmax-exchange.github.io/disruptor/disruptor.html&quot;&gt;https://lmax-exchange.github.io/disruptor/disruptor.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://tech.meituan.com/2016/11/18/disruptor.html&quot;&gt;https://tech.meituan.com/2016/11/18/disruptor.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/pku-liuqiang/p/8544700.html&quot;&gt;https://www.cnblogs.com/pku-liuqiang/p/8544700.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/pku-liuqiang/p/8532737.html&quot;&gt;https://www.cnblogs.com/pku-liuqiang/p/8532737.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1701690&quot;&gt;https://cloud.tencent.com/developer/article/1701690&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;源码解析：&lt;/p&gt;
+
+</description>
+				<pubDate>Wed, 18 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/Disruptor</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/Disruptor</guid>
+			</item>
+		
+			<item>
 				<title>swagger</title>
 				<description>&lt;h1 id=&quot;swagger&quot;&gt;swagger&lt;/h1&gt;
 
@@ -394,116 +712,6 @@ public class SwaggerConfig {
 				<pubDate>Fri, 06 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/lock</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/lock</guid>
-			</item>
-		
-			<item>
-				<title>mqtt</title>
-				<description>&lt;h1 id=&quot;mqtt&quot;&gt;MQTT&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/yourstars/p/15247707.html&quot;&gt;https://www.cnblogs.com/yourstars/p/15247707.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker pull emqx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;默认账号：admin
-默认密码：public&lt;/p&gt;
-
-&lt;p&gt;QOS:&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&quot;&gt;https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/qq_24505127/article/details/101701011&quot;&gt;https://blog.csdn.net/qq_24505127/article/details/101701011&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;​	&lt;a href=&quot;https://blog.csdn.net/m0_50668851/article/details/112555171&quot;&gt;https://blog.csdn.net/m0_50668851/article/details/112555171&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;原理 :&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;QOS&lt;/th&gt;
-      &lt;th&gt;SAVE MESSAGE&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;broker&lt;/td&gt;
-      &lt;td&gt;at most once&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;publisher  broker&lt;/td&gt;
-      &lt;td&gt;at least once&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;publisher broker subscriber&lt;/td&gt;
-      &lt;td&gt;exactly once&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线&lt;/p&gt;
-
-&lt;p&gt;那么如何知道消费端是否掉线呢？ connectionLost 方法&lt;/p&gt;
-
-&lt;p&gt;延迟消息： &lt;a href=&quot;https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html&quot;&gt;https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;特定的topic格式：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$delayed/{DelayInterval}/{TopicName}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
-$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
-$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;java代码： &lt;a href=&quot;https://github.com/gongchangyou/mqtt&quot;&gt;https://github.com/gongchangyou/mqtt&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Thu, 05 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/MQTT</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/MQTT</guid>
-			</item>
-		
-			<item>
-				<title>monitor</title>
-				<description>&lt;h1 id=&quot;业务监控&quot;&gt;业务监控&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://blog.51cto.com/jackl/2797593&quot;&gt;https://blog.51cto.com/jackl/2797593&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Statsd + Graphite  +  Grafana&lt;/p&gt;
-
-&lt;p&gt;数据收集，上报 ,  展示, 推荐UDP连接&lt;/p&gt;
-
-&lt;p&gt;做的好还可以有报警（手机锁屏推送 + 邮件提醒）&lt;/p&gt;
-</description>
-				<pubDate>Wed, 04 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/monitor</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/monitor</guid>
-			</item>
-		
-			<item>
-				<title>redis</title>
-				<description>&lt;h1 id=&quot;docker-redis&quot;&gt;Docker redis&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.runoob.com/docker/docker-install-redis.html&quot;&gt;https://www.runoob.com/docker/docker-install-redis.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;lpush lpop 栈&lt;/p&gt;
-
-&lt;p&gt;lpush rpop 队列&lt;/p&gt;
-
-&lt;p&gt;lpush brpop 消息队列 （可以设置timeout. 并阻塞)&lt;/p&gt;
-</description>
-				<pubDate>Mon, 02 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/redis</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/redis</guid>
 			</item>
 		
 	</channel>

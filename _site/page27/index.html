@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
+        
+          <li><a href="/2022/05/CAS">cas</a></li>
+        
+          <li><a href="/2022/05/Disruptor">disruptor</a></li>
+        
           <li><a href="/2022/05/swagger">swagger</a></li>
         
           <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
-        
-          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
-        
-          <li><a href="/2022/05/c++">c++ starter</a></li>
-        
-          <li><a href="/2022/05/gateway">gateway</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
 			
 		
 			
@@ -139,6 +139,10 @@
 		
 			
 				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>3</sup></a></li>
 			
 		
 			
@@ -167,32 +171,18 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/find-git-string">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
+        <h1><a href="/2017/11/sublime-command">Nov 30, 2017 - sublime常用命令</a></h1>
         
         <div class="content">
-            <p>查看我的修改中是否含有var_dump字符串</p>
+            <p>批量修改  <br />
+    1. command + F 搜索字符串  <br />
+    2. alt + enter 批量选中</p>
 
-<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
+<p>编译配置</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>find .</td>
-      <td>xargs grep -ri “example_str” -l</td>
-    </tr>
-  </tbody>
-</table>
+<p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
 
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">Oct 24, 2017 - mysql查找多行重复记录</a></h1>
-        
-        <div class="content">
-            <p>select user_name,count(*) as count from user_table group by user_name having count&gt;1;</p>
+<p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
 
 
         </div>
@@ -201,38 +191,94 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">Oct 20, 2017 - memcache过期时间</a></h1>
+        <h1><a href="/2017/11/docker-command">Nov 28, 2017 - docker常用命令</a></h1>
         
         <div class="content">
-            <p>memcache 过期时间的设置</p>
+            <p>生成镜像  <br />
+docker build -f Dockerfile -t panshi .</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#define REALTIME_MAXDELTA 60*60*24*30  </span>
-   <span class="n">static</span> <span class="n">rel_time_t</span> <span class="n">realtime</span><span class="p">(</span><span class="n">const</span> <span class="n">time_t</span> <span class="n">exptime</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&gt;</span> <span class="no">REALTIME_MAXDELTA</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">#如果超过30天  </span>
-               <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&lt;=</span> <span class="n">process_started</span><span class="p">)</span>   <span class="c1">#又小于进程启动时间，直接失效  </span>
-                      <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>   
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">-</span> <span class="n">process_started</span><span class="p">);</span>   <span class="c1">#返回相对时间 exptime时间戳 - 进程启动时间  </span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>   <span class="c1">#没超过30天的秒数，就是用当前运行时间+exptime  </span>
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">+</span> <span class="n">current_time</span><span class="p">);</span>   <span class="c1">#返回相对时间 服务器运行时间(从启动到现在的时间) + exptime  </span>
-        <span class="p">}</span>  
- <span class="p">}</span>  </code></pre></figure>
+<p>批量删除image <br />
+docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
 
-<p>当memcache的current_time不对，当(process_started + current_time)落后系统时间戳时，导致cache迟迟不过期,</p>
+<p>批量删除容器<br />
+docker ps -a -q |xargs docker rm</p>
 
-<p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
+<p>启动容器  <br />
+1.docker run -dit --name container_name -v /tmp/outer:/tmp/inner image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
 
-<p>uptime就是运行时间<br />
-time是当前时间 （memcache启动时间 + uptime)</p>
-<font color="red">当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！</font>
-<p>(uptime就是代码中的current_time)</p>
+<p>进入容器</p>
 
-<font color="blue">如何处理？ 重启memcache  </font>
+<p>1.docker exec -it container_id/container_name /bin/bash</p>
 
-<p>ps aux|grep memcache<br />
-kill -9 pid<br />
-/usr/bin/memcached -d restart -m 64 -p 11211 -u memcache -l 127.0.0.1</p>
+<p>退出 敲exit即可</p>
 
+<p>2.docker attach container_id  <br />
+    退出需要ctrl+p+q</p>
+
+<p>跟docker容器一起启动</p>
+
+<p>–restart=always</p>
+
+<p>存储/载入</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker save -o 要保存的文件名  要保存的镜像
+
+
+docker load --input 文件
+
+docker load &lt; 文件名
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/11/apt-get-command">Nov 9, 2017 - apt-get命令</a></h1>
+        
+        <div class="content">
+            <p>apt-get update——在修改/etc/apt/sources.list或者/etc/apt/preferences之後运行该命令。此外您需要定期运行这一命令以确保您的软件包列表是最新的。</p>
+
+<p>apt-get install packagename——安装一个新软件包（参见下文的aptitude）</p>
+
+<p>apt-get remove packagename——卸载一个已安装的软件包（保留配置文件）</p>
+
+<p>apt-get –purge remove packagename——卸载一个已安装的软件包（删除配置文件）</p>
+
+<p>dpkg –force-all –purge packagename 有些软件很难卸载，而且还阻止了别的软件的应用，就可以用这个，不过有点冒险。</p>
+
+<p>apt-get autoclean apt会把已装或已卸的软件都备份在硬盘上，所以如果需要空间的话，可以让这个命令来删除你已经删掉的软件</p>
+
+<p>apt-get clean 这个命令会把安装的软件的备份也删除，不过这样不会影响软件的使用的。</p>
+
+<p>apt-get upgrade——更新所有已安装的软件包</p>
+
+<p>apt-get dist-upgrade——将系统升级到新版本</p>
+
+<p>apt-cache search string——在软件包列表中搜索字符串</p>
+
+<p>dpkg -l package-name-pattern——列出所有与模式相匹配的软件包。如果您不知道软件包的全名，您可以使用“<em>package-name-pattern</em>”。</p>
+
+<p>aptitude——详细查看已安装或可用的软件包。与apt-get类似，aptitude可以通过命令行方式调用，但仅限于某些命令——最常见的有安装和卸载命令。由于aptitude比apt-get了解更多信息，可以说它更适合用来进行安装和卸载。</p>
+
+<p>aptitude search XXX</p>
+
+<p>apt-cache showpkg pkgs——显示软件包信息。</p>
+
+<p>apt-cache dumpavail——打印可用软件包列表。</p>
+
+<p>apt-cache show pkgs——显示软件包记录，类似于dpkg –print-avail。</p>
+
+<p>apt-cache pkgnames——打印软件包列表中所有软件包的名称。</p>
+
+<p>dpkg -S file——这个文件属于哪个已安装软件包。</p>
+
+<p>dpkg -L package——列出软件包中的所有文件。</p>
+
+<p>apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。</p>
+
+<p>apt-get update 系统软件包更新</p>
 
         </div>
     </div>
@@ -245,7 +291,7 @@ kill -9 pid<br />
         <a class="btn btn-default" href="/page26" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 27 of 44</span>
+  <span class="page_number ">Page: 27 of 45</span>
   
     <a class="btn btn-default" href="/page28" class="next">Older</a>
   

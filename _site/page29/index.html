@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
+        
+          <li><a href="/2022/05/CAS">cas</a></li>
+        
+          <li><a href="/2022/05/Disruptor">disruptor</a></li>
+        
           <li><a href="/2022/05/swagger">swagger</a></li>
         
           <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
-        
-          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
-        
-          <li><a href="/2022/05/c++">c++ starter</a></li>
-        
-          <li><a href="/2022/05/gateway">gateway</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
 			
 		
 			
@@ -139,6 +139,10 @@
 		
 			
 				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>3</sup></a></li>
 			
 		
 			
@@ -167,54 +171,84 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab">Aug 26, 2016 - vim 查看空格</a></h1>
+        <h1><a href="/2017/09/php_beautifier">Sep 30, 2017 - 在sublime 2中添加php_beautifer </a></h1>
         
         <div class="content">
-            <p>set listchars=tab:&gt;-,trail:-</p>
+            <p>1.下载go-pear.phar 到php安装目录下，地址http://pear.php.net/go-pear.phar 。//macbook 无法放到/usr/bin 中，我随便放到了/User/gongchangyou/ 下 <br /></p>
 
-        </div>
-    </div>
-</div>
+<p>2.cd /user/gongchangyou</p>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/08/mysqldump-%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E5%89%AF%E6%9C%AC">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
-        
-        <div class="content">
-            <p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
-
-<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
-
-<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
-
-<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
-
-<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/07/ssh-%E4%BF%9D%E5%AD%98host%E5%92%8C%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D">Jul 20, 2016 - ssh rsa</a></h1>
-        
-        <div class="content">
-            <p>1.ssh-keygen  -t rsa</p>
-
-<p>2.在 ~/.ssh/config中添加</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	Host lfs-cn-manage 
-	  HostName localhost  #这里写ip
-	  User aiming
-	  IdentityFile ~/.ssh/id_rsa.aiming
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php go-pear.phar
+一路回车
 </code></pre></div></div>
 
-<p>3.chmod 666 ~/.ssh/config #勿忘</p>
+<p>3.export PATH=”/Users/gongchangyou/pear/bin:$PATH” 将这行加到~/.bash_profile中，source ~/.bash_profile</p>
 
-<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
+<p>4.pear install –alldeps channel://pear.php.net/php_beautifier-0.1.15</p>
 
-<p>搞定！</p>
+<p>5.在Sublime text中安装beautifier插件,  按ctrl+shift+p 在package control中搜索install ,回车后稍等一下就会跳出好多插件,搜索phpbeautifier,回车安装</p>
+
+<p>6.重点来了: 去到sublime =&gt; Preferences =&gt; Browse Packages 打开PhpBeautifier/php_beautifier.py</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cmd = "php_beautifier"
+cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
+如果有需求将class和function 的开启花括号放到下一行
+filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return:break) Pear(add-header=false,newline_class=true,newline_function=true)" //这里需要加上newline_class=true,newline_function=true
+</code></pre></div></div>
+
+<p>7.试试ctrl+alt+f 或者 command+shift+p   搜索format php</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - csv文件导入mysql</a></h1>
+        
+        <div class="content">
+            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” <br />
+into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
+
+<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
+错误咋办？</p>
+
+<p>在/etc/my.cnf中添加
+secure-file-priv=”/data/xlive/tools/masterdata/”</p>
+
+<font style="color:red">注意： csv文件中，逗号隔开，不要有空格</font>
+<p><br />
+<br />
+<a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a></p>
+
+<p>将cdb_pms表subject字段中的Welcom to替换成 欢迎光临<br />
+UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
+SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
+WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/11/shader%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B">Nov 11, 2016 - shader-module</a></h1>
+        
+        <div class="content">
+            <p>标准光照模型</p>
+
+<p>漫反射</p>
+
+<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
+
+<p>高光反射</p>
+
+<p>r = 2(n . l)n - l;</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
 
 
         </div>
@@ -228,7 +262,7 @@
         <a class="btn btn-default" href="/page28" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 29 of 44</span>
+  <span class="page_number ">Page: 29 of 45</span>
   
     <a class="btn btn-default" href="/page30" class="next">Older</a>
   

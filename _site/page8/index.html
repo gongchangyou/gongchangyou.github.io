@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
+        
+          <li><a href="/2022/05/CAS">cas</a></li>
+        
+          <li><a href="/2022/05/Disruptor">disruptor</a></li>
+        
           <li><a href="/2022/05/swagger">swagger</a></li>
         
           <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
-        
-          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
-        
-          <li><a href="/2022/05/c++">c++ starter</a></li>
-        
-          <li><a href="/2022/05/gateway">gateway</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
 			
 		
 			
@@ -139,6 +139,10 @@
 		
 			
 				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>3</sup></a></li>
 			
 		
 			
@@ -167,57 +171,158 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/tar">Apr 19, 2022 - tar</a></h1>
+        <h1><a href="/2022/04/xdebug">Apr 21, 2022 - xdebug</a></h1>
         
         <div class="content">
-            <h1 id="将多个文件打包并压缩">将多个文件打包并压缩</h1>
+            <h1 id="xdebug">Xdebug</h1>
 
-<p><a href="https://mkyong.com/java/how-to-create-tar-gz-in-java/">https://mkyong.com/java/how-to-create-tar-gz-in-java/</a></p>
+<p><a href="http://xdebug.org/">http://xdebug.org/</a></p>
 
-<p>kotlin 代码</p>
+<p>因为最近想看看matomo 源码，里面php的调用比较深，直接看代码不是很直观，所以需要有个工具debug</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">xxx</span>
+<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1591505">https://cloud.tencent.com/developer/article/1591505</a></p>
 
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveEntry</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">compressors</span><span class="p">.</span><span class="n">gzip</span><span class="p">.</span><span class="n">GzipCompressorOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Service</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">BufferedOutputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Files</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Path</span>
+<p><a href="https://www.yisu.com/zixun/376908.html">https://www.yisu.com/zixun/376908.html</a></p>
+
+<h2 id="容器内部操作">容器内部操作</h2>
+
+<ol>
+  <li>在容器内部安装xdebug</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pecl install xdebug
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>修改php.ini</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20200930/xdebug.so
+   
+   
+#xdebug.remote_enable=1
+#xdebug.remote_host=192.168.1.2
+#xdebug.remote_port=9000
+#xdebug.idekey=PHPSTORM
+   
+   
+xdebug.mode=debug
+xdebug.client_host=192.168.1.2
+xdebug.client_port=9000
+xdebug.collect_return=On
+xdebug.idekey="PHPSTORM"
+xdebug.log="/tmp/xdebug.log"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重启docker 让php配置生效</p>
+  </li>
+</ol>
+
+<h2 id="phpstorm-的配置-操作">Phpstorm 的配置 操作</h2>
+
+<ol>
+  <li>选择你的php interpreter (这步好像不需要)</li>
+</ol>
+
+<p><img src="/images/202204/WechatIMG107.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG108.png" alt="" width="800" /></p>
+
+<p><img src="/images/202204/WechatIMG109.png" alt="" width="800" /></p>
+
+<ol>
+  <li>
+    <p>配置xdebug port</p>
+
+    <p><img src="/images/202204/WechatIMG110.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置 DBGp Proxy （这步好像也不需要)</p>
+
+    <p><img src="/images/202204/WechatIMG104.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>配置server  注意右边的是容器内的路径</p>
+
+    <p><img src="/images/202204/WechatIMG2424.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>调试</p>
+  </li>
+</ol>
+
+<p>按照如下步骤</p>
+
+<p><img src="/images/202204/WechatIMG105.png" alt="" width="800" /></p>
+
+<p>点击validate</p>
+
+<p><img src="/images/202204/WechatIMG2417.png" alt="" width="800" /></p>
+
+<p>配置好path和url</p>
+
+<p><img src="/images/202204/WechatIMG2419.png" alt="" width="800" /></p>
+
+<p>点击Validate ，看到xdebug安装好了就行了，如果有异常再针对解决</p>
+
+<p><img src="/images/202204/WechatIMG2421.png" alt="" width="800" /></p>
+
+<h2 id="chrome-插件安装">chrome 插件安装</h2>
+
+<p><a href="https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2">https://www.jetbrains.com/help/phpstorm/2021.2/browser-debugging-extensions.html?utm_source=product&amp;utm_medium=link&amp;utm_campaign=PS&amp;utm_content=2021.2</a></p>
+
+<h2 id="加断点试试成功">加断点试试,成功!</h2>
+
+<p><img src="/images/202204/WechatIMG2427.png" alt="" width="800" /></p>
+
+<h3 id="以下不用看">以下不用看</h3>
+
+<p>安装步骤 : <a href="http://xdebug.org/wizard">http://xdebug.org/wizard</a></p>
+
+<p>因为我是用docker启动的matomo，所以需要进到docker容器中安装xdebug</p>
+
+<p>问题1： 直接卡在第二步，apt-get install php-dev 找不到package</p>
+
+<p>推测是source 不对， 疯狂找源.</p>
+
+<p>看报错应该是 php-dev这个包过期了</p>
 
 
-<span class="p">@</span><span class="n">Service</span>
-<span class="n">class</span> <span class="n">TarGzipService</span> <span class="p">{</span>
-    <span class="p">//</span> <span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="n">few</span> <span class="n">files</span>
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">IOException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">createTarGzipFiles</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="k">List</span><span class="p">&lt;</span><span class="n">Path</span><span class="p">&gt;,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Path</span><span class="p">?)</span> <span class="p">{</span>
-        <span class="n">Files</span><span class="p">.</span><span class="n">newOutputStream</span><span class="p">(</span><span class="n">output</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">fOut</span> <span class="p">-&gt;</span>
-            <span class="n">BufferedOutputStream</span><span class="p">(</span><span class="n">fOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">buffOut</span> <span class="p">-&gt;</span>
-                <span class="n">GzipCompressorOutputStream</span><span class="p">(</span><span class="n">buffOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">gzOut</span> <span class="p">-&gt;</span>
-                    <span class="n">TarArchiveOutputStream</span><span class="p">(</span><span class="n">gzOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">tOut</span> <span class="p">-&gt;</span>
-                        <span class="n">for</span> <span class="p">(</span><span class="n">path</span> <span class="k">in</span> <span class="n">paths</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="k">if</span> <span class="p">(</span><span class="c1">!Files.isRegularFile(path)) {
-</span>                                <span class="n">throw</span> <span class="n">IOException</span><span class="p">(</span><span class="s2">"Support only file! $path"</span><span class="p">)</span>
-                            <span class="p">}</span>
-                            <span class="n">val</span> <span class="n">tarEntry</span> <span class="p">=</span> <span class="n">TarArchiveEntry</span><span class="p">(</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">toFile</span><span class="p">(),</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">fileName</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
-                            <span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">putArchiveEntry</span><span class="p">(</span><span class="n">tarEntry</span><span class="p">)</span>
+        </div>
+    </div>
+</div>
 
-                            <span class="p">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="k">to</span> <span class="n">TarArchiveOutputStream</span>
-                            <span class="n">Files</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">tOut</span><span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">closeArchiveEntry</span><span class="p">()</span>
-                        <span class="p">}</span>
-                        <span class="n">tOut</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/email">Apr 21, 2022 - email</a></h1>
+        
+        <div class="content">
+            <h1 id="java-发送email">java 发送email</h1>
+
+<p>参考文章:</p>
+
+<p><a href="https://www.runoob.com/java/java-sending-email.html">https://www.runoob.com/java/java-sending-email.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/javax.mail/mail --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.mail&lt;/groupId&gt;
+    &lt;artifactId&gt;mail&lt;/artifactId&gt;
+    &lt;version&gt;1.4.7&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  // 设置邮件服务器
+        properties.setProperty("mail.smtp.host", "your.mail.server")
+        properties.setProperty("mail.smtp.port", "your.port")
+        properties.setProperty("mail.smtp.auth", "true")
+        // 获取默认session对象
+        val session = Session.getInstance(properties, object: Authenticator() {
+            override fun getPasswordAuthentication(): PasswordAuthentication {
+                return PasswordAuthentication("username", "password")
+            }
+        })
 </code></pre></div></div>
 
 
@@ -227,322 +332,16 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/jsch">Apr 18, 2022 - jsch</a></h1>
+        <h1><a href="/2022/04/state">Apr 19, 2022 - state</a></h1>
         
         <div class="content">
-            <h1 id="jsch">Jsch</h1>
+            <h1 id="状态机">状态机</h1>
 
-<p>scp from java:<a href="http://www.jcraft.com/jsch/examples/ScpFrom.java.html">http://www.jcraft.com/jsch/examples/ScpFrom.java.html</a></p>
+<p>参考文章:</p>
 
-<p>scp to java : <a href="http://www.jcraft.com/jsch/examples/ScpTo.java.html">http://www.jcraft.com/jsch/examples/ScpTo.java.html</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine">https://link.zhihu.com/?target=https%3A//github.com/jakesgordon/javascript-state-machine</a></p>
 
-<p>kotlin 代码</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">xxx</span>
-
-<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">jcraft</span><span class="p">.</span><span class="n">jsch</span><span class="p">.</span><span class="n">ChannelExec</span>
-<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">jcraft</span><span class="p">.</span><span class="n">jsch</span><span class="p">.</span><span class="n">JSch</span>
-<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">jcraft</span><span class="p">.</span><span class="n">jsch</span><span class="p">.</span><span class="n">JSchException</span>
-<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">jcraft</span><span class="p">.</span><span class="n">jsch</span><span class="p">.</span><span class="n">Session</span>
-<span class="n">import</span> <span class="n">com</span><span class="p">.</span><span class="n">jcraft</span><span class="p">.</span><span class="n">jsch</span><span class="p">.</span><span class="n">UserInfo</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">slf4j</span><span class="p">.</span><span class="n">LoggerFactory</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Service</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">BufferedReader</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">File</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">FileOutputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">InputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">InputStreamReader</span>
-
-
-<span class="p">@</span><span class="n">Service</span>
-<span class="n">class</span> <span class="n">JschService</span> <span class="p">{</span>
-    <span class="n">private</span> <span class="n">val</span> <span class="n">CONNECT_TIMEOUT</span> <span class="p">=</span> <span class="m">30000</span>
-    <span class="n">private</span> <span class="n">val</span> <span class="nb">log</span> <span class="p">=</span> <span class="n">LoggerFactory</span><span class="p">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">javaClass</span><span class="p">)</span>
-
-    <span class="n">fun</span> <span class="n">createSession</span><span class="p">(</span><span class="n">userName</span><span class="p">:</span><span class="k">String</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span><span class="k">String</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span><span class="k">String</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span><span class="n">Int</span><span class="p">)</span> <span class="p">:</span><span class="n">Session</span> <span class="p">{</span>
-        <span class="n">val</span> <span class="n">jsch</span> <span class="p">=</span> <span class="n">JSch</span><span class="p">()</span>
-
-        <span class="n">val</span> <span class="n">session</span> <span class="p">=</span> <span class="n">jsch</span><span class="p">.</span><span class="n">getSession</span><span class="p">(</span><span class="n">userName</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-        <span class="n">session</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-        <span class="n">val</span> <span class="n">userInfo</span><span class="p">:</span> <span class="n">UserInfo</span> <span class="p">=</span> <span class="n">object</span> <span class="p">:</span> <span class="n">UserInfo</span> <span class="p">{</span>
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">getPassphrase</span><span class="p">():</span> <span class="k">String</span><span class="p">?</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"getPassphrase"</span><span class="p">)</span>
-                <span class="n">return</span> <span class="n">null</span>
-            <span class="p">}</span>
-
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">getPassword</span><span class="p">():</span> <span class="k">String</span><span class="p">?</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"getPassword"</span><span class="p">)</span>
-                <span class="n">return</span> <span class="n">null</span>
-            <span class="p">}</span>
-
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">promptPassword</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="k">String</span><span class="p">):</span> <span class="k">Boolean</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"promptPassword:$s"</span><span class="p">)</span>
-                <span class="n">return</span> <span class="nb">false</span>
-            <span class="p">}</span>
-
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">promptPassphrase</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="k">String</span><span class="p">):</span> <span class="k">Boolean</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"promptPassphrase:$s"</span><span class="p">)</span>
-                <span class="n">return</span> <span class="nb">false</span>
-            <span class="p">}</span>
-
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">promptYesNo</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="k">String</span><span class="p">):</span> <span class="k">Boolean</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"promptYesNo:$s"</span><span class="p">)</span>
-                <span class="n">return</span> <span class="nb">true</span> <span class="p">//</span><span class="n">notice</span> <span class="n">here</span><span class="c1">!
-</span>            <span class="p">}</span>
-
-            <span class="n">override</span> <span class="n">fun</span> <span class="n">showMessage</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="k">String</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">println</span><span class="p">(</span><span class="s2">"showMessage:$s"</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="n">session</span><span class="p">.</span><span class="n">userInfo</span> <span class="p">=</span> <span class="n">userInfo</span>
-        <span class="p">//</span><span class="n">session</span> <span class="err">可以复用</span>
-        <span class="n">session</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">CONNECT_TIMEOUT</span><span class="p">)</span> <span class="p">//</span> <span class="n">making</span> <span class="n">a</span> <span class="n">connection</span> <span class="k">with</span> <span class="n">timeout</span><span class="p">.</span>
-
-        <span class="n">return</span> <span class="n">session</span>
-    <span class="p">}</span>
-
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">JSchException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">remoteExecute</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="nf">command</span><span class="p">:</span> <span class="k">String</span><span class="p">?):</span> <span class="k">List</span><span class="p">&lt;</span><span class="k">String</span><span class="p">?&gt;?</span> <span class="p">{</span>
-        <span class="n">val</span> <span class="n">channel</span> <span class="p">=</span> <span class="n">session</span><span class="p">.</span><span class="n">openChannel</span><span class="p">(</span><span class="s2">"exec"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ChannelExec</span>
-        <span class="n">return</span> <span class="n">try</span> <span class="p">{</span>
-            <span class="n">remoteExecute</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="nf">command</span><span class="p">)</span>
-        <span class="p">}</span> <span class="n">finally</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">channel</span> <span class="c1">!= null) {
-</span>                <span class="n">try</span> <span class="p">{</span>
-                    <span class="n">channel</span><span class="p">.</span><span class="nf">disconnect</span><span class="p">()</span>
-                <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"JSch channel disconnect error:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">JSchException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">remoteExecute</span><span class="p">(</span><span class="n">channel</span><span class="p">:</span> <span class="n">ChannelExec</span><span class="p">?,</span> <span class="nf">command</span><span class="p">:</span> <span class="k">String</span><span class="p">?):</span> <span class="k">List</span><span class="p">&lt;</span><span class="k">String</span><span class="p">?&gt;?</span> <span class="p">{</span>
-        <span class="nb">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"&gt;&gt; {}"</span><span class="p">,</span> <span class="nf">command</span><span class="p">)</span>
-        <span class="n">val</span> <span class="n">resultLines</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="k">String</span><span class="p">?&gt;</span> <span class="p">=</span> <span class="n">ArrayList</span><span class="p">()</span>
-        <span class="n">try</span> <span class="p">{</span>
-            <span class="n">channel</span><span class="c1">!!.setCommand(command)
-</span>            <span class="n">val</span> <span class="n">input</span> <span class="p">=</span> <span class="n">channel</span><span class="p">.</span><span class="n">inputStream</span>
-            <span class="n">channel</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">CONNECT_TIMEOUT</span><span class="p">)</span>
-            <span class="n">try</span> <span class="p">{</span>
-                <span class="n">val</span> <span class="n">inputReader</span> <span class="p">=</span> <span class="n">BufferedReader</span><span class="p">(</span><span class="n">InputStreamReader</span><span class="p">(</span><span class="n">input</span><span class="p">))</span>
-                <span class="n">var</span> <span class="n">inputLine</span><span class="p">:</span> <span class="k">String</span><span class="p">?</span> <span class="p">=</span> <span class="n">null</span>
-                <span class="k">while</span> <span class="p">(</span><span class="n">inputReader</span><span class="p">.</span><span class="n">readLine</span><span class="p">().</span><span class="n">also</span> <span class="p">{</span> <span class="n">inputLine</span> <span class="p">=</span> <span class="n">it</span> <span class="p">}</span> <span class="c1">!= null) {
-</span>                    <span class="nb">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"   {}"</span><span class="p">,</span> <span class="n">inputLine</span><span class="p">)</span>
-                    <span class="n">resultLines</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">inputLine</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="p">}</span> <span class="n">finally</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">input</span> <span class="c1">!= null) {
-</span>                    <span class="n">try</span> <span class="p">{</span>
-                        <span class="n">input</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
-                    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"JSch inputStream close error:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">IOException</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"IOcxecption:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="n">return</span> <span class="n">resultLines</span>
-    <span class="p">}</span>
-
-
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">从远程拷贝文件</span>
-     <span class="p">*/</span>
-    <span class="n">fun</span> <span class="n">getRemoteFile</span><span class="p">(</span><span class="n">session</span><span class="p">:</span><span class="n">Session</span><span class="p">,</span> <span class="n">remotePath</span><span class="p">:</span><span class="k">String</span><span class="p">,</span> <span class="n">localPath</span><span class="p">:</span><span class="k">String</span><span class="p">)</span> <span class="p">:</span><span class="k">String</span> <span class="p">{</span>
-        <span class="n">val</span> <span class="n">fos</span><span class="p">:</span><span class="n">FileOutputStream</span> <span class="p">?=</span> <span class="n">null</span>
-        <span class="n">try</span> <span class="p">{</span>
-            <span class="p">//</span> <span class="n">exec</span> <span class="s1">'scp -f rfile'</span> <span class="n">remotely</span>
-            <span class="n">var</span> <span class="n">rfile</span> <span class="p">=</span> <span class="n">remotePath</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">"'</span><span class="se">\"</span><span class="s2">'</span><span class="se">\"</span><span class="s2">'"</span><span class="p">)</span>
-            <span class="n">rfile</span><span class="p">=</span> <span class="s2">"'$rfile'"</span>
-            <span class="n">val</span> <span class="nf">command</span> <span class="p">=</span> <span class="s2">" scp -f $rfile"</span>
-            <span class="n">val</span> <span class="n">channel</span><span class="p">=</span> <span class="n">session</span><span class="p">.</span><span class="n">openChannel</span><span class="p">(</span><span class="s2">"exec"</span><span class="p">)</span> <span class="k">as</span> <span class="n">ChannelExec</span>
-            <span class="n">channel</span><span class="p">.</span><span class="n">setCommand</span><span class="p">(</span><span class="nf">command</span><span class="p">)</span>
-
-            <span class="n">var</span> <span class="n">prefix</span><span class="p">:</span> <span class="k">String</span><span class="p">?</span> <span class="p">=</span> <span class="n">null</span>
-            <span class="n">val</span> <span class="n">lfile</span> <span class="p">=</span> <span class="n">localPath</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="n">File</span><span class="p">(</span><span class="n">lfile</span><span class="p">).</span><span class="n">isDirectory</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">prefix</span> <span class="p">=</span> <span class="n">lfile</span> <span class="p">+</span> <span class="n">File</span><span class="p">.</span><span class="n">separator</span>
-            <span class="p">}</span>
-            <span class="p">//</span> <span class="n">get</span> <span class="n">I</span><span class="p">/</span><span class="n">O</span> <span class="n">streams</span> <span class="n">for</span> <span class="n">remote</span> <span class="n">scp</span>
-            <span class="n">val</span> <span class="n">outputStream</span> <span class="p">=</span> <span class="n">channel</span><span class="p">.</span><span class="n">outputStream</span>
-            <span class="n">val</span> <span class="n">inputStream</span> <span class="p">=</span> <span class="n">channel</span><span class="p">.</span><span class="n">inputStream</span>
-
-            <span class="n">channel</span><span class="p">.</span><span class="nf">connect</span><span class="p">()</span>
-
-            <span class="n">val</span> <span class="n">buf</span> <span class="p">=</span> <span class="n">ByteArray</span><span class="p">(</span><span class="m">1024</span><span class="p">)</span>
-
-            <span class="p">//</span> <span class="nf">send</span> <span class="s1">'\0'</span>
-            <span class="n">buf</span><span class="p">[</span><span class="m">0</span><span class="p">]=</span><span class="m">0</span><span class="p">;</span> <span class="n">outputStream</span><span class="p">.</span><span class="nb">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span> <span class="n">outputStream</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
-
-            <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">){</span>
-                <span class="nb">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"input file $remotePath $localPath"</span><span class="p">)</span>
-                <span class="n">val</span> <span class="n">c</span> <span class="p">=</span> <span class="n">checkAck</span><span class="p">(</span><span class="n">inputStream</span><span class="p">)</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="c1">!= 'C'.toInt()){
-</span>                    <span class="k">break</span>
-                <span class="p">}</span>
-
-                <span class="p">//</span> <span class="nb">read</span> <span class="s1">'0644 '</span>
-                <span class="n">inputStream</span><span class="p">.</span><span class="nb">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
-
-                <span class="n">var</span> <span class="n">filesize</span> <span class="p">=</span> <span class="m">0L</span>
-                <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">){</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">inputStream</span><span class="p">.</span><span class="nb">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)&lt;</span><span class="m">0</span><span class="p">){</span>
-                        <span class="p">//</span> <span class="n">error</span>
-                        <span class="k">break</span><span class="p">;</span>
-                    <span class="p">}</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">==</span> <span class="s1">' '</span><span class="p">.</span><span class="n">toByte</span><span class="p">())</span> <span class="k">break</span>
-                    <span class="n">filesize</span> <span class="p">=</span> <span class="n">filesize</span> <span class="p">*</span> <span class="m">10L</span> <span class="p">+</span> <span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="m">0</span><span class="p">]</span> <span class="p">-</span> <span class="s1">'0'</span><span class="p">.</span><span class="n">toByte</span><span class="p">()).</span><span class="n">toLong</span><span class="p">()</span>
-                <span class="p">}</span>
-
-                <span class="n">var</span> <span class="n">file</span><span class="p">:</span><span class="k">String</span><span class="p">?</span> <span class="p">=</span> <span class="n">null</span>
-
-                <span class="n">var</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span>
-                <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="n">inputStream</span><span class="p">.</span><span class="nb">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">==</span> <span class="m">0x0a</span><span class="p">.</span><span class="n">toByte</span><span class="p">())</span> <span class="p">{</span>
-                        <span class="n">file</span> <span class="p">=</span> <span class="k">String</span> <span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-                        <span class="k">break</span>
-                    <span class="p">}</span>
-                    <span class="n">i</span><span class="p">++</span>
-                <span class="p">}</span>
-
-                <span class="p">//</span><span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"filesize="</span><span class="p">+</span><span class="n">filesize</span><span class="p">+</span><span class="s2">", file="</span><span class="p">+</span><span class="n">file</span><span class="p">);</span>
-
-                <span class="p">//</span> <span class="nf">send</span> <span class="s1">'\0'</span>
-                <span class="n">buf</span><span class="p">[</span><span class="m">0</span><span class="p">]=</span><span class="m">0</span><span class="p">;</span> <span class="n">outputStream</span><span class="p">.</span><span class="nb">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span> <span class="n">outputStream</span><span class="p">.</span><span class="n">flush</span><span class="p">()</span>
-
-                <span class="p">//</span> <span class="nb">read</span> <span class="n">a</span> <span class="n">content</span> <span class="k">of</span> <span class="n">lfile</span>
-                <span class="n">val</span> <span class="n">fos</span> <span class="p">=</span> <span class="n">FileOutputStream</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">prefix</span><span class="p">==</span><span class="n">null</span> <span class="p">)</span> <span class="n">lfile</span> <span class="k">else</span>  <span class="n">prefix</span><span class="p">+</span><span class="n">file</span><span class="p">)</span>
-                <span class="n">var</span> <span class="n">foo</span><span class="p">:</span><span class="n">Int</span><span class="p">?</span>
-                <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">){</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">size</span> <span class="p">&lt;</span> <span class="n">filesize</span><span class="p">)</span> <span class="n">foo</span><span class="p">=</span><span class="n">buf</span><span class="p">.</span><span class="n">size</span>
-                    <span class="k">else</span> <span class="n">foo</span> <span class="p">=</span> <span class="n">filesize</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span>
-                    <span class="n">foo</span> <span class="p">=</span> <span class="n">inputStream</span><span class="p">.</span><span class="nb">read</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">foo</span><span class="p">&lt;</span><span class="m">0</span><span class="p">){</span>
-                        <span class="p">//</span> <span class="n">error</span>
-                        <span class="k">break</span>
-                    <span class="p">}</span>
-                    <span class="n">fos</span><span class="p">.</span><span class="nb">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
-                    <span class="n">filesize</span> <span class="p">-=</span> <span class="n">foo</span>
-                    <span class="k">if</span><span class="p">(</span><span class="n">filesize</span><span class="p">==</span><span class="m">0L</span><span class="p">)</span> <span class="k">break</span>
-                <span class="p">}</span>
-                <span class="n">fos</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="p">//</span>            <span class="n">fos</span> <span class="p">=</span> <span class="n">null</span><span class="p">;</span>
-
-                <span class="k">if</span><span class="p">(</span><span class="n">checkAck</span><span class="p">(</span><span class="n">inputStream</span><span class="p">)</span><span class="c1">!=0){
-</span>                    <span class="n">return</span> <span class="s2">""</span>
-                <span class="p">}</span>
-
-                <span class="p">//</span> <span class="nf">send</span> <span class="s1">'\0'</span>
-                <span class="n">buf</span><span class="p">[</span><span class="m">0</span><span class="p">]=</span><span class="m">0</span><span class="p">;</span> <span class="n">outputStream</span><span class="p">.</span><span class="nb">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span> <span class="n">outputStream</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
-            <span class="p">}</span>
-
-            <span class="nb">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"return input file $remotePath $localPath"</span><span class="p">)</span>
-            <span class="n">return</span> <span class="n">localPath</span>
-        <span class="p">}</span> <span class="n">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span><span class="n">Exception</span><span class="p">){</span>
-            <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"get remote file error $remotePath $localPath "</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-            <span class="n">try</span> <span class="p">{</span>
-                <span class="n">fos</span><span class="p">?.</span><span class="n">close</span><span class="p">()</span>
-            <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="n">ee</span><span class="p">:</span><span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"close fos error $remotePath $localPath "</span><span class="p">,</span> <span class="n">ee</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="n">return</span> <span class="s2">""</span>
-    <span class="p">}</span>
-
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">IOException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">checkAck</span><span class="p">(`</span><span class="k">in</span><span class="p">`:</span> <span class="n">InputStream</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
-        <span class="n">val</span> <span class="n">b</span> <span class="p">=</span> <span class="p">`</span><span class="k">in</span><span class="p">`.</span><span class="nb">read</span><span class="p">()</span>
-        <span class="p">//</span> <span class="n">b</span> <span class="n">may</span> <span class="n">be</span> <span class="m">0</span> <span class="n">for</span> <span class="n">success</span><span class="p">,</span>
-        <span class="p">//</span>          <span class="m">1</span> <span class="n">for</span> <span class="n">error</span><span class="p">,</span>
-        <span class="p">//</span>          <span class="m">2</span> <span class="n">for</span> <span class="n">fatal</span> <span class="n">error</span><span class="p">,</span>
-        <span class="p">//</span>          <span class="p">-</span><span class="m">1</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span> <span class="n">return</span> <span class="n">b</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="p">==</span> <span class="p">-</span><span class="m">1</span><span class="p">)</span> <span class="n">return</span> <span class="n">b</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="p">==</span> <span class="m">1</span> <span class="p">||</span> <span class="n">b</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">val</span> <span class="n">sb</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
-            <span class="n">var</span> <span class="n">c</span><span class="p">:</span> <span class="n">Int</span>
-            <span class="k">do</span> <span class="p">{</span>
-                <span class="n">c</span> <span class="p">=</span> <span class="p">`</span><span class="k">in</span><span class="p">`.</span><span class="nb">read</span><span class="p">()</span>
-                <span class="n">sb</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">toChar</span><span class="p">())</span>
-            <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">c</span> <span class="c1">!= '\n'.toInt())
-</span>            <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span> <span class="p">//</span> <span class="n">error</span>
-                <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="n">sb</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span> <span class="p">{</span> <span class="p">//</span> <span class="n">fatal</span> <span class="n">error</span>
-                <span class="nb">log</span><span class="p">.</span><span class="n">error</span><span class="p">(</span><span class="n">sb</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="n">return</span> <span class="n">b</span>
-    <span class="p">}</span>
-
-    <span class="n">companion</span> <span class="n">object</span> <span class="p">{</span>
-        <span class="n">fun</span> <span class="n">hexToByte</span><span class="p">(</span><span class="n">hexString</span> <span class="p">:</span><span class="k">String</span><span class="p">?)</span> <span class="p">:</span><span class="n">ByteArray</span><span class="p">?</span> <span class="p">{</span>
-            <span class="n">return</span> <span class="n">hexString</span><span class="p">?.</span><span class="n">let</span> <span class="p">{</span>
-                <span class="n">check</span><span class="p">(</span><span class="n">hexString</span><span class="p">.</span><span class="n">length</span> <span class="p">%</span> <span class="m">2</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="s2">"Must have an even length"</span>
-                <span class="p">}</span>
-                <span class="n">return</span> <span class="n">hexString</span><span class="p">.</span><span class="n">chunked</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
-                    <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">toInt</span><span class="p">(</span><span class="m">16</span><span class="p">).</span><span class="n">toByte</span><span class="p">()</span> <span class="p">}</span>
-                    <span class="p">.</span><span class="n">toByteArray</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h3 id="使用rsa-私钥登录">使用rsa 私钥登录</h3>
-
-<ol>
-  <li>因为jsch目前不更新了，所以不兼容最新版本 openssh 的key</li>
-</ol>
-
-<p>需要先将 id_rsa 转换成低版本的 <a href="https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch">https://stackoverflow.com/questions/53134212/invalid-privatekey-when-using-jsch</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen -p -f file -m pem -P passphrase -N passphrase
-
-# 如果密码为空字符串 就敲下面的命令
-ssh-keygen -p -f path/to/rsa_file  -m pem -P  "" -N ""  
-</code></pre></div></div>
-
-<ol>
-  <li>代码</li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Session session = jsch.getSession(username, host, port);
-
-         jsch.addIdentity(this.getClass().getClassLoader().getResource(rsa_file).getPath());
-
-java.util.Properties config = new java.util.Properties();
-config.put("StrictHostKeyChecking", "no");
-session.setConfig(config);
-
-session.connect(30000);   // making a connection with timeout.
-
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/websocket">Apr 13, 2022 - websocket</a></h1>
-        
-        <div class="content">
-            <h1 id="websocket">Websocket</h1>
-
-<p>代码地址: <a href="https://github.com/gongchangyou/websocket-test">https://github.com/gongchangyou/websocket-test</a></p>
-
-<p>postman 调试: <a href="https://blog.postman.com/postman-supports-websocket-apis/">https://blog.postman.com/postman-supports-websocket-apis/</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/47434856">https://zhuanlan.zhihu.com/p/47434856</a></p>
 
 
         </div>
@@ -556,7 +355,7 @@ session.connect(30000);   // making a connection with timeout.
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 44</span>
+  <span class="page_number ">Page: 8 of 45</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   

@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
+        
+          <li><a href="/2022/05/CAS">cas</a></li>
+        
+          <li><a href="/2022/05/Disruptor">disruptor</a></li>
+        
           <li><a href="/2022/05/swagger">swagger</a></li>
         
           <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
-        
-          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
-        
-          <li><a href="/2022/05/c++">c++ starter</a></li>
-        
-          <li><a href="/2022/05/gateway">gateway</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
 			
 		
 			
@@ -139,6 +139,10 @@
 		
 			
 				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>3</sup></a></li>
 			
 		
 			
@@ -167,18 +171,21 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/redis">May 2, 2022 - redis</a></h1>
+        <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
         
         <div class="content">
-            <h1 id="docker-redis">Docker redis</h1>
+            <h1 id="lock">Lock</h1>
 
-<p><a href="https://www.runoob.com/docker/docker-install-redis.html">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+<p>参考文章: <a href="https://blog.csdn.net/pmc0_0/article/details/121061692">https://blog.csdn.net/pmc0_0/article/details/121061692</a></p>
 
-<p>lpush lpop 栈</p>
+<p><img src="/images/202205/912e39d231b1440aa72b1529c61e7cf2.png" alt="" width="800" /></p>
 
-<p>lpush rpop 队列</p>
+<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
 
-<p>lpush brpop 消息队列 （可以设置timeout. 并阻塞)</p>
+<p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
+
+<p>重量级锁 ：借助操作系统的monitor</p>
+
 
         </div>
     </div>
@@ -186,67 +193,76 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">Apr 26, 2022 - job</a></h1>
+        <h1><a href="/2022/05/MQTT">May 5, 2022 - mqtt</a></h1>
         
         <div class="content">
-            <h1 id="任务调度系统比对">任务调度系统比对</h1>
+            <h1 id="mqtt">MQTT</h1>
+
+<p><a href="https://www.cnblogs.com/yourstars/p/15247707.html">https://www.cnblogs.com/yourstars/p/15247707.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull emqx
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
+</code></pre></div></div>
+
+<p>默认账号：admin
+默认密码：public</p>
+
+<p>QOS:</p>
+
+<p>参考文章: <a href="https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html">https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html</a></p>
+
+<p>​	<a href="https://blog.csdn.net/qq_24505127/article/details/101701011">https://blog.csdn.net/qq_24505127/article/details/101701011</a></p>
+
+<p>​	<a href="https://blog.csdn.net/m0_50668851/article/details/112555171">https://blog.csdn.net/m0_50668851/article/details/112555171</a></p>
+
+<p>原理 :</p>
 
 <table>
   <thead>
     <tr>
-      <th>开源框架</th>
-      <th>开发语言</th>
-      <th>任务类型</th>
-      <th>⼯作流</th>
-      <th>能否区分用户</th>
-      <th>可视化</th>
-      <th>API</th>
-      <th>⾼可⽤</th>
+      <th>QOS</th>
+      <th>SAVE MESSAGE</th>
+      <th> </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Airflow</td>
-      <td>python</td>
-      <td>通过operator⾃定义，⼤数据组件及Shell，不⽀持Java</td>
-      <td>DAG</td>
-      <td>-</td>
-      <td>⽀持</td>
-      <td>不⽀持</td>
-      <td>主从</td>
+      <td>0</td>
+      <td>broker</td>
+      <td>at most once</td>
     </tr>
     <tr>
-      <td>XXL-JOB</td>
-      <td>Java</td>
-      <td>Java/Shell/Python/PHP</td>
-      <td>不⽀持</td>
-      <td>不能, 需要做些改造Runtime.getRuntime().exec()</td>
-      <td>⽀持</td>
-      <td>⽀持</td>
-      <td>主从</td>
+      <td>1</td>
+      <td>publisher  broker</td>
+      <td>at least once</td>
     </tr>
     <tr>
-      <td>DolphinScheduler</td>
-      <td>Java</td>
-      <td>⼤数据组件及Shell等近20种</td>
-      <td>DAG</td>
-      <td>能，因为内部实现是 sudo -u username</td>
-      <td>⽀持</td>
-      <td>⽀持</td>
-      <td>去中⼼</td>
-    </tr>
-    <tr>
-      <td>Quartz</td>
-      <td>Java</td>
-      <td>Java</td>
-      <td>不⽀持</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
+      <td>2</td>
+      <td>publisher broker subscriber</td>
+      <td>exactly once</td>
     </tr>
   </tbody>
 </table>
+
+<p>will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线</p>
+
+<p>那么如何知道消费端是否掉线呢？ connectionLost 方法</p>
+
+<p>延迟消息： <a href="https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html">https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html</a></p>
+
+<p>特定的topic格式：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/{DelayInterval}/{TopicName}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
+$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
+$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
+</code></pre></div></div>
+
+<p>java代码： <a href="https://github.com/gongchangyou/mqtt">https://github.com/gongchangyou/mqtt</a></p>
 
 
         </div>
@@ -255,23 +271,18 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/xxl-job">Apr 25, 2022 - xxl-job</a></h1>
+        <h1><a href="/2022/05/monitor">May 4, 2022 - monitor</a></h1>
         
         <div class="content">
-            <h1 id="xxl-job">Xxl-job</h1>
+            <h1 id="业务监控">业务监控</h1>
 
-<p>github : <a href="https://github.com/xuxueli/xxl-job">https://github.com/xuxueli/xxl-job</a></p>
+<p><a href="https://blog.51cto.com/jackl/2797593">https://blog.51cto.com/jackl/2797593</a></p>
 
-<p>quick start: <a href="https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0">https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0</a></p>
+<p>Statsd + Graphite  +  Grafana</p>
 
-<p>在 ScriptJobHandler 中</p>
+<p>数据收集，上报 ,  展示, 推荐UDP连接</p>
 
-<p><img src="/images/202204/WechatIMG122.png" alt="" width="800" /></p>
-
-<p>ScriptUtil ，在worker的服务器上执行命令</p>
-
-<p><img src="/images/202204/WechatIMG123.png" alt="" width="800" /></p>
-
+<p>做的好还可以有报警（手机锁屏推送 + 邮件提醒）</p>
 
         </div>
     </div>
@@ -284,7 +295,7 @@
         <a class="btn btn-default" href="/page3" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 4 of 44</span>
+  <span class="page_number ">Page: 4 of 45</span>
   
     <a class="btn btn-default" href="/page5" class="next">Older</a>
   

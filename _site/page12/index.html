@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
+        
+          <li><a href="/2022/05/CAS">cas</a></li>
+        
+          <li><a href="/2022/05/Disruptor">disruptor</a></li>
+        
           <li><a href="/2022/05/swagger">swagger</a></li>
         
           <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
-        
-          <li><a href="/2022/05/maven_plugin">maven plugin</a></li>
-        
-          <li><a href="/2022/05/c++">c++ starter</a></li>
-        
-          <li><a href="/2022/05/gateway">gateway</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>40</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
 			
 		
 			
@@ -139,6 +139,10 @@
 		
 			
 				<li><a href="/tag/go" title="go">go<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>3</sup></a></li>
 			
 		
 			
@@ -167,575 +171,408 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/03/gitlab-runner-docker">Mar 16, 2022 - gitlab-runner-docker</a></h1>
+        <h1><a href="/2022/03/RocketMQ-docker">Mar 23, 2022 - rocketmq-docker</a></h1>
         
         <div class="content">
-            <h1 id="gitlab-runner-docker">gitlab runner docker</h1>
+            <h1 id="rocketmq-docker-部署">RocketMQ docker 部署</h1>
 
-<h3 id="docker容器集成">docker容器集成</h3>
-
-<p><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner">https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#register-docker-runner</a></p>
-
-<p>一般来说除了shell，我们还希望集成docker容器，在docker中编译打包，并且打包成docker镜像，供k8s部署。</p>
+<p>基础术语：</p>
 
 <ol>
-  <li>注册一个新的runner，executor是docker的那种，不是上期说的shell</li>
-  <li>编辑你的.gitlab-ci.yml， 把image添加进去。</li>
+  <li>生产者(Producer)</li>
+  <li>消费者(Consumer)</li>
+  <li>主题（Topic)  一类消息的集合</li>
+  <li>生产者组（Producer Group) 这类Producer 发送同一类消息。如果发送事务消息，且原始生产者在发送后崩溃，Broker Server 会联系同一组的生产者实例提交或回溯消费</li>
+  <li>消费者组（Consumer Group) 消费同一类消息，注意同一个group的消费者必须订阅相同的topic。可以方便的负载均衡和容错</li>
+  <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
+  <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
 </ol>
 
-<p>因为我们的gitlab-runner是docker启动的，所以先进入容器</p>
+<p>参考 <a href="https://www.jianshu.com/p/706588323276">https://www.jianshu.com/p/706588323276</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it gitlab-runner bash
-</code></pre></div></div>
-
-<p>敲下面的命令</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   gitlab-runner register \
-     --url "https://gitlab.example.com/" \
-     --registration-token "PROJECT_REGISTRATION_TOKEN" \
-     --description "docker 各种描述" \
-     --executor "docker" \
-     --template-config /tmp/test-config.template.toml \ ##这行先不需要，这个是模板，每个job都会去pull里面的镜像
-     --docker-image docker:latest
-</code></pre></div></div>
-
-<p>然后跟第一期一样，去gitlab的配置界面把工程的runner设置成上述runner.</p>
-
-<h3 id="打包">打包</h3>
-
-<p>修改.gitlab-ci.yml, 下面的这个image:maven:3-jdk-11 会保留在runner中，等下次再打包的时候就不会重新pull了</p>
-
-<p>一个springboot项目打包时间约4m,因为是在容器内打包， pom里面的依赖还是要重新下载一遍. TODO 看看能否通过数据卷映射的方式把 <a href="https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml">https://stackoverflow.com/questions/39004369/how-do-i-mount-a-volume-in-a-docker-container-in-gitlab-ci-yml</a> 下载好的依赖映射进容器，这样就无需重新下载了,  加速打包过程。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
-  - build
-  - publish
-  - deploy
-
-#打包
-build-job:
-  stage: build
-  image: maven:3-jdk-11
-#  script: "mvn package -B"
-  script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-    - mvn package -B
-  artifacts:
-    paths:
-      - target/*.jar
-</code></pre></div></div>
-
-<h3 id="上传docker镜像">上传docker镜像</h3>
-
-<p>在.gitlab-ci.yml中添加如下配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>publish:
-  stage: publish
-  only:
-    - master
-  image: docker:19.03.14
-  services:
-    - name: docker:19.03.14-dind
-      alias: docker
-      command: ["--insecure-registry=172.16.102.20:5005"]
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA -f Dockerfile .
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/preprocess:$CI_COMMIT_SHORT_SHA
-
-</code></pre></div></div>
-
-<p>问题1：  msg=”failed to dial gRPC: cannot connect to the Docker daemon. Is ‘docker daemon’ running on this host?: dial tcp: lookup docker on 10.10.10.12:53: no such host”</p>
-
-<p><img src="/images/202203/WechatIMG54.png" alt="" width="800" /></p>
-
-<p>往上翻到一个warning，应该是dind service没成功启动</p>
-
-<p><img src="/images/202203/WechatIMG55.png" alt="" width="800" /></p>
-
-<p>解决1：<a href="https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544">https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1544</a> 这篇文章说 要加个参数 “privileged = true” 改了之后重启gitlab-runner</p>
-
-<p>问题2： Cannot connect to the Docker daemon at tcp://docker:2375. Is the docker daemon running?</p>
-
-<p><img src="/images/202203/WechatIMG56.png" alt="" width="800" /></p>
-
-<p>解决2： 害得是业界良心啊 <a href="https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem">https://stackoverflow.com/questions/61105333/cannot-connect-to-the-docker-daemon-at-tcp-localhost2375-is-the-docker-daem</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> services:
-    - name: docker:19.03.14-dind
-      alias: docker-dind #这个别名下面有用
-      command: ["--insecure-registry=172.16.102.20:5005"]
-  variables:
-    # Tell docker CLI how to talk to Docker daemon; see
-    # https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker-executor
-    DOCKER_HOST: tcp://docker-dind:2375/
-    # Use the overlayfs driver for improved performance:
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-</code></pre></div></div>
-
-<h3 id="部署">部署</h3>
-
-<p>现在docker镜像已经打包并上传好了。如何配置 .gitlab-ci.yml 启动他呢？</p>
-
-<p>网上很多文章，都是本机启动 docker run,类似如下配置， 这样都是单机的。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>stages:
-  - deploy
-
-docker-deploy:
-  stage: deploy  # 执行Job内容
-  script:    # 通过Dockerfile生成cicd-demo镜像
-    - docker build -t cicd-demo .    # 删除已经在运行的容器
-    - if [ $(docker ps -aq --filter name= cicd-demo) ]; then docker rm -f cicd-demo;fi
-    # 通过镜像启动容器，并把本机8000端口映射到容器8000端口
-    - docker run -d -p 8000:8000 --name cicd-demo cicd-demo
-  tags:    # 执行Job的服务器
-    - kun
-  only:    # 只有在master分支才会执行
-    - master
-</code></pre></div></div>
-
-<p>我们线上环境肯定是分布式的，那我们如何将gitlab 集成k8s呢？</p>
-
-<ol>
-  <li>
-    <p>先在gitlab添加 k8s cluster  <img src="/images/202203/WechatIMG57.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>用k8s 设置deployment  neuroviz-server-java  TODO 这个deployment.yaml不好写啊</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. kubectl create deployment neuroviz-server-java 
-2. kubectl expose deployment neuroviz-server-java --type=NodePort --port=8090 --target-port=8080
-3. kubectl get services neuroviz-server-java
-   
-   
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>把.gitlab-ci.yml 加上如下配置,  重点是 set image 命令 <a href="http://docs.kubernetes.org.cn/670.html#i-2">http://docs.kubernetes.org.cn/670.html#i-2</a></p>
-  </li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deploy:
-  only:
-    - master
-  stage: deploy
-  image:     
-    name: bitnami/kubectl:latest
-    entrypoint: [""]
-  script:
-    - export HOME=/tmp
-    - kubectl config set-cluster k8s --server=$K8S_SERVER --certificate-authority=$K8S_CERT --embed-certs=true
-    - kubectl config set-credentials k8s-gitlab --token=$K8S_TOKEN
-    - kubectl config set-context k8s --cluster=k8s --user=k8s-gitlab
-    - kubectl config use-context k8s
-    - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
-
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
-        
-        <div class="content">
-            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
-
-<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
-
-<p>上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好</p>
-
-<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
-
-<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
-
-<p>测试服务器8核,  线上环境会更好</p>
-
-<p>10000个点热力图40ms</p>
-
-<p>1000000 个点 热力图, 不测了。直接上7kw个点</p>
-
-<p>7kw 个点 热力图</p>
-
-<p>搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。</p>
-
-<p>搜索100*100的矩形， 首次查询10-11s.</p>
-
-<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。</p>
-
-<p><img src="/images/202203/WechatIMG51.png" alt="" width="800" /></p>
-
-<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
-{"persistent": {"search.max_buckets": 2000000}}
-</code></pre></div></div>
-
-<p>现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。</p>
-
-<p><img src="/images/202203/WechatIMG50.png" alt="" width="800" /></p>
-
-<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
-        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
-        &lt;java.version&gt;11&lt;/java.version&gt;
-    &lt;/properties&gt;
-</code></pre></div></div>
-
-<p>问题2： Missing [X-Elastic-Product] header.</p>
-
-<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
-
-<p>问题3：  返回值大于100M</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
-
-</code></pre></div></div>
-
-<p>解决3:  别人的解决方案 <a href="https://www.cnblogs.com/wwjj4811/p/15261125.html">https://www.cnblogs.com/wwjj4811/p/15261125.html</a></p>
-
-<p>解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
-     * 保留小数点后4位
-     */
-    private String decimal(float x){
-        return String.format("%.4f", x);
-    }
-</code></pre></div></div>
-
-<p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
-
-<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
-{
-  "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_bounding_box": {
-          "location": {
-            "top_left": {
-              "lat": 400,
-              "lon": 100
-            },
-            "bottom_right": {
-              "lat": 30,
-              "lon": 71.12
-            }
-          }
-        }
-      }
-    }
-  }
-}
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "error" : {
-    "root_cause" : [
-      {
-        "type" : "query_shard_exception",
-        "reason" : "couldn't validate latitude/ longitude values",
-        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
-        "index" : "map_geo"
-      }
-    ],
-    "type" : "search_phase_execution_exception",
-    "reason" : "all shards failed",
-    "phase" : "query",
-    "grouped" : true,
-    "failed_shards" : [
-      {
-        "shard" : 0,
-        "index" : "map_geo",
-        "node" : "h6XPf8XwQla0HPzsoZa4KA",
-        "reason" : {
-          "type" : "query_shard_exception",
-          "reason" : "couldn't validate latitude/ longitude values",
-          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
-          "index" : "map_geo",
-          "caused_by" : {
-            "type" : "query_validation_exception",
-            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
-          }
-        }
-      }
-    ]
-  },
-  "status" : 400
-}
-
-</code></pre></div></div>
-
-<p>如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。</p>
-
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
-        
-        <div class="content">
-            <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
-
-<h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
-
-<ol>
-  <li>
-    <p>docker pull</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull docker.elastic.co/kibana/kibana:8.1.0
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>docker-compose.yml</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2.2'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '3.5'
 services:
-  node01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-    container_name: node01
-    environment:
-      - node.name=node01
-      - cluster.name=es-cluster-7
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms12G -Xmx12G"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+  rmqnamesrv:
+    image: foxiswho/rocketmq:server
+    container_name: rmqnamesrv
+    ports:
+      - 9876:9876
     volumes:
-      - es-data01:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
     networks:
-      - es-network
-   
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.1.0
+        rmq:
+          aliases:
+            - rmqnamesrv
+
+  rmqbroker:
+    image: foxiswho/rocketmq:broker
+    container_name: rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
+      - ./data/brokerconf:/etc/rocketmq
     environment:
-      ELASTICSEARCH_HOSTS: http://node01:9200
-    ports:
-      - 5601:5601
-    networks:
-      - es-network
+        NAMESRV_ADDR: "rmqnamesrv:9876"
+        JAVA_OPTS: " -Duser.home=/opt"
+        JAVA_OPT_EXT: "-server -Xms128m -Xmx128m -Xmn128m"
+    #command: mqbroker -c /etc/rocketmq/broker.conf
     depends_on:
-      - node01
-   
-volumes:
-  es-data01:
-    driver: local
-   
+      - rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - rmqbroker
+
+  rmqconsole:
+    image: apacherocketmq/rocketmq-dashboard
+    container_name: rmqdashboard
+    ports:
+      - 8080:8080
+    environment:
+        JAVA_OPTS: "-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+    depends_on:
+      - rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - rmqconsole
+
 networks:
-  es-network:
+  rmq:
+    name: rmq
     driver: bridge
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <blockquote>
-      <p>docker-compose up</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>浏览器 访问 http://localhost:5601/</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
-
-<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html</a></p>
-
-<p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
-
-<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
-
-<p>可以点击inspect 看request 语句</p>
-
-<p><img src="/images/202203/WechatIMG49.png" alt="" width="800" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET users/_search 
-{
-  "aggs": {
-    "2": {
-      "terms": {
-        "field": "country.keyword",
-        "order": {
-          "_count": "desc"
-        },
-        "size": 2
-      },
-      "aggs": {
-        "3": {
-          "terms": {
-            "field": "age",
-            "order": {
-              "_count": "desc"
-            },
-            "size": 2
-          }
-        }
-      }
-    }
-  },
-  "size": 0,
-  "fields": [],
-  "script_fields": {},
-  "stored_fields": [
-    "*"
-  ],
-  "_source": {
-    "excludes": []
-  },
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "match_all": {}
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}
 </code></pre></div></div>
 
-<p>坐标系的热力图的 query</p>
+<p>sudo vi ./data/brokerconf/broker.conf</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get users/_search
-{
-  "aggs": {
-    "2": {
-      "range": {
-        "field": "age",
-        "ranges": [
-          {
-            "to": 10,
-            "from": 0
-          },
-          {
-            "to": 20,
-            "from": 10
-          },
-          {
-            "to": 30,
-            "from": 20
-          },
-          {
-            "to": 37,
-            "from": 30
-          }
-        ],
-        "keyed": true
-      },
-      "aggs": {
-        "2": {
-          "range": {
-            "field": "age",
-            "ranges": [
-              {
-                "to": 10,
-                "from": 0
-              },
-              {
-                "to": 20,
-                "from": 10
-              },
-              {
-                "to": 30,
-                "from": 20
-              },
-              {
-                "to": 40,
-                "from": 30
-              }
-            ],
-            "keyed": true
-          }
-        }
-      }
-    }
-  },
-  "size": 0,
-  "fields": [],
-  "script_fields": {},
-  "stored_fields": [
-    "*"
-  ],
-  "_source": {
-    "excludes": []
-  },
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "match_all": {}
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}
+
+# 所属集群名字
+brokerClusterName=DefaultCluster
+
+# broker 名字，注意此处不同的配置文件填写的不一样，如果在 broker-a.properties 使用: broker-a,
+# 在 broker-b.properties 使用: broker-b
+brokerName=broker-a
+
+# 0 表示 Master，&gt; 0 表示 Slave
+brokerId=0
+
+# nameServer地址，分号分割
+# namesrvAddr=rocketmq-nameserver1:9876;rocketmq-nameserver2:9876
+
+# 启动IP,如果 docker 报 com.alibaba.rocketmq.remoting.exception.RemotingConnectException: connect to &lt;192.168.0.120:10909&gt; failed
+# 解决方式1 加上一句 producer.setVipChannelEnabled(false);，解决方式2 brokerIP1 设置宿主机IP，不要使用docker 内部IP
+# brokerIP1=192.168.0.253
+
+# 在发送消息时，自动创建服务器不存在的topic，默认创建的队列数
+defaultTopicQueueNums=4
+
+# 是否允许 Broker 自动创建 Topic，建议线下开启，线上关闭 ！！！这里仔细看是 false，false，false
+autoCreateTopicEnable=true
+
+# 是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭
+autoCreateSubscriptionGroup=true
+
+# Broker 对外服务的监听端口
+listenPort=10911
+
+# 删除文件时间点，默认凌晨4点
+deleteWhen=04
+
+# 文件保留时间，默认48小时
+fileReservedTime=120
+
+# commitLog 每个文件的大小默认1G
+mapedFileSizeCommitLog=1073741824
+
+# ConsumeQueue 每个文件默认存 30W 条，根据业务情况调整
+mapedFileSizeConsumeQueue=300000
+
+# destroyMapedFileIntervalForcibly=120000
+# redeleteHangedFileInterval=120000
+# 检测物理文件磁盘空间
+diskMaxUsedSpaceRatio=88
+# 存储路径
+# storePathRootDir=/home/ztztdata/rocketmq-all-4.1.0-incubating/store
+# commitLog 存储路径
+# storePathCommitLog=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/commitlog
+# 消费队列存储
+# storePathConsumeQueue=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/consumequeue
+# 消息索引存储路径
+# storePathIndex=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/index
+# checkpoint 文件存储路径
+# storeCheckpoint=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/checkpoint
+# abort 文件存储路径
+# abortFile=/home/ztztdata/rocketmq-all-4.1.0-incubating/store/abort
+# 限制的消息大小
+maxMessageSize=65536
+
+# flushCommitLogLeastPages=4
+# flushConsumeQueueLeastPages=2
+# flushCommitLogThoroughInterval=10000
+# flushConsumeQueueThoroughInterval=60000
+
+# Broker 的角色
+# - ASYNC_MASTER 异步复制Master
+# - SYNC_MASTER 同步双写Master
+# - SLAVE
+brokerRole=ASYNC_MASTER
+
+# 刷盘方式
+# - ASYNC_FLUSH 异步刷盘
+# - SYNC_FLUSH 同步刷盘
+flushDiskType=ASYNC_FLUSH
+
+# 发消息线程池数量
+# sendMessageThreadPoolNums=128
+# 拉消息线程池数量
+# pullMessageThreadPoolNums=128
 </code></pre></div></div>
 
-<p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+<div style="color: #ff0000;">
+	注意上面的配置：如果宿主机无法请求到broker， 是因为ip配置 <br />
+    解决方式1: 加上一句 producer.setVipChannelEnabled(false);<br />
+    解决方式2: brokerIP1 设置宿主机IP，不要使用docker 内部IP<br />
 
-<h3 id="单独部署-es">单独部署 ES</h3>
-
-<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
-
-docker network create elastic
-
-docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-
-docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
-
-curl --cacert http_ca.crt -u elastic https://localhost:9200 
-
-输入docker run 时的password即可
+</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brokerIP1=192.168.0.253 
 </code></pre></div></div>
 
-<p>问题1： 报错</p>
+<h2 id="延迟消息">延迟消息</h2>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
-bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
+<p>一般是在header中添加 delay 信息</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"> <span class="cm">/**
+     * RabbitMQ header设置 x-delay 延迟5000ms
+     * @param msg
+     * @return
+     */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">sendMsgDelay</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">messageSource</span><span class="o">.</span><span class="na">output1</span><span class="o">().</span><span class="na">send</span><span class="o">(</span><span class="nc">MessageBuilder</span><span class="o">.</span><span class="na">withPayload</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="s">"x-delay"</span><span class="o">,</span> <span class="mi">5000</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * RocketMQ header设置 DELAY
+     * 每个延迟级别对应的延迟时间可以通过配置messageDelayLevel
+     * 默认值为“1s 5s 10s 30s 1m 2m 3m 4m 5m 6m 7m 8m 9m 10m 20m 30m 1h 2h”。
+     * 该配置属于 Broker，对所有 Topic 有效！默认的level值为 0，代表非延迟消息，超过 18 按最大值 18 计算。
+     * @param msg
+     * @return
+     */</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">sendMsgDelayViaRocketMQ</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">messageSource</span><span class="o">.</span><span class="na">output1</span><span class="o">().</span><span class="na">send</span><span class="o">(</span><span class="nc">MessageBuilder</span><span class="o">.</span><span class="na">withPayload</span><span class="o">(</span><span class="n">msg</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">MessageConst</span><span class="o">.</span><span class="na">PROPERTY_DELAY_TIME_LEVEL</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+    </code></pre></figure>
+
+<h3 id="ack机制">ack机制</h3>
+
+<p>参考文章 : <a href="https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html">https://www.baiyp.ren/RocketMQ%E6%B6%88%E8%B4%B9%E8%80%85%E4%BF%9D%E9%9A%9C.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
+            &lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
 </code></pre></div></div>
 
-<p>虚拟内存太小了。</p>
+<p>RocketMQInboundChannelAdapter 这个类，注册监听事件有两个回调，一个失败，一个成功。 所以成功的话就自动ack了,失败会重新投递.<br />
+<img src="/images/202203/WechatIMG62.png" alt="" width="800" />
+那何时算失败呢？ 那就是在消费中抛出任何异常就算失败了。
+<img src="/images/202203/WechatIMG63.png" alt="" width="800" /></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/sysctl.conf 
-vm.max_map_count=655360
+<p>在这个例子中 我做了个NPE，所以就无限reconsume了.</p>
+
+<p><img src="/images/202203/WechatIMG63.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/mongodb-geo">Mar 21, 2022 - mongodb</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb-geo搜索测评">MongoDB geo搜索测评</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/mongodb-test">https://github.com/gongchangyou/mongodb-test</a></p>
+
+<p>docker 安装MongoDB <a href="https://www.runoob.com/docker/docker-install-mongodb.html">https://www.runoob.com/docker/docker-install-mongodb.html</a></p>
+
+<p>mongodb命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>如果刚刚创建了用户，进入db操作CRUD的之前记得认证
+db.auth('admin','123456')
+
+#查看所有db
+show dbs
+
+#写入
+db.records.insertOne( {
+  id:1,
+  loc :  [ 55.5, 42.3 ]
+} )
+
+
+#find all
+db.records.find( {} )
+
+#创建地理索引
+db.records.createIndex( { "loc": "2d" } )
+
 </code></pre></div></div>
 
-<p>重启</p>
+<p>box搜索 <a href="https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0">https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.records.find( {
+   loc: { $geoWithin: { $box:  [ [ 0, 0 ], [ 100, 100 ] ] } }
+} )
 </code></pre></div></div>
+
+<p>可惜没办法搜索热力图，即多个box 一起查询。1亿数据查询速度约20ms，单个box还行。</p>
+
+<p>注意： 默认的范围是 [-180,180] ，如果需要, 可以修改起止点范围</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>删除索引
+dropIndex(”loc_2d")
+重建索引
+reIndex()
+
+创建索引
+db.records.createIndex( { "loc": "2d" } , { min : 0, max : 100000 } )
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/k8s">Mar 17, 2022 - gitlab-runner-docker</a></h1>
+        
+        <div class="content">
+            <h1 id="k8s">k8s</h1>
+
+<p>文档1 <a href="http://docs.kubernetes.org.cn/475.html">http://docs.kubernetes.org.cn/475.html</a></p>
+
+<p>文档2  <a href="https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/</a></p>
+
+<h3 id="常用的几个命令">常用的几个命令:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>查看各种对象
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose #将资源暴露为新的Kubernetes Service。在这里可以实现将宿主机的端口映射给容器,容器端口8000
+kubectl expose rc nginx --port=80 --target-port=8000 
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create # 创建一个Deployment
+$ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
+deployment "nginx-deployment" created
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Listen on port 8888 locally, forwarding to 5000 in the pod #端口转发
+kubectl port-forward mypod 8888:5000
+</code></pre></div></div>
+
+<h3 id="回退到历史版本-这个可以用jenkins做个job">回退到历史版本, 这个可以用jenkins做个job</h3>
+
+<p>现在，我们可以决定回退当前的 rollout 到之前的版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+<p>也可以使用 –revision参数指定某个历史版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment --to-revision=2
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+
+<h3 id="扩容-这个可以用jenkins做个job手动扩容">扩容, 这个可以用jenkins做个job手动扩容</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl scale deployment nginx-deployment --replicas 10
+deployment "nginx-deployment" scaled
+
+$ kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+deployment "nginx-deployment" autoscaled
+</code></pre></div></div>
+
+<h3 id="灰度或者蓝绿发布-可以使用ingress">灰度或者蓝绿发布 可以使用ingress</h3>
+
+<p>命令表 <a href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
+
+<p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#进入minikube终端
+minikube ssh 
+#如果docker pull 拉镜像太慢的话 可以直接进入终端 docker pull XXX
+</code></pre></div></div>
+
+<p>问题1：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exiting due to DRV_AS_ROOT: The "docker" driver should not be used with root privileges.
+</code></pre></div></div>
+
+<p>解决1:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start --force --driver=docker
+</code></pre></div></div>
+
+<p>问题2: k8s.gcr.io/echoserver:1.4 这个镜像拉不到，导致pod启动失败</p>
+
+<p>解决2： <a href="https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91">https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods  -o wide
+查看pod状态是 ImagePullBackOff
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube ssh
+docker pull cilium/echoserver #换个镜像
+</code></pre></div></div>
+
+<p>问题3:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>an error occurred forwarding 7080 -&gt; 8080: error forwarding port 8080 to pod b86addc13b414f05be12d736ee1904cc02d78c6e7e1889c6e45a76c3a1563e58, uid : exit status 1: 2022/03/18 07:14:31 socat[12900] E connect(5, AF=2 127.0.0.1:8080, 16): Connection refused
+</code></pre></div></div>
+
+<p>解决3: <a href="https://github.com/kubernetes/minikube/issues/13176">https://github.com/kubernetes/minikube/issues/13176</a> 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。</p>
+
+<p>问题4: ❌  Exiting due to DRV_NOT_HEALTHY: Found driver(s) but none were healthy. See above for suggestions how to fix installed drivers.  上面会给出解决方案，就是把用户加到docker组</p>
+
+<p>解决4:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo usermod -aG docker $USER &amp;&amp; newgrp docker
+</code></pre></div></div>
+
+<p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
+
+<p>主要步骤：</p>
+
+ 	1.  创建两个yaml文件。 分别对应RS和Service .kubectl create 
+ 	2. 创建Ingress Controller. 相当于是个内置的nginx，这样不需要外部配置nginx.conf
+ 	3. 创建Ingress ,定义规则，将不同域名的路由对应到不同的service
+ 	4. 测试效果，请求试试
 
 
         </div>
@@ -749,7 +586,7 @@ vm.max_map_count=655360
         <a class="btn btn-default" href="/page11" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 12 of 44</span>
+  <span class="page_number ">Page: 12 of 45</span>
   
     <a class="btn btn-default" href="/page13" class="next">Older</a>
   

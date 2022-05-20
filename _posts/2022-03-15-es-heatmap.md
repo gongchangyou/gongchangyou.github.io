@@ -3,8 +3,8 @@ layout: post
 title: "es-heatmap"
 date: 2022-03-15 11:05:06 +0800
 comments: true
-category: mysql
-tag: [mysql]
+category: elasticsearch
+tag: [elasticsearch]
 ---
 
 #  ElasticSearch 热力图性能测评
