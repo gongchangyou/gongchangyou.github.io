@@ -284,6 +284,38 @@ $delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 h
 
 <p>做的好还可以有报警（手机锁屏推送 + 邮件提醒）</p>
 
+<ol>
+  <li>docker 部署 , 如果本地8001端口被占可以更改下, 时区搞成本地的，否则可能会有时差.</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d\
+ --name graphite\
+ --restart=always\
+ -p 8001:80\
+ -p 2003-2004:2003-2004\
+ -p 2023-2024:2023-2024\
+ -p 8125:8125/udp\
+ -p 8126:8126\
+ -v /etc/localtime:/etc/localtime\
+ graphiteapp/graphite-statsd
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>udp 上报 数据</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
+</code></pre></div>    </div>
+  </li>
+  <li>打开本地graphic dashboard  localhost:8001</li>
+  <li>记得把原先这个框里的东西删干净，否则有个心跳的统计数据几千万 干扰查看数据，然后把你要监控的指标add进去即可
+<img src="/images/202205/WechatIMG190.png" alt="" width="800" /></li>
+  <li>然后把auto-refresh点亮就可以看到数据了
+<img src="/images/202205/WechatIMG191.png" alt="" width="800" /></li>
+</ol>
+
+<p>除了count以外还有些别的统计类型 参考文章: <a href="https://www.jianshu.com/p/4c2df525b3d6">https://www.jianshu.com/p/4c2df525b3d6</a></p>
+
         </div>
     </div>
 </div>
