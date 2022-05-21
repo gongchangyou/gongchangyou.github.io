@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/transactional">transactional</a></li>
+        
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
           <li><a href="/2022/05/swagger">swagger</a></li>
-        
-          <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
 			
 		
 			
@@ -169,6 +169,90 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/gitlab-runner">Mar 4, 2022 - gitlab-runner</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-cicd">gitlab CI/CD</h1>
+
+<p>持续集成和部署，其实我更倾向于使用jenkins，因为可以自由编写脚本和手动触发，回滚也比较方便。</p>
+
+<p>gitlab CI/CD就是把部署的脚本 统一到代码仓库。</p>
+
+<p>但是因为现有项目使用 CI/CD 所以还是先熟悉起来。</p>
+
+<p><a href="https://docs.gitlab.com/ee/ci/">官方文档</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/105157319">https://zhuanlan.zhihu.com/p/105157319</a></p>
+
+<p>runner分两种，shared runner / specific runner 看名字就知道了，前者是很多工程共享的runner，后者跟工程是1对1的。</p>
+
+<p>我们先试试看 shared runner. 先打开 http://gitlab.cebsit.ac.cn/admin/runners</p>
+
+<p><img src="/images/202203/1646634355101.jpg" alt="pgadmin" width="800" /></p>
+
+<p>注册的时候把url 和token写进去</p>
+
+<p>官方文档写的很清楚了 <a href="https://docs.gitlab.com/runner/install/docker.html">https://docs.gitlab.com/runner/install/docker.html</a></p>
+
+<ol>
+  <li>docker 启动
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -d --name gitlab-runner --restart always \
+     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     gitlab/gitlab-runner:latest
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>注册 runner ，这样gitlab就知道让这台服务器执行job了</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>给现有的工程添加runner:
+<img src="/images/202203/WechatIMG53.png" alt="pgadmin" width="800" /></p>
+
+<p>测试.gitlab-ci.yml文件 CI-Lint 按钮。 <a href="http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint">http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint</a></p>
+
+<p>问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”</p>
+
+<p><img src="/images/202203/WechatIMG37.png" alt="pgadmin" width="800" /></p>
+
+<p>问题2： remote: You are not allowed to download code from this project.</p>
+
+<p><img src="/images/202203/WechatIMG38.jpeg" alt="pgadmin" width="800" /></p>
+
+<p>尝试去docker容器中新增</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen -t RSA
+</code></pre></div></div>
+<p>把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!</p>
+
+<p>注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml</p>
+
+<p>问题3 ：</p>
+
+<p>偶发 报错 ，重试几次又好了</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
+fatal: could not set 'core.repositoryformatversion' to '0'
+Cleaning up project directory and file based variables
+00:00
+ERROR: Job failed: exit status 1
+</code></pre></div></div>
+
+<p>有看到网上这么解，没试过。 <a href="https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0">https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --file=.git/config core.repositoryformatversion 1  
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/postgis">Mar 2, 2022 - postgis</a></h1>
@@ -371,36 +455,6 @@ host all all 172.17.0.4/24 md5
 
 <p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="800" /></p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/grafana">Feb 25, 2022 - grafana</a></h1>
-        
-        <div class="content">
-            <h1 id="grafana">grafana</h1>
-
-<p><a href="https://github.com/grafana/grafana/">https://github.com/grafana/grafana/</a></p>
-
-<p>一个开源的系统监控软件，尤其是GPU和slurm的监控</p>
-
-<p><a href="https://github.com/grafana/grafana/issues/45710">https://github.com/grafana/grafana/issues/45710</a></p>
-
-<p>看起来纵坐标和tooltip上的数值不太一样</p>
-
-<p>图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json</p>
-
-<p>grep  GPU Power Usage</p>
-
-<p>stack 改成 false</p>
-
-<p>重启  grafana 。</p>
-
-<p>root        3180  0.0  0.0 2380228 59904 ?       Ssl  Feb16   1:54 /usr/bin/docker run –rm –network host –name docker.grafana.service -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana grafana/grafana
-472         3925  0.1  0.0 796740 70028 ?        Ssl  Feb16  15:57 grafana-server –homepath=/usr/share/grafana –config=/etc/grafana/grafana.ini –packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins</p>
 
         </div>
     </div>

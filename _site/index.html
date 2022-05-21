@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/transactional">transactional</a></li>
+        
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
           <li><a href="/2022/05/swagger">swagger</a></li>
-        
-          <li><a href="/2022/05/OWASP">java项目 依赖检查</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>42</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
 			
 		
 			
@@ -169,6 +169,20 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/transactional">May 21, 2022 - transactional</a></h1>
+        
+        <div class="content">
+            <h1 id="transactional注解">Transactional注解</h1>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/ES-IK">May 20, 2022 - es 中文分词</a></h1>
@@ -341,153 +355,6 @@
 <blockquote>
   <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
 </blockquote>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
-        
-        <div class="content">
-            <h1 id="disruptor">Disruptor</h1>
-
-<p>Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)</p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/disruptor">https://github.com/gongchangyou/disruptor</a></p>
-
-<ol>
-  <li>
-    <p>Pom.xml</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.lmax&lt;/groupId&gt;
-            &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
-            &lt;version&gt;3.4.4&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>单生产者，单消费者</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
-     * 单生产者 单消费者
-     */
-    @Test
-    void contextLoads() {
-        // 队列中的元素
-        class Element {
-   
-            private int value;
-   
-            public int get(){
-                return value;
-            }
-   
-            public void set(int value){
-                this.value= value;
-            }
-   
-        }
-   
-        // 生产者的线程工厂
-        ThreadFactory threadFactory = new ThreadFactory(){
-            int i = 0;
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "simpleThread " + i++);
-            }
-        };
-   
-        // RingBuffer生产工厂,初始化RingBuffer的时候使用
-        EventFactory&lt;Element&gt; factory = new EventFactory&lt;Element&gt;() {
-            @Override
-            public Element newInstance() {
-                return new Element();
-            }
-        };
-   
-        // 处理Event的handler
-        EventHandler&lt;Element&gt; handler = new EventHandler&lt;Element&gt;(){
-            @Override
-            public void onEvent(Element element, long sequence, boolean endOfBatch)
-            {
-                log.info("element={}, sequence={}, endOfBatch={}", element.get(), sequence, endOfBatch);
-//                System.out.println("Element: " + element.get());
-            }
-        };
-   
-        // 阻塞策略
-        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
-   
-        // 指定RingBuffer的大小
-        int bufferSize = 16;
-   
-        // 创建disruptor，采用单生产者模式
-        Disruptor&lt;Element&gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
-   
-        // 设置EventHandler
-        disruptor.handleEventsWith(handler);
-   
-        // 启动disruptor的线程
-        disruptor.start();
-   
-        RingBuffer&lt;Element&gt; ringBuffer = disruptor.getRingBuffer();
-   
-        for (int l = 0; true; l++) {
-            // 获取下一个可用位置的下标
-            long sequence = ringBuffer.next();
-            try {
-                // 返回可用位置的元素
-                Element event = ringBuffer.get(sequence);
-                // 设置该位置元素的值
-                event.set(l);
-            } finally {
-                ringBuffer.publish(sequence);
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>问题1： 有不同的消费者依赖怎么办？
-回答1：  关键字 then</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
-        disruptor.handleEventsWith(new OrderHandler1("1")).then(new OrderHandler1("2"), new OrderHandler1("3")).then(new OrderHandler1("4"));
-       
-</code></pre></div></div>
-
-<p>问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
-回答2:  handleEventsWithWorkerPool</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>问题3： 希望不同的消费者独立消费
-回答3： handleEventsWith 多个handler即可</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> disruptor.handleEventsWith(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>官方文档: <a href="https://lmax-exchange.github.io/disruptor/disruptor.html">https://lmax-exchange.github.io/disruptor/disruptor.html</a></p>
-
-<p>参考文章: <a href="https://tech.meituan.com/2016/11/18/disruptor.html">https://tech.meituan.com/2016/11/18/disruptor.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8544700.html">https://www.cnblogs.com/pku-liuqiang/p/8544700.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8532737.html">https://www.cnblogs.com/pku-liuqiang/p/8532737.html</a></p>
-
-<p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
-
-<p>源码解析：</p>
-
 
         </div>
     </div>
