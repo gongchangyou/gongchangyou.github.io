@@ -216,6 +216,35 @@
 
 <p>除了count以外还有些别的统计类型 参考文章: <a href="https://www.jianshu.com/p/4c2df525b3d6">https://www.jianshu.com/p/4c2df525b3d6</a></p>
 
+<h3 id="因为graphite-dashboard不是很好看我们可以把数据展示集成到grafana中">因为graphite dashboard不是很好看，我们可以把数据展示集成到grafana中</h3>
+
+<ol>
+  <li>docker启动grafana
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 3000:3000 grafana/grafana
+</code></pre></div>    </div>
+  </li>
+  <li>localhost:3000 默认用户名密码都是admin</li>
+  <li>配置graphite数据库，这里我是用两个docker容器 启动graphite和grafana。所以这里需要配置宿主机ip， 防止容器间的网络无法访问</li>
+</ol>
+
+<p><img src="/images/202205/WechatIMG192.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG193.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG194.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG199.png" alt="" width="800" /></p>
+
+<hr />
+
+<p>如何添加指标？
+<img src="/images/202205/WechatIMG200.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG201.png" alt="" width="800" />
+duplicate出来之后记得unlink，相当于是拷贝一份引用，一改全改了。
+<img src="/images/202205/WechatIMG202.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG203.png" alt="" width="800" /></p>
+
+<p>在这里设置指标之后，点击apply即可
+<img src="/images/202205/WechatIMG204.png" alt="" width="800" /></p>
+
+
         </div>
     </div>
 </div>
