@@ -219,8 +219,8 @@
 <h3 id="因为graphite-dashboard不是很好看我们可以把数据展示集成到grafana中">因为graphite dashboard不是很好看，我们可以把数据展示集成到grafana中</h3>
 
 <ol>
-  <li>docker启动grafana
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 3000:3000 grafana/grafana
+  <li>docker启动grafana , 建议 用 -u root 用root身份启动，因为方便修改grafana.ini, 这个文件需要root权限.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name grafana -p 3000:3000 -u root grafana/grafana
 </code></pre></div>    </div>
   </li>
   <li>localhost:3000 默认用户名密码都是admin</li>
@@ -245,6 +245,71 @@
 <p>在这里设置指标之后，点击apply即可
 <img src="/images/202205/WechatIMG204.png" alt="" width="800" /></p>
 
+<h3 id="设置alert">设置alert</h3>
+
+<p>1 设置报警的邮箱</p>
+
+<p>配置smtp， 发件服务器我选择了qq邮箱</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   	  docker exec -it grafana bash
+   	  
+   	  vi /etc/grafana/grafana.ini
+   	  
+   	  //找到smtp那部分 修改成
+
+   	   #################################### SMTP / Emailing ##########################
+   	  [smtp]
+   	  enabled = true
+   	  host = smtp.qq.com:465
+   	  user = laoshubendan@qq.com
+      # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
+   	     password = xxxx #这里写qq的授权码
+   	     ;cert_file =
+   	     ;key_file =
+   	     ;skip_verify = false
+   	     from_address = laoshubendan@qq.com
+   	     ;from_address = admin@grafana.localhost
+   	     from_name = Grafana
+   	     # EHLO identity in SMTP dialog (defaults to instance_name)
+   	     ;ehlo_identity = dashboard.example.com
+   	     # SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
+   	     ;startTLS_policy = NoStartTLS
+</code></pre></div></div>
+   	<img src="/images/202205/WechatIMG212.png" alt="" width="800" />
+
+<hr />
+
+<p>2 在dashboard配置 contact points， 选择email, 收件人邮箱配置好
+<img src="/images/202205/WechatIMG218.png" alt="" width="800" /></p>
+
+<hr />
+
+<p>3 规则配置， 在这里可以设置各个规则的label,
+   <img src="/images/202205/WechatIMG219.png" alt="" width="800" /></p>
+
+<p><img src="/images/202205/WechatIMG215.jpeg" alt="" width="800" /></p>
+
+<p><img src="/images/202205/WechatIMG214.png" alt="" width="800" /></p>
+
+<p><img src="/images/202205/WechatIMG216.png" alt="" width="800" /></p>
+
+<hr />
+
+<p>4 提醒策略 绑定规则和报警邮箱 (notifacatinon policies)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里可以匹配label ,利用label来区分报警类别
+</code></pre></div></div>
+
+<p><img src="/images/202205/WechatIMG213.png" alt="" width="800" /></p>
+
+<hr />
+
+<p>5 多次上报命令</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
+</code></pre></div></div>
+
+<p>收到报警邮件啦 
+      <img src="/images/202205/WechatIMG217.png" alt="" width="800" /></p>
 
         </div>
     </div>
