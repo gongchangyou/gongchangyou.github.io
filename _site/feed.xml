@@ -12,6 +12,79 @@
 
 &lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/transactional&quot;&gt;https://github.com/gongchangyou/transactional&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;其实 Mybatis plus中的 ServiceImpl 的save操作都已经是事务级别的了, 我们来试试，如果取消了这个transactional注解会发生什么.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG226.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;比如现在有10个线程，同时更新id=1 的row .value ++ ，结果肯定不是10&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));
+
+ @Test
+    void unThreadSafe() {
+        for (int i = 0; i &amp;lt; 10;i++) {
+            threadPoolExecutor.submit(() -&amp;gt; {
+                val model = testMapper.selectById(1L);
+            log.info(&quot;start value={}&quot;, model.getValue());
+            val ret = testMapper.updateById(com.mouse.transactional.repository.db.model.Test
+                        .builder()
+                        .id(1L)
+                        .value(model.getValue() + 1)
+                        .build()
+                );
+                log.info(&quot;ret={}&quot;, ret);
+            });
+        }
+
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如何保证呢？&lt;/p&gt;
+
+&lt;p&gt;1 . 我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
+@Service
+public class TestService extends ServiceImpl&amp;lt;TestMapper, Test&amp;gt; implements IService&amp;lt;Test&amp;gt; {
+
+    @Transactional
+    public void incr(long id) {
+        val model = baseMapper.selectOne(new LambdaQueryWrapper&amp;lt;Test&amp;gt;()
+                .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
+                .last(&quot; for update&quot;));
+        log.info(&quot;value={}&quot;, model.getValue());
+        model.setValue(model.getValue() + 1);
+        updateById(model);
+    }
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;测试一下, 这回成了，test表的value正好加了10.
+```
+  private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;@Test
+    void TransactionalUpdate() {
+        for (int i = 0; i &amp;lt; 10;i++) {
+            threadPoolExecutor.submit(() -&amp;gt; {
+                testService.incr(1L);
+            });
+        }&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    try {
+        Thread.sleep(2000L);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+} ```
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Mon, 23 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/transactional</link>
