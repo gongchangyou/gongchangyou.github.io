@@ -246,9 +246,9 @@ def getPackageName(dir) {
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_doc/1
 {
   &quot;id&quot;: 1,
-  &quot;name&quot;: &quot;什么样的人最容易犯罪？&quot;,
+  &quot;name&quot;: &quot;文档名称&quot;,
   &quot;title&quot;: &quot;中文标题&quot;,
-  &quot;description&quot;:&quot;脸上有马赛克的人，和不要脸的人&quot;,
+  &quot;description&quot;:&quot;文档描述&quot;,
   &quot;type&quot;:&quot;科普&quot;,
   &quot;score&quot;: 96
 }
