@@ -56,41 +56,46 @@ tag: [java]
 
 如何保证呢？ 
 
-1 . 我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解
+1. 我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解
 
-```
-@Slf4j
-@Service
-public class TestService extends ServiceImpl<TestMapper, Test> implements IService<Test> {
+    ```
+    @Slf4j
+    @Service
+    public class TestService extends ServiceImpl<TestMapper, Test> implements IService<Test> {
 
-    @Transactional
-    public void incr(long id) {
-        val model = baseMapper.selectOne(new LambdaQueryWrapper<Test>()
-                .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
-                .last(" for update"));
-        log.info("value={}", model.getValue());
-        model.setValue(model.getValue() + 1);
-        updateById(model);
+        @Transactional
+        public void incr(long id) {
+            val model = baseMapper.selectOne(new LambdaQueryWrapper<Test>()
+                    .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
+                    .last(" for update"));
+            log.info("value={}", model.getValue());
+            model.setValue(model.getValue() + 1);
+            updateById(model);
+        }
+
     }
+    ```
 
-}
-```
 2. 测试一下, 这回成了，test表的value正好加了10.
-```
-     private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
 
- @Test
-    void TransactionalUpdate() {
-        for (int i = 0; i < 10;i++) {
-            threadPoolExecutor.submit(() -> {
-                testService.incr(1L);
-            });
-        }
+    ```
+         private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
 
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        @Test
+        void TransactionalUpdate() {
+            for (int i = 0; i < 10;i++) {
+                threadPoolExecutor.submit(() -> {
+                    testService.incr(1L);
+                });
+            }
+
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-    }
-```
+    ```
+
+3. 当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
+![]({{ site.baseurl}}/images/202205/WechatIMG227.png){: width="800" }

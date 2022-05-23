@@ -212,45 +212,53 @@
 
 <p>如何保证呢？</p>
 
-<p>1 . 我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
-@Service
-public class TestService extends ServiceImpl&lt;TestMapper, Test&gt; implements IService&lt;Test&gt; {
-
-    @Transactional
-    public void incr(long id) {
-        val model = baseMapper.selectOne(new LambdaQueryWrapper&lt;Test&gt;()
-                .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
-                .last(" for update"));
-        log.info("value={}", model.getValue());
-        model.setValue(model.getValue() + 1);
-        updateById(model);
-    }
-
-}
-</code></pre></div></div>
 <ol>
-  <li>测试一下, 这回成了，test表的value正好加了10.
-```
-  private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));</li>
+  <li>
+    <p>我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> @Slf4j
+ @Service
+ public class TestService extends ServiceImpl&lt;TestMapper, Test&gt; implements IService&lt;Test&gt; {
+
+     @Transactional
+     public void incr(long id) {
+         val model = baseMapper.selectOne(new LambdaQueryWrapper&lt;Test&gt;()
+                 .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
+                 .last(" for update"));
+         log.info("value={}", model.getValue());
+         model.setValue(model.getValue() + 1);
+         updateById(model);
+     }
+
+ }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>测试一下, 这回成了，test表的value正好加了10.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));
+
+     @Test
+     void TransactionalUpdate() {
+         for (int i = 0; i &lt; 10;i++) {
+             threadPoolExecutor.submit(() -&gt; {
+                 testService.incr(1L);
+             });
+         }
+
+         try {
+             Thread.sleep(2000L);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+     }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
+<img src="/images/202205/WechatIMG227.png" alt="" width="800" /></p>
+  </li>
 </ol>
-
-<p>@Test
-    void TransactionalUpdate() {
-        for (int i = 0; i &lt; 10;i++) {
-            threadPoolExecutor.submit(() -&gt; {
-                testService.incr(1L);
-            });
-        }</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    try {
-        Thread.sleep(2000L);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-} ```
-</code></pre></div></div>
 
         </div>
     </div>

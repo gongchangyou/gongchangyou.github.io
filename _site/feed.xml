@@ -46,45 +46,53 @@
 
 &lt;p&gt;如何保证呢？&lt;/p&gt;
 
-&lt;p&gt;1 . 我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
-@Service
-public class TestService extends ServiceImpl&amp;lt;TestMapper, Test&amp;gt; implements IService&amp;lt;Test&amp;gt; {
-
-    @Transactional
-    public void incr(long id) {
-        val model = baseMapper.selectOne(new LambdaQueryWrapper&amp;lt;Test&amp;gt;()
-                .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
-                .last(&quot; for update&quot;));
-        log.info(&quot;value={}&quot;, model.getValue());
-        model.setValue(model.getValue() + 1);
-        updateById(model);
-    }
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;ol&gt;
-  &lt;li&gt;测试一下, 这回成了，test表的value正好加了10.
-```
-  private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; @Slf4j
+ @Service
+ public class TestService extends ServiceImpl&amp;lt;TestMapper, Test&amp;gt; implements IService&amp;lt;Test&amp;gt; {
+
+     @Transactional
+     public void incr(long id) {
+         val model = baseMapper.selectOne(new LambdaQueryWrapper&amp;lt;Test&amp;gt;()
+                 .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
+                 .last(&quot; for update&quot;));
+         log.info(&quot;value={}&quot;, model.getValue());
+         model.setValue(model.getValue() + 1);
+         updateById(model);
+     }
+
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;测试一下, 这回成了，test表的value正好加了10.&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));
+
+     @Test
+     void TransactionalUpdate() {
+         for (int i = 0; i &amp;lt; 10;i++) {
+             threadPoolExecutor.submit(() -&amp;gt; {
+                 testService.incr(1L);
+             });
+         }
+
+         try {
+             Thread.sleep(2000L);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+     }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
+&lt;img src=&quot;/images/202205/WechatIMG227.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;p&gt;@Test
-    void TransactionalUpdate() {
-        for (int i = 0; i &amp;lt; 10;i++) {
-            threadPoolExecutor.submit(() -&amp;gt; {
-                testService.incr(1L);
-            });
-        }&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    try {
-        Thread.sleep(2000L);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-} ```
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
 				<pubDate>Mon, 23 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/transactional</link>
