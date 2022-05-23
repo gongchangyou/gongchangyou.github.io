@@ -76,13 +76,13 @@
         
           <li><a href="/2022/05/transactional">transactional</a></li>
         
+          <li><a href="/2022/05/pojo-groovy">pojo</a></li>
+        
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
         
           <li><a href="/2022/05/Disruptor">disruptor</a></li>
-        
-          <li><a href="/2022/05/swagger">swagger</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>9</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
 			
 		
 			
@@ -171,12 +171,131 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/transactional">May 21, 2022 - transactional</a></h1>
+        <h1><a href="/2022/05/transactional">May 23, 2022 - transactional</a></h1>
         
         <div class="content">
             <h1 id="transactional注解">Transactional注解</h1>
 
 <p>代码仓库: <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
+        
+        <div class="content">
+            <h1 id="pojo-groovy">Pojo groovy</h1>
+
+<p>代码仓库:  <a href="https://github.com/gongchangyou/tool">https://github.com/gongchangyou/tool</a></p>
+
+<p>自动生成pojo</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.intellij.database.model.DasTable
+import com.intellij.database.util.Case
+import com.intellij.database.util.DasUtil
+
+/*
+ * Available context bindings:
+ *   SELECTION   Iterable&lt;DasObject&gt;
+ *   PROJECT     project
+ *   FILES       files helper
+ */
+
+typeMapping = [
+  (~/(?i)int/)                      : "Long",
+  (~/(?i)float|double|decimal|real/): "Double",
+  (~/(?i)datetime|timestamp/)       : "java.sql.Timestamp",
+  (~/(?i)date/)                     : "java.sql.Date",
+  (~/(?i)time/)                     : "java.sql.Time",
+  (~/(?i)/)                         : "String"
+]
+
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir -&gt;
+  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+}
+
+def generate(table, dir) {
+  def className = javaName(table.getName(), true)
+  def fields = calcFields(table)
+  def packageName = getPackageName(dir)
+  new File(dir, className + ".java").withPrintWriter { out -&gt; generate(out, className, fields, packageName, table) }
+}
+
+def generate(out, className, fields, packageName, table) {
+  out.println "package $packageName"
+  out.println ""
+  out.println ""
+  out.println "import com.baomidou.mybatisplus.annotation.IdType;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableId;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableName;\n" +
+          "import lombok.AllArgsConstructor;\n" +
+          "import lombok.Builder;\n" +
+          "import lombok.Data;\n" +
+          "import lombok.NoArgsConstructor;"
+    out.println ""
+    out.println "@Builder\n" +
+            "@AllArgsConstructor\n" +
+            "@NoArgsConstructor\n" +
+            "@Data\n" +
+            "@TableName(\"${table.getName()}\")"
+    out.println "public class $className {"
+  out.println ""
+  fields.each() {
+    if (it.comment != "") {
+        out.println "  /**"
+        out.println "   * ${it.comment}"
+        out.println "   */"
+    }
+      if (it.isPrimaryKey) {
+          out.println "  @TableId(type = IdType.AUTO)"
+      }
+    out.println "  private ${it.type} ${it.name};"
+  }
+  out.println ""
+//  fields.each() {
+//    out.println ""
+//    out.println "  public ${it.type} get${it.name.capitalize()}() {"
+//    out.println "    return ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//    out.println "  public void set${it.name.capitalize()}(${it.type} ${it.name}) {"
+//    out.println "    this.${it.name} = ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//  }
+  out.println "}"
+}
+
+def calcFields(table) {
+    DasUtil.getColumns(table).reduce([]) { fields, col -&gt;
+    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
+    def typeStr = typeMapping.find { p, t -&gt; p.matcher(spec).find() }.value
+    fields += [[
+                 name : javaName(col.getName(), false),
+                 type : typeStr,
+                 comment : col.getComment(),
+                 isPrimaryKey :  DasUtil.isPrimary(col),
+                 annos: ""]]
+  }
+}
+
+def javaName(str, capitalize) {
+  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
+    .collect { Case.LOWER.apply(it).capitalize() }
+    .join("")
+    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, "_")
+  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
+}
+
+def getPackageName(dir) {
+    return dir.toString().replaceAll("\\\\", ".").replaceAll("/", ".").replaceAll("^.*src(\\.main\\.java\\.)?", "") + ";"
+}
+
+</code></pre></div></div>
 
 
         </div>
@@ -334,27 +453,6 @@
 <p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
 
 <p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
-        
-        <div class="content">
-            <h1 id="cas">CAS</h1>
-
-<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
-
-<p>Unsafe.compareAndSetObject</p>
-
-<p>内部调用native cmpxchg汇编指令</p>
-
-<blockquote>
-  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
-</blockquote>
 
         </div>
     </div>

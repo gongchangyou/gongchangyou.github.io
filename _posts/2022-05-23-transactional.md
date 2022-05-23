@@ -2,7 +2,7 @@
 
 layout: post
 title: "transactional"
-date: 2022-05-21 10:25:06 +0800
+date: 2022-05-23 10:25:06 +0800
 comments: true
 category: java
 tag: [java]

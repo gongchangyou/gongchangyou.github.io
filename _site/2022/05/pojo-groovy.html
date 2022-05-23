@@ -170,97 +170,118 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2022/02/dubbo-kryo">Feb 15, 2022 - kryo</a></h1>
+                <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
             
             <div class="post-content">
-            <h1 id="dubbo-序列化配置-kryo">dubbo 序列化配置 Kryo</h1>
+            <h1 id="pojo-groovy">Pojo groovy</h1>
 
-<p>注意版本要跟  dubbo-spring-boot-starter 相同,2.7.8</p>
+<p>代码仓库:  <a href="https://github.com/gongchangyou/tool">https://github.com/gongchangyou/tool</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
-    &lt;artifactId&gt;dubbo-serialization-kryo&lt;/artifactId&gt;
-    &lt;version&gt;2.7.8&lt;/version&gt;
-&lt;/dependency&gt;
+<p>自动生成pojo</p>
 
-</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.intellij.database.model.DasTable
+import com.intellij.database.util.Case
+import com.intellij.database.util.DasUtil
 
-<p>在producer 和 consumer加一句配置即可</p>
+/*
+ * Available context bindings:
+ *   SELECTION   Iterable&lt;DasObject&gt;
+ *   PROJECT     project
+ *   FILES       files helper
+ */
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.protocol.serialization=kryo
-</code></pre></div></div>
+typeMapping = [
+  (~/(?i)int/)                      : "Long",
+  (~/(?i)float|double|decimal|real/): "Double",
+  (~/(?i)datetime|timestamp/)       : "java.sql.Timestamp",
+  (~/(?i)date/)                     : "java.sql.Date",
+  (~/(?i)time/)                     : "java.sql.Time",
+  (~/(?i)/)                         : "String"
+]
 
-<p>原理：</p>
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir -&gt;
+  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+}
 
-<ol>
-  <li>
-    <p>我们配置的序列化框架 比如 kryo , 这个字符串”kryo”是设置在了ProtocolConfig中</p>
-  </li>
-  <li>
-    <p>真正需要序列化的时候，是由AbstractCodec 根据 ExtensionLoader.getExtension 获取</p>
-  </li>
-  <li>
-    <p>ExtensionLoader 中有个属性叫 cachedClasses,  是个map，会创建type名到类的映射</p>
+def generate(table, dir) {
+  def className = javaName(table.getName(), true)
+  def fields = calcFields(table)
+  def packageName = getPackageName(dir)
+  new File(dir, className + ".java").withPrintWriter { out -&gt; generate(out, className, fields, packageName, table) }
+}
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> private final Holder&lt;Map&lt;String, Class&lt;?&gt;&gt;&gt; cachedClasses = new Holder&lt;&gt;();
-</code></pre></div>    </div>
-
-    <ol>
-      <li>
-        <p>那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .   ExtensionLoader(dubbo自定义的) 会去扫描  文件“org.apache.dubbo.common.extension.LoadingStrategy”。</p>
-
-        <p>获取LoadingStrategy(DubboInternalLoadingStrategy(META-INF/dubbo/internal/), ServicesLoadingStrategy(META-INF/services/) ,DubboLoadingStrategy(META-INF/dubbo/) )的所有实现类的指定的文件夹下的文件，其中包括 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。</p>
-      </li>
-    </ol>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
- kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
- kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
-</code></pre></div>    </div>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() {
-          cacheDefaultExtensionName();
-    
-          Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
-    
-          for (LoadingStrategy strategy : strategies) {
-              loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-              loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
-          }
-    
-          return extensionClasses;
+def generate(out, className, fields, packageName, table) {
+  out.println "package $packageName"
+  out.println ""
+  out.println ""
+  out.println "import com.baomidou.mybatisplus.annotation.IdType;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableId;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableName;\n" +
+          "import lombok.AllArgsConstructor;\n" +
+          "import lombok.Builder;\n" +
+          "import lombok.Data;\n" +
+          "import lombok.NoArgsConstructor;"
+    out.println ""
+    out.println "@Builder\n" +
+            "@AllArgsConstructor\n" +
+            "@NoArgsConstructor\n" +
+            "@Data\n" +
+            "@TableName(\"${table.getName()}\")"
+    out.println "public class $className {"
+  out.println ""
+  fields.each() {
+    if (it.comment != "") {
+        out.println "  /**"
+        out.println "   * ${it.comment}"
+        out.println "   */"
+    }
+      if (it.isPrimaryKey) {
+          out.println "  @TableId(type = IdType.AUTO)"
       }
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好</p>
-  </li>
-</ol>
+    out.println "  private ${it.type} ${it.name};"
+  }
+  out.println ""
+//  fields.each() {
+//    out.println ""
+//    out.println "  public ${it.type} get${it.name.capitalize()}() {"
+//    out.println "    return ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//    out.println "  public void set${it.name.capitalize()}(${it.type} ${it.name}) {"
+//    out.println "    this.${it.name} = ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//  }
+  out.println "}"
+}
 
-<p><img src="/images/202202/1644917724845.jpg" alt="set class" width="1000" /></p>
+def calcFields(table) {
+    DasUtil.getColumns(table).reduce([]) { fields, col -&gt;
+    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
+    def typeStr = typeMapping.find { p, t -&gt; p.matcher(spec).find() }.value
+    fields += [[
+                 name : javaName(col.getName(), false),
+                 type : typeStr,
+                 comment : col.getComment(),
+                 isPrimaryKey :  DasUtil.isPrimary(col),
+                 annos: ""]]
+  }
+}
 
-<p>问题：</p>
+def javaName(str, capitalize) {
+  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
+    .collect { Case.LOWER.apply(it).capitalize() }
+    .join("")
+    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, "_")
+  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
+}
 
-<p>本来想看看默认序列化是如何设置的，有两种方法</p>
+def getPackageName(dir) {
+    return dir.toString().replaceAll("\\\\", ".").replaceAll("/", ".").replaceAll("^.*src(\\.main\\.java\\.)?", "") + ";"
+}
 
-<p>法1，在SPI注解上加属性 ，由属性控制</p>
-
-<p><img src="/images/202202/1645257330444.jpg" alt="1" width="1000" /></p>
-
-<p>法2，设置一个Constants类, 将默认值填进去</p>
-
-<p><img src="/images/202202/1645257359049.jpg" alt="1" width="1000" /></p>
-
-<p>现在就是初始化的时候是根据SPI的value，但是获取实现类的时候又用到了Constants类，让人有点疑惑，两个默认值</p>
-
-<p><img src="/images/202202/1645257426431.jpg" alt="1" width="1000" /></p>
-
-<p><img src="/images/202202/WechatIMG587.png" alt="1" width="1000" /></p>
-
-<p>当然由Constants类我们还能知道 默认的nio库是 netty</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String DEFAULT_TRANSPORTER = "netty";
 </code></pre></div></div>
+
 
             </div>
             
@@ -273,10 +294,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2022/02/alibaba-nacos-client-server" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2022/05/transactional" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2022/02/spring-cloud-gateway" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/05/ES-IK" class="previous">Older Post</a>
               
 </div>
 
@@ -284,13 +305,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2022-02-dubbo-kryo';
+        this.page.identifier = '2022-05-pojo-groovy';
     };
 
    (function() {
