@@ -99,3 +99,11 @@ tag: [java]
 
 3. 当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
 ![]({{ site.baseurl}}/images/202205/WechatIMG227.png){: width="800" }
+
+
+
+源码解析:
+
+核心逻辑在 spring-tx包中的 类 TransactionAspectSupport 中：
+
+   ![]({{ site.baseurl}}/images/202205/WechatIMG230.png){: width="800" }
