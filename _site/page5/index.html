@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
-        
-          <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
 			
 		
 			
@@ -169,6 +169,28 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
+        
+        <div class="content">
+            <h1 id="lock">Lock</h1>
+
+<p>参考文章: <a href="https://blog.csdn.net/pmc0_0/article/details/121061692">https://blog.csdn.net/pmc0_0/article/details/121061692</a></p>
+
+<p><img src="/images/202205/912e39d231b1440aa72b1529c61e7cf2.png" alt="" width="800" /></p>
+
+<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
+
+<p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
+
+<p>重量级锁 ：借助操作系统的monitor</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/MQTT">May 5, 2022 - mqtt</a></h1>
@@ -393,25 +415,6 @@ $delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 h
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/redis">May 2, 2022 - redis</a></h1>
-        
-        <div class="content">
-            <h1 id="docker-redis">Docker redis</h1>
-
-<p><a href="https://www.runoob.com/docker/docker-install-redis.html">https://www.runoob.com/docker/docker-install-redis.html</a></p>
-
-<p>lpush lpop 栈</p>
-
-<p>lpush rpop 队列</p>
-
-<p>lpush brpop 消息队列 （可以设置timeout. 并阻塞)</p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -419,7 +422,7 @@ $delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 h
         <a class="btn btn-default" href="/page4" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 5 of 45</span>
+  <span class="page_number ">Page: 5 of 46</span>
   
     <a class="btn btn-default" href="/page6" class="next">Older</a>
   

@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
-        
-          <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
 			
 		
 			
@@ -169,6 +169,32 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/spring-MVC">Feb 19, 2022 - spring mvc</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-mvc-获取url路径和读取本地文件">spring MVC 获取url路径和读取本地文件</h1>
+
+<h2 id="获取路径">获取路径</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RequestMapping("/{animal}/{fileName}")
+    public String getJson(
+            @PathVariable String animal,
+            @PathVariable String fileName
+    ) {
+</code></pre></div></div>
+
+<h2 id="读取本地文件">读取本地文件</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String fullPath = String.format(directory, animal, fileName);
+	String content = Files.readString(Paths.get(fullPath));
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/02/alibaba-nacos-client-server">Feb 16, 2022 - nacos serverlist</a></h1>
@@ -301,126 +327,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/spring-cloud-gateway">Feb 10, 2022 - spring-cloud-gateway</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-gateway">Spring-cloud-gateway</h1>
-
-<h2 id="路由规则如果配置在applicationyaml中那么每次新增路由都需要部署重启gateway所以这个路由规则必须动态读取例如存放到nacos中">路由规则如果配置在application.yaml中，那么每次新增路由都需要部署重启gateway，所以这个路由规则必须动态读取，例如存放到nacos中</h2>
-
-<p>代码仓库:   <a href="https://github.com/gongchangyou/gateway">https://github.com/gongchangyou/gateway</a></p>
-
-<p>http服务 <a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
-
-<p>RouteDefinitionWriter 负责修改路由， RouteDefinitionLocator 接口只有一个方法 getRouteDefinitions，获取所有路由。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-			&lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
-		&lt;/dependency&gt;
-		&lt;dependency&gt;
-			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-			&lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
-		&lt;/dependency&gt;
-</code></pre></div></div>
-
-<p><img src="/images/202202/1644386286460.jpg" alt="code" width="1000" /></p>
-
-<p>重点是 routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//        this.publisher.publishEvent(new RefreshRoutesEvent(this)); 这句好像没啥用
-</code></pre></div></div>
-
-<h2 id="nacos-代码只需要添加nacos的listener又因为数据变更时只会执行一次回调没有心跳我们需要自行编写心跳逻辑">Nacos: 代码只需要添加nacos的listener，又因为数据变更时只会执行一次回调，没有心跳，我们需要自行编写心跳逻辑</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
-			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
-			&lt;exclusions&gt;
-				&lt;exclusion&gt;
-					&lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
-					&lt;artifactId&gt;httpclient&lt;/artifactId&gt;
-				&lt;/exclusion&gt;
-			&lt;/exclusions&gt;
-		&lt;/dependency&gt;
-		&lt;dependency&gt;
-			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
-			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
-		&lt;/dependency&gt;
-		&lt;dependency&gt;
-			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-			&lt;artifactId&gt;spring-cloud-starter-loadbalancer&lt;/artifactId&gt;
-		&lt;/dependency&gt;
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Component
-@Slf4j
-public class NacosRouteDynamicDataSource implements ApplicationRunner {
-    @Autowired
-    private NacosConfigManager configManager;
-
-    private ConfigService configService;
-    @PostConstruct
-    void init () {
-        configService = configManager.getConfigService();
-    }
-    /**
-     * Callback used to run the bean.
-     *
-     * @param args incoming application arguments
-     * @throws Exception on error
-     */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        log.info(args.toString());
-        //监听nacos配置变化
-        dynamicRouteByNacosListener("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule");
-        //心跳 顺便 初始化
-        while (true) {
-            String configInfo = configService.getConfig("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule", 4000);
-            log.info("configInfo = {}", configInfo);
-            Thread.sleep(2000);
-        }
-    }
-
-    /**
-     * 监听nacos的配置
-     * @param dataId
-     * @param group
-     */
-    public void dynamicRouteByNacosListener (String dataId, String group){
-        try {
-            configService.addListener(dataId, group, new Listener()  {
-                @Override
-                public void receiveConfigInfo(String configInfo) {
-                    log.info("进行网关更新:\n\r{}",configInfo);
-                }
-                @Override
-                public Executor getExecutor() {
-                    log.info("getExecutor\n\r");
-                    return null;
-                }
-            });
-        } catch (NacosException e) {
-            log.error("从nacos接收动态路由配置出错!!!",e);
-        }
-    }
-}
-
-</code></pre></div></div>
-
-<p>在nacos手动配置路由</p>
-
-<p><img src="/images/202202/1644471609530.jpg" alt="nacos config" width="1000" /></p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -428,7 +334,7 @@ public class NacosRouteDynamicDataSource implements ApplicationRunner {
         <a class="btn btn-default" href="/page18" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 19 of 45</span>
+  <span class="page_number ">Page: 19 of 46</span>
   
     <a class="btn btn-default" href="/page20" class="next">Older</a>
   

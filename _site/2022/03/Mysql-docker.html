@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
-        
-          <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
 			
 		
 			
@@ -179,9 +179,7 @@
 
 <p><a href="https://www.runoob.com/docker/docker-install-mysql.html">https://www.runoob.com/docker/docker-install-mysql.html</a></p>
 
-<p>因为本地已经有3306端口了</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -itd --name mysql-test -p 3307:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -itd --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
 </code></pre></div></div>
 
 <p>root账号默认不开远程连接 <a href="https://blog.csdn.net/qq_34885405/article/details/93041509">https://blog.csdn.net/qq_34885405/article/details/93041509</a></p>

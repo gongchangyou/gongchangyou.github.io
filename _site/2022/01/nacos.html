@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
-        
-          <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
 			
 		
 			
@@ -181,9 +181,8 @@
 <p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
 
 <ol>
-  <li>
-    <p>解压缩</p>
-  </li>
+  <li>解压缩</li>
+  <li>cd nacos-jar/bin</li>
   <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
     <ol>
       <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
@@ -194,6 +193,22 @@
   <li>账号名密码是 <strong>nacos/nacos</strong></li>
 </ol>
 
+<p>问题1： 启动失败，查看错误日志，发现如下错误。但是我把java命令拷出来的时候又可以正常运行。</p>
+
+<blockquote>
+  <p>less /Users/gongchangyou/learn/nacos-jar/logs/start.out</p>
+
+  <p>错误: 找不到或无法加载主类
+ 原因: java.lang.ClassNotFoundException:</p>
+</blockquote>
+
+<p>解决方案1:  改下startup.sh</p>
+
+<p>nohup "$JAVA" "$JAVA_OPT_EXT_FIX" ${JAVA_OPT} nacos.nacos » ​${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
+
+<p>改为</p>
+
+<p>nohup "$JAVA" ${JAVA_OPT_EXT_FIX} ${JAVA_OPT} nacos.nacos » ${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
 
             </div>
             

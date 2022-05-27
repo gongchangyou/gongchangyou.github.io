@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
         
           <li><a href="/2022/05/CAS">cas</a></li>
-        
-          <li><a href="/2022/05/Disruptor">disruptor</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>43</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
 			
 		
 			
@@ -169,6 +169,45 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/06/c++-str-replace">Jun 26, 2015 - c++ 字符串替换</a></h1>
+        
+        <div class="content">
+            
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include&lt;string&gt;
+#include&lt;iostream&gt;
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="c1">//第一种替换字符串的方法用replace()</span>
+<span class="kt">void</span> <span class="nf">string_replace</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">//第二种替换字符串的方法用erase()和insert()</span>
+<span class="kt">void</span> <span class="nf">string_replace_2</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span><span class="n">s1</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s2</span><span class="p">,</span><span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span><span class="n">s3</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">a</span><span class="o">=</span><span class="n">s2</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="n">string</span><span class="o">::</span><span class="n">size_type</span> <span class="n">b</span><span class="o">=</span><span class="n">s3</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+	<span class="k">while</span><span class="p">((</span><span class="n">pos</span><span class="o">=</span><span class="n">s1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span><span class="n">pos</span><span class="p">))</span><span class="o">!=</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">a</span><span class="p">);</span>
+		<span class="n">s1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">s3</span><span class="p">);</span>
+		<span class="n">pos</span><span class="o">+=</span><span class="n">b</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2015/06/c++-quicksort">Jun 17, 2015 - c++  快排</a></h1>
@@ -248,81 +287,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/02/journey_day7">Feb 13, 2015 - 2月13日布拉格</a></h1>
-        
-        <div class="content">
-            <p>布拉格这座城起的很晚，一看就知道夜生活丰富了。一路走向布拉格广场，这才留意到全城好像都是石板路，这么多石子是从哪儿来的呢？到达布拉格广场的时候人还很稀少，据说这里各种建筑形式都有。我注意到布拉格的教堂都很有意思，塔顶都是黑黑的，像烤焦了。从广场延伸出去的每条街都仿佛叫同一个名字叫做坑你没商量。各种啤酒纪念品廉价音乐会。11点左右到达天文钟，敲钟的时候没有门徒出现，我们也不可能在这傻等1个小时，等明天再来吧。</p>
-
-<p>广场附近小巷里用我大中华桃干喂鸽子，看起来鸽子很喜欢吃桃干啊！我拿鱿鱼丝喂过，他们不感兴趣。</p>
-
-<p><img src="/images/201502/IMG_20150213_105855.jpg" alt="" />
-<img src="/images/201502/IMG_20150213_105901.jpg" alt="" /></p>
-
-<p>我们在广场附近路过一家蛋糕咖啡店，直觉告诉我这家店可能很好吃，进去要了两个水果蛋糕，一个草莓布丁蛋糕，一个是蓝莓覆盆子水果蛋糕。好吃到爆！草莓布丁中的布丁少了塑料的柔滑感觉，却多了奶酪的绵密，让我这个从不吃布丁的也吃的很开心，覆盆子是我们在这边吃的最多的水果，酸甜的口感适合男女老幼，难怪在外国文学作品中经常出现。老板娘气质很好，在布达佩斯或者维也纳都不算啥，但是在布拉格这座烦躁狂野的城市就显得尤为出众，老婆偏要说我看上人家，买了一瓶果酱带回上海留念。</p>
-
-<p>现在一看到照片还会流口水……</p>
-
-<p><img src="/images/201502/IMG_20150213_112035.jpg" alt="" /></p>
-
-<p>下午去伏尔塔瓦河对岸的布拉格皇宫，我们上山路上看到的都是下山的人群。傻子也看出来我们走错方向了好吗。爬山累得要死，到了山顶，除了教堂比较出挑别的建筑简直可以用简陋来形容，完全没有参观的意愿，而且各种entrance和box office标识不清楚，都不知道该怎么参观。偶遇皇家卫队，齐步走也是很懒散，还不如匈牙利，老婆说就是捣糨糊的。难怪二战时候德军来了一打就散，一触即降，1周就占领捷克全境。</p>
-
-<p>布拉格皇宫俯瞰全城，特别像虹口的红顶子吧</p>
-
-<p><img src="/images/201502/IMG_20150213_131619.jpg" alt="" />
-<img src="/images/201502/IMG_20150213_141024.jpg" alt="" />
-<img src="/images/201502/xj2015_02_13_13_19_09.jpg" alt="" /></p>
-
-<p>我快对教堂免疫了</p>
-
-<p><img src="/images/201502/IMG_20150213_135758.jpg" alt="" /></p>
-
-<p>华丽的彩绘玻璃</p>
-
-<p><img src="/images/201502/IMG_20150213_135015.jpg" alt="" />
-<img src="/images/201502/IMG_20150213_135054.jpg" alt="" /></p>
-
-<p>我在教堂门口</p>
-
-<p><img src="/images/201502/IMG_20150213_134542.jpg" alt="" /></p>
-
-<p>教堂背面，下方出现不明物体</p>
-
-<p><img src="/images/201502/IMG_20150213_133135.jpg" alt="" /></p>
-
-<p>离开布拉格皇宫时间尚早，老婆说布拉格也有歌剧院和音乐厅的，我们就乘坐电车去国家歌剧院买票。</p>
-
-<p>电车上有到站信息的电子显示屏，很直观</p>
-
-<p><img src="/images/201502/IMG_20150213_144411.jpg" alt="" /></p>
-
-<p>前面还有一对情侣和一对萝莉闺蜜。在中国我们看电影，他们就是看歌剧和音乐会，花费差不多，都是50，100rmb这样。看了排期发现今晚只有opera，演的是唐璜，地点不在国家歌剧院，而是在城东的estate theater。我们又听不懂人家唱什么，所以就暂时没买。明天的是音乐会，在鲁道夫音乐厅，我们明天是晚上12点的飞机，所以还能去听，赶去鲁道夫音乐厅买明天的票子。售票的大姐一个劲的宣传音乐会很不错，还能在原价700的基础上给我们打折，每人600，大概150rmb吧。我们瞧着划算就买下了。接着去estate theater买今晚歌剧票。可惜此时已经没有坐票了，我们只好买了两张站票。</p>
-
-<p>差不多晚饭时间到了，离今晚的歌剧还有2小时，我们赶去老婆计划中的crystal餐厅，点了鸭胸肉和牛肉，鸭胸肉的酱很棒，都吃不出是哪些材料做的。牛肉吃的我直想哭，我花了几千块机票不是来这品尝妈妈的味道的啊……你们做牛肉咋那么中式啊？</p>
-
-<p>鸭胸肉</p>
-
-<p><img src="/images/201502/IMG_20150213_173707.jpg" alt="" /></p>
-
-<p>中式牛肉</p>
-
-<p><img src="/images/201502/IMG_20150213_173718.jpg" alt="" /></p>
-
-<p>漫步布拉格街头</p>
-
-<p><img src="/images/201502/IMG_20150213_163143.jpg" alt="" /></p>
-
-<p>吃完去听歌剧，抱着反正听不懂，稍微站半个小时就出来的心态我们去了。结果惊喜的发现有字幕！而且是捷克语和英语双语的！幸运的我们找到了两个无主的座位坐了整场。莫扎特创作的两幕歌剧揭示出当时贵族生活的荒淫无度。今天老婆手机没电了，就托一个韩国小妹帮忙拍照，等回国后email我们，截至发稿她还没发邮件，唉，韩国人真不靠谱，亏得我们千恩万谢的……</p>
-
-<p>结束已经是9点半也不知道10点，天已完全黑了，从地铁口出来走回宾馆的路咋那么荒凉的感觉，行人道就半米宽，偶尔朝一家18禁的酒吧瞄了几眼，旁边黑人保安就很热心的招呼我们进去看看，我们连连摆手，老婆责备我不该瞎看，我说也是，生怕呼吸到带有艾滋病毒的空气。</p>
-
-<p>晚上回到宾馆挨到1点值完机才睡，挑个好位子还省得去机场排队。</p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -330,7 +294,7 @@
         <a class="btn btn-default" href="/page36" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 37 of 45</span>
+  <span class="page_number ">Page: 37 of 46</span>
   
     <a class="btn btn-default" href="/page38" class="next">Older</a>
   

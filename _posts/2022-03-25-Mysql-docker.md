@@ -19,10 +19,9 @@ MySQL是互联网最常用的数据库，今天来部署并且用java调用
 
 
 
-因为本地已经有3306端口了
 
 ```
-docker run -itd --name mysql-test -p 3307:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
+docker run -itd --name mysql --restart=always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql
 ```
 
 
