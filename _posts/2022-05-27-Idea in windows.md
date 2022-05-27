@@ -48,7 +48,11 @@ tag: [java]
 
 5.  显示idea使用内存情况  右下角右键 选中 memory indicator (内存指示器)
 
+6.  更改主题 ： [https://plugins.jetbrains.com/plugin/11938-one-dark-theme](https://plugins.jetbrains.com/plugin/11938-one-dark-theme)
 
+    个人比较喜欢这款糖果配色
+
+    
 
 问题1： 为什么我的IDEA是中文？
 
