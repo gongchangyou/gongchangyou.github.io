@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
+        
           <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
+          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
-        
-          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
-        
-          <li><a href="/2022/05/CAS">cas</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>46</sup></a></li>
 			
 		
 			
@@ -169,6 +169,227 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/transactional">May 23, 2022 - transactional</a></h1>
+        
+        <div class="content">
+            <h1 id="transactional注解">Transactional注解</h1>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
+
+<p>其实 Mybatis plus中的 ServiceImpl 的save操作都已经是事务级别的了, 我们来试试，如果取消了这个transactional注解会发生什么.</p>
+
+<p><img src="/images/202205/WechatIMG226.png" alt="" width="800" /></p>
+
+<p>比如现在有10个线程，同时更新id=1 的row .value ++ ，结果肯定不是10</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));
+
+ @Test
+    void unThreadSafe() {
+        for (int i = 0; i &lt; 10;i++) {
+            threadPoolExecutor.submit(() -&gt; {
+                val model = testMapper.selectById(1L);
+            log.info("start value={}", model.getValue());
+            val ret = testMapper.updateById(com.mouse.transactional.repository.db.model.Test
+                        .builder()
+                        .id(1L)
+                        .value(model.getValue() + 1)
+                        .build()
+                );
+                log.info("ret={}", ret);
+            });
+        }
+
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+</code></pre></div></div>
+
+<p>如何保证呢？</p>
+
+<ol>
+  <li>
+    <p>我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> @Slf4j
+ @Service
+ public class TestService extends ServiceImpl&lt;TestMapper, Test&gt; implements IService&lt;Test&gt; {
+
+     @Transactional
+     public void incr(long id) {
+         val model = baseMapper.selectOne(new LambdaQueryWrapper&lt;Test&gt;()
+                 .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
+                 .last(" for update"));
+         log.info("value={}", model.getValue());
+         model.setValue(model.getValue() + 1);
+         updateById(model);
+     }
+
+ }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>测试一下, 这回成了，test表的value正好加了10.</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));
+
+     @Test
+     void TransactionalUpdate() {
+         for (int i = 0; i &lt; 10;i++) {
+             threadPoolExecutor.submit(() -&gt; {
+                 testService.incr(1L);
+             });
+         }
+
+         try {
+             Thread.sleep(2000L);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+     }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
+<img src="/images/202205/WechatIMG227.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+<p>源码解析:</p>
+
+<p>核心逻辑在 spring-tx包中的 类 TransactionAspectSupport 中：</p>
+
+<p><img src="/images/202205/WechatIMG230.png" alt="" width="800" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
+        
+        <div class="content">
+            <h1 id="pojo-groovy">Pojo groovy</h1>
+
+<p>代码仓库:  <a href="https://github.com/gongchangyou/tool">https://github.com/gongchangyou/tool</a></p>
+
+<p>自动生成pojo</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.intellij.database.model.DasTable
+import com.intellij.database.util.Case
+import com.intellij.database.util.DasUtil
+
+/*
+ * Available context bindings:
+ *   SELECTION   Iterable&lt;DasObject&gt;
+ *   PROJECT     project
+ *   FILES       files helper
+ */
+
+typeMapping = [
+  (~/(?i)int/)                      : "Long",
+  (~/(?i)float|double|decimal|real/): "Double",
+  (~/(?i)datetime|timestamp/)       : "java.sql.Timestamp",
+  (~/(?i)date/)                     : "java.sql.Date",
+  (~/(?i)time/)                     : "java.sql.Time",
+  (~/(?i)/)                         : "String"
+]
+
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir -&gt;
+  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+}
+
+def generate(table, dir) {
+  def className = javaName(table.getName(), true)
+  def fields = calcFields(table)
+  def packageName = getPackageName(dir)
+  new File(dir, className + ".java").withPrintWriter { out -&gt; generate(out, className, fields, packageName, table) }
+}
+
+def generate(out, className, fields, packageName, table) {
+  out.println "package $packageName"
+  out.println ""
+  out.println ""
+  out.println "import com.baomidou.mybatisplus.annotation.IdType;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableId;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableName;\n" +
+          "import lombok.AllArgsConstructor;\n" +
+          "import lombok.Builder;\n" +
+          "import lombok.Data;\n" +
+          "import lombok.NoArgsConstructor;"
+    out.println ""
+    out.println "@Builder\n" +
+            "@AllArgsConstructor\n" +
+            "@NoArgsConstructor\n" +
+            "@Data\n" +
+            "@TableName(\"${table.getName()}\")"
+    out.println "public class $className {"
+  out.println ""
+  fields.each() {
+    if (it.comment != "") {
+        out.println "  /**"
+        out.println "   * ${it.comment}"
+        out.println "   */"
+    }
+      if (it.isPrimaryKey) {
+          out.println "  @TableId(type = IdType.AUTO)"
+      }
+    out.println "  private ${it.type} ${it.name};"
+  }
+  out.println ""
+//  fields.each() {
+//    out.println ""
+//    out.println "  public ${it.type} get${it.name.capitalize()}() {"
+//    out.println "    return ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//    out.println "  public void set${it.name.capitalize()}(${it.type} ${it.name}) {"
+//    out.println "    this.${it.name} = ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//  }
+  out.println "}"
+}
+
+def calcFields(table) {
+    DasUtil.getColumns(table).reduce([]) { fields, col -&gt;
+    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
+    def typeStr = typeMapping.find { p, t -&gt; p.matcher(spec).find() }.value
+    fields += [[
+                 name : javaName(col.getName(), false),
+                 type : typeStr,
+                 comment : col.getComment(),
+                 isPrimaryKey :  DasUtil.isPrimary(col),
+                 annos: ""]]
+  }
+}
+
+def javaName(str, capitalize) {
+  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
+    .collect { Case.LOWER.apply(it).capitalize() }
+    .join("")
+    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, "_")
+  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
+}
+
+def getPackageName(dir) {
+    return dir.toString().replaceAll("\\\\", ".").replaceAll("/", ".").replaceAll("^.*src(\\.main\\.java\\.)?", "") + ";"
+}
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/ES-IK">May 20, 2022 - es 中文分词</a></h1>
@@ -320,174 +541,6 @@
 <p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
 
 <p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
-        
-        <div class="content">
-            <h1 id="cas">CAS</h1>
-
-<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
-
-<p>Unsafe.compareAndSetObject</p>
-
-<p>内部调用native cmpxchg汇编指令</p>
-
-<blockquote>
-  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
-</blockquote>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
-        
-        <div class="content">
-            <h1 id="disruptor">Disruptor</h1>
-
-<p>Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)</p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/disruptor">https://github.com/gongchangyou/disruptor</a></p>
-
-<ol>
-  <li>
-    <p>Pom.xml</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.lmax&lt;/groupId&gt;
-            &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
-            &lt;version&gt;3.4.4&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>单生产者，单消费者</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
-     * 单生产者 单消费者
-     */
-    @Test
-    void contextLoads() {
-        // 队列中的元素
-        class Element {
-   
-            private int value;
-   
-            public int get(){
-                return value;
-            }
-   
-            public void set(int value){
-                this.value= value;
-            }
-   
-        }
-   
-        // 生产者的线程工厂
-        ThreadFactory threadFactory = new ThreadFactory(){
-            int i = 0;
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "simpleThread " + i++);
-            }
-        };
-   
-        // RingBuffer生产工厂,初始化RingBuffer的时候使用
-        EventFactory&lt;Element&gt; factory = new EventFactory&lt;Element&gt;() {
-            @Override
-            public Element newInstance() {
-                return new Element();
-            }
-        };
-   
-        // 处理Event的handler
-        EventHandler&lt;Element&gt; handler = new EventHandler&lt;Element&gt;(){
-            @Override
-            public void onEvent(Element element, long sequence, boolean endOfBatch)
-            {
-                log.info("element={}, sequence={}, endOfBatch={}", element.get(), sequence, endOfBatch);
-//                System.out.println("Element: " + element.get());
-            }
-        };
-   
-        // 阻塞策略
-        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
-   
-        // 指定RingBuffer的大小
-        int bufferSize = 16;
-   
-        // 创建disruptor，采用单生产者模式
-        Disruptor&lt;Element&gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
-   
-        // 设置EventHandler
-        disruptor.handleEventsWith(handler);
-   
-        // 启动disruptor的线程
-        disruptor.start();
-   
-        RingBuffer&lt;Element&gt; ringBuffer = disruptor.getRingBuffer();
-   
-        for (int l = 0; true; l++) {
-            // 获取下一个可用位置的下标
-            long sequence = ringBuffer.next();
-            try {
-                // 返回可用位置的元素
-                Element event = ringBuffer.get(sequence);
-                // 设置该位置元素的值
-                event.set(l);
-            } finally {
-                ringBuffer.publish(sequence);
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>问题1： 有不同的消费者依赖怎么办？
-回答1：  关键字 then</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
-        disruptor.handleEventsWith(new OrderHandler1("1")).then(new OrderHandler1("2"), new OrderHandler1("3")).then(new OrderHandler1("4"));
-       
-</code></pre></div></div>
-
-<p>问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
-回答2:  handleEventsWithWorkerPool</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>问题3： 希望不同的消费者独立消费
-回答3： handleEventsWith 多个handler即可</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> disruptor.handleEventsWith(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>官方文档: <a href="https://lmax-exchange.github.io/disruptor/disruptor.html">https://lmax-exchange.github.io/disruptor/disruptor.html</a></p>
-
-<p>参考文章: <a href="https://tech.meituan.com/2016/11/18/disruptor.html">https://tech.meituan.com/2016/11/18/disruptor.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8544700.html">https://www.cnblogs.com/pku-liuqiang/p/8544700.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8532737.html">https://www.cnblogs.com/pku-liuqiang/p/8532737.html</a></p>
-
-<p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
-
-<p>源码解析： TODO</p>
-
 
         </div>
     </div>

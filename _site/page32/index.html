@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
+        
           <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
+          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
-        
-          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
-        
-          <li><a href="/2022/05/CAS">cas</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>46</sup></a></li>
 			
 		
 			
@@ -171,6 +171,51 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/08/mysqldump-%E6%97%B6%E5%8C%BA%E9%97%AE%E9%A2%98%E5%89%AF%E6%9C%AC">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
+        
+        <div class="content">
+            <p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
+
+<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
+
+<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
+
+<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
+
+<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/07/ssh-%E4%BF%9D%E5%AD%98host%E5%92%8C%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D">Jul 20, 2016 - ssh rsa</a></h1>
+        
+        <div class="content">
+            <p>1.ssh-keygen  -t rsa</p>
+
+<p>2.在 ~/.ssh/config中添加</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	Host lfs-cn-manage 
+	  HostName localhost  #这里写ip
+	  User aiming
+	  IdentityFile ~/.ssh/id_rsa.aiming
+</code></pre></div></div>
+
+<p>3.chmod 666 ~/.ssh/config #勿忘</p>
+
+<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
+
+<p>搞定！</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/07/nfs%E5%85%B1%E4%BA%AB">Jul 7, 2016 - nfs磁盘共享</a></h1>
         
         <div class="content">
@@ -208,102 +253,6 @@ no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父�
 <p>4.激动人心的来了 去A服务器
 	mount  10.140.99.122:/var/log/big_query  /var/path/of/local //前面的ip是B的ip 路径就是第2步中的路径 后面那个是A本地路径</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/07/sed%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4">Jul 7, 2016 - sed替换命令</a></h1>
-        
-        <div class="content">
-            <p><a herf="http://my.oschina.net/shelllife/blog/118337"> http://my.oschina.net/shelllife/blog/118337</a></p>
-
-<p>下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。</p>
-
-<p>sed ‘:label;N;s/\n/:/;b label’ filename</p>
-
-<p>sed ‘:label;N;s/\n/:/;t label’ filename</p>
-
-<p>上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：</p>
-
-<p>:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令</p>
-
-<p>N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见</p>
-
-<p>s/\n/:/;   s是sed的替换命令，将换行符替换为冒号</p>
-
-<p>b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处</p>
-
-<p>标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>$  echo “a,b,c,d”</td>
-      <td>sed ‘s/,/\n/g’</td>
-      <td>sed ‘:x;N;s/\n/,/;b x’</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>a,b,c,d</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>$  echo “a,b,c,d”</td>
-      <td>sed ‘s/,/\n/g’</td>
-      <td>sed ‘N;s/\n/,/’</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>a,b</p>
-
-<p>c,d</p>
-
-<p><a herf="http://blog.chinaunix.net/uid-26150691-id-3054317.html">sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html</a></p>
-
-<p><a herf="https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc"> sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc</a></p>
-
-<p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在ssh之前先整理好参数 只要在ssh中 '${ESCAPE_PATH}'即可
-SCRIPT_DIR=/var/home/aiming/world_all/bin/
-ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed 's/\//\\\//g')
-echo ${ESCAPE_PATH}
-ssh aiming@lfs-cn-manage "
-cd ${SCRIPT_DIR}
-echo '${PUSH_CONTENT}' &gt; ${SCRIPT_DIR}tmp
-
-./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
-"
-#'\/var\/home\/aiming\/world_all\/bin\/tmp'
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
-        
-        <div class="content">
-            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
-        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
-    &lt;activity-alias
-        android:name=".wxapi.WXEntryActivity"
-        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
-        android:exported="true" /&gt;
-</code></pre></div></div>
-
-<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
-
-<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
 
         </div>
     </div>

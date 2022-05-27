@@ -11,3 +11,9 @@ tag: [java]
 
 # VS code in windows
 
+参考文章： [https://blog.csdn.net/weixin_44211968/article/details/122605298](https://blog.csdn.net/weixin_44211968/article/details/122605298)
+
+官网下载: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+
+
+

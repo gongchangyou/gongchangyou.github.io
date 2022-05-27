@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
+        
           <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
+          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
-        
-          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
-        
-          <li><a href="/2022/05/CAS">cas</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>46</sup></a></li>
 			
 		
 			
@@ -171,6 +171,43 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2014/05/shell-command">May 26, 2014 - shell 常用命令</a></h1>
+        
+        <div class="content">
+            <h3>批量正则rename</h3>
+<p>rename ‘s/([0-9]).txt/file_$1.txt/’ *.txt</p>
+
+<h3>tar命令</h3>
+
+<p>压缩率更大的压缩:tar cvjf  解压:tar xvjf tar.bz2</p>
+
+<p>压缩:tar -cvzf  xxx.tar.gz xxx 解压:tar xvzf tar.gz</p>
+
+<p>如果有不想进包的部分</p>
+
+<p>tar -zcvf test.tar.gz –exclude=fileName/dirName test</p>
+
+<p>注意这个exclude的位置， 文件名和目录名可以添加正则*来匹配</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2014/04/mysql%E7%9F%A5%E8%AF%86">Apr 28, 2014 - mysql知识</a></h1>
+        
+        <div class="content">
+            <h3>批量导入sql文件到db中</h3>
+<p>ls -1 *.sql | awk ‘{ print “source”,$0 }’ | mysql –force -h192.168.1.22 -P3310 -uroot -ppassword dbname</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2013/12/%E5%AE%89%E7%BA%B3%E6%89%98%E5%88%A9%E4%BA%9A">Dec 30, 2013 - 安纳托利亚</a></h1>
         
         <div class="content">
@@ -192,72 +229,6 @@
 <li>1915年，一战加利波利之战，达达尼尔海峡狼烟再起。凯末尔在前线指挥，缔造了现代土耳其，被尊称为祖国之父。</li>
 </ul>
 <p><a href="http://www.mafengwo.cn/i/1353471.html">公元537年建立的索非亚大教堂</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/11/cocos-animation">Nov 8, 2013 - cocos骨骼动画加速渲染</a></h1>
-        
-        <div class="content">
-            <p><a href="http://www.cnblogs.com/mrblue/p/3442709.html">http://www.cnblogs.com/mrblue/p/3442709.html</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/11/c++-read-write-file">Nov 8, 2013 - c++读写文件</a></h1>
-        
-        <div class="content">
-            <p>C++代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filePath</span> <span class="o">=</span> <span class="s">"/file/to/path"</span><span class="p">;</span>
-
-<span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
-
-<span class="n">ofile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">filePath</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">dlcVersion</span><span class="p">;</span>
-
-<span class="n">dlcVersion</span><span class="p">[</span><span class="s">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pageJson</span><span class="p">[</span><span class="s">"data"</span><span class="p">][</span><span class="s">"dlc_version"</span><span class="p">].</span><span class="n">asCString</span><span class="p">();</span>
-
-<span class="n">ofile</span> <span class="o">&lt;&lt;</span> <span class="n">dlcVersion</span><span class="p">.</span><span class="n">toStyledString</span><span class="p">();</span>
-
-<span class="c1">//std::string fileContent = std::string("filecontent");</span>
-
-<span class="c1">//ofile &lt;&lt; fileContent;</span>
-
-<span class="n">ofile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span></code></pre></figure>
-
-<p><span style="color: #ff0000;">
-注意 ofstream是写入模式，文件中原有的内容会被清空。
-ifstream ifile；是读取模式,
-</span></p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="o">/</span><span class="kt">bool</span> <span class="nf">fileToJSON</span><span class="p">(</span> <span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">){</span>
-<span class="n">std</span><span class="o">::</span><span class="n">ifstream</span> <span class="n">t</span><span class="p">(</span> <span class="n">path</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">end</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">tellg</span><span class="p">());</span>
-
-<span class="n">t</span><span class="p">.</span><span class="n">seekg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">beg</span><span class="p">);</span>
-
-<span class="n">str</span><span class="p">.</span><span class="n">assign</span><span class="p">((</span><span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
-
-<span class="n">std</span><span class="o">::</span><span class="n">istreambuf_iterator</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">());</span>
-
-<span class="n">Json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">Json</span><span class="o">::</span><span class="n">Reader</span><span class="p">();</span>
-
-<span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
-<span class="p">}</span></code></pre></figure>
-
 
         </div>
     </div>

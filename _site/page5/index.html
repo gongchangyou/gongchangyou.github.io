@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
+        
           <li><a href="/2022/05/VS-code-in-windows">vs code</a></li>
+        
+          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
           <li><a href="/2022/05/transactional">transactional</a></li>
         
           <li><a href="/2022/05/pojo-groovy">pojo</a></li>
-        
-          <li><a href="/2022/05/ES-IK">es 中文分词</a></li>
-        
-          <li><a href="/2022/05/CAS">cas</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>44</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>46</sup></a></li>
 			
 		
 			
@@ -171,6 +171,177 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
+        
+        <div class="content">
+            <h1 id="gateway-mono-flux">Gateway Mono Flux</h1>
+
+<p>参考文章: <a href="https://segmentfault.com/a/1190000024499748">https://segmentfault.com/a/1190000024499748</a></p>
+
+<p><a href="https://www.cnblogs.com/littleatp/p/11515458.html">https://www.cnblogs.com/littleatp/p/11515458.html</a></p>
+
+<p>冷流（从头开始消费） 和 热流(从offset处开始消费)  <a href="https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b">https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b</a></p>
+
+<p><a href="https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/">https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/</a></p>
+
+<p>注意：如果热流的上个subscribe已经消费结束了，则下一个subscribe会从头开始，而不是不消费.</p>
+
+<p>响应式编程</p>
+
+<ul>
+  <li>响应流必须是无阻塞的。</li>
+  <li>响应流必须是一个数据流。</li>
+  <li>它必须可以异步执行。</li>
+  <li>并且它也应该能够处理背压。</li>
+</ul>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/seata">May 6, 2022 - seata</a></h1>
+        
+        <div class="content">
+            <h1 id="seata-分布式事务">SEATA 分布式事务</h1>
+
+<p>官网： <a href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">https://seata.io/zh-cn/docs/overview/what-is-seata.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
+</code></pre></div></div>
+
+<h2 id="at的实现方案">AT的实现方案</h2>
+
+<p>参考文章 <a href="https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html">https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html</a></p>
+
+<p><a href="https://seata.io/zh-cn/docs/user/quickstart.html">https://seata.io/zh-cn/docs/user/quickstart.html</a></p>
+
+<h3 id="前提">前提</h3>
+
+<blockquote>
+  <p>基于支持本地 ACID 事务的关系型数据库。
+Java 应用，通过 JDBC 访问数据库。</p>
+</blockquote>
+
+<p>下面是一个具体的例子：订单扣库存的解决方案</p>
+
+<p>​    <img src="/images/202205/solution.png" alt="" width="800" /></p>
+
+<p>具体的操作步骤有3步：</p>
+
+<p>​	一. 启动事务协调者进程 TC，</p>
+
+<p>​	二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。</p>
+
+<p>​	三. 在业务服务中添加 seata依赖，动态代理datasource. 这样可以在db操作前后做一些undo log的记录之类的操作。</p>
+
+<font color="red">个人感觉稍微有点麻烦了。而且看前提 适用范围不是很广，我们做分布式事务大概率是跟别的业务线或者第三方公司交互，他们不太可能跟你注册在同一个注册中心，且他们大概率不愿意在自己的代码中添加seata依赖。</font>
+
+<h3 id="下面的先不用看了因为我没搭建完成官网有些地方说的不是很详细">下面的先不用看了，因为我没搭建完成，官网有些地方说的不是很详细。</h3>
+
+<p>我们做个微服务来测试下</p>
+
+<p>一. 先搭建几个dubbo的服务</p>
+
+<ol>
+  <li>先把nacos 启动起来 <a href="../../../2022/01/nacos">启动nacos</a></li>
+  <li>启动 maven仓库   <a href="../../../2022/01/maven">启动maven仓库</a></li>
+  <li>注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
+    <ol>
+      <li><a href="https://github.com/gongchangyou/service-order">https://github.com/gongchangyou/service-order</a></li>
+      <li><a href="https://github.com/gongchangyou/service-store">https://github.com/gongchangyou/service-store</a></li>
+      <li><a href="https://github.com/gongchangyou/service-buy">https://github.com/gongchangyou/service-buy</a></li>
+    </ol>
+  </li>
+</ol>
+
+<p>二.  启动TC服务， 唉，不希望侵入式的写代码，就得在外部有个协调者。</p>
+
+<ol>
+  <li>
+    <p>直接 docker-compose up  <a href="https://github.com/seata/seata/blob/1.4.0/script/server/docker-compose/docker-compose.yaml">https://github.com/seata/seata/blob/1.4.0/script/server/docker-compose/docker-compose.yaml</a></p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> version: "3"
+ services:
+ 	seata-server:
+ 		image: seataio/seata-server
+ 		hostname: seata-server
+     ports:
+       - "8091:8091"
+     environment:
+       - SEATA_PORT=8091
+       - STORE_MODE=file
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>或者 <a href="https://seata.io/zh-cn/docs/ops/deploy-by-docker.html">https://seata.io/zh-cn/docs/ops/deploy-by-docker.html</a>. 注意 SEATA_IP 改成本地ip</p>
+
+    <p>参考文章: <a href="https://seata.io/zh-cn/blog/seata-nacos-docker.html">https://seata.io/zh-cn/blog/seata-nacos-docker.html</a> TODO 文档中的 nacos-config.txt 我不知道在哪里。或许script文件夹已经删掉了, 现在需要手动创建  nacos-config.txt 和nacos-config.sh  手动把seata服务注册到nacos中。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run --name seata-server \
+        -dit \
+        --restart=always \
+        -p 8091:8091 \
+        -p 7091:7091 \
+        -e SEATA_IP=192.168.1.2 \
+        -e SEATA_PORT=8091 \
+        seataio/seata-server
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>三. 业务系统集成</p>
+
+<ol>
+  <li>添加依赖 任选一个, 我选择 spring-cloud-alibaba-seata
+    <blockquote>
+      <p>依赖seata-all
+依赖seata-spring-boot-starter，支持yml、properties配置(.conf可删除)，内部已依赖seata-all
+依赖spring-cloud-alibaba-seata，内部集成了seata，并实现了xid传递</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>创建 undo log表</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- 注意此处0.3.0+ 增加唯一索引 ux_undo_log
+CREATE TABLE `undo_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `branch_id` bigint(20) NOT NULL,
+  `xid` varchar(100) NOT NULL,
+  `context` varchar(128) NOT NULL,
+  `rollback_info` longblob NOT NULL,
+  `log_status` int(11) NOT NULL,
+  `log_created` datetime NOT NULL,
+  `log_modified` datetime NOT NULL,
+  `ext` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>问题1 ：2022-05-26 22:51:29.575  WARN [configOperate_2_2] io.seata.config.FileConfiguration : Could not found property service.disableGlobalTransaction, try to use default value instead.</p>
+
+<p>解决1: <a href="https://blog.csdn.net/m0_43404934/article/details/110134708">https://blog.csdn.net/m0_43404934/article/details/110134708</a> 创建file.conf文件 里面写</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service {
+disableGlobalTransaction = false
+}
+</code></pre></div></div>
+
+<p>问题2：  io.seata.core.rpc.netty.NettyClientChannelManager : no available service ‘default’ found, please make sure registry config correct</p>
+
+<p>解决2：</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
         
         <div class="content">
@@ -186,230 +357,6 @@
 
 <p>重量级锁 ：借助操作系统的monitor</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/MQTT">May 5, 2022 - mqtt</a></h1>
-        
-        <div class="content">
-            <h1 id="mqtt">MQTT</h1>
-
-<p><a href="https://www.cnblogs.com/yourstars/p/15247707.html">https://www.cnblogs.com/yourstars/p/15247707.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull emqx
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
-</code></pre></div></div>
-
-<p>默认账号：admin
-默认密码：public</p>
-
-<p>QOS:</p>
-
-<p>参考文章: <a href="https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html">https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html</a></p>
-
-<p>​	<a href="https://blog.csdn.net/qq_24505127/article/details/101701011">https://blog.csdn.net/qq_24505127/article/details/101701011</a></p>
-
-<p>​	<a href="https://blog.csdn.net/m0_50668851/article/details/112555171">https://blog.csdn.net/m0_50668851/article/details/112555171</a></p>
-
-<p>原理 :</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>QOS</th>
-      <th>SAVE MESSAGE</th>
-      <th> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>broker</td>
-      <td>at most once</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>publisher  broker</td>
-      <td>at least once</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>publisher broker subscriber</td>
-      <td>exactly once</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线</p>
-
-<p>那么如何知道消费端是否掉线呢？ connectionLost 方法</p>
-
-<p>延迟消息： <a href="https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html">https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html</a></p>
-
-<p>特定的topic格式：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/{DelayInterval}/{TopicName}
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
-$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
-$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
-</code></pre></div></div>
-
-<p>java代码： <a href="https://github.com/gongchangyou/mqtt">https://github.com/gongchangyou/mqtt</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/monitor">May 4, 2022 - monitor</a></h1>
-        
-        <div class="content">
-            <h1 id="业务监控">业务监控</h1>
-
-<p>参考文章: <a href="https://blog.51cto.com/jackl/2797593">https://blog.51cto.com/jackl/2797593</a></p>
-
-<p>Statsd + Graphite  +  Grafana</p>
-
-<p>数据收集，上报 ,  展示, 推荐UDP连接</p>
-
-<p>做的好还可以有报警（手机锁屏推送 + 邮件提醒）</p>
-
-<ol>
-  <li>
-    <p>docker 部署 , 如果本地8001端口被占可以更改下, 时区搞成本地的，否则可能会有时差.</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -d\
-  --name graphite\
-  --restart=always\
-  -p 8001:80\
-  -p 2003-2004:2003-2004\
-  -p 2023-2024:2023-2024\
-  -p 8125:8125/udp\
-  -p 8126:8126\
-  -e GRAPHITE_TIME_ZONE='Asia/Shanghai'\
-  -v /etc/localtime:/etc/localtime\
-  graphiteapp/graphite-statsd
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>udp 上报 数据</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div>    </div>
-  </li>
-  <li>打开本地graphic dashboard  localhost:8001</li>
-  <li>记得把原先这个框里的东西删干净，否则有个心跳的统计数据几千万 干扰查看数据，然后把你要监控的指标add进去即可
-  <img src="/images/202205/WechatIMG190.png" alt="" width="800" /></li>
-  <li>然后把auto-refresh点亮就可以看到数据了
-  <img src="/images/202205/WechatIMG191.png" alt="" width="800" /></li>
-</ol>
-
-<p>除了count以外还有些别的统计类型 参考文章: <a href="https://www.jianshu.com/p/4c2df525b3d6">https://www.jianshu.com/p/4c2df525b3d6</a></p>
-
-<h3 id="因为graphite-dashboard不是很好看我们可以把数据展示集成到grafana中">因为graphite dashboard不是很好看，我们可以把数据展示集成到grafana中</h3>
-
-<ol>
-  <li>docker启动grafana , 建议 用 -u root 用root身份启动，因为方便修改grafana.ini, 这个文件需要root权限.
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name grafana -p 3000:3000 -u root grafana/grafana
-</code></pre></div>    </div>
-  </li>
-  <li>localhost:3000 默认用户名密码都是admin</li>
-  <li>配置graphite数据库，这里我是用两个docker容器 启动graphite和grafana。所以这里需要配置宿主机ip， 防止容器间的网络无法访问</li>
-</ol>
-
-<p><img src="/images/202205/WechatIMG192.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG193.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG194.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG199.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>如何添加指标？
-<img src="/images/202205/WechatIMG200.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG201.png" alt="" width="800" /></p>
-
-<p>添加新的panel， 设置刷新时间</p>
-
-<p><img src="/images/202205/WechatIMG205.png" alt="" width="800" /></p>
-
-<p>在这里设置指标之后，点击apply即可
-<img src="/images/202205/WechatIMG204.png" alt="" width="800" /></p>
-
-<h3 id="设置alert">设置alert</h3>
-
-<p>1 设置报警的邮箱</p>
-
-<p>配置smtp， 发件服务器我选择了qq邮箱</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   	  docker exec -it grafana bash
-   	  
-   	  vi /etc/grafana/grafana.ini
-   	  
-   	  //找到smtp那部分 修改成
-
-   	   #################################### SMTP / Emailing ##########################
-   	  [smtp]
-   	  enabled = true
-   	  host = smtp.qq.com:465
-   	  user = laoshubendan@qq.com
-      # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
-   	     password = xxxx #这里写qq的授权码
-   	     ;cert_file =
-   	     ;key_file =
-   	     ;skip_verify = false
-   	     from_address = laoshubendan@qq.com
-   	     ;from_address = admin@grafana.localhost
-   	     from_name = Grafana
-   	     # EHLO identity in SMTP dialog (defaults to instance_name)
-   	     ;ehlo_identity = dashboard.example.com
-   	     # SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
-   	     ;startTLS_policy = NoStartTLS
-</code></pre></div></div>
-   	<img src="/images/202205/WechatIMG212.png" alt="" width="800" />
-
-<hr />
-
-<p>2 在dashboard配置 contact points， 选择email, 收件人邮箱配置好
-<img src="/images/202205/WechatIMG218.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>3 规则配置， 在这里可以设置各个规则的label,
-   <img src="/images/202205/WechatIMG219.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG215.jpeg" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG214.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG216.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>4 提醒策略 绑定规则和报警邮箱 (notifacatinon policies)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里可以匹配label ,利用label来区分报警类别
-</code></pre></div></div>
-
-<p><img src="/images/202205/WechatIMG213.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>5 多次上报命令</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div></div>
-
-<p>收到报警邮件啦 
-      <img src="/images/202205/WechatIMG217.png" alt="" width="800" /></p>
 
         </div>
     </div>
