@@ -21,7 +21,7 @@ tag: [java]
 
     ![]({{ site.baseurl}}/images/202205/idea_vm_options.png){: width="800" }
 
-    下面这段我不知道从而抄来的，其中最有用的就是 设置内存     -Xmx4096m
+    下面这段我不知道从哪儿抄来的，其中最有用的就是 设置内存     -Xmx4096m
 
     ```
     # custom IntelliJ IDEA VM options
