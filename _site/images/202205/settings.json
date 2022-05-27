@@ -1,0 +1,7 @@
+{
+    "redhat.telemetry.enabled": true,
+    "java.configuration.maven.userSettings": "C:\\Users\\gongc\\.m2\\settings-personal.xml",
+    "java.home": "C:\\Program Files\\Java\\jdk1.8.0_333",
+    "maven.executable.path": "D:\\work\\apache-maven-3.8.5\\bin\\mvn",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"c:\\Users\\gongc\\.vscode\\extensions\\gabrielbb.vscode-lombok-1.0.1\\server\\lombok.jar\""
+}

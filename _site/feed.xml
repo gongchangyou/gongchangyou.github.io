@@ -73,8 +73,41 @@ file-&amp;gt; settings -&amp;gt; 搜索color scheme -&amp;gt; import 上述文�
 
 &lt;p&gt;参考文章： &lt;a href=&quot;https://blog.csdn.net/weixin_44211968/article/details/122605298&quot;&gt;https://blog.csdn.net/weixin_44211968/article/details/122605298&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/u014374175/article/details/81365130&quot;&gt;https://blog.csdn.net/u014374175/article/details/81365130&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;官网下载: &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;https://code.visualstudio.com/&lt;/a&gt;&lt;/p&gt;
 
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;File -&amp;gt; preferences -&amp;gt; settings  各种配置&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;配置 Maven: UserSettings  改成本地的settings.xml  &lt;a href=&quot;/images/202205/settings-personal.xml&quot;&gt;settings-personal.xml&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;配置 java home 和 maven path 
+&lt;img src=&quot;/images/202205/20220528000432.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;
+        &lt;h3 id=&quot;一个settingsjson的例子&quot;&gt;&lt;a href=&quot;/images/202205/settings.json&quot;&gt;一个settings.json的例子&lt;/a&gt;&lt;/h3&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建spring 项目&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;ol&gt;
+        &lt;li&gt;打开命令选项板「Ctrl + Shift + P」；&lt;/li&gt;
+        &lt;li&gt;键入Spring Initializr 开始生成Maven项目；&lt;/li&gt;
+        &lt;li&gt;按照向导执行，选择依赖包，我在这选了 devTools（热部署扩展包）和 web两个。&lt;/li&gt;
+      &lt;/ol&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置启动项 点击「run」界面中下拉框 -&amp;gt; 「添加配置」按钮，VS Code 会给你自动配好。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;调试
+&lt;img src=&quot;/images/202205/20220528000444.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
 </description>
 				<pubDate>Thu, 26 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/VS-code-in-windows</link>
@@ -99,6 +132,11 @@ file-&amp;gt; settings -&amp;gt; 搜索color scheme -&amp;gt; import 上述文�
     &lt;/ol&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h3 id=&quot;安装maven&quot;&gt;安装maven&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://phoenixnap.com/kb/install-maven-windows&quot;&gt;https://phoenixnap.com/kb/install-maven-windows&lt;/a&gt;&lt;/p&gt;
+
 </description>
 				<pubDate>Wed, 25 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/windows-install-jdk</link>

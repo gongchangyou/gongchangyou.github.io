@@ -20,3 +20,12 @@ tag: [java]
 	![]({{ site.baseurl}}/images/202205/java_home.png){: width="800" }
 	2. path环境变量
     ![]({{ site.baseurl}}/images/202205/path.png){: width="800" }
+
+
+
+
+
+### 安装maven 
+
+[https://phoenixnap.com/kb/install-maven-windows](https://phoenixnap.com/kb/install-maven-windows)
+
