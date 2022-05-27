@@ -175,6 +175,53 @@
             <div class="post-content">
             <h1 id="idea-in-windows">Idea in windows</h1>
 
+<ol>
+  <li>
+    <p>去官网下载  <a href="https://www.jetbrains.com/zh-cn/idea/">https://www.jetbrains.com/zh-cn/idea/</a></p>
+  </li>
+  <li>
+    <p>插件安装 ：<code class="highlighter-rouge">File</code> -&gt; <code class="highlighter-rouge">Settings</code> -&gt; <code class="highlighter-rouge">Plugins</code>.</p>
+  </li>
+  <li>
+    <p>去 file -&gt; settings 搜索maven 看看 maven的settings.xml 在哪里，备份下，然后把阿里云的源添加进去     <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></p>
+  </li>
+  <li>
+    <p>修改idea内存</p>
+
+    <p><img src="/images/202205/idea_vm_options.png" alt="" width="800" /></p>
+
+    <p>下面这段我不知道从而抄来的，其中最有用的就是 设置内存     -Xmx4096m</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># custom IntelliJ IDEA VM options
+    
+-Xms128m
+-Xmx4096m
+-XX:ReservedCodeCacheSize=240m
+-XX:+UseCompressedOops
+-Dfile.encoding=UTF-8
+-XX:+UseConcMarkSweepGC
+-XX:SoftRefLRUPolicyMSPerMB=50
+-ea
+-XX:CICompilerCount=2
+-Dsun.io.useCanonCaches=false
+-Djava.net.preferIPv4Stack=true
+-Djdk.http.auth.tunneling.disabledSchemes=""
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:-OmitStackTraceInFastThrow
+    
+-XX:ErrorFile=$USER_HOME/java_error_in_idea_%p.log
+-XX:HeapDumpPath=$USER_HOME/java_error_in_idea.hprof
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>显示idea使用内存情况  右下角右键 选中 memory indicator (内存指示器)</p>
+  </li>
+</ol>
+
+<p>问题1： 为什么我的IDEA是中文？</p>
+
+<p>解决1： 去plugins中把chinese那个插件停用了</p>
 
             </div>
             

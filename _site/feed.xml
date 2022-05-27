@@ -10,6 +10,53 @@
 				<title>idea</title>
 				<description>&lt;h1 id=&quot;idea-in-windows&quot;&gt;Idea in windows&lt;/h1&gt;
 
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;去官网下载  &lt;a href=&quot;https://www.jetbrains.com/zh-cn/idea/&quot;&gt;https://www.jetbrains.com/zh-cn/idea/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;插件安装 ：&lt;code class=&quot;highlighter-rouge&quot;&gt;File&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Settings&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Plugins&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;去 file -&amp;gt; settings 搜索maven 看看 maven的settings.xml 在哪里，备份下，然后把阿里云的源添加进去     &lt;a href=&quot;/images/202205/settings-personal.xml&quot;&gt;settings-personal.xml&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改idea内存&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/images/202205/idea_vm_options.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;下面这段我不知道从而抄来的，其中最有用的就是 设置内存     -Xmx4096m&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# custom IntelliJ IDEA VM options
+    
+-Xms128m
+-Xmx4096m
+-XX:ReservedCodeCacheSize=240m
+-XX:+UseCompressedOops
+-Dfile.encoding=UTF-8
+-XX:+UseConcMarkSweepGC
+-XX:SoftRefLRUPolicyMSPerMB=50
+-ea
+-XX:CICompilerCount=2
+-Dsun.io.useCanonCaches=false
+-Djava.net.preferIPv4Stack=true
+-Djdk.http.auth.tunneling.disabledSchemes=&quot;&quot;
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:-OmitStackTraceInFastThrow
+    
+-XX:ErrorFile=$USER_HOME/java_error_in_idea_%p.log
+-XX:HeapDumpPath=$USER_HOME/java_error_in_idea.hprof
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示idea使用内存情况  右下角右键 选中 memory indicator (内存指示器)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;问题1： 为什么我的IDEA是中文？&lt;/p&gt;
+
+&lt;p&gt;解决1： 去plugins中把chinese那个插件停用了&lt;/p&gt;
 </description>
 				<pubDate>Fri, 27 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/Idea-in-windows</link>

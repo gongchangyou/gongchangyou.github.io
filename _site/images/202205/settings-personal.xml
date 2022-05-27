@@ -1,0 +1,130 @@
+<!-- <settings>
+  <localRepository>/Users/suixinyu/Documents/java/repository/repository</localRepository>
+</settings>
+
+ -->
+ <settings>
+<servers>
+  <server>
+    <id>local-nexus-releases</id>
+    <username>admin</username>
+    <password>admin</password>
+  </server>
+  <server>
+    <id>local-nexus-snapshots</id>
+    <username>admin</username>
+    <password>admin</password>
+  </server>  
+</servers>
+
+  <mirrors>
+      <mirror>
+        <id>alimaven</id>
+        <name>aliyun maven</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <mirrorOf>central</mirrorOf>        
+      </mirror>
+      <mirror>
+        <id>local-snapshot</id>
+        <name>local maven snapshot</name>
+          <url>http://localhost:8081/nexus/repository/maven-snapshots/</url>
+        <mirrorOf>*</mirrorOf>        
+      </mirror>
+
+      <mirror>
+        <id>local-public</id>
+        <name>local maven public</name>
+          <url>http://localhost:8081/nexus/repository/maven-public/</url>
+        <mirrorOf>*</mirrorOf>        
+      </mirror>
+       <mirror>
+        <id>local-releases</id>
+        <name>local maven public</name>
+          <url>http://localhost:8081/nexus/repository/maven-releases/</url>
+        <mirrorOf>*</mirrorOf>        
+      </mirror>
+  </mirrors>
+  
+  <profiles>
+    <profile>
+      <id>development</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+    <profile>
+      <!--this profile will allow snapshots to be searched when activated-->
+      <id>public-snapshots</id>
+      <repositories>
+        <repository>
+            <id>ali</id>
+            <name>ali Maven repository</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>  
+       <repository>
+      <id>ali-snapshot</id>
+          <name>ali Maven repository snapshot</name>
+          <url>https://maven.aliyun.com/nexus/content/groups/snapshots/</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+      </repository>
+
+      <repository>
+      <id>local</id>
+          <name>Local Maven repository</name>
+          <url>http://localhost:8081/nexus/repository/maven-public/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+      </repository>  
+      <repository>
+      <id>local-snapshot</id>
+          <name>Local Maven repository snapshot</name>
+          <url>http://localhost:8081/nexus/repository/maven-snapshots/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+      </repository>  
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>public-snapshots</id>
+          <url>http://public-snapshots</url>
+          <releases><enabled>false</enabled></releases>
+          <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  <profile>
+    <id>sonar</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <properties>
+      <sonar.jdbc.url>jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8</sonar.jdbc.url>
+      <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
+      <sonar.jdbc.username>sonar</sonar.jdbc.username>
+      <sonar.jdbc.password>sonar</sonar.jdbc.password>
+      <sonar.host.url>http://10.58.156.108:9000/</sonar.host.url>
+    </properties>
+  </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>development</activeProfile>
+    <activeProfile>public-snapshots</activeProfile>
+  </activeProfiles>
+
+</settings>
