@@ -70,10 +70,12 @@ mac电脑 +MySQL 8 认证错误 [https://www.jianshu.com/p/9a645c473676](https:/
 
 3. 用root用户建一张DB macaque
 
-4. 给test用户授权
+4. 给用户授权
 
    ```
    grant all privileges on macaque.* to 'test'@'%';
+
+   grant all privileges on root.* to 'root'@'%';
    ```
 
 

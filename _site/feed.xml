@@ -7,6 +7,60 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>antrun</title>
+				<description>&lt;h1 id=&quot;maven-antrun-plugin&quot;&gt;maven antrun plugin&lt;/h1&gt;
+
+&lt;p&gt;有时候我们希望打包的时候添加一些行为，比如把文件从resource 文件夹下拷贝到另外一个地方.&lt;/p&gt;
+
+&lt;p&gt;这时候就可以使用 maven antrun plugin.&lt;/p&gt;
+
+&lt;p&gt;参考文章： &lt;a href=&quot;https://maven.apache.org/plugins/maven-antrun-plugin/usage.html&quot;&gt;https://maven.apache.org/plugins/maven-antrun-plugin/usage.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;project&amp;gt;
+  [...]
+  &amp;lt;build&amp;gt;
+    &amp;lt;plugins&amp;gt;
+      &amp;lt;plugin&amp;gt;
+        &amp;lt;artifactId&amp;gt;maven-antrun-plugin&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;1.8&amp;lt;/version&amp;gt;
+        &amp;lt;executions&amp;gt;
+          &amp;lt;execution&amp;gt;
+            &amp;lt;phase&amp;gt; &amp;lt;!-- Maven的生命周期阶段 --&amp;gt; &amp;lt;/phase&amp;gt;
+            &amp;lt;configuration&amp;gt;
+              &amp;lt;target&amp;gt;
+
+                &amp;lt;!--
+                  将任务Ant任务放在这里，还可以在这里添加一个build.xml文件
+                --&amp;gt;
+
+              &amp;lt;/target&amp;gt;
+            &amp;lt;/configuration&amp;gt;
+            &amp;lt;goals&amp;gt;
+              &amp;lt;goal&amp;gt;run&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+          &amp;lt;/execution&amp;gt;
+        &amp;lt;/executions&amp;gt;
+      &amp;lt;/plugin&amp;gt;
+    &amp;lt;/plugins&amp;gt;
+  &amp;lt;/build&amp;gt;
+  [...]
+&amp;lt;/project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;代码仓库:   &lt;a href=&quot;https://github.com/gongchangyou/transactional&quot;&gt;https://github.com/gongchangyou/transactional&lt;/a&gt; 这里借用下transactional仓库演示一下&lt;/p&gt;
+
+&lt;p&gt;直接打包， 就可以看到具体的target任务&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mvn package -Dmaven.test.skip=true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Sat, 28 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/maven-antrun-plugin</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/maven-antrun-plugin</guid>
+			</item>
+		
+			<item>
 				<title>idea</title>
 				<description>&lt;h1 id=&quot;idea-in-windows&quot;&gt;Idea in windows&lt;/h1&gt;
 
@@ -68,7 +122,7 @@ file-&amp;gt; settings -&amp;gt; 搜索color scheme -&amp;gt; import 上述文�
 			</item>
 		
 			<item>
-				<title>vs code</title>
+				<title>vscode</title>
 				<description>&lt;h1 id=&quot;vs-code-in-windows&quot;&gt;VS code in windows&lt;/h1&gt;
 
 &lt;p&gt;参考文章： &lt;a href=&quot;https://blog.csdn.net/weixin_44211968/article/details/122605298&quot;&gt;https://blog.csdn.net/weixin_44211968/article/details/122605298&lt;/a&gt;&lt;/p&gt;
@@ -755,56 +809,6 @@ public class SwaggerConfig {
 				<pubDate>Tue, 17 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/swagger</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/swagger</guid>
-			</item>
-		
-			<item>
-				<title>java项目 依赖检查</title>
-				<description>&lt;h1 id=&quot;owasp&quot;&gt;OWASP&lt;/h1&gt;
-
-&lt;p&gt;官网： &lt;a href=&quot;https://owasp.org/&quot;&gt;https://owasp.org/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;网站安全top 10: &lt;a href=&quot;https://owasp.org/www-project-top-ten/&quot;&gt;https://owasp.org/www-project-top-ten/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;检测插件 &lt;a href=&quot;https://blog.csdn.net/qq_35624642/article/details/122438449&quot;&gt;https://blog.csdn.net/qq_35624642/article/details/122438449&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!--        代码依赖包安全漏洞检测--&amp;gt;
-&amp;lt;!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven --&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.owasp&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;dependency-check-maven&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;6.5.2&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;!--        代码依赖包安全漏洞检测--&amp;gt;
-            &amp;lt;plugin&amp;gt;
-                &amp;lt;groupId&amp;gt;org.owasp&amp;lt;/groupId&amp;gt;
-                &amp;lt;artifactId&amp;gt;dependency-check-maven&amp;lt;/artifactId&amp;gt;
-                &amp;lt;configuration&amp;gt;
-                    &amp;lt;autoUpdate&amp;gt;true&amp;lt;/autoUpdate&amp;gt;
-                &amp;lt;/configuration&amp;gt;
-                &amp;lt;executions&amp;gt;
-                    &amp;lt;execution&amp;gt;
-                        &amp;lt;goals&amp;gt;
-                            &amp;lt;goal&amp;gt;check&amp;lt;/goal&amp;gt;
-                        &amp;lt;/goals&amp;gt;
-                    &amp;lt;/execution&amp;gt;
-                &amp;lt;/executions&amp;gt;
-            &amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如下图点击maven:check&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG143.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;运行结束后，会在target下生成检测报告dependency-check-report.html，直接浏览器打开查看就可以了&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG144.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Sun, 15 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/OWASP</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/OWASP</guid>
 			</item>
 		
 	</channel>
