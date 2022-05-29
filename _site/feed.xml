@@ -7,6 +7,47 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>completeFuture</title>
+				<description>&lt;h1 id=&quot;completefuture&quot;&gt;CompleteFuture&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6844903594165026829&quot;&gt;https://juejin.cn/post/6844903594165026829&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://colobu.com/2016/02/29/Java-CompletableFuture/&quot;&gt;https://colobu.com/2016/02/29/Java-CompletableFuture/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一个手动complete的例子&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; @Test
+    void complete() {
+        CompletableFuture cf = new CompletableFuture&amp;lt;String&amp;gt;();
+
+        val cf1 = cf.thenApply((Object str) -&amp;gt; {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return ((String)str).replace(&quot;a&quot;, &quot;d&quot;);
+        });
+
+        cf.complete(&quot;aad&quot;); //这里会触发cf后面的thenApply方法，上述的sleep会同步阻塞。
+
+        try {
+            val value = cf.get();
+            val value1 = cf1.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
+            log.info(&quot;value={} value1={}&quot;,value,value1);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Sun, 29 May 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/completeFuture</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/completeFuture</guid>
+			</item>
+		
+			<item>
 				<title>antrun</title>
 				<description>&lt;h1 id=&quot;maven-antrun-plugin&quot;&gt;maven antrun plugin&lt;/h1&gt;
 
@@ -49,7 +90,7 @@
 
 &lt;p&gt;代码仓库:   &lt;a href=&quot;https://github.com/gongchangyou/transactional&quot;&gt;https://github.com/gongchangyou/transactional&lt;/a&gt; 这里借用下transactional仓库演示一下&lt;/p&gt;
 
-&lt;p&gt;直接打包， 就可以看到具体的target任务&lt;/p&gt;
+&lt;p&gt;直接打包， 就可以看到具体的target任务已经执行了&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mvn package -Dmaven.test.skip=true
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -730,85 +771,6 @@ def getPackageName(dir) {
 				<pubDate>Wed, 18 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/Disruptor</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/Disruptor</guid>
-			</item>
-		
-			<item>
-				<title>swagger</title>
-				<description>&lt;h1 id=&quot;swagger&quot;&gt;swagger&lt;/h1&gt;
-
-&lt;p&gt;官网： &lt;a href=&quot;https://swagger.io/&quot;&gt;https://swagger.io/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;参考文章:  &lt;a href=&quot;https://www.jianshu.com/p/088163459147&quot;&gt;https://www.jianshu.com/p/088163459147&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;​			&lt;a href=&quot;http://c.biancheng.net/view/5532.html&quot;&gt;http://c.biancheng.net/view/5532.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;项目地址:  &lt;a href=&quot;https://github.com/gongchangyou/swagger&quot;&gt;https://github.com/gongchangyou/swagger&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;添加依赖&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      &amp;lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&amp;gt;
-        &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;com.spring4all&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;swagger-spring-boot-starter&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;2.0.2.RELEASE&amp;lt;/version&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;配置swagger&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
-@Profile({&quot;dev&quot;,&quot;local&quot;})
-@EnableSwagger2
-@EnableWebMvc
-public class SwaggerConfig {
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;添加注解
-&lt;img src=&quot;/images/202205/WechatIMG148.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;再次访问，这次说明文档都展示出来了。
-&lt;img src=&quot;/images/202205/WechatIMG147.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误&lt;/p&gt;
-
-&lt;p&gt;回答1: &lt;a href=&quot;https://www.cnblogs.com/rainbow70626/p/15680184.html&quot;&gt;https://www.cnblogs.com/rainbow70626/p/15680184.html&lt;/a&gt; 添加注解 @EnableWebMvc&lt;/p&gt;
-
-&lt;p&gt;问题2： 如何添加response 的schema ?&lt;/p&gt;
-
-&lt;p&gt;回答2： 
-直接如下这样写是没用的。
-&lt;img src=&quot;/images/202205/WechatIMG151.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;
-需要使用v3的ApiResponse
-&lt;img src=&quot;/images/202205/WechatIMG159.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;
-这样ok了
-&lt;img src=&quot;/images/202205/WechatIMG153.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题3： 如何添加response为list的schema ?&lt;/p&gt;
-
-&lt;p&gt;回答3：如下乱写当然也行，swagger并不会去比对schema的implementation和 method的returnType. 这样当然swagger ui html也会显示成OutputModel，而不是一个list.所以这种写法全靠自觉。
-&lt;img src=&quot;/images/202205/WechatIMG154.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;正确的写法应该如下所示，引入ArraySchema,且把原先的ApiResponse给删掉，否则会冲突，导致无法正常显示。
-&lt;img src=&quot;/images/202205/WechatIMG156.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;
-&lt;img src=&quot;/images/202205/WechatIMG158.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;
-这下显示ok了
-&lt;img src=&quot;/images/202205/WechatIMG157.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 17 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/swagger</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/swagger</guid>
 			</item>
 		
 	</channel>

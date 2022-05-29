@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/completeFuture">completeFuture</a></li>
+        
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
           <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
-        
-          <li><a href="/2022/05/transactional">transactional</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>47</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -169,6 +169,52 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
+<ol>
+  <li>https://github.com/alibaba/nacos/releases</li>
+</ol>
+
+<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
+
+<ol>
+  <li>解压缩</li>
+  <li>cd nacos-jar/bin</li>
+  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
+    <ol>
+      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
+      <li>或者直接看日志 logs/start.out 。里面有启动命令，再不行就自己手动 nohup java … &amp;</li>
+    </ol>
+  </li>
+  <li>http://127.0.0.1:8848/nacos/</li>
+  <li>账号名密码是 <strong>nacos/nacos</strong></li>
+</ol>
+
+<p>问题1： 启动失败，查看错误日志，发现如下错误。但是我把java命令拷出来的时候又可以正常运行。</p>
+
+<blockquote>
+  <p>less /Users/gongchangyou/learn/nacos-jar/logs/start.out</p>
+
+  <p>错误: 找不到或无法加载主类
+ 原因: java.lang.ClassNotFoundException:</p>
+</blockquote>
+
+<p>解决方案1:  改下startup.sh</p>
+
+<p>nohup "$JAVA" "$JAVA_OPT_EXT_FIX" ${JAVA_OPT} nacos.nacos » ​${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
+
+<p>改为</p>
+
+<p>nohup "$JAVA" ${JAVA_OPT_EXT_FIX} ${JAVA_OPT} nacos.nacos » ${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
@@ -254,23 +300,6 @@ Current browser version is 101.0.4951.54 with binary path /Applications/Google C
 yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
-        
-        <div class="content">
-            <h1 id="爷爷">爷爷</h1>
-
-<p>在灵堂找不到写字的马克笔，看到边上写挽联的毛笔，顺手拿起记录，这久违的握笔感觉，将我瞬间带回儿时周末拎着篮子去学校学写毛笔字，里面的文房四宝是爷爷给我准备的，希望我的字不要那么蹩脚，让您失望了，长大后我甚至很少手写。</p>
-
-<h2 id="第一次吃肯德基">第一次吃肯德基</h2>
-
-<p>我上小学的时候，衢州柯城还没有肯德基，爷爷带我坐了半小时的绿皮车，去隔壁龙游县点的套餐，我们一起分享了一个汉堡，他说很好吃。今天在东方KFC打包了新款的汉堡，这回换我请你吃。</p>
 
         </div>
     </div>

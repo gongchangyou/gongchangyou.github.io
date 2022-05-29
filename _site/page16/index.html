@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/completeFuture">completeFuture</a></li>
+        
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
           <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
-        
-          <li><a href="/2022/05/transactional">transactional</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>47</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -171,6 +171,267 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
+        
+        <div class="content">
+            <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
+
+<h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
+
+<ol>
+  <li>
+    <p>docker pull</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull docker.elastic.co/kibana/kibana:8.1.0
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>docker-compose.yml</p>
+  </li>
+</ol>
+
+<p><a href="/images/202203/docker-compose.yml">下载 yaml</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2.2'
+services:
+ node01:
+   image: docker.elastic.co/elasticsearch/elasticsearch:8.2.0
+   container_name: node01
+   environment:
+     - node.name=node01
+     - cluster.name=es-cluster-7
+     - discovery.type=single-node
+     - xpack.security.enabled=false
+     - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+   ulimits:
+     memlock:
+       soft: -1
+       hard: -1
+   volumes:
+     - es-data01:/usr/share/elasticsearch/data
+   ports:
+     - 9200:9200
+   networks:
+     - es-network
+
+ kibana:
+   image: docker.elastic.co/kibana/kibana:8.2.0
+   environment:
+     ELASTICSEARCH_HOSTS: http://node01:9200
+   ports:
+     - 5601:5601
+   networks:
+     - es-network
+   depends_on:
+     - node01
+
+volumes:
+ es-data01:
+   driver: local
+
+networks:
+ es-network:
+   driver: bridge
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <blockquote>
+      <p>docker-compose up</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>浏览器 访问 http://localhost:5601/</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
+
+<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html</a></p>
+
+<p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
+
+<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
+
+<p>可以点击inspect 看request 语句</p>
+
+<p><img src="/images/202203/WechatIMG49.png" alt="" width="800" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET users/_search 
+{
+  "aggs": {
+    "2": {
+      "terms": {
+        "field": "country.keyword",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 2
+      },
+      "aggs": {
+        "3": {
+          "terms": {
+            "field": "age",
+            "order": {
+              "_count": "desc"
+            },
+            "size": 2
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "fields": [],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>坐标系的热力图的 query</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get users/_search
+{
+  "aggs": {
+    "2": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "to": 10,
+            "from": 0
+          },
+          {
+            "to": 20,
+            "from": 10
+          },
+          {
+            "to": 30,
+            "from": 20
+          },
+          {
+            "to": 37,
+            "from": 30
+          }
+        ],
+        "keyed": true
+      },
+      "aggs": {
+        "2": {
+          "range": {
+            "field": "age",
+            "ranges": [
+              {
+                "to": 10,
+                "from": 0
+              },
+              {
+                "to": 20,
+                "from": 10
+              },
+              {
+                "to": 30,
+                "from": 20
+              },
+              {
+                "to": 40,
+                "from": 30
+              }
+            ],
+            "keyed": true
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "fields": [],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+
+<h3 id="单独部署-es">单独部署 ES</h3>
+
+<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
+
+docker network create elastic
+
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
+</code></pre></div></div>
+
+<p>问题1： 报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
+bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
+</code></pre></div></div>
+
+<p>虚拟内存太小了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/sysctl.conf 
+vm.max_map_count=655360
+</code></pre></div></div>
+
+<p>重启</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
         
         <div class="content">
@@ -193,105 +454,6 @@
 <p>官网教程 <a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3</a></p>
 
 <p>学习使用的代码仓库 <a href="https://github.com/gongchangyou/opengl-learn">https://github.com/gongchangyou/opengl-learn</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/opengl-go">Mar 10, 2022 - go-opengl</a></h1>
-        
-        <div class="content">
-            <h1 id="go-opengl">Go OpenGL</h1>
-
-<ol>
-  <li>
-    <p>先安装一个 goland <a href="https://www.jetbrains.com/zh-cn/go/">https://www.jetbrains.com/zh-cn/go/</a></p>
-  </li>
-  <li>
-    <p>配置GOROOT, GOPATH, 注意GO Modules配置成如下这样
-<img src="/images/202203/421646811018_.pic.jpg" alt="" width="800" />
-<img src="/images/202203/401646810998_.pic.jpg" alt="" width="800" />
-<img src="/images/202203/411646811008_.pic.jpg" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>proxy也设置一下
-  <img src="/images/202203/451646811683_.pic.jpg" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>如果要使用命令行的话 ，还需要 ~/.bash_profile中添加 ，并source ~/.bash_profile</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export GOPROXY=https://goproxy.io
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>去有 go.mod 的文件同级敲命令</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> go mod tidy
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>external libraries中应该就引入了</p>
-
-<p>问题1: 多个文件时， go run main.go 会报错 某个函数undefined。</p>
-
-<p>两种解决方案：</p>
-
-<ol>
-  <li>将函数，变量等都挪到 main.go 里面</li>
-  <li>执行 go run *.go 而不是 go run main.go</li>
-</ol>
-
-<p>问题2： ubuntu缺少组件库 会报错</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-root@mouse-Precision-3650-Tower:/home/mouse/Downloads/opengl-heatmap/trial# go run *.go
-# pkg-config --cflags  -- gl gl
-Package gl was not found in the pkg-config search path.
-Perhaps you should add the directory containing `gl.pc'
-to the PKG_CONFIG_PATH environment variable
-No package 'gl' found
-Package gl was not found in the pkg-config search path.
-Perhaps you should add the directory containing `gl.pc'
-to the PKG_CONFIG_PATH environment variable
-No package 'gl' found
-pkg-config: exit status 1
-# github.com/go-gl/glfw/v3.3/glfw
-In file included from ./glfw/src/internal.h:188,
-                 from ./glfw/src/context.c:30,
-                 from /root/go/pkg/mod/github.com/go-gl/glfw/v3.3/glfw@v0.0.0-20211213063430-748e38ca8aec/c_glfw.go:4:
-./glfw/src/x11_platform.h:36:10: fatal error: X11/Xcursor/Xcursor.h: No such file or directory
-   36 | #include &lt;X11/Xcursor/Xcursor.h&gt;
-      |          ^~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-
-</code></pre></div></div>
-
-<p><a href="https://github.com/go-gl/glfw/issues/129">https://github.com/go-gl/glfw/issues/129</a></p>
-
-<p>那就根据报错找到对应的lib 安装即可</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libxcursor-dev
-
-apt-get install libxinerama-dev
-
-apt-get install libxrandr-dev
-
-apt-get install libxi-dev
-
-sudo apt-get install mesa-common-dev
-sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
-
-sudo apt-get install Xxf86vm*
-</code></pre></div></div>
-
-<p>问题3： ubuntu 如何查看opengl版本？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install mesa-utils
-glxinfo | grep -i opengl
-</code></pre></div></div>
 
 
         </div>

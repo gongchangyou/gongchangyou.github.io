@@ -57,7 +57,7 @@ tag: [java]
 
 
 
-直接打包， 就可以看到具体的target任务
+直接打包， 就可以看到具体的target任务已经执行了
 
 ```
 mvn package -Dmaven.test.skip=true

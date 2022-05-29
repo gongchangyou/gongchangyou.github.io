@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/completeFuture">completeFuture</a></li>
+        
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
           <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
-        
-          <li><a href="/2022/05/transactional">transactional</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>47</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -169,6 +169,68 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">Jan 28, 2022 - spring cloud stream</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-stream---rocketmq">Spring Cloud Stream  &amp; RocketMQ</h1>
+
+<h2 id="rocketmq有两种实现方式">RocketMQ有两种实现方式</h2>
+
+<ol>
+  <li>Rocketmq-spring-boot-starter 框架 (rocketmq &amp;&amp; spring-boot)</li>
+  <li>Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ <a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></li>
+</ol>
+
+<p>我选择版本2.2.7.RELEASE: <a href="https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq">https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq</a></p>
+
+<p>注意处理冲突和添加依赖，我这边缺少了  spring-boot-actuator-autoconfigure</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-actuator-autoconfigure --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-actuator-autoconfigure&lt;/artifactId&gt;
+            &lt;version&gt;2.3.12.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>sample <a href="https://github.com/spring-cloud/spring-cloud-stream-samples">https://github.com/spring-cloud/spring-cloud-stream-samples</a></p>
+
+<p>代码很简单
+<img src="/images/202201/1643521131415.jpg" alt="embbed" width="1000" />
+<img src="/images/202201/1643521145955.jpg" alt="embbed" width="1000" />
+<img src="/images/202201/1643521166242.jpg" alt="embbed" width="1000" /></p>
+
+<p>配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
+spring.cloud.stream.bindings.output1.content-type=application/json
+
+</code></pre></div></div>
+
+<h2 id="消费者">消费者</h2>
+
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.input1.destination=test-topic
+spring.cloud.stream.bindings.input1.content-type=application/json
+spring.cloud.stream.bindings.input1.group=group
+</code></pre></div></div>
+
+<p>代码</p>
+
+<p><img src="/images/202201/1643523658805.jpg" alt="embbed" width="1000" />
+<img src="/images/202201/1643523559576.jpg" alt="embbed" width="1000" />
+<img src="/images/202201/1643523584792.jpg" alt="embbed" width="1000" /></p>
+
+<p>调试ok</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/jira">Jan 24, 2022 - jira</a></h1>
@@ -295,85 +357,6 @@ trusted_hosts[] = "10.10.48.194:7777"
 <p>所以如果要监控访问的url type =3 ，不可以遍历 matomo_log_action 表。</p>
 
 <p>而还是应该遍历 matomo_log_link_visit_action，查看单位时间内相同  idvisit 产生的matomo_log_action的type=3的记录数.</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/RocketMQ">Jan 21, 2022 - rocket mq</a></h1>
-        
-        <div class="content">
-            <h1 id="rocketmq-部署">RocketMQ 部署</h1>
-
-<p>基础术语：</p>
-
-<ol>
-  <li>生产者(Producer)</li>
-  <li>消费者(Consumer)</li>
-  <li>主题（Topic)  一类消息的集合</li>
-  <li>生产者组（Producer Group) 这类Producer 发送同一类消息。如果发送事务消息，且原始生产者在发送后崩溃，Broker Server 会联系同一组的生产者实例提交或回溯消费</li>
-  <li>消费者组（Consumer Group) 消费同一类消息，注意同一个group的消费者必须订阅相同的topic。可以方便的负载均衡和容错</li>
-  <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
-  <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
-</ol>
-
-<p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
-
-<ol>
-  <li>
-    <p>下载RocketMQ zip包 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip</a></p>
-  </li>
-  <li>先启动 name service
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqnamesrv &amp;
-</code></pre></div>    </div>
-  </li>
-  <li>再启动 broker service. 注意 vi bin/runbroker.sh 里面的 -Xms 内存要求是8g
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqbroker -n localhost:9876 &amp;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>测试下 是否可以正常生产、消费</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export NAMESRV_ADDR=localhost:9876
-sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer
-   
-sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer	
-</code></pre></div>    </div>
-  </li>
-  <li>关闭服务器
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>停止 broker：sh bin/mqshutdown broker
-停止 nameserver：sh bin/mqshutdown namesrv
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<h2 id="控制台启动">控制台启动</h2>
-
-<ol>
-  <li>下载 控制台安装包 注意现在拆分出来了 <a href="https://github.com/apache/rocketmq-dashboard">https://github.com/apache/rocketmq-dashboard</a>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:apache/rocketmq-dashboard.git
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>看  readme 直接 docker 搞起</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull apacherocketmq/rocketmq-dashboard:latest
-
- ## 注意这里看看本地端口哪个可用，我这里用了8081
- docker run -d --name rocketmq-dashboard -e "JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.1.145:9876" -p 8081:8080 -t apacherocketmq/rocketmq-dashboard:latest
-</code></pre></div>    </div>
-
-    <p>如果是docker启动的话，上面Drocketmq.namesrv.addr参数直接用127.0.0.1:9876 会让dashboard无法连接到本地的9876端口，只能说docker容器中的 127.0.0.1 9876 不是宿主机的那个</p>
-
-    <p>如果是自行打包并且启动jar包的话，应该是用127.0.0.1 没问题的</p>
-  </li>
-  <li>浏览器打开 localhost:8081</li>
-</ol>
-
-<p><img src="/images/202201/1642757861082.jpg" alt="embbed" width="1000" /></p>
-
 
         </div>
     </div>

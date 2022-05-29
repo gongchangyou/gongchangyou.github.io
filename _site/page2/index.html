@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/completeFuture">completeFuture</a></li>
+        
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
           <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
-        
-          <li><a href="/2022/05/transactional">transactional</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>47</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -169,6 +169,55 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/VS-code-in-windows">May 26, 2022 - vscode</a></h1>
+        
+        <div class="content">
+            <h1 id="vs-code-in-windows">VS code in windows</h1>
+
+<p>参考文章： <a href="https://blog.csdn.net/weixin_44211968/article/details/122605298">https://blog.csdn.net/weixin_44211968/article/details/122605298</a></p>
+
+<p><a href="https://blog.csdn.net/u014374175/article/details/81365130">https://blog.csdn.net/u014374175/article/details/81365130</a></p>
+
+<p>官网下载: <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+
+<ol>
+  <li>
+    <p>File -&gt; preferences -&gt; settings  各种配置</p>
+
+    <ol>
+      <li>配置 Maven: UserSettings  改成本地的settings.xml  <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></li>
+      <li>配置 java home 和 maven path 
+<img src="/images/202205/20220528000432.png" alt="" width="800" />
+        <h3 id="一个settingsjson的例子"><a href="/images/202205/settings.json">一个settings.json的例子</a></h3>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>创建spring 项目</p>
+
+    <blockquote>
+      <ol>
+        <li>打开命令选项板「Ctrl + Shift + P」；</li>
+        <li>键入Spring Initializr 开始生成Maven项目；</li>
+        <li>按照向导执行，选择依赖包，我在这选了 devTools（热部署扩展包）和 web两个。</li>
+      </ol>
+    </blockquote>
+  </li>
+  <li>
+    <p>配置启动项 点击「run」界面中下拉框 -&gt; 「添加配置」按钮，VS Code 会给你自动配好。</p>
+  </li>
+  <li>
+    <p>调试
+<img src="/images/202205/20220528000444.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/windows-install-jdk">May 25, 2022 - jdk</a></h1>
@@ -296,125 +345,6 @@
 <p>核心逻辑在 spring-tx包中的 类 TransactionAspectSupport 中：</p>
 
 <p><img src="/images/202205/WechatIMG230.png" alt="" width="800" /></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
-        
-        <div class="content">
-            <h1 id="pojo-groovy">Pojo groovy</h1>
-
-<p>代码仓库:  <a href="https://github.com/gongchangyou/tool">https://github.com/gongchangyou/tool</a></p>
-
-<p>自动生成pojo</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.intellij.database.model.DasTable
-import com.intellij.database.util.Case
-import com.intellij.database.util.DasUtil
-
-/*
- * Available context bindings:
- *   SELECTION   Iterable&lt;DasObject&gt;
- *   PROJECT     project
- *   FILES       files helper
- */
-
-typeMapping = [
-  (~/(?i)int/)                      : "Long",
-  (~/(?i)float|double|decimal|real/): "Double",
-  (~/(?i)datetime|timestamp/)       : "java.sql.Timestamp",
-  (~/(?i)date/)                     : "java.sql.Date",
-  (~/(?i)time/)                     : "java.sql.Time",
-  (~/(?i)/)                         : "String"
-]
-
-FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir -&gt;
-  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
-}
-
-def generate(table, dir) {
-  def className = javaName(table.getName(), true)
-  def fields = calcFields(table)
-  def packageName = getPackageName(dir)
-  new File(dir, className + ".java").withPrintWriter { out -&gt; generate(out, className, fields, packageName, table) }
-}
-
-def generate(out, className, fields, packageName, table) {
-  out.println "package $packageName"
-  out.println ""
-  out.println ""
-  out.println "import com.baomidou.mybatisplus.annotation.IdType;\n" +
-          "import com.baomidou.mybatisplus.annotation.TableId;\n" +
-          "import com.baomidou.mybatisplus.annotation.TableName;\n" +
-          "import lombok.AllArgsConstructor;\n" +
-          "import lombok.Builder;\n" +
-          "import lombok.Data;\n" +
-          "import lombok.NoArgsConstructor;"
-    out.println ""
-    out.println "@Builder\n" +
-            "@AllArgsConstructor\n" +
-            "@NoArgsConstructor\n" +
-            "@Data\n" +
-            "@TableName(\"${table.getName()}\")"
-    out.println "public class $className {"
-  out.println ""
-  fields.each() {
-    if (it.comment != "") {
-        out.println "  /**"
-        out.println "   * ${it.comment}"
-        out.println "   */"
-    }
-      if (it.isPrimaryKey) {
-          out.println "  @TableId(type = IdType.AUTO)"
-      }
-    out.println "  private ${it.type} ${it.name};"
-  }
-  out.println ""
-//  fields.each() {
-//    out.println ""
-//    out.println "  public ${it.type} get${it.name.capitalize()}() {"
-//    out.println "    return ${it.name};"
-//    out.println "  }"
-//    out.println ""
-//    out.println "  public void set${it.name.capitalize()}(${it.type} ${it.name}) {"
-//    out.println "    this.${it.name} = ${it.name};"
-//    out.println "  }"
-//    out.println ""
-//  }
-  out.println "}"
-}
-
-def calcFields(table) {
-    DasUtil.getColumns(table).reduce([]) { fields, col -&gt;
-    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
-    def typeStr = typeMapping.find { p, t -&gt; p.matcher(spec).find() }.value
-    fields += [[
-                 name : javaName(col.getName(), false),
-                 type : typeStr,
-                 comment : col.getComment(),
-                 isPrimaryKey :  DasUtil.isPrimary(col),
-                 annos: ""]]
-  }
-}
-
-def javaName(str, capitalize) {
-  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
-    .collect { Case.LOWER.apply(it).capitalize() }
-    .join("")
-    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, "_")
-  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
-}
-
-def getPackageName(dir) {
-    return dir.toString().replaceAll("\\\\", ".").replaceAll("/", ".").replaceAll("^.*src(\\.main\\.java\\.)?", "") + ";"
-}
-
-</code></pre></div></div>
 
 
         </div>
