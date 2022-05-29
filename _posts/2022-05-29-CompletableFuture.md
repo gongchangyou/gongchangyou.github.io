@@ -1,7 +1,7 @@
 ---
 
 layout: post
-title: "completeFuture"
+title: "CompletableFuture"
 date: 2022-05-29 10:25:06 +0800
 comments: true
 category: java
@@ -9,7 +9,7 @@ tag: [java]
 
 ---
 
-# CompleteFuture
+# CompletableFuture
 
 参考文章: [https://juejin.cn/post/6844903594165026829](https://juejin.cn/post/6844903594165026829)
 
@@ -20,7 +20,7 @@ tag: [java]
 一个手动complete的例子
 
 ```
- @Test
+    @Test
     void complete() {
         CompletableFuture cf = new CompletableFuture<String>();
 
