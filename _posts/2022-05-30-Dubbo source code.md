@@ -63,7 +63,7 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 ### 客户端调用
 
-自己整理了下客户端调用流程:
+自己整理了下客户端调用流程: [dubbo client.drawio]({{ site.baseurl}}/images/202205/dubbo client.drawio)
 ![]({{ site.baseurl}}/images/202205/dubbo_client.drawio.png){: width="800" }
 
 
@@ -76,11 +76,20 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 ### 服务端bean加载
 
-具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  . DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）
+具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。
+
+那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  . 
+
+DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）
 
 
 
 ### 服务端逻辑
+
+流程图: 
+[dubbo_server.drawio]({{ site.baseurl}}/images/202205/dubbo_server.drawio)
+
+![]({{ site.baseurl}}/images/202205/dubbo_server.drawio.png){: width="800" }
 
 问题1：二进制字节流 如何解析 serviceName methodName parameters ?
 
@@ -94,5 +103,14 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
 回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
-
 ![]({{ site.baseurl}}/images/202205/WechatIMG254.png){: width="800" }
+
+问题3： Filter是如何添加进Wrapper的？
+回答3:    ProtocolFilterWrapper 类      List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
+
+
+
+
+
+
+

@@ -53,7 +53,7 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 &lt;h3 id=&quot;客户端调用&quot;&gt;客户端调用&lt;/h3&gt;
 
-&lt;p&gt;自己整理了下客户端调用流程:
+&lt;p&gt;自己整理了下客户端调用流程: &lt;a href=&quot;/images/202205/dubbo client.drawio&quot;&gt;dubbo client.drawio&lt;/a&gt;
 &lt;img src=&quot;/images/202205/dubbo_client.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;问题1： 当服务端切换ip时（比如蓝绿升级），客户端 invokers（里面有ip/port）是如何更新的？&lt;/p&gt;
@@ -65,9 +65,18 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 &lt;h3 id=&quot;服务端bean加载&quot;&gt;服务端bean加载&lt;/h3&gt;
 
-&lt;p&gt;具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  . DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）&lt;/p&gt;
+&lt;p&gt;具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。&lt;/p&gt;
+
+&lt;p&gt;那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  .&lt;/p&gt;
+
+&lt;p&gt;DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）&lt;/p&gt;
 
 &lt;h3 id=&quot;服务端逻辑&quot;&gt;服务端逻辑&lt;/h3&gt;
+
+&lt;p&gt;流程图: 
+&lt;a href=&quot;/images/202205/dubbo_server.drawio&quot;&gt;dubbo_server.drawio&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/dubbo_server.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;问题1：二进制字节流 如何解析 serviceName methodName parameters ?&lt;/p&gt;
 
@@ -77,9 +86,12 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 &lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG253.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
-回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了&lt;/p&gt;
+回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
+&lt;img src=&quot;/images/202205/WechatIMG254.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG254.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;问题3： Filter是如何添加进Wrapper的？
+回答3:    ProtocolFilterWrapper 类      List&lt;Filter&gt; filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);&lt;/Filter&gt;&lt;/p&gt;
+
 </description>
 				<pubDate>Mon, 30 May 2022 09:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/Dubbo-source-code</link>
