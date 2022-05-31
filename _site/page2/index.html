@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
+        
           <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
         
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
         
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
-        
-          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -169,6 +169,69 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/Idea-in-windows">May 27, 2022 - idea</a></h1>
+        
+        <div class="content">
+            <h1 id="idea-in-windows">Idea in windows</h1>
+
+<ol>
+  <li>
+    <p>去官网下载  <a href="https://www.jetbrains.com/zh-cn/idea/">https://www.jetbrains.com/zh-cn/idea/</a></p>
+  </li>
+  <li>
+    <p>插件安装 ：<code class="highlighter-rouge">File</code> -&gt; <code class="highlighter-rouge">Settings</code> -&gt; <code class="highlighter-rouge">Plugins</code>.</p>
+  </li>
+  <li>
+    <p>去 file -&gt; settings 搜索maven 看看 maven的settings.xml 在哪里，备份下，然后把阿里云的源添加进去     <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></p>
+  </li>
+  <li>
+    <p>修改idea内存</p>
+
+    <p><img src="/images/202205/idea_vm_options.png" alt="" width="800" /></p>
+
+    <p>下面这段我不知道从哪儿抄来的，其中最有用的就是 设置内存     -Xmx4096m</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># custom IntelliJ IDEA VM options
+    
+-Xms128m
+-Xmx4096m
+-XX:ReservedCodeCacheSize=240m
+-XX:+UseCompressedOops
+-Dfile.encoding=UTF-8
+-XX:+UseConcMarkSweepGC
+-XX:SoftRefLRUPolicyMSPerMB=50
+-ea
+-XX:CICompilerCount=2
+-Dsun.io.useCanonCaches=false
+-Djava.net.preferIPv4Stack=true
+-Djdk.http.auth.tunneling.disabledSchemes=""
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:-OmitStackTraceInFastThrow
+    
+-XX:ErrorFile=$USER_HOME/java_error_in_idea_%p.log
+-XX:HeapDumpPath=$USER_HOME/java_error_in_idea.hprof
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>显示idea使用内存情况  右下角右键 选中 memory indicator (内存指示器)</p>
+  </li>
+  <li>
+    <p>更改主题 ：   <a href="/images/202205/dark_theme.icls">dark_theme.icls</a>  个人比较喜欢这款糖果配色
+file-&gt; settings -&gt; 搜索color scheme -&gt; import 上述文件即可</p>
+  </li>
+</ol>
+
+<p>问题1： 为什么我的IDEA是中文？</p>
+
+<p>解决1： 去plugins中把chinese那个插件停用了</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/VS-code-in-windows">May 26, 2022 - vscode</a></h1>
@@ -243,108 +306,6 @@
 <h3 id="安装maven">安装maven</h3>
 
 <p><a href="https://phoenixnap.com/kb/install-maven-windows">https://phoenixnap.com/kb/install-maven-windows</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/transactional">May 23, 2022 - transactional</a></h1>
-        
-        <div class="content">
-            <h1 id="transactional注解">Transactional注解</h1>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
-
-<p>其实 Mybatis plus中的 ServiceImpl 的save操作都已经是事务级别的了, 我们来试试，如果取消了这个transactional注解会发生什么.</p>
-
-<p><img src="/images/202205/WechatIMG226.png" alt="" width="800" /></p>
-
-<p>比如现在有10个线程，同时更新id=1 的row .value ++ ，结果肯定不是10</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));
-
- @Test
-    void unThreadSafe() {
-        for (int i = 0; i &lt; 10;i++) {
-            threadPoolExecutor.submit(() -&gt; {
-                val model = testMapper.selectById(1L);
-            log.info("start value={}", model.getValue());
-            val ret = testMapper.updateById(com.mouse.transactional.repository.db.model.Test
-                        .builder()
-                        .id(1L)
-                        .value(model.getValue() + 1)
-                        .build()
-                );
-                log.info("ret={}", ret);
-            });
-        }
-
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-</code></pre></div></div>
-
-<p>如何保证呢？</p>
-
-<ol>
-  <li>
-    <p>我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> @Slf4j
- @Service
- public class TestService extends ServiceImpl&lt;TestMapper, Test&gt; implements IService&lt;Test&gt; {
-
-     @Transactional
-     public void incr(long id) {
-         val model = baseMapper.selectOne(new LambdaQueryWrapper&lt;Test&gt;()
-                 .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
-                 .last(" for update"));
-         log.info("value={}", model.getValue());
-         model.setValue(model.getValue() + 1);
-         updateById(model);
-     }
-
- }
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>测试一下, 这回成了，test表的value正好加了10.</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&lt;&gt;(10));
-
-     @Test
-     void TransactionalUpdate() {
-         for (int i = 0; i &lt; 10;i++) {
-             threadPoolExecutor.submit(() -&gt; {
-                 testService.incr(1L);
-             });
-         }
-
-         try {
-             Thread.sleep(2000L);
-         } catch (InterruptedException e) {
-             e.printStackTrace();
-         }
-     }
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
-<img src="/images/202205/WechatIMG227.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-<p>源码解析:</p>
-
-<p>核心逻辑在 spring-tx包中的 类 TransactionAspectSupport 中：</p>
-
-<p><img src="/images/202205/WechatIMG230.png" alt="" width="800" /></p>
 
 
         </div>

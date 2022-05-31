@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
+        
           <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
         
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/05/Idea-in-windows">idea</a></li>
         
           <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
-        
-          <li><a href="/2022/05/windows-install-jdk">jdk</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -169,6 +169,88 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/Dubbo-source-code">May 30, 2022 - dubbo</a></h1>
+        
+        <div class="content">
+            <h1 id="dubbo-源码解析">Dubbo 源码解析</h1>
+
+<h3 id="bean加载实例化">bean加载，实例化</h3>
+
+<p>参考文章 <a href="https://blog.csdn.net/leisurelen/article/details/107078066">https://blog.csdn.net/leisurelen/article/details/107078066</a></p>
+
+<p>示例代码仓库: <a href="https://github.com/gongchangyou/bean">https://github.com/gongchangyou/bean</a></p>
+
+<p>BeanPostProcessor 的具体实现</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
+public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegistryPostProcessor, SmartInstantiationAwareBeanPostProcessor {
+    public static final String BEAN_NAME = "abstractAnnotationBeanPostProcessor";
+    @Override
+    @Nullable
+    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)
+            throws BeansException {
+        final List&lt;Object&gt; elements = new LinkedList&lt;&gt;();
+        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
+            @Override
+            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
+                if (field.getAnnotation(Dubbo.class)!=null) {
+                    elements.add(field);
+                    //可以在这里做一些根据初始化field的 操作
+                    field.setAccessible(true);
+                    field.set(bean, 3L);
+                }
+            }
+        });
+        log.info("beanName={} list={}",beanName,elements);
+        return null;
+    }
+}
+</code></pre></div></div>
+
+<p>将BeanPostProcessor注册到 BeanDefinition中:</p>
+
+<p><img src="/images/202205/WechatIMG248.png" alt="" width="800" /></p>
+
+<p>只需要在application上添加 @Import 注解即可</p>
+
+<p><img src="/images/202205/WechatIMG249.png" alt="" width="800" /></p>
+
+<h3 id="客户端调用">客户端调用</h3>
+
+<p>自己整理了下客户端调用流程:
+<img src="/images/202205/dubbo_client.drawio.png" alt="" width="800" /></p>
+
+<p>问题1： 当服务端切换ip时（比如蓝绿升级），客户端 invokers（里面有ip/port）是如何更新的？</p>
+
+<p>回答1: org.apache.dubbo.registry.nacos.NacosRegistry 会订阅nacos事件,每5分钟poll一次. 当nacos EventDispatcher中的listener.onEvent 触发时，会去变更RouterChain中的 invokers.
+<img src="/images/202205/WechatIMG246.png" alt="" width="800" /></p>
+
+<p><img src="/images/202205/WechatIMG247.png" alt="" width="800" /></p>
+
+<h3 id="服务端bean加载">服务端bean加载</h3>
+
+<p>具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  . DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）</p>
+
+<h3 id="服务端逻辑">服务端逻辑</h3>
+
+<p>问题1：二进制字节流 如何解析 serviceName methodName parameters ?</p>
+
+<p>回答1：DecodeHandler 将 inputStream中的 buffer 转换成targetServiceUniqueName, methodName, arguments等
+具体逻辑在 DecodeableRpcInvocation.decode(Channel channel, InputStream input) 中，应该就是dubbo协议的解析 其中in这个临时变量是根据channel中的serializationType 中确定的，这个也是SPI加载的， 默认是Hessian2</p>
+
+<p><img src="/images/202205/WechatIMG253.png" alt="" width="800" /></p>
+
+<p>问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
+回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了</p>
+
+<p><img src="/images/202205/WechatIMG254.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/CompletableFuture">May 29, 2022 - CompletableFuture</a></h1>
@@ -263,69 +345,6 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn package -Dmaven.test.skip=true
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/Idea-in-windows">May 27, 2022 - idea</a></h1>
-        
-        <div class="content">
-            <h1 id="idea-in-windows">Idea in windows</h1>
-
-<ol>
-  <li>
-    <p>去官网下载  <a href="https://www.jetbrains.com/zh-cn/idea/">https://www.jetbrains.com/zh-cn/idea/</a></p>
-  </li>
-  <li>
-    <p>插件安装 ：<code class="highlighter-rouge">File</code> -&gt; <code class="highlighter-rouge">Settings</code> -&gt; <code class="highlighter-rouge">Plugins</code>.</p>
-  </li>
-  <li>
-    <p>去 file -&gt; settings 搜索maven 看看 maven的settings.xml 在哪里，备份下，然后把阿里云的源添加进去     <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></p>
-  </li>
-  <li>
-    <p>修改idea内存</p>
-
-    <p><img src="/images/202205/idea_vm_options.png" alt="" width="800" /></p>
-
-    <p>下面这段我不知道从哪儿抄来的，其中最有用的就是 设置内存     -Xmx4096m</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># custom IntelliJ IDEA VM options
-    
--Xms128m
--Xmx4096m
--XX:ReservedCodeCacheSize=240m
--XX:+UseCompressedOops
--Dfile.encoding=UTF-8
--XX:+UseConcMarkSweepGC
--XX:SoftRefLRUPolicyMSPerMB=50
--ea
--XX:CICompilerCount=2
--Dsun.io.useCanonCaches=false
--Djava.net.preferIPv4Stack=true
--Djdk.http.auth.tunneling.disabledSchemes=""
--XX:+HeapDumpOnOutOfMemoryError
--XX:-OmitStackTraceInFastThrow
-    
--XX:ErrorFile=$USER_HOME/java_error_in_idea_%p.log
--XX:HeapDumpPath=$USER_HOME/java_error_in_idea.hprof
-    
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>显示idea使用内存情况  右下角右键 选中 memory indicator (内存指示器)</p>
-  </li>
-  <li>
-    <p>更改主题 ：   <a href="/images/202205/dark_theme.icls">dark_theme.icls</a>  个人比较喜欢这款糖果配色
-file-&gt; settings -&gt; 搜索color scheme -&gt; import 上述文件即可</p>
-  </li>
-</ol>
-
-<p>问题1： 为什么我的IDEA是中文？</p>
-
-<p>解决1： 去plugins中把chinese那个插件停用了</p>
 
         </div>
     </div>

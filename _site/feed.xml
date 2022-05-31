@@ -7,6 +7,86 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>dubbo</title>
+				<description>&lt;h1 id=&quot;dubbo-源码解析&quot;&gt;Dubbo 源码解析&lt;/h1&gt;
+
+&lt;h3 id=&quot;bean加载实例化&quot;&gt;bean加载，实例化&lt;/h3&gt;
+
+&lt;p&gt;参考文章 &lt;a href=&quot;https://blog.csdn.net/leisurelen/article/details/107078066&quot;&gt;https://blog.csdn.net/leisurelen/article/details/107078066&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;示例代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/bean&quot;&gt;https://github.com/gongchangyou/bean&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;BeanPostProcessor 的具体实现&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
+public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegistryPostProcessor, SmartInstantiationAwareBeanPostProcessor {
+    public static final String BEAN_NAME = &quot;abstractAnnotationBeanPostProcessor&quot;;
+    @Override
+    @Nullable
+    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)
+            throws BeansException {
+        final List&amp;lt;Object&amp;gt; elements = new LinkedList&amp;lt;&amp;gt;();
+        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
+            @Override
+            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
+                if (field.getAnnotation(Dubbo.class)!=null) {
+                    elements.add(field);
+                    //可以在这里做一些根据初始化field的 操作
+                    field.setAccessible(true);
+                    field.set(bean, 3L);
+                }
+            }
+        });
+        log.info(&quot;beanName={} list={}&quot;,beanName,elements);
+        return null;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;将BeanPostProcessor注册到 BeanDefinition中:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG248.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;只需要在application上添加 @Import 注解即可&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG249.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;客户端调用&quot;&gt;客户端调用&lt;/h3&gt;
+
+&lt;p&gt;自己整理了下客户端调用流程:
+&lt;img src=&quot;/images/202205/dubbo_client.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;问题1： 当服务端切换ip时（比如蓝绿升级），客户端 invokers（里面有ip/port）是如何更新的？&lt;/p&gt;
+
+&lt;p&gt;回答1: org.apache.dubbo.registry.nacos.NacosRegistry 会订阅nacos事件,每5分钟poll一次. 当nacos EventDispatcher中的listener.onEvent 触发时，会去变更RouterChain中的 invokers.
+&lt;img src=&quot;/images/202205/WechatIMG246.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG247.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;服务端bean加载&quot;&gt;服务端bean加载&lt;/h3&gt;
+
+&lt;p&gt;具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  . DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）&lt;/p&gt;
+
+&lt;h3 id=&quot;服务端逻辑&quot;&gt;服务端逻辑&lt;/h3&gt;
+
+&lt;p&gt;问题1：二进制字节流 如何解析 serviceName methodName parameters ?&lt;/p&gt;
+
+&lt;p&gt;回答1：DecodeHandler 将 inputStream中的 buffer 转换成targetServiceUniqueName, methodName, arguments等
+具体逻辑在 DecodeableRpcInvocation.decode(Channel channel, InputStream input) 中，应该就是dubbo协议的解析 其中in这个临时变量是根据channel中的serializationType 中确定的，这个也是SPI加载的， 默认是Hessian2&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG253.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
+回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG254.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+</description>
+				<pubDate>Mon, 30 May 2022 09:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/05/Dubbo-source-code</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/05/Dubbo-source-code</guid>
+			</item>
+		
+			<item>
 				<title>CompletableFuture</title>
 				<description>&lt;h1 id=&quot;completablefuture&quot;&gt;CompletableFuture&lt;/h1&gt;
 
@@ -626,151 +706,6 @@ def getPackageName(dir) {
 				<pubDate>Thu, 19 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/CAS</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/CAS</guid>
-			</item>
-		
-			<item>
-				<title>disruptor</title>
-				<description>&lt;h1 id=&quot;disruptor&quot;&gt;Disruptor&lt;/h1&gt;
-
-&lt;p&gt;Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)&lt;/p&gt;
-
-&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/disruptor&quot;&gt;https://github.com/gongchangyou/disruptor&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Pom.xml&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      &amp;lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&amp;gt;
-        &amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;com.lmax&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;disruptor&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;3.4.4&amp;lt;/version&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;单生产者，单消费者&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/**
-     * 单生产者 单消费者
-     */
-    @Test
-    void contextLoads() {
-        // 队列中的元素
-        class Element {
-   
-            private int value;
-   
-            public int get(){
-                return value;
-            }
-   
-            public void set(int value){
-                this.value= value;
-            }
-   
-        }
-   
-        // 生产者的线程工厂
-        ThreadFactory threadFactory = new ThreadFactory(){
-            int i = 0;
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, &quot;simpleThread &quot; + i++);
-            }
-        };
-   
-        // RingBuffer生产工厂,初始化RingBuffer的时候使用
-        EventFactory&amp;lt;Element&amp;gt; factory = new EventFactory&amp;lt;Element&amp;gt;() {
-            @Override
-            public Element newInstance() {
-                return new Element();
-            }
-        };
-   
-        // 处理Event的handler
-        EventHandler&amp;lt;Element&amp;gt; handler = new EventHandler&amp;lt;Element&amp;gt;(){
-            @Override
-            public void onEvent(Element element, long sequence, boolean endOfBatch)
-            {
-                log.info(&quot;element={}, sequence={}, endOfBatch={}&quot;, element.get(), sequence, endOfBatch);
-//                System.out.println(&quot;Element: &quot; + element.get());
-            }
-        };
-   
-        // 阻塞策略
-        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
-   
-        // 指定RingBuffer的大小
-        int bufferSize = 16;
-   
-        // 创建disruptor，采用单生产者模式
-        Disruptor&amp;lt;Element&amp;gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
-   
-        // 设置EventHandler
-        disruptor.handleEventsWith(handler);
-   
-        // 启动disruptor的线程
-        disruptor.start();
-   
-        RingBuffer&amp;lt;Element&amp;gt; ringBuffer = disruptor.getRingBuffer();
-   
-        for (int l = 0; true; l++) {
-            // 获取下一个可用位置的下标
-            long sequence = ringBuffer.next();
-            try {
-                // 返回可用位置的元素
-                Element event = ringBuffer.get(sequence);
-                // 设置该位置元素的值
-                event.set(l);
-            } finally {
-                ringBuffer.publish(sequence);
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;问题1： 有不同的消费者依赖怎么办？
-回答1：  关键字 then&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
-        disruptor.handleEventsWith(new OrderHandler1(&quot;1&quot;)).then(new OrderHandler1(&quot;2&quot;), new OrderHandler1(&quot;3&quot;)).then(new OrderHandler1(&quot;4&quot;));
-       
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
-回答2:  handleEventsWithWorkerPool&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;disruptor.handleEventsWithWorkerPool(new OrderHandler1(&quot;1&quot;), new OrderHandler1(&quot;2&quot;));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题3： 希望不同的消费者独立消费
-回答3： handleEventsWith 多个handler即可&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; disruptor.handleEventsWith(new OrderHandler1(&quot;1&quot;), new OrderHandler1(&quot;2&quot;));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;官方文档: &lt;a href=&quot;https://lmax-exchange.github.io/disruptor/disruptor.html&quot;&gt;https://lmax-exchange.github.io/disruptor/disruptor.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://tech.meituan.com/2016/11/18/disruptor.html&quot;&gt;https://tech.meituan.com/2016/11/18/disruptor.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/pku-liuqiang/p/8544700.html&quot;&gt;https://www.cnblogs.com/pku-liuqiang/p/8544700.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/pku-liuqiang/p/8532737.html&quot;&gt;https://www.cnblogs.com/pku-liuqiang/p/8532737.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1701690&quot;&gt;https://cloud.tencent.com/developer/article/1701690&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;源码解析： TODO&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 18 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/Disruptor</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/Disruptor</guid>
 			</item>
 		
 	</channel>
