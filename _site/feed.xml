@@ -85,12 +85,14 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 &lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG253.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
-回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
+&lt;p&gt;问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？&lt;/p&gt;
+
+&lt;p&gt;回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
 &lt;img src=&quot;/images/202205/WechatIMG254.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;问题3： Filter是如何添加进Wrapper的？
-回答3:    ProtocolFilterWrapper 类      List&lt;Filter&gt; filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);&lt;/Filter&gt;&lt;/p&gt;
+&lt;p&gt;问题3： Filter是如何添加进Wrapper的？&lt;/p&gt;
+
+&lt;p&gt;回答3:    ProtocolFilterWrapper 类      List&lt;Filter&gt; filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);&lt;/Filter&gt;&lt;/p&gt;
 
 </description>
 				<pubDate>Mon, 30 May 2022 09:25:06 +0800</pubDate>

@@ -250,12 +250,14 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 <p><img src="/images/202205/WechatIMG253.png" alt="" width="800" /></p>
 
-<p>问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
-回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
+<p>问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？</p>
+
+<p>回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
 <img src="/images/202205/WechatIMG254.png" alt="" width="800" /></p>
 
-<p>问题3： Filter是如何添加进Wrapper的？
-回答3:    ProtocolFilterWrapper 类      List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);</Filter></p>
+<p>问题3： Filter是如何添加进Wrapper的？</p>
+
+<p>回答3:    ProtocolFilterWrapper 类      List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);</Filter></p>
 
 
             </div>

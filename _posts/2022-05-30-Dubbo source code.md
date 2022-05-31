@@ -102,10 +102,12 @@ DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 Servi
 ![]({{ site.baseurl}}/images/202205/WechatIMG253.png){: width="800" }
 
 问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？
+
 回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
 ![]({{ site.baseurl}}/images/202205/WechatIMG254.png){: width="800" }
 
 问题3： Filter是如何添加进Wrapper的？
+
 回答3:    ProtocolFilterWrapper 类      List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
 
 
