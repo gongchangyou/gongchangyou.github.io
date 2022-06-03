@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
+        
+          <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
+        
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
         
           <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
         
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
-        
-          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
-        
-          <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
 			
 		
 			
@@ -171,6 +171,289 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
+
+<h2 id="http调用">HTTP调用</h2>
+
+<ol>
+  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
+
+</code></pre></div></div>
+
+<h2 id="dubbo服务">Dubbo服务</h2>
+<ol>
+  <li>dubbo服务 注册  nacos 接口汇总 <a href="https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html">https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html</a></li>
+</ol>
+
+<p>问题： @DubboService 添加 不管用？</p>
+
+<p>注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
+我们来看看为啥注册不成功</p>
+
+<p>正常情况下 应该是能注册成功的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880'
+</code></pre></div></div>
+
+<p>但是我的代码偏偏多了几个参数</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880&amp;app=unknown&amp;healthy=true&amp;clusterName=null&amp;enable=true&amp;ephemeral=true&amp;groupName=dubbo-demo-service&amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
+</code></pre></div></div>
+<p>尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了</p>
+
+<ol>
+  <li>
+    <p>dubbo RPC调用 TODO</p>
+
+    <p>问题1</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
+
+</code></pre></div>    </div>
+    <p>解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
+https://github.com/apache/dubbo/issues/7274</p>
+
+    <p>问题2 明明服务已经注册到nacos中了，但是消费端报错</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;dubbo=2.0.2&amp;group=dubbo-demo&amp;init=false&amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;metadata-type=remote&amp;methods=add&amp;pid=67340&amp;register.ip=192.168.1.145&amp;release=2.7.8&amp;revision=0.0.1-SNAPSHOT&amp;side=consumer&amp;sticky=false&amp;timestamp=1642129445698&amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
+	
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了</p>
+
+<p>dubbo-spring-boot-starter  加进去就好了</p>
+
+<h2 id="最佳实践">最佳实践</h2>
+<p>以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip</p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
+
+<p>注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- &lt;settings&gt;
+  &lt;localRepository&gt;/Users/suixinyu/Documents/java/repository/repository&lt;/localRepository&gt;
+&lt;/settings&gt;
+
+ --&gt;
+ &lt;settings&gt;
+&lt;servers&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-releases&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;
+  &lt;server&gt;
+    &lt;id&gt;nexus-snapshots&lt;/id&gt;
+    &lt;username&gt;admin&lt;/username&gt;
+    &lt;password&gt;naozhi123&lt;/password&gt;
+  &lt;/server&gt;  
+&lt;/servers&gt;
+
+  &lt;mirrors&gt;
+      &lt;mirror&gt;
+      &lt;id&gt;alimaven&lt;/id&gt;
+      &lt;name&gt;aliyun maven&lt;/name&gt;
+      &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
+    &lt;/mirror&gt;
+  
+  &lt;/mirrors&gt;
+  
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;development&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;central&lt;/id&gt;
+          &lt;url&gt;http://central&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+    &lt;profile&gt;
+      &lt;!--this profile will allow snapshots to be searched when activated--&gt;
+      &lt;id&gt;public-snapshots&lt;/id&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+      &lt;id&gt;ali&lt;/id&gt;
+          &lt;name&gt;ali Maven repository&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+       &lt;repository&gt;
+      &lt;id&gt;ali-snapshot&lt;/id&gt;
+          &lt;name&gt;ali Maven repository snapshot&lt;/name&gt;
+          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt; 
+    &lt;repository&gt;
+      &lt;id&gt;local&lt;/id&gt;
+          &lt;name&gt;Local Maven repository&lt;/name&gt;
+          &lt;url&gt;http://10.10.48.192:8081/nexus/content/groups/public/&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+      &lt;/repository&gt;  
+      &lt;/repositories&gt;
+     &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+          &lt;id&gt;public-snapshots&lt;/id&gt;
+          &lt;url&gt;http://public-snapshots&lt;/url&gt;
+          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+      &lt;/pluginRepositories&gt;
+    &lt;/profile&gt;
+  &lt;profile&gt;
+    &lt;id&gt;sonar&lt;/id&gt;
+    &lt;activation&gt;
+      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+    &lt;/activation&gt;
+    &lt;properties&gt;
+      &lt;sonar.jdbc.url&gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&lt;/sonar.jdbc.url&gt;
+      &lt;sonar.jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driverClassName&gt;
+      &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
+      &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
+      &lt;sonar.host.url&gt;http://10.58.156.108:9000/&lt;/sonar.host.url&gt;
+    &lt;/properties&gt;
+  &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;development&lt;/activeProfile&gt;
+    &lt;activeProfile&gt;public-snapshots&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+
+&lt;/settings&gt;
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
+
+<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
+
+<ol>
+  <li>
+    <p>docker 安装</p>
+
+    <blockquote>
+      <p>docker search nexus</p>
+
+      <p>docker pull docker.io/sonatype/nexus3</p>
+
+      <p>下面的路径可以改成你本地的用户空间</p>
+
+      <p>mkdir -p /Users/gongchangyou/nexus3/nexus-data</p>
+
+      <p>chmod 777 /Users/gongchangyou/nexus3/nexus-data</p>
+
+      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /Users/gongchangyou/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
+    </blockquote>
+
+    <p>原文是要去 /usr/local 中新建文件夹，试过chmod 777 后docker还是无法创建一些文件和文件夹,</p>
+
+    <blockquote>
+      <p>mkdir -p /usr/local/nexus3/nexus-data</p>
+
+      <p>chown -R 200 /usr/local/nexus3/nexus-data</p>
+
+      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /usr/local/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>登录Nexus进行配置</p>
+
+    <blockquote>
+      <p>访问：<a href="http://localhost:8081/nexus">http://localhost:8081/nexus</a>  使用默认管理员身份登录 账号admin, 密码在 <strong>/nexus-data/admin.password</strong>,  登录后可以修改密码.</p>
+
+      <p><img src="/images/202205/WechatIMG240.png" alt="" width="800" /></p>
+    </blockquote>
+  </li>
+</ol>
+
+<p>问题：mvn deploy -X</p>
+
+<ol>
+  <li>
+    <p>405错误  Failed to transfer file http://localhost:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</p>
+
+    <p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;distributionManagement&gt;
+
+         &lt;repository&gt;
+
+             &lt;id&gt;nexus-releases&lt;/id&gt;
+
+             &lt;url&gt;
+                 就是这行，要跟maven服务器上的settings中的URL保持一致
+                 http://localhost:8081/nexus/repository/maven-releases/
+
+             &lt;/url&gt;
+
+         &lt;/repository&gt;
+</code></pre></div>    </div>
+    <p><img src="/images/202205/WechatIMG241.png" alt="" width="800" />
+ <img src="/images/202205/WechatIMG242.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>401错误  本地的settings.xml账号错误。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;servers&gt;
+   &lt;server&gt;
+     &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
+     &lt;username&gt;admin&lt;/username&gt;
+     &lt;password&gt;xxx&lt;/password&gt;
+   &lt;/server&gt;
+   &lt;server&gt;
+     &lt;id&gt;nexus-snapshots&lt;/id&gt;
+     &lt;username&gt;admin&lt;/username&gt;
+     &lt;password&gt;xxx&lt;/password&gt;
+   &lt;/server&gt;
+ &lt;/servers&gt;
+</code></pre></div>    </div>
+
+    <p>如果换了settings.xml 文件，且用mvn 命令行编译，那就指定一下</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mvn deploy -X --settings /Users/gongchangyou/.m2/settings-personal.xml
+</code></pre></div>    </div>
+    <p>可以看到上传成功
+     <img src="/images/202205/WechatIMG244.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
         
         <div class="content">
@@ -199,68 +482,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-1-安装和启动">Spring Cloud Alibaba - nacos 1 安装和启动</h1>
-<ol>
-  <li>https://github.com/alibaba/nacos/releases</li>
-</ol>
-
-<p>下载 nacos-server-xxx.tar.gz   <a href="https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz">nacos-server-2.0.3.tar.gz</a></p>
-
-<ol>
-  <li>解压缩</li>
-  <li>cd nacos-jar/bin</li>
-  <li>sh startup.sh -m standalone (TODO 生产环境需要走集群模式)
-    <ol>
-      <li>注意： 路径不要带 “ “ 空格，不然无法创建logs文件夹，且无法启动。因为无法加载main class</li>
-      <li>或者直接看日志 logs/start.out 。里面有启动命令，再不行就自己手动 nohup java … &amp;</li>
-    </ol>
-  </li>
-  <li>http://127.0.0.1:8848/nacos/</li>
-  <li>账号名密码是 <strong>nacos/nacos</strong></li>
-</ol>
-
-<p>问题1： 启动失败，查看错误日志，发现如下错误。但是我把java命令拷出来的时候又可以正常运行。</p>
-
-<blockquote>
-  <p>less /Users/gongchangyou/learn/nacos-jar/logs/start.out</p>
-
-  <p>错误: 找不到或无法加载主类
- 原因: java.lang.ClassNotFoundException:</p>
-</blockquote>
-
-<p>解决方案1:  改下startup.sh</p>
-
-<p>nohup "$JAVA" "$JAVA_OPT_EXT_FIX" ${JAVA_OPT} nacos.nacos » ​${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
-
-<p>改为</p>
-
-<p>nohup "$JAVA" ${JAVA_OPT_EXT_FIX} ${JAVA_OPT} nacos.nacos » ${BASE_DIR}/logs/start.out 2&gt;&amp;1 &amp;</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
-        
-        <div class="content">
-            <h1 id="kotlin-语法糖">Kotlin 语法糖</h1>
-
-<p>sequence chunked 列表分块处理</p>
-
-<p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -268,7 +489,7 @@
         <a class="btn btn-default" href="/page25" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 26 of 47</span>
+  <span class="page_number ">Page: 26 of 48</span>
   
     <a class="btn btn-default" href="/page27" class="next">Older</a>
   

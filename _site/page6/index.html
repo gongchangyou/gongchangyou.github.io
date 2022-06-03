@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
+        
+          <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
+        
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
         
           <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
         
           <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
-        
-          <li><a href="/2022/05/Idea-in-windows">idea</a></li>
-        
-          <li><a href="/2022/05/VS-code-in-windows">vscode</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
 			
 		
 			
@@ -171,6 +171,207 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/05/maven_plugin">May 14, 2022 - maven plugin</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-插件编写">maven 插件编写</h1>
+
+<p>参考文章： <a href="https://blog.csdn.net/weixin_44433834/article/details/122620067">https://blog.csdn.net/weixin_44433834/article/details/122620067</a></p>
+
+<p>项目地址： <a href="https://github.com/gongchangyou/mavenplugin">https://github.com/gongchangyou/mavenplugin</a></p>
+
+<ol>
+  <li>
+    <p>修改打包方式</p>
+
+    <ol>
+      <li>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;maven-plugin&lt;/packaging&gt;
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <h3 id="引入插件开发相关依赖">引入插件开发相关依赖</h3>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;dependencies&gt;
+        &lt;!--插件的抽象类--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-plugin-api&lt;/artifactId&gt;
+            &lt;version&gt;3.6.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!--MOJO注解的来源--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.maven.plugin-tools&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-plugin-annotations&lt;/artifactId&gt;
+            &lt;version&gt;3.6.0&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    
+    &lt;/dependencies&gt;
+</code></pre></div>    </div>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-core&lt;/artifactId&gt;
+            &lt;version&gt;3.6.2&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <h3 id="继承插件父类设置目标">继承插件父类，设置目标</h3>
+  </li>
+  <li>
+    <h3 id="绑定到构建生命周期">绑定到构建生命周期</h3>
+  </li>
+  <li>
+    <h3 id="默认可获取的参数">默认可获取的参数</h3>
+  </li>
+  <li>编写代码</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">hundsun</span><span class="p">.</span><span class="n">broker</span><span class="p">;</span>
+ 
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">lang3</span><span class="p">.</span><span class="n">StringUtils</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">AbstractMojo</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoExecutionException</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoFailureException</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">LifecyclePhase</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Mojo</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Parameter</span><span class="p">;</span>
+ 
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">File</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="k">List</span><span class="p">;</span>
+ 
+<span class="p">/**</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">yyzsx</span>
+ <span class="p">*</span> <span class="p">@</span><span class="k">version</span> <span class="m">1.0.0</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">ProjectName</span> <span class="n">yyzsx</span><span class="p">-</span><span class="n">maven</span><span class="p">-</span><span class="n">plugin</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">ClassName</span> <span class="n">MyMojo</span><span class="p">.</span><span class="n">java</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">Description</span> <span class="err">演示</span><span class="p">-</span><span class="err">输出项目信息</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">createTime</span> <span class="m">2021</span><span class="err">年</span><span class="m">08</span><span class="err">月</span><span class="m">08</span><span class="err">日</span> <span class="m">13</span><span class="p">:</span><span class="m">53</span><span class="p">:</span><span class="m">00</span>
+ <span class="p">*/</span>
+<span class="p">@</span><span class="n">Mojo</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">"showProjectInfo"</span><span class="p">,</span> <span class="n">defaultPhase</span> <span class="p">=</span> <span class="n">LifecyclePhase</span><span class="p">.</span><span class="nf">COMPILE</span><span class="p">)</span>
+<span class="k">public</span> <span class="n">class</span> <span class="n">MyMojo</span> <span class="n">extends</span> <span class="n">AbstractMojo</span> <span class="p">{</span>
+    <span class="p">/**</span>
+     <span class="p">*</span> <span class="err">项目根路径</span>
+     <span class="p">*/</span>
+    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${basedir}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
+    <span class="n">private</span> <span class="n">File</span> <span class="n">basedir</span><span class="p">;</span>
+ 
+    <span class="p">/**</span>
+     <span class="p">*</span> <span class="err">获取</span><span class="n">pom</span><span class="err">文件中项目版本，或者支持</span><span class="p">-</span><span class="n">Dversion</span><span class="p">=</span><span class="n">xx</span><span class="err">，进行传入</span>
+     <span class="p">*/</span>
+    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"version"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${project.version}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
+    <span class="n">private</span> <span class="k">String</span> <span class="k">version</span><span class="p">;</span>
+ 
+    <span class="p">/**</span>
+     <span class="p">*</span> <span class="err">获取本地</span><span class="n">maven</span><span class="err">仓库地址</span>
+     <span class="p">*/</span>
+    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${settings.localRepository}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
+    <span class="n">private</span> <span class="k">String</span> <span class="n">localRepository</span><span class="p">;</span>
+ 
+    <span class="p">/**</span>
+     <span class="p">*</span> <span class="err">参数配置，作者</span>
+     <span class="p">*/</span>
+    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"author"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${showProjectInfo.author}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
+    <span class="n">private</span> <span class="k">String</span> <span class="n">author</span><span class="p">;</span>
+ 
+    <span class="p">/***</span>
+     <span class="p">*</span> <span class="err">参数集合</span>
+     <span class="p">*/</span>
+    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"lists"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
+    <span class="n">private</span> <span class="k">List</span> <span class="n">lists</span><span class="p">;</span>
+ 
+    <span class="p">@</span><span class="n">Override</span>
+    <span class="k">public</span> <span class="n">void</span> <span class="n">execute</span><span class="p">()</span> <span class="n">throws</span> <span class="n">MojoExecutionException</span><span class="p">,</span> <span class="n">MojoFailureException</span> <span class="p">{</span>
+        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"*******************ShowProjectInfo*******************"</span><span class="p">);</span>
+        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,begin--------------------"</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"欢迎语：Hello Maven Plugin"</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目本地仓库localRepository:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="n">localRepository</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目跟路径basedir:"</span> <span class="p">+</span> <span class="n">basedir</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目版本version:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="k">version</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目作者author:"</span> <span class="p">+</span> <span class="n">author</span><span class="p">);</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目包含文件类型lists："</span> <span class="p">+</span> <span class="n">StringUtils</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">lists</span><span class="p">.</span><span class="n">toArray</span><span class="p">(),</span> <span class="s2">","</span><span class="p">));</span>
+        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,end-----------------------"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+ 
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>mvn install</p>
+  </li>
+  <li>
+    <p>调用命令执行</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile
+</code></pre></div>    </div>
+
+    <p>或者 指定执行goal</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn com.mouse:test-maven-plugin:0.0.1-SNAPSHOT:showProjectInfo
+   
+格式是这样的: mvn groupId:artifactId:version:goal
+   
+缩写： mvn test:showProjectInfo
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>IDEA 开发maven plugin . 在command line这里无需写mvn</p>
+
+<p><img src="/images/202205/WechatIMG145.png" alt="" width="800" /></p>
+
+<h3 id="每次编辑mojo文件后需要mvn-install-再执行-mvn-testshowprojectinfo">每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo</h3>
+
+<p>问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错</p>
+
+<p>回答1：  添加如下配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-plugin-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.6.0&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;default-descriptor&lt;/id&gt;
+                        &lt;phase&gt;process-classes&lt;/phase&gt;
+                    &lt;/execution&gt;
+                    &lt;!-- if you want to generate help goal --&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;help-goal&lt;/id&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;helpmojo&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/c++">May 8, 2022 - c++ starter</a></h1>
+        
+        <div class="content">
+            <h1 id="c-入门">c++ 入门</h1>
+
+<p>参考文章: <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">https://www.runoob.com/cplusplus/cpp-tutorial.html</a></p>
+
+<p>vector 初始化: https://blog.csdn.net/veghlreywg/article/details/80400382</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
         
         <div class="content">
@@ -200,168 +401,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/seata">May 6, 2022 - seata</a></h1>
-        
-        <div class="content">
-            <h1 id="seata-分布式事务">SEATA 分布式事务</h1>
-
-<p>官网： <a href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">https://seata.io/zh-cn/docs/overview/what-is-seata.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
-</code></pre></div></div>
-
-<h2 id="at的实现方案">AT的实现方案</h2>
-
-<p>参考文章 <a href="https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html">https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html</a></p>
-
-<p><a href="https://seata.io/zh-cn/docs/user/quickstart.html">https://seata.io/zh-cn/docs/user/quickstart.html</a></p>
-
-<h3 id="前提">前提</h3>
-
-<blockquote>
-  <p>基于支持本地 ACID 事务的关系型数据库。
-Java 应用，通过 JDBC 访问数据库。</p>
-</blockquote>
-
-<p>下面是一个具体的例子：订单扣库存的解决方案</p>
-
-<p>​    <img src="/images/202205/solution.png" alt="" width="800" /></p>
-
-<p>具体的操作步骤有3步：</p>
-
-<p>​	一. 启动事务协调者进程 TC，</p>
-
-<p>​	二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。</p>
-
-<p>​	三. 在业务服务中添加 seata依赖，动态代理datasource. 这样可以在db操作前后做一些undo log的记录之类的操作。</p>
-
-<font color="red">个人感觉稍微有点麻烦了。而且看前提 适用范围不是很广，我们做分布式事务大概率是跟别的业务线或者第三方公司交互，他们不太可能跟你注册在同一个注册中心，且他们大概率不愿意在自己的代码中添加seata依赖。</font>
-
-<h3 id="下面的先不用看了因为我没搭建完成官网有些地方说的不是很详细">下面的先不用看了，因为我没搭建完成，官网有些地方说的不是很详细。</h3>
-
-<p>我们做个微服务来测试下</p>
-
-<p>一. 先搭建几个dubbo的服务</p>
-
-<ol>
-  <li>先把nacos 启动起来 <a href="../../../2022/01/nacos">启动nacos</a></li>
-  <li>启动 maven仓库   <a href="../../../2022/01/maven">启动maven仓库</a></li>
-  <li>注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
-    <ol>
-      <li><a href="https://github.com/gongchangyou/service-order">https://github.com/gongchangyou/service-order</a></li>
-      <li><a href="https://github.com/gongchangyou/service-store">https://github.com/gongchangyou/service-store</a></li>
-      <li><a href="https://github.com/gongchangyou/service-buy">https://github.com/gongchangyou/service-buy</a></li>
-    </ol>
-  </li>
-</ol>
-
-<p>二.  启动TC服务， 唉，不希望侵入式的写代码，就得在外部有个协调者。</p>
-
-<ol>
-  <li>
-    <p>直接 docker-compose up  <a href="https://github.com/seata/seata/blob/1.4.0/script/server/docker-compose/docker-compose.yaml">https://github.com/seata/seata/blob/1.4.0/script/server/docker-compose/docker-compose.yaml</a></p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> version: "3"
- services:
- 	seata-server:
- 		image: seataio/seata-server
- 		hostname: seata-server
-     ports:
-       - "8091:8091"
-     environment:
-       - SEATA_PORT=8091
-       - STORE_MODE=file
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>或者 <a href="https://seata.io/zh-cn/docs/ops/deploy-by-docker.html">https://seata.io/zh-cn/docs/ops/deploy-by-docker.html</a>. 注意 SEATA_IP 改成本地ip</p>
-
-    <p>参考文章: <a href="https://seata.io/zh-cn/blog/seata-nacos-docker.html">https://seata.io/zh-cn/blog/seata-nacos-docker.html</a> TODO 文档中的 nacos-config.txt 我不知道在哪里。或许script文件夹已经删掉了, 现在需要手动创建  nacos-config.txt 和nacos-config.sh  手动把seata服务注册到nacos中。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run --name seata-server \
-        -dit \
-        --restart=always \
-        -p 8091:8091 \
-        -p 7091:7091 \
-        -e SEATA_IP=192.168.1.2 \
-        -e SEATA_PORT=8091 \
-        seataio/seata-server
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>三. 业务系统集成</p>
-
-<ol>
-  <li>添加依赖 任选一个, 我选择 spring-cloud-alibaba-seata
-    <blockquote>
-      <p>依赖seata-all
-依赖seata-spring-boot-starter，支持yml、properties配置(.conf可删除)，内部已依赖seata-all
-依赖spring-cloud-alibaba-seata，内部集成了seata，并实现了xid传递</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>创建 undo log表</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- 注意此处0.3.0+ 增加唯一索引 ux_undo_log
-CREATE TABLE `undo_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `branch_id` bigint(20) NOT NULL,
-  `xid` varchar(100) NOT NULL,
-  `context` varchar(128) NOT NULL,
-  `rollback_info` longblob NOT NULL,
-  `log_status` int(11) NOT NULL,
-  `log_created` datetime NOT NULL,
-  `log_modified` datetime NOT NULL,
-  `ext` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>问题1 ：2022-05-26 22:51:29.575  WARN [configOperate_2_2] io.seata.config.FileConfiguration : Could not found property service.disableGlobalTransaction, try to use default value instead.</p>
-
-<p>解决1: <a href="https://blog.csdn.net/m0_43404934/article/details/110134708">https://blog.csdn.net/m0_43404934/article/details/110134708</a> 创建file.conf文件 里面写</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service {
-disableGlobalTransaction = false
-}
-</code></pre></div></div>
-
-<p>问题2：  io.seata.core.rpc.netty.NettyClientChannelManager : no available service ‘default’ found, please make sure registry config correct</p>
-
-<p>解决2：</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
-        
-        <div class="content">
-            <h1 id="lock">Lock</h1>
-
-<p>参考文章: <a href="https://blog.csdn.net/pmc0_0/article/details/121061692">https://blog.csdn.net/pmc0_0/article/details/121061692</a></p>
-
-<p><img src="/images/202205/912e39d231b1440aa72b1529c61e7cf2.png" alt="" width="800" /></p>
-
-<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
-
-<p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
-
-<p>重量级锁 ：借助操作系统的monitor</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -369,7 +408,7 @@ disableGlobalTransaction = false
         <a class="btn btn-default" href="/page5" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 6 of 47</span>
+  <span class="page_number ">Page: 6 of 48</span>
   
     <a class="btn btn-default" href="/page7" class="next">Older</a>
   

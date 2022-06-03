@@ -7,6 +7,96 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>RocketMQ source code</title>
+				<description>&lt;h1 id=&quot;rocketmq-源码解析&quot;&gt;RocketMQ 源码解析&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6847902221577748487&quot;&gt;https://juejin.cn/post/6847902221577748487&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 02 Jun 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/06/RocketMQ-source-code</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/06/RocketMQ-source-code</guid>
+			</item>
+		
+			<item>
+				<title>mmap</title>
+				<description>&lt;h1 id=&quot;零拷贝技术-mmap&quot;&gt;零拷贝技术 mmap&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://www.jianshu.com/p/f90866dcbffc&quot;&gt;https://www.jianshu.com/p/f90866dcbffc&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://juejin.cn/post/7016498891365302302&quot;&gt;https://juejin.cn/post/7016498891365302302&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/mmap&quot;&gt;https://github.com/gongchangyou/mmap&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;常用方法&lt;/p&gt;
+
+&lt;p&gt;force : 强制刷盘&lt;/p&gt;
+
+&lt;p&gt;slice: 创建一个新的字节缓冲区,其内容是该缓冲区内容的共享子序列&lt;/p&gt;
+
+&lt;p&gt;示例代码&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
+@SpringBootTest
+class MmapApplicationTests {
+
+    String str = &quot;mouse 中文&quot;;
+
+    int size = str.getBytes().length;
+
+    @Test
+    public void writeWithMap() throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(new File(&quot;src/main/resources/big.www.flydean.com&quot;), &quot;rw&quot;))
+        {
+            //get Channel
+            FileChannel fileChannel = file.getChannel();
+            //get mappedByteBuffer from fileChannel
+            MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, 1024 );
+            // check buffer
+            log.info(&quot;is Loaded in physical memory: {}&quot;,buffer.isLoaded());  //只是一个提醒而不是guarantee
+            log.info(&quot;capacity {}&quot;,buffer.capacity());
+            //write the content
+            buffer.put(str.getBytes());
+        }
+    }
+
+    @Test
+    public void readWithMap() throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(new File(&quot;src/main/resources/big.www.flydean.com&quot;), &quot;r&quot;))
+        {
+            //get Channel
+            FileChannel fileChannel = file.getChannel();
+            //get mappedByteBuffer from fileChannel
+            MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+            // check buffer
+            log.info(&quot;is Loaded in physical memory: {}&quot;,buffer.isLoaded());  //只是一个提醒而不是guarantee
+            log.info(&quot;capacity {}&quot;,buffer.capacity());
+            byte[] bytes = new byte[size];
+
+            //read the buffer
+            for (int i = 0; i &amp;lt; bytes.length; i++)
+            {
+                bytes[i] = buffer.get();
+//                log.info(&quot;get {}&quot;, buffer.get());
+            }
+
+            val str = new String(bytes);
+            log.info(&quot;str= {}&quot;, str);
+        }
+    }
+
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Wed, 01 Jun 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/06/MappedByteBuffer</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/06/MappedByteBuffer</guid>
+			</item>
+		
+			<item>
 				<title>dubbo</title>
 				<description>&lt;h1 id=&quot;dubbo-源码解析&quot;&gt;Dubbo 源码解析&lt;/h1&gt;
 
@@ -547,179 +637,6 @@ def getPackageName(dir) {
 				<pubDate>Sat, 21 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/pojo-groovy</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/pojo-groovy</guid>
-			</item>
-		
-			<item>
-				<title>es 中文分词</title>
-				<description>&lt;h1 id=&quot;es-中文分词&quot;&gt;ES 中文分词&lt;/h1&gt;
-
-&lt;p&gt;这里使用 ES 8.2.0  所以建表不需要_doc关键字了。&lt;/p&gt;
-
-&lt;h3 id=&quot;建表&quot;&gt;建表&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT /table_1 
-{
-  &quot;mappings&quot;: {
-     &quot;properties&quot;: { 
-      &quot;title&quot;:    { &quot;type&quot;: &quot;text&quot;  }, 
-      &quot;name&quot;:     { &quot;type&quot;: &quot;keyword&quot;  }, 
-      &quot;description&quot;: {&quot;type&quot;: &quot;text&quot;},
-      &quot;age&quot;:      { &quot;type&quot;: &quot;integer&quot; },  
-      &quot;created&quot;:  {
-        &quot;type&quot;:   &quot;date&quot;, 
-        &quot;format&quot;: &quot;strict_date_optional_time||epoch_millis&quot;
-      }
-    }
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;写入数据&quot;&gt;写入数据&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_doc/1
-{
-  &quot;id&quot;: 1,
-  &quot;name&quot;: &quot;文档名称&quot;,
-  &quot;title&quot;: &quot;中文标题&quot;,
-  &quot;description&quot;:&quot;文档描述&quot;,
-  &quot;type&quot;:&quot;科普&quot;,
-  &quot;score&quot;: 96
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;搜索&quot;&gt;搜索&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_search
-{
-  &quot;query&quot;: {
-    &quot;match_all&quot;: {}
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;should--or-子句&quot;&gt;should  (or) 子句&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST table_1/_search
-{
-  &quot;query&quot;: {
-    &quot;bool&quot; : {
-      &quot;should&quot;: [
-        {&quot;term&quot;: {
-&quot;title&quot;: &quot;中&quot;
-}},
-{
-&quot;term&quot;: {
-&quot;title&quot;: &quot;文&quot;
-}
-}
-      ]
-    }
-    
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;中文搜索&quot;&gt;中文搜索&lt;/h3&gt;
-
-&lt;p&gt;keyword 是全匹配，text有analyzer可以创建分词策略 . 多个field 对应 多个analyzer &lt;a href=&quot;https://blog.csdn.net/JineD/article/details/108845906&quot;&gt;https://blog.csdn.net/JineD/article/details/108845906&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;keyword 得全匹配才行， text默认的分词策略， 默认分词  “中文” =&amp;gt; “中” “文”  ，所以输入  “中文”无法命中，&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG186.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;
-&lt;img src=&quot;/images/202205/WechatIMG187.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;下拉搜索的场景-可以使用whitespace-analyzer&quot;&gt;下拉搜索的场景, 可以使用whitespace analyzer&lt;/h4&gt;
-&lt;p&gt;保存的时候 写入 “中 中文 中文标 中文标题 文 文标 文标题 标题 题”&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT table_3
-{
-  &quot;mappings&quot;: {
-      &quot;properties&quot;: {
-        &quot;title&quot;: {
-          &quot;type&quot;: &quot;text&quot;,
-          &quot;analyzer&quot;: &quot;whitespace&quot;,
-          &quot;fields&quot;: {
-           
-            &quot;standard&quot;: {
-              &quot;type&quot;: &quot;text&quot;,
-              &quot;analyzer&quot;: &quot;standard&quot;
-            }
-          }
-        }
-      }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG185.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;中文分词场景&quot;&gt;中文分词场景&lt;/h4&gt;
-
-&lt;p&gt;IK分词 参考文章：&lt;a href=&quot;https://blog.csdn.net/weixin_40612128/article/details/123476150&quot;&gt;https://blog.csdn.net/weixin_40612128/article/details/123476150&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;记得把版本号改对&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;elasticsearch-plugin -v install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v8.2.0/elasticsearch-analysis-ik-8.2.0.zip
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PUT table_ik
-{
-  &quot;mappings&quot;: {
-      &quot;properties&quot;: {
-        &quot;title&quot;: {
-          &quot;type&quot;: &quot;text&quot;,
-          &quot;analyzer&quot;: &quot;whitespace&quot;,
-          &quot;fields&quot;: {
-            &quot;spy&quot;: {
-              &quot;type&quot;: &quot;text&quot;,
-              &quot;analyzer&quot;: &quot;ik_smart&quot;
-            },
-            &quot;standard&quot;: {
-              &quot;type&quot;: &quot;text&quot;,
-              &quot;analyzer&quot;: &quot;standard&quot;
-            },
-            &quot;fpy&quot;: {
-              &quot;type&quot;: &quot;text&quot;,
-              &quot;analyzer&quot;: &quot;ik_smart&quot;
-            }
-          }
-        }
-      }
-    
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG188.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;after-search&quot;&gt;After Search&lt;/h3&gt;
-
-&lt;p&gt;本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG189.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Fri, 20 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/ES-IK</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/ES-IK</guid>
-			</item>
-		
-			<item>
-				<title>cas</title>
-				<description>&lt;h1 id=&quot;cas&quot;&gt;CAS&lt;/h1&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://coderatwork.cn/posts/linux-cmpxchg/&quot;&gt;https://coderatwork.cn/posts/linux-cmpxchg/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Unsafe.compareAndSetObject&lt;/p&gt;
-
-&lt;p&gt;内部调用native cmpxchg汇编指令&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-				<pubDate>Thu, 19 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/CAS</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/CAS</guid>
 			</item>
 		
 	</channel>
