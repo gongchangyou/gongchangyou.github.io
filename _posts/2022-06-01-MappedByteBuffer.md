@@ -49,7 +49,7 @@ class MmapApplicationTests {
             //get mappedByteBuffer from fileChannel
             MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, 1024 );
             // check buffer
-            log.info("is Loaded in physical memory: {}",buffer.isLoaded());  //只是一个提醒而不是guarantee
+            log.info("is Loaded in physical memory: {}",buffer.isLoaded());
             log.info("capacity {}",buffer.capacity());
             //write the content
             buffer.put(str.getBytes());
@@ -65,7 +65,7 @@ class MmapApplicationTests {
             //get mappedByteBuffer from fileChannel
             MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
             // check buffer
-            log.info("is Loaded in physical memory: {}",buffer.isLoaded());  //只是一个提醒而不是guarantee
+            log.info("is Loaded in physical memory: {}",buffer.isLoaded());
             log.info("capacity {}",buffer.capacity());
             byte[] bytes = new byte[size];
 
