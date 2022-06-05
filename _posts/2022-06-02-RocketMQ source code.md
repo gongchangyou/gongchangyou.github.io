@@ -17,7 +17,10 @@ tag: [rocketmq]
 
 问题1：超时是如何实现的？
 
-回答1:  NettyRemotingAbstract 中 ,  responseFuture的 responseCommand 初始化的时候就是null， 如果发送成功 但是迟迟没有收到response 就会抛timeout异常。这里的实现是基于countDownLatch. 如果是我的话可能会用个 completableFuture.orTimeout  .示例代码:[https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46](https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46). 当然  responseFuture.isSendRequestOK() 这个判断还是需要的，用来区分是否发送成功。
+回答1:  NettyRemotingAbstract 中 ,  responseFuture的 responseCommand 初始化的时候就是null， 如果发送成功 但是迟迟没有收到response 就会抛timeout异常。这里的实现是基于countDownLatch. 如果是我的话可能会用个 completableFuture.orTimeout, 或者get(2, TimeUnit.SECONDS)  .示例代码:
+[https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46](https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46). 
+
+当然  responseFuture.isSendRequestOK() 这个判断还是需要的，用来区分是否发送成功。
 
 ```
 RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);

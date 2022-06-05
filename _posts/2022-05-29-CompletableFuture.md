@@ -45,3 +45,10 @@ tag: [java]
     }
 ```
 
+
+
+### 超时设置
+
+1.  orTimeout 方法， 超时会抛出TimeOut异常
+2.  completeOnTimeout 超时会被设置成默认值
+3.  get(long timeout, TimeUnit unit)， 同1
