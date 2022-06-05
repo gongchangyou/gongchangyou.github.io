@@ -3,8 +3,8 @@ layout: post
 title: "rocketmq-docker"
 date: 2022-03-23 14:25:06 +0800
 comments: true
-category: java
-tag: [java]
+category: rocketmq
+tag: [rocketmq]
 ---
 
 
@@ -23,7 +23,9 @@ tag: [java]
 
 
 
+[docker-compose.yml]({{ site.baseurl }}/images/202203/rocketmq/docker-compose.yml)
 
+> docker-compose up > /dev/null 2>&1 &
 
 参考 [https://www.jianshu.com/p/706588323276](https://www.jianshu.com/p/706588323276)
 
@@ -255,4 +257,5 @@ RocketMQInboundChannelAdapter 这个类，注册监听事件有两个回调，�
 
 在这个例子中 我做了个NPE，所以就无限reconsume了.
 
-![]({{ site.baseurl}}/images/202203/WechatIMG63.png){: width="800" }
+![]({{ site.baseurl}}/images/202203/WechatIMG64.png){: width="800" }
+

@@ -130,11 +130,15 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
 				<li><a href="/tag/kotlin" title="kotlin">kotlin<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>3</sup></a></li>
 			
 		
 			
@@ -242,6 +246,12 @@
   <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
   <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
 </ol>
+
+<p><a href="/images/202203/rocketmq/docker-compose.yml">docker-compose.yml</a></p>
+
+<blockquote>
+  <p>docker-compose up &gt; /dev/null 2&gt;&amp;1 &amp;</p>
+</blockquote>
 
 <p>参考 <a href="https://www.jianshu.com/p/706588323276">https://www.jianshu.com/p/706588323276</a></p>
 
@@ -459,7 +469,8 @@ flushDiskType=ASYNC_FLUSH
 
 <p>在这个例子中 我做了个NPE，所以就无限reconsume了.</p>
 
-<p><img src="/images/202203/WechatIMG63.png" alt="" width="800" /></p>
+<p><img src="/images/202203/WechatIMG64.png" alt="" width="800" /></p>
+
 
         </div>
     </div>
