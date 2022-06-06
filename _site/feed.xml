@@ -12,6 +12,58 @@
 
 &lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6847902221577748487&quot;&gt;https://juejin.cn/post/6847902221577748487&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;代码仓库： &lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-producer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-producer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/dubbo-demo-consumer&quot;&gt;https://github.com/gongchangyou/dubbo-demo-consumer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这里借用了dubbo的demo， 所以可能需要启动nacos.&lt;/p&gt;
+
+&lt;h3 id=&quot;netty基础知识&quot;&gt;netty基础知识:&lt;/h3&gt;
+&lt;p&gt;RocketMQ是的TCP通信基于 netty的
+初始化时, NettyRemotingClient.start 中， 实例化一个bootstrap, 设置一个 ChannelHandler，这个handler给pipeline注册一堆 ChannelHandler，比如 SimpleChannelInboundHandler， 可以read channel中的报文。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG256.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;生产端-producer&quot;&gt;生产端 producer&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/images/202206/producer_uml.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h3 id=&quot;消费端-consumer&quot;&gt;消费端 consumer&lt;/h3&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/weixin_34452850/article/details/82712634&quot;&gt;https://blog.csdn.net/weixin_34452850/article/details/82712634&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;consumer的设计简直回调地狱.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/consumer_uml.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt; 
+&lt;img src=&quot;/images/202206/consumer_receive_uml.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;核心是利用 PullMessageService 中的 LinkedBlockingQueue&lt;PullRequest&gt; pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.&lt;/PullRequest&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG257.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息，清理掉线的broker，上报offset给broker，心跳检测。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;this.startScheduledTask();
+
+private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, &quot;MQClientFactoryScheduledThread&quot;);
+        }
+    });
+scheduledThreadPoolExecutor.scheduleAtFixedRate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;核心组件-broker-todo&quot;&gt;核心组件 broker TODO&lt;/h3&gt;
+
+&lt;hr /&gt;
+
 &lt;p&gt;问题1：超时是如何实现的？&lt;/p&gt;
 
 &lt;p&gt;回答1:  NettyRemotingAbstract 中 ,  responseFuture的 responseCommand 初始化的时候就是null， 如果发送成功 但是迟迟没有收到response 就会抛timeout异常。这里的实现是基于countDownLatch. 如果是我的话可能会用个 completableFuture.orTimeout, 或者get(2, TimeUnit.SECONDS)  .示例代码:

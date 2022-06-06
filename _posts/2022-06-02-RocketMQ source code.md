@@ -13,7 +13,63 @@ tag: [rocketmq]
 
 参考文章: [https://juejin.cn/post/6847902221577748487](https://juejin.cn/post/6847902221577748487)
 
+代码仓库： [https://github.com/gongchangyou/dubbo-demo-producer](https://github.com/gongchangyou/dubbo-demo-producer)
 
+[https://github.com/gongchangyou/dubbo-demo-consumer](https://github.com/gongchangyou/dubbo-demo-consumer)
+
+这里借用了dubbo的demo， 所以可能需要启动nacos. 
+
+
+
+
+
+### netty基础知识:
+RocketMQ是的TCP通信基于 netty的
+初始化时, NettyRemotingClient.start 中， 实例化一个bootstrap, 设置一个 ChannelHandler，这个handler给pipeline注册一堆 ChannelHandler，比如 SimpleChannelInboundHandler， 可以read channel中的报文。
+
+![]({{ site.baseurl}}/images/202206/WechatIMG256.png){: width="800" }
+
+### 生产端 producer
+![]({{ site.baseurl}}/images/202206/producer_uml.drawio.png){: width="800" }
+
+---
+### 消费端 consumer
+
+参考文章: [https://blog.csdn.net/weixin_34452850/article/details/82712634](https://blog.csdn.net/weixin_34452850/article/details/82712634)
+
+
+
+consumer的设计简直回调地狱.
+
+
+
+![]({{ site.baseurl}}/images/202206/consumer_uml.drawio.png){: width="800" } 
+![]({{ site.baseurl}}/images/202206/consumer_receive_uml.drawio.png){: width="800" } 
+
+1.  核心是利用 PullMessageService 中的 LinkedBlockingQueue<PullRequest> pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.
+
+    ![]({{ site.baseurl}}/images/202206/WechatIMG257.png){: width="800" }
+
+
+
+2.   这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息，清理掉线的broker，上报offset给broker，心跳检测。
+
+```
+this.startScheduledTask();
+
+private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "MQClientFactoryScheduledThread");
+        }
+    });
+scheduledThreadPoolExecutor.scheduleAtFixedRate
+```
+---
+
+### 核心组件 broker TODO
+
+---
 
 问题1：超时是如何实现的？
 
