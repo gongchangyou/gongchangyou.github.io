@@ -37,6 +37,9 @@ RocketMQ是的TCP通信基于 netty的
 
 参考文章: [https://blog.csdn.net/weixin_34452850/article/details/82712634](https://blog.csdn.net/weixin_34452850/article/details/82712634)
 
+长轮询上面这篇文章介绍过了，具体方法就是 DefaultMQPushConsumerImpl.executePullRequestLater
+
+<font color="red">管理类是 MQClientInstance，一个主题对应一个，里面有很多成员，管理主题路由信息（topicRouteTable），消费者(consumerTable) 等 </font>
 
 
 consumer的设计简直回调地狱.
@@ -46,13 +49,15 @@ consumer的设计简直回调地狱.
 ![]({{ site.baseurl}}/images/202206/consumer_uml.drawio.png){: width="800" } 
 ![]({{ site.baseurl}}/images/202206/consumer_receive_uml.drawio.png){: width="800" } 
 
-1.  核心是利用 PullMessageService 中的 LinkedBlockingQueue<PullRequest> pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.
+
+
+1.  consumer是利用 PullMessageService 中的 LinkedBlockingQueue<PullRequest> pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.
 
     ![]({{ site.baseurl}}/images/202206/WechatIMG257.png){: width="800" }
 
 
 
-2.   这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息，清理掉线的broker，上报offset给broker，心跳检测。
+2.   这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息(根据topic 获取addr)，清理掉线的broker，上报offset给broker，心跳检测。
 
 ```
 this.startScheduledTask();
@@ -65,6 +70,7 @@ private final ScheduledExecutorService scheduledExecutorService = Executors.newS
     });
 scheduledThreadPoolExecutor.scheduleAtFixedRate
 ```
+
 ---
 
 ### 核心组件 broker TODO
@@ -90,3 +96,5 @@ RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);
             }
 ```
 
+问题2:  多个consumer的offset是如何管理的？
+回答2： 参考文章 [https://www.jianshu.com/p/4929947c0b31](https://www.jianshu.com/p/4929947c0b31)  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.

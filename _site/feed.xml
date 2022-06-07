@@ -32,6 +32,10 @@
 
 &lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/weixin_34452850/article/details/82712634&quot;&gt;https://blog.csdn.net/weixin_34452850/article/details/82712634&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;长轮询上面这篇文章介绍过了，具体方法就是 DefaultMQPushConsumerImpl.executePullRequestLater&lt;/p&gt;
+
+&lt;font color=&quot;red&quot;&gt;管理类是 MQClientInstance，一个主题对应一个，里面有很多成员，管理主题路由信息（topicRouteTable），消费者(consumerTable) 等 &lt;/font&gt;
+
 &lt;p&gt;consumer的设计简直回调地狱.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202206/consumer_uml.drawio.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt; 
@@ -39,12 +43,12 @@
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;核心是利用 PullMessageService 中的 LinkedBlockingQueue&lt;PullRequest&gt; pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.&lt;/PullRequest&gt;&lt;/p&gt;
+    &lt;p&gt;consumer是利用 PullMessageService 中的 LinkedBlockingQueue&lt;PullRequest&gt; pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.&lt;/PullRequest&gt;&lt;/p&gt;
 
     &lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG257.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息，清理掉线的broker，上报offset给broker，心跳检测。&lt;/p&gt;
+    &lt;p&gt;这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息(根据topic 获取addr)，清理掉线的broker，上报offset给broker，心跳检测。&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -58,6 +62,7 @@ private final ScheduledExecutorService scheduledExecutorService = Executors.newS
     });
 scheduledThreadPoolExecutor.scheduleAtFixedRate
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;hr /&gt;
 
 &lt;h3 id=&quot;核心组件-broker-todo&quot;&gt;核心组件 broker TODO&lt;/h3&gt;
@@ -82,6 +87,8 @@ scheduledThreadPoolExecutor.scheduleAtFixedRate
             }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;问题2:  多个consumer的offset是如何管理的？
+回答2： 参考文章 &lt;a href=&quot;https://www.jianshu.com/p/4929947c0b31&quot;&gt;https://www.jianshu.com/p/4929947c0b31&lt;/a&gt;  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.&lt;/p&gt;
 </description>
 				<pubDate>Thu, 02 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/RocketMQ-source-code</link>
