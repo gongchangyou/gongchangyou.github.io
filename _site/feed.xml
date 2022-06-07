@@ -65,7 +65,20 @@ scheduledThreadPoolExecutor.scheduleAtFixedRate
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;核心组件-broker-todo&quot;&gt;核心组件 broker TODO&lt;/h3&gt;
+&lt;h3 id=&quot;核心组件-broker&quot;&gt;核心组件 broker&lt;/h3&gt;
+&lt;p&gt;这个我说不好，暂时没时间看源码了，参考文章:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://juejin.cn/post/6844904191916245000&quot;&gt;https://juejin.cn/post/6844904191916245000&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1645897&quot;&gt;https://cloud.tencent.com/developer/article/1645897&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/427602828&quot;&gt;https://zhuanlan.zhihu.com/p/427602828&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://gsmtoday.github.io/2018/03/26/rocketmq-broker/&quot;&gt;https://gsmtoday.github.io/2018/03/26/rocketmq-broker/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html&quot;&gt;https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.modb.pro/db/72476&quot;&gt;https://www.modb.pro/db/72476&lt;/a&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -89,6 +102,9 @@ scheduledThreadPoolExecutor.scheduleAtFixedRate
 
 &lt;p&gt;问题2:  多个consumer的offset是如何管理的？
 回答2： 参考文章 &lt;a href=&quot;https://www.jianshu.com/p/4929947c0b31&quot;&gt;https://www.jianshu.com/p/4929947c0b31&lt;/a&gt;  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.&lt;/p&gt;
+
+&lt;p&gt;问题3： broker是如何处理某个offset上的消息一直没消费成功的?
+回答3:    没有时间看源码，结合一些文章看大概是，consumer本地重试 + sendBack， 将异常的消息重新发送一次，这样offset往前走也没问题。&lt;/p&gt;
 </description>
 				<pubDate>Thu, 02 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/RocketMQ-source-code</link>

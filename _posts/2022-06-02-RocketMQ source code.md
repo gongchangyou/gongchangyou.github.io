@@ -73,7 +73,20 @@ scheduledThreadPoolExecutor.scheduleAtFixedRate
 
 ---
 
-### 核心组件 broker TODO
+### 核心组件 broker 
+这个我说不好，暂时没时间看源码了，参考文章:
+
+[https://juejin.cn/post/6844904191916245000](https://juejin.cn/post/6844904191916245000)
+
+[https://cloud.tencent.com/developer/article/1645897](https://cloud.tencent.com/developer/article/1645897)
+
+[https://zhuanlan.zhihu.com/p/427602828](https://zhuanlan.zhihu.com/p/427602828)
+
+[https://gsmtoday.github.io/2018/03/26/rocketmq-broker/](https://gsmtoday.github.io/2018/03/26/rocketmq-broker/)
+
+[https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html](https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html)
+
+[https://www.modb.pro/db/72476](https://www.modb.pro/db/72476)
 
 ---
 
@@ -97,4 +110,7 @@ RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);
 ```
 
 问题2:  多个consumer的offset是如何管理的？
-回答2： 参考文章 [https://www.jianshu.com/p/4929947c0b31](https://www.jianshu.com/p/4929947c0b31)  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.
+回答2： 参考文章 [https://www.jianshu.com/p/4929947c0b31](https://www.jianshu.com/p/4929947c0b31)  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35. 
+
+问题3： broker是如何处理某个offset上的消息一直没消费成功的?
+回答3:    没有时间看源码，结合一些文章看大概是，consumer本地重试 + sendBack， 将异常的消息重新发送一次，这样offset往前走也没问题。
