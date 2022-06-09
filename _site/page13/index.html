@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -173,66 +173,6 @@
         </div>
         <div class="col-md-9">
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/tar">Apr 19, 2022 - tar</a></h1>
-        
-        <div class="content">
-            <h1 id="将多个文件打包并压缩">将多个文件打包并压缩</h1>
-
-<p><a href="https://mkyong.com/java/how-to-create-tar-gz-in-java/">https://mkyong.com/java/how-to-create-tar-gz-in-java/</a></p>
-
-<p>kotlin 代码</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">xxx</span>
-
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveEntry</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">archivers</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">TarArchiveOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">compress</span><span class="p">.</span><span class="n">compressors</span><span class="p">.</span><span class="n">gzip</span><span class="p">.</span><span class="n">GzipCompressorOutputStream</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Service</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">BufferedOutputStream</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">IOException</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Files</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">nio</span><span class="p">.</span><span class="n">file</span><span class="p">.</span><span class="n">Path</span>
-
-
-<span class="p">@</span><span class="n">Service</span>
-<span class="n">class</span> <span class="n">TarGzipService</span> <span class="p">{</span>
-    <span class="p">//</span> <span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="n">few</span> <span class="n">files</span>
-    <span class="p">@</span><span class="n">Throws</span><span class="p">(</span><span class="n">IOException</span><span class="p">::</span><span class="n">class</span><span class="p">)</span>
-    <span class="n">fun</span> <span class="n">createTarGzipFiles</span><span class="p">(</span><span class="n">paths</span><span class="p">:</span> <span class="k">List</span><span class="p">&lt;</span><span class="n">Path</span><span class="p">&gt;,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Path</span><span class="p">?)</span> <span class="p">{</span>
-        <span class="n">Files</span><span class="p">.</span><span class="n">newOutputStream</span><span class="p">(</span><span class="n">output</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">fOut</span> <span class="p">-&gt;</span>
-            <span class="n">BufferedOutputStream</span><span class="p">(</span><span class="n">fOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">buffOut</span> <span class="p">-&gt;</span>
-                <span class="n">GzipCompressorOutputStream</span><span class="p">(</span><span class="n">buffOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">gzOut</span> <span class="p">-&gt;</span>
-                    <span class="n">TarArchiveOutputStream</span><span class="p">(</span><span class="n">gzOut</span><span class="p">).</span><span class="n">use</span> <span class="p">{</span> <span class="n">tOut</span> <span class="p">-&gt;</span>
-                        <span class="n">for</span> <span class="p">(</span><span class="n">path</span> <span class="k">in</span> <span class="n">paths</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="k">if</span> <span class="p">(</span><span class="c1">!Files.isRegularFile(path)) {
-</span>                                <span class="n">throw</span> <span class="n">IOException</span><span class="p">(</span><span class="s2">"Support only file! $path"</span><span class="p">)</span>
-                            <span class="p">}</span>
-                            <span class="n">val</span> <span class="n">tarEntry</span> <span class="p">=</span> <span class="n">TarArchiveEntry</span><span class="p">(</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">toFile</span><span class="p">(),</span>
-                                <span class="n">path</span><span class="p">.</span><span class="n">fileName</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
-                            <span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">putArchiveEntry</span><span class="p">(</span><span class="n">tarEntry</span><span class="p">)</span>
-
-                            <span class="p">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="k">to</span> <span class="n">TarArchiveOutputStream</span>
-                            <span class="n">Files</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">tOut</span><span class="p">)</span>
-                            <span class="n">tOut</span><span class="p">.</span><span class="n">closeArchiveEntry</span><span class="p">()</span>
-                        <span class="p">}</span>
-                        <span class="n">tOut</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 <div class="article">
     <div class="well">
         <h1><a href="/2022/04/jsch">Apr 18, 2022 - jsch</a></h1>
@@ -557,6 +497,28 @@ session.connect(30000);   // making a connection with timeout.
     </div>
 </div>
 
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/webgl">Apr 6, 2022 - webgl</a></h1>
+        
+        <div class="content">
+            <h1 id="webgl">WebGL</h1>
+
+<p>参考文章:<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL">https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL</a></p>
+
+<p>IDEA Debug</p>
+
+<p><img src="/images/202204/WechatIMG76.png" alt="" width="800" /></p>
+
+<p>报表的图表我们可以选择 echarts <a href="https://echarts.apache.org/zh/index.html">https://echarts.apache.org/zh/index.html</a></p>
+
+<p>如果需要3d柱形图的 可以参考 <a href="https://blog.csdn.net/xhload3d/article/details/89667538">https://blog.csdn.net/xhload3d/article/details/89667538</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 
 <div class="pagination">
   
@@ -564,7 +526,7 @@ session.connect(30000);   // making a connection with timeout.
         <a class="btn btn-default" href="/page12" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 13 of 49</span>
+  <span class="page_number ">Page: 13 of 48</span>
   
     <a class="btn btn-default" href="/page14" class="next">Older</a>
   

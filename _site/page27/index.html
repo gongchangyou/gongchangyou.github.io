@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
 			
 		
 			
@@ -173,108 +173,6 @@
         </div>
         <div class="col-md-9">
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
-
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
-
-<ol>
-  <li>
-    <p>docker 安装</p>
-
-    <blockquote>
-      <p>docker search nexus</p>
-
-      <p>docker pull docker.io/sonatype/nexus3</p>
-
-      <p>下面的路径可以改成你本地的用户空间</p>
-
-      <p>mkdir -p /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>chmod 777 /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /Users/gongchangyou/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-
-    <p>原文是要去 /usr/local 中新建文件夹，试过chmod 777 后docker还是无法创建一些文件和文件夹,</p>
-
-    <blockquote>
-      <p>mkdir -p /usr/local/nexus3/nexus-data</p>
-
-      <p>chown -R 200 /usr/local/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /usr/local/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>登录Nexus进行配置</p>
-
-    <blockquote>
-      <p>访问：<a href="http://localhost:8081/nexus">http://localhost:8081/nexus</a>  使用默认管理员身份登录 账号admin, 密码在 <strong>/nexus-data/admin.password</strong>,  登录后可以修改密码.</p>
-
-      <p><img src="/images/202205/WechatIMG240.png" alt="" width="800" /></p>
-    </blockquote>
-  </li>
-</ol>
-
-<p>问题：mvn deploy -X</p>
-
-<ol>
-  <li>
-    <p>405错误  Failed to transfer file http://localhost:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</p>
-
-    <p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;distributionManagement&gt;
-
-         &lt;repository&gt;
-
-             &lt;id&gt;nexus-releases&lt;/id&gt;
-
-             &lt;url&gt;
-                 就是这行，要跟maven服务器上的settings中的URL保持一致
-                 http://localhost:8081/nexus/repository/maven-releases/
-
-             &lt;/url&gt;
-
-         &lt;/repository&gt;
-</code></pre></div>    </div>
-    <p><img src="/images/202205/WechatIMG241.png" alt="" width="800" />
- <img src="/images/202205/WechatIMG242.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>401错误  本地的settings.xml账号错误。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;servers&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-snapshots&lt;/id&gt;
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
- &lt;/servers&gt;
-</code></pre></div>    </div>
-
-    <p>如果换了settings.xml 文件，且用mvn 命令行编译，那就指定一下</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mvn deploy -X --settings /Users/gongchangyou/.m2/settings-personal.xml
-</code></pre></div>    </div>
-    <p>可以看到上传成功
-     <img src="/images/202205/WechatIMG244.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
@@ -351,6 +249,22 @@
     </div>
 </div>
 
+<div class="article">
+    <div class="well">
+        <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
+        
+        <div class="content">
+            <h1 id="kotlin-语法糖">Kotlin 语法糖</h1>
+
+<p>sequence chunked 列表分块处理</p>
+
+<p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 
 <div class="pagination">
   
@@ -358,7 +272,7 @@
         <a class="btn btn-default" href="/page26" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 27 of 49</span>
+  <span class="page_number ">Page: 27 of 48</span>
   
     <a class="btn btn-default" href="/page28" class="next">Older</a>
   
