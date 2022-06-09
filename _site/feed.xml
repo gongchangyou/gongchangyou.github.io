@@ -7,6 +7,244 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Canal</title>
+				<description>
+</description>
+				<pubDate>Thu, 09 Jun 2022 00:00:00 +0800</pubDate>
+				<link>http://localhost:4000/2022/06/canal</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/06/canal</guid>
+			</item>
+		
+			<item>
+				<title>seata</title>
+				<description>&lt;h1 id=&quot;seata-分布式事务&quot;&gt;SEATA 分布式事务&lt;/h1&gt;
+
+&lt;p&gt;官网： &lt;a href=&quot;https://seata.io/zh-cn/docs/overview/what-is-seata.html&quot;&gt;https://seata.io/zh-cn/docs/overview/what-is-seata.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;at的实现方案&quot;&gt;AT的实现方案&lt;/h2&gt;
+
+&lt;p&gt;参考文章 &lt;a href=&quot;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&quot;&gt;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://seata.io/zh-cn/docs/user/quickstart.html&quot;&gt;https://seata.io/zh-cn/docs/user/quickstart.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;前提&quot;&gt;前提&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;基于支持本地 ACID 事务的关系型数据库。&lt;/p&gt;
+
+  &lt;p&gt;Java 应用，通过 JDBC 访问数据库。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;下面是一个具体的例子：订单扣库存的解决方案&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![](/images/202205/solution.png){: width=&quot;800&quot; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;具体的操作步骤有3步：&lt;/p&gt;
+
+&lt;p&gt;前提： &lt;a href=&quot;../../../2022/01/nacos&quot;&gt; 我们先本地启动一个nacos &lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;一. 启动seata&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载 1.4.2版本，更高版本不知道配置在哪里，&lt;a href=&quot;https://github.com/seata/seata/releases/tag/v1.4.2&quot;&gt;https://github.com/seata/seata/releases/tag/v1.4.2&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;解压后，去修改 conf/registry.conf 和conf/file.conf 中关于db的配置
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    registry {
+              \# file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
+              type = &quot;nacos&quot;
+       
+
+              nacos {
+                application = &quot;seata-server&quot;
+                serverAddr = &quot;127.0.0.1:8848&quot;
+                group = &quot;SEATA_GROUP&quot;
+                namespace = &quot;&quot;
+                cluster = &quot;default&quot;
+                username = &quot;nacos&quot;
+                password = &quot;nacos&quot;
+              }
+          }
+          config {
+              \# file、nacos 、apollo、zk、consul、etcd3
+              type = &quot;nacos&quot;
+
+              nacos {
+                serverAddr = &quot;127.0.0.1:8848&quot;
+                namespace = &quot;&quot;
+                group = &quot;SEATA_GROUP&quot;
+                username = &quot;nacos&quot;
+                password = &quot;nacos&quot;
+                dataId = &quot;seataServer.properties&quot;
+              }
+          }
+                  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; db {
+## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp)/HikariDataSource(hikari) etc.
+datasource = &quot;druid&quot;
+## mysql/oracle/postgresql/h2/oceanbase etc.
+dbType = &quot;mysql&quot;
+driverClassName = &quot;com.mysql.jdbc.Driver&quot;
+## if using mysql to store the data, recommend add rewriteBatchedStatements=true in jdbc connection param
+url = &quot;jdbc:mysql://127.0.0.1:3306/seata?rewriteBatchedStatements=true&quot;
+user = &quot;root&quot;
+password = &quot;123456&quot;
+minConn = 5
+maxConn = 100
+globalTable = &quot;global_table&quot;
+branchTable = &quot;branch_table&quot;
+lockTable = &quot;lock_table&quot;
+queryLimit = 100
+maxWait = 5000
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;cd bin&lt;/p&gt;
+
+      &lt;p&gt;sh seata-server.sh -p 8091 -m file&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG259.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE `undo_log`
+(
+  `id`            BIGINT(20)   NOT NULL AUTO_INCREMENT,
+  `branch_id`     BIGINT(20)   NOT NULL,
+  `xid`           VARCHAR(100) NOT NULL,
+  `context`       VARCHAR(128) NOT NULL,
+  `rollback_info` LONGBLOB     NOT NULL,
+  `log_status`    INT(11)      NOT NULL,
+  `log_created`   DATETIME     NOT NULL,
+  `log_modified`  DATETIME     NOT NULL,
+  `ext`           VARCHAR(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;三. 搭建微服务&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;先把nacos 启动起来 &lt;a href=&quot;../../../2022/01/nacos&quot;&gt;启动nacos&lt;/a&gt; (这步第0步已经做过了)&lt;/li&gt;
+  &lt;li&gt;启动 maven仓库   &lt;a href=&quot;../../../2022/01/maven&quot;&gt;启动maven仓库&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
+    &lt;ol&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-order&quot;&gt;https://github.com/gongchangyou/service-order&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-store&quot;&gt;https://github.com/gongchangyou/service-store&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-buy&quot;&gt;https://github.com/gongchangyou/service-buy&lt;/a&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;注意各微服务中关于seata的配置&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #seata nacos配置
+ seata.registry.type=nacos
+ #这个配置需要跟nacos中的服务名保持一致
+ seata.registry.nacos.group=SEATA_GROUP
+ seata.registry.nacos.application=seata-server
+ #seata.registry.nacos.namespace=${nacos.discovery.namespace}
+ seata.registry.nacos.cluster=default
+ seata.registry.nacos.server-addr=127.0.0.1:8848
+ #账号密码
+ #seata.registry.nacos.username=nacos
+ #seata.registry.nacos.password=nacos
+ seata.tx-service-group=my_test_tx_group
+ seata.enabled=true
+ #seata 配置
+ seata.enable-auto-data-source-proxy=true
+ seata.application-id=${spring.application.name}
+ seata.config.type=nacos
+ seata.config.nacos.group=SEATA_GROUP
+ seata.config.nacos.server-addr=127.0.0.1:8848
+ #seata.config.nacos.namespace=${nacos.discovery.namespace}
+ #seata.config.nacos.username=nacos
+ #seata.config.nacos.password=nacos
+ #可以切换AT和XA
+ seata.data-source-proxy-mode=AT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;问题1: io.seata.core.rpc.netty.NettyClientChannelManager : can not get cluster name in registry config ‘service.vgroupMapping.my_test_tx_group’, please make sure registry config correct&lt;/p&gt;
+
+&lt;p&gt;解决1: 从ClientWorker.getServerConfig方法追进去看 http的url，发现是设置了tenant和 accessToken.注意检查下你的nacos的api是否需要携带这俩参数，如果没必要的话，记得在代码中把 username,password, namespace注释掉&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;访问试试
+
+http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;amp;group=SEATA_GROUP&amp;amp;tenant=c7ba173f-29e5-4c58-ae78-b102be11c4f9&amp;amp;accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY1NDc2NTk5N30.Di3xRbagvMl_OCq5lnQFP7wOWN8dupuQX3QXr24DITU
+
+http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;amp;group=SEATA_GROUP
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;问题2：io.seata.core.rpc.netty.NettyClientChannelManager : no available service found in cluster ‘seata-server’, please make sure registry config correct and keep your seata server running&lt;/p&gt;
+
+&lt;p&gt;解决2：在配置中心设置seata-server 的默认集群(cluster) , 直接写default就行&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG262.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;问题3: 2022-06-09 14:40:05.340 ERROR [timeoutChecker_2_1] io.seata.core.rpc.netty.NettyClientChannelManager : 0101 can not connect to 192.168.1.4:8091 cause:can not register RM,err:register RMROLE error, errMsg:cost 30004 ms&lt;/p&gt;
+
+&lt;p&gt;解决3： 注册不上RM, 检查了一下seata的 conf/file.conf中 db的配置,  确保username和password都填写正确&lt;/p&gt;
+
+&lt;p&gt;问题4： 2022-06-09 14:56:29.679 ERROR [restartedMain] io.seata.core.rpc.netty.NettyClientChannelManager : 0304 register RM failed.&lt;/p&gt;
+
+&lt;p&gt;解决4： 同3&lt;/p&gt;
+
+&lt;p&gt;问题5：java.lang.NoSuchMethodException: com.mysql.cj.conf.PropertySet.getBooleanReadableProperty(java.lang.String)&lt;/p&gt;
+
+&lt;p&gt;method_6_getPropertySet = class_6_connection.getMethod(“getBooleanReadableProperty”);   JdbcConnection中找不到 getBooleanReadableProperty方法&lt;/p&gt;
+
+&lt;p&gt;解决5：是druid中的MysqlUtils 类的bug. 在1.2.5以后修复了. 升级即可，但是spring-boot可能会无法自动加载DruidDataSourceWrapper. exclude掉即可 @SpringBootApplication(scanBasePackages = {“com.mouse”}, exclude = DruidDataSourceAutoConfigure.class)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;com.alibaba&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;druid-spring-boot-starter&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;1.2.5&amp;lt;/version&amp;gt;
+            &amp;lt;exclusions&amp;gt;
+                &amp;lt;exclusion&amp;gt;
+                    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+                    &amp;lt;artifactId&amp;gt;spring-boot-autoconfigure&amp;lt;/artifactId&amp;gt;
+                &amp;lt;/exclusion&amp;gt;
+            &amp;lt;/exclusions&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;undo-log中的记录&quot;&gt;undo log中的记录&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10,7034894280102293554,192.168.1.3:8091:7034894280102293553,serializer=jackson,&quot;{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.BranchUndoLog&quot;&quot;,&quot;&quot;xid&quot;&quot;:&quot;&quot;192.168.1.3:8091:7034894280102293553&quot;&quot;,&quot;&quot;branchId&quot;&quot;:7034894280102293554,&quot;&quot;sqlUndoLogs&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.SQLUndoLog&quot;&quot;,&quot;&quot;sqlType&quot;&quot;:&quot;&quot;INSERT&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;`order`&quot;&quot;,&quot;&quot;beforeImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords$EmptyTableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[]]},&quot;&quot;afterImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:28},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;status&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:0}]]}]]}}]]}&quot;,0,2022-06-09 12:54:35,2022-06-09 12:54:35,
+
+
+11,7034894280102293555,192.168.1.3:8091:7034894280102293553,serializer=jackson,&quot;{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.BranchUndoLog&quot;&quot;,&quot;&quot;xid&quot;&quot;:&quot;&quot;192.168.1.3:8091:7034894280102293553&quot;&quot;,&quot;&quot;branchId&quot;&quot;:7034894280102293555,&quot;&quot;sqlUndoLogs&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.SQLUndoLog&quot;&quot;,&quot;&quot;sqlType&quot;&quot;:&quot;&quot;UPDATE&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;beforeImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:1},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;count&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:910}]]}]]},&quot;&quot;afterImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:1},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;count&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:907}]]}]]}}]]}&quot;,0,2022-06-09 12:55:56,2022-06-09 12:55:56,
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Wed, 08 Jun 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/06/seata</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/06/seata</guid>
+			</item>
+		
+			<item>
 				<title>RocketMQ source code</title>
 				<description>&lt;h1 id=&quot;rocketmq-源码解析&quot;&gt;RocketMQ 源码解析&lt;/h1&gt;
 
@@ -520,223 +758,6 @@ file-&amp;gt; settings -&amp;gt; 搜索color scheme -&amp;gt; import 上述文�
 				<pubDate>Wed, 25 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/windows-install-jdk</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/windows-install-jdk</guid>
-			</item>
-		
-			<item>
-				<title>transactional</title>
-				<description>&lt;h1 id=&quot;transactional注解&quot;&gt;Transactional注解&lt;/h1&gt;
-
-&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/transactional&quot;&gt;https://github.com/gongchangyou/transactional&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;其实 Mybatis plus中的 ServiceImpl 的save操作都已经是事务级别的了, 我们来试试，如果取消了这个transactional注解会发生什么.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG226.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;比如现在有10个线程，同时更新id=1 的row .value ++ ，结果肯定不是10&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));
-
- @Test
-    void unThreadSafe() {
-        for (int i = 0; i &amp;lt; 10;i++) {
-            threadPoolExecutor.submit(() -&amp;gt; {
-                val model = testMapper.selectById(1L);
-            log.info(&quot;start value={}&quot;, model.getValue());
-            val ret = testMapper.updateById(com.mouse.transactional.repository.db.model.Test
-                        .builder()
-                        .id(1L)
-                        .value(model.getValue() + 1)
-                        .build()
-                );
-                log.info(&quot;ret={}&quot;, ret);
-            });
-        }
-
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;如何保证呢？&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;我们做个事务方法, 这里使用select for update加行锁, 并添加 @Transactional注解&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; @Slf4j
- @Service
- public class TestService extends ServiceImpl&amp;lt;TestMapper, Test&amp;gt; implements IService&amp;lt;Test&amp;gt; {
-
-     @Transactional
-     public void incr(long id) {
-         val model = baseMapper.selectOne(new LambdaQueryWrapper&amp;lt;Test&amp;gt;()
-                 .eq(com.mouse.transactional.repository.db.model.Test::getId, 1L)
-                 .last(&quot; for update&quot;));
-         log.info(&quot;value={}&quot;, model.getValue());
-         model.setValue(model.getValue() + 1);
-         updateById(model);
-     }
-
- }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;测试一下, 这回成了，test表的value正好加了10.&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,10,0, TimeUnit.SECONDS, new LinkedBlockingQueue&amp;lt;&amp;gt;(10));
-
-     @Test
-     void TransactionalUpdate() {
-         for (int i = 0; i &amp;lt; 10;i++) {
-             threadPoolExecutor.submit(() -&amp;gt; {
-                 testService.incr(1L);
-             });
-         }
-
-         try {
-             Thread.sleep(2000L);
-         } catch (InterruptedException e) {
-             e.printStackTrace();
-         }
-     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;当然如果抛异常的话，那么里面的操作就不执行. 如下手动抛出异常，里面的更新操作就不会执行。
-&lt;img src=&quot;/images/202205/WechatIMG227.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;源码解析:&lt;/p&gt;
-
-&lt;p&gt;核心逻辑在 spring-tx包中的 类 TransactionAspectSupport 中：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/WechatIMG230.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Mon, 23 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/transactional</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/transactional</guid>
-			</item>
-		
-			<item>
-				<title>pojo</title>
-				<description>&lt;h1 id=&quot;pojo-groovy&quot;&gt;Pojo groovy&lt;/h1&gt;
-
-&lt;p&gt;代码仓库:  &lt;a href=&quot;https://github.com/gongchangyou/tool&quot;&gt;https://github.com/gongchangyou/tool&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;自动生成pojo&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import com.intellij.database.model.DasTable
-import com.intellij.database.util.Case
-import com.intellij.database.util.DasUtil
-
-/*
- * Available context bindings:
- *   SELECTION   Iterable&amp;lt;DasObject&amp;gt;
- *   PROJECT     project
- *   FILES       files helper
- */
-
-typeMapping = [
-  (~/(?i)int/)                      : &quot;Long&quot;,
-  (~/(?i)float|double|decimal|real/): &quot;Double&quot;,
-  (~/(?i)datetime|timestamp/)       : &quot;java.sql.Timestamp&quot;,
-  (~/(?i)date/)                     : &quot;java.sql.Date&quot;,
-  (~/(?i)time/)                     : &quot;java.sql.Time&quot;,
-  (~/(?i)/)                         : &quot;String&quot;
-]
-
-FILES.chooseDirectoryAndSave(&quot;Choose directory&quot;, &quot;Choose where to store generated files&quot;) { dir -&amp;gt;
-  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
-}
-
-def generate(table, dir) {
-  def className = javaName(table.getName(), true)
-  def fields = calcFields(table)
-  def packageName = getPackageName(dir)
-  new File(dir, className + &quot;.java&quot;).withPrintWriter { out -&amp;gt; generate(out, className, fields, packageName, table) }
-}
-
-def generate(out, className, fields, packageName, table) {
-  out.println &quot;package $packageName&quot;
-  out.println &quot;&quot;
-  out.println &quot;&quot;
-  out.println &quot;import com.baomidou.mybatisplus.annotation.IdType;\n&quot; +
-          &quot;import com.baomidou.mybatisplus.annotation.TableId;\n&quot; +
-          &quot;import com.baomidou.mybatisplus.annotation.TableName;\n&quot; +
-          &quot;import lombok.AllArgsConstructor;\n&quot; +
-          &quot;import lombok.Builder;\n&quot; +
-          &quot;import lombok.Data;\n&quot; +
-          &quot;import lombok.NoArgsConstructor;&quot;
-    out.println &quot;&quot;
-    out.println &quot;@Builder\n&quot; +
-            &quot;@AllArgsConstructor\n&quot; +
-            &quot;@NoArgsConstructor\n&quot; +
-            &quot;@Data\n&quot; +
-            &quot;@TableName(\&quot;${table.getName()}\&quot;)&quot;
-    out.println &quot;public class $className {&quot;
-  out.println &quot;&quot;
-  fields.each() {
-    if (it.comment != &quot;&quot;) {
-        out.println &quot;  /**&quot;
-        out.println &quot;   * ${it.comment}&quot;
-        out.println &quot;   */&quot;
-    }
-      if (it.isPrimaryKey) {
-          out.println &quot;  @TableId(type = IdType.AUTO)&quot;
-      }
-    out.println &quot;  private ${it.type} ${it.name};&quot;
-  }
-  out.println &quot;&quot;
-//  fields.each() {
-//    out.println &quot;&quot;
-//    out.println &quot;  public ${it.type} get${it.name.capitalize()}() {&quot;
-//    out.println &quot;    return ${it.name};&quot;
-//    out.println &quot;  }&quot;
-//    out.println &quot;&quot;
-//    out.println &quot;  public void set${it.name.capitalize()}(${it.type} ${it.name}) {&quot;
-//    out.println &quot;    this.${it.name} = ${it.name};&quot;
-//    out.println &quot;  }&quot;
-//    out.println &quot;&quot;
-//  }
-  out.println &quot;}&quot;
-}
-
-def calcFields(table) {
-    DasUtil.getColumns(table).reduce([]) { fields, col -&amp;gt;
-    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
-    def typeStr = typeMapping.find { p, t -&amp;gt; p.matcher(spec).find() }.value
-    fields += [[
-                 name : javaName(col.getName(), false),
-                 type : typeStr,
-                 comment : col.getComment(),
-                 isPrimaryKey :  DasUtil.isPrimary(col),
-                 annos: &quot;&quot;]]
-  }
-}
-
-def javaName(str, capitalize) {
-  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
-    .collect { Case.LOWER.apply(it).capitalize() }
-    .join(&quot;&quot;)
-    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, &quot;_&quot;)
-  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
-}
-
-def getPackageName(dir) {
-    return dir.toString().replaceAll(&quot;\\\\&quot;, &quot;.&quot;).replaceAll(&quot;/&quot;, &quot;.&quot;).replaceAll(&quot;^.*src(\\.main\\.java\\.)?&quot;, &quot;&quot;) + &quot;;&quot;
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Sat, 21 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/pojo-groovy</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/pojo-groovy</guid>
 			</item>
 		
 	</channel>

@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal">Canal</a></li>
+        
+          <li><a href="/2022/06/seata">seata</a></li>
+        
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
-        
-          <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
-        
-          <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -173,6 +173,137 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/jira">Jan 24, 2022 - jira</a></h1>
+        
+        <div class="content">
+            <h1 id="jira-部署">Jira 部署</h1>
+
+<ol>
+  <li>
+    <p>下载bin文件 <a href="https://www.atlassian.com/software/jira/update">https://www.atlassian.com/software/jira/update</a>  8.12.0</p>
+  </li>
+  <li>
+    <p>创建db</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database jira
+
+create user 'jira'@'%' IDENTIFIED BY 'password';
+
+grant all privileges on jira.* to 'jira'@'%';
+
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>mysql connector jar包  <a href="https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27">https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27</a></p>
+  </li>
+  <li>
+    <p>破解jar包 <a href="https://www.cnblogs.com/houchaoying/p/9096118.html">https://www.cnblogs.com/houchaoying/p/9096118.html</a> 拉到最下面</p>
+  </li>
+  <li>cd /opt/atlassian/jira/bin</li>
+  <li>sh startup.sh</li>
+</ol>
+
+<h1 id="又">又</h1>
+
+<p>卸载是在 /opt/atlassian/jira/uninstall</p>
+
+<p>关闭是在  /opt/atlassian/jira/bin/shutdown.sh</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/matomo">Jan 24, 2022 - matomo</a></h1>
+        
+        <div class="content">
+            <h1 id="matomo-部署">Matomo 部署</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull matomo
+
+docker run --restart=always -d --name matomo -p 7777:80 -v /opt/matomo/data:/data -v /opt/matomo/html:/var/www/html matomo
+</code></pre></div></div>
+
+<p>mysql新建db 和用户</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create database matomo;
+
+create user 'matomo'@'%' IDENTIFIED BY 'password';
+
+grant all privileges on matomo.* to 'matomo'@'%';
+
+</code></pre></div></div>
+
+<p>但是因为宿主机已经安装了 mysql 。 所以需要matomo能够访问宿主机的db</p>
+
+<p>在宿主机 ifconfig 命令后 。发现一个docker0 的网桥，记住他的ip 172.17.0.1</p>
+
+<p>在localhost:7777 中设置 database的时候 将 刚刚的ip[172.17.0.1]当成 host贴进去，应该就ok了.</p>
+
+<p>因为默认端口是80，咱们这里改成了7777 所以有可能需要去配置下
+vi /var/www/html/config/config.ini.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[General]
+trusted_hosts[] = "10.10.48.194:7777"
+</code></pre></div></div>
+
+<p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static function getIpFromHeader()
+{
+    ...
+    
+    if(isset($_SERVER['HTTP_X_REAL_IP'])) { //获取header中的ip
+        $default = $_SERVER['HTTP_X_REAL_IP'];
+    }
+    
+    ...
+}
+</code></pre></div></div>
+
+<p>问题1： IP依然错误，后两位是0.0, 且无法获取到remote_addr 。</p>
+
+<p>原因1: nginx 的 X-Real-IP 设置没生效</p>
+
+<p>原因2: matomo的隐私政策</p>
+
+<p>privacy 里面有个配置</p>
+
+<p><img src="/images/202204/WechatIMG176.png" alt="" width="800" /></p>
+
+<p>js客户端 代码： <a href="https://developer.matomo.org/guides/tracking-javascript-guide">https://developer.matomo.org/guides/tracking-javascript-guide</a></p>
+
+<p>[Recording a click as a download] 手动指定某个链接是下载类型  <a href="https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download">https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download</a></p>
+
+<h3 id="具体问题如何想看单位时间中某个用户的下载量">具体问题：如何想看单位时间中某个用户的下载量？</h3>
+
+<p>详细的访问路径在表 matomo_log_action 中 ,其中type=3是下载</p>
+
+<p>界面上看到的visitor ID是 matomo_log_visit.idvisitor 注意数据库中的字母是大写的</p>
+
+<p>外键：</p>
+
+<p>matomo_log_visit.idvisit  = matomo_log_link_visit_action.idvisit</p>
+
+<p>matomo_log_link_visit_action.idaction_url = matomo_log_action.idaction</p>
+
+<p>但是表  matomo_log_action 中的url是去重的可复用的，有时候会删除无用的记录，所以时间上后访问的url可能反而比前面访问的url的id要小。</p>
+
+<p>所以如果要监控访问的url type =3 ，不可以遍历 matomo_log_action 表。</p>
+
+<p>而还是应该遍历 matomo_log_link_visit_action，查看单位时间内相同  idvisit 产生的matomo_log_action的type=3的记录数.</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/RocketMQ">Jan 21, 2022 - rocket mq</a></h1>
@@ -252,136 +383,6 @@ sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos-cluster">Jan 20, 2022 - cluster</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
-
-<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
-
-<ol>
-  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
-</ol>
-
-<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
-
-<p>配置 cluster.conf
-nacos应该会将注册服务同步给其他ip</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
-#it is ip
-#example
-192.168.1.145:8848
-192.168.1.146:8848
-
-```
-</code></pre></div></div>
-
-<ol>
-  <li>
-    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
-  </li>
-  <li>
-    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
-  </li>
-  <li>
-    <p>重启nacos</p>
-  </li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
-</code></pre></div></div>
-
-<h2 id="又-如果-第2步选择了内置数据源">又： 如果 第2步选择了内置数据源</h2>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh -p embedded
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/load-balance">Jan 20, 2022 - load balance</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-4-负载均衡">Spring Cloud Alibaba - nacos 4 负载均衡</h1>
-
-<ol>
-  <li>
-    <p>创建两个不同端口的 producer</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    	<span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">braindata</span><span class="p">.</span><span class="n">dubbodemo</span><span class="p">.</span><span class="n">config</span><span class="p">;</span>
-       
-     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">.</span><span class="n">Entry</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">javax</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">PostConstruct</span><span class="p">;</span>
-
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">common</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">NetUtils</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">ProtocolConfig</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">BeansException</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">Autowired</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContext</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContextAware</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ConfigurableApplicationContext</span><span class="p">;</span>
-     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Component</span><span class="p">;</span>
-
-     <span class="p">/**</span>
-      <span class="p">*</span> <span class="err">一个机器部署两个</span><span class="n">dubbo</span><span class="err">生产者会产生端口占用问题，为了解决这个问题，在加载</span><span class="n">dubbo</span><span class="err">配置文件之前，先设置没被占用的端口</span>
-      <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">cookie</span>
-      <span class="p">*/</span>
-     <span class="p">@</span><span class="n">Component</span>
-     <span class="k">public</span> <span class="n">class</span> <span class="n">DynamicDubboPortReader</span> <span class="n">implements</span> <span class="n">ApplicationContextAware</span><span class="p">{</span>
-         <span class="p">@</span><span class="n">Autowired</span>
-         <span class="n">private</span> <span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">;</span>
-
-         <span class="n">private</span> <span class="n">int</span> <span class="n">port</span> <span class="p">=</span> <span class="m">20880</span><span class="p">;</span>
-
-         <span class="p">@</span><span class="n">PostConstruct</span>
-         <span class="k">public</span> <span class="n">void</span> <span class="n">init</span><span class="p">(){</span>
-             <span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">map</span> <span class="p">=</span> <span class="n">applicationContext</span><span class="p">.</span><span class="n">getBeansOfType</span><span class="p">(</span><span class="n">ProtocolConfig</span><span class="p">.</span><span class="n">class</span><span class="p">);</span>
-             <span class="n">for</span><span class="p">(</span><span class="n">Entry</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span><span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">con</span><span class="p">:</span> <span class="n">map</span><span class="p">.</span><span class="n">entrySet</span><span class="p">()){</span>
-                 <span class="n">port</span> <span class="p">=</span> <span class="n">NetUtils</span><span class="p">.</span><span class="n">getAvailablePort</span><span class="p">();</span>
-                 <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"=========="</span><span class="p">+</span><span class="n">port</span><span class="p">);</span>
-                 <span class="n">con</span><span class="p">.</span><span class="nf">getValue</span><span class="p">().</span><span class="n">setPort</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
-             <span class="p">}</span>
-         <span class="p">}</span>
-
-         <span class="p">@</span><span class="n">Override</span>
-         <span class="k">public</span> <span class="n">void</span> <span class="n">setApplicationContext</span><span class="p">(</span><span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">)</span> <span class="n">throws</span> <span class="n">BeansException</span> <span class="p">{</span>
-             <span class="n">this</span><span class="p">.</span><span class="n">applicationContext</span> <span class="p">=</span> <span class="p">(</span><span class="n">ConfigurableApplicationContext</span><span class="p">)</span><span class="n">applicationContext</span><span class="p">;</span>
-         <span class="p">}</span>
-
-     <span class="p">}</span>
-
-</code></pre></div>    </div>
-  </li>
-  <li>如果producer 还有 server.port 可以通过设置启动项 -Dserver.port=7824 来改变</li>
-  <li>启动consumer ，测试发现 DubboReference 注解已经集成负载均衡功能了， 如果想指定某一个producer，可以通过 sticky=true 来设置。</li>
-</ol>
-
-<p>那dubbo是如何实现负载均衡的呢？ 我们来看下源代码 <a href="https://github.com/apache/dubbo">https://github.com/apache/dubbo</a></p>
-
-<p><a href="https://blog.csdn.net/caoyuanyenang/article/details/114837786">https://blog.csdn.net/caoyuanyenang/article/details/114837786</a> 这篇文章说的很详尽了</p>
-
-<p>我使用dubbo 2.7.8</p>
-
-<p>其中 AbstractClusterInvoker</p>
-
-<p>line 257 会根据服务名去注册中心获取ip</p>
-
-<p>Line 258 获取loadbalance</p>
-
-<p><img src="/images/202201/1642651014052.jpg" alt="lb" width="1000" /></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -389,7 +390,7 @@ nacos应该会将注册服务同步给其他ip</p>
         <a class="btn btn-default" href="/page23" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 24 of 48</span>
+  <span class="page_number ">Page: 24 of 49</span>
   
     <a class="btn btn-default" href="/page25" class="next">Older</a>
   

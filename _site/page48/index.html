@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal">Canal</a></li>
+        
+          <li><a href="/2022/06/seata">seata</a></li>
+        
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
-        
-          <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
-        
-          <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -173,6 +173,42 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+        
+        <div class="content">
+            <h3>将文件内容复制到剪贴板</h3>
+<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+
+<h3>启动虚拟机</h3>
+
+<p>$ virtualenv –system-site-packages ~/tensorflow</p>
+
+<p>$ cd ~/tensorflow</p>
+
+<p>source bin/activate</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0">Aug 13, 2013 - ios在app中进入商店以便更新</a></h1>
+        
+        <div class="content">
+            <p>以下两种都可以</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"itms-apps://itunes.apple.com/app/shang-hai-wen-hua-yan-chu-xin-xi/id563797134?amp%3Bamp%3Bmt=8&amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个pad上开不了iphone的应用</span>
+ 
+ <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">openURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="err">@</span><span class="s">"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=563797134&amp;amp;amp;mt=8"</span><span class="p">]];</span><span class="c1">//这个不同device都可以打开那个应用 推荐！</span>
+ </code></pre></figure>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2013/08/git-command">Aug 13, 2013 - git 常用命令</a></h1>
@@ -249,48 +285,6 @@ git log --grep=“test”</p>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2013/08/c++-call-oc">Aug 13, 2013 - c++调用oc</a></h1>
-        
-        <div class="content">
-            <p>C++代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
- <span class="c1">// MKStoreForCpp.h</span>
- <span class="c1">//</span>
-<span class="cp">#ifndef SGR_MKStoreForCpp_h
-</span> <span class="cp">#define SGR_MKStoreForCpp_h
-</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
-<span class="nl">public:</span>
- <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
- <span class="p">{</span>
- <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nl">public:</span>
- <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
-<span class="p">;</span>
-<span class="cp">#endif</span></code></pre></figure>
-
-<p>OC代码</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
- <span class="c1">// MKStoreForCpp.mm</span>
- <span class="c1">//</span>
-<span class="cp">#include "MKStoreForCpp.h"
-</span> <span class="cp">#include "MKStoreManager.h"
-</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
- <span class="p">{</span>
- <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
- <span class="p">}</span>
- </code></pre></figure>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -298,7 +292,9 @@ git log --grep=“test”</p>
         <a class="btn btn-default" href="/page47" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 48 of 48</span>
+  <span class="page_number ">Page: 48 of 49</span>
+  
+    <a class="btn btn-default" href="/page49" class="next">Older</a>
   
 </div>
 

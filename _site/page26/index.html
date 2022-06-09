@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal">Canal</a></li>
+        
+          <li><a href="/2022/06/seata">seata</a></li>
+        
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
-        
-          <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
-        
-          <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -173,6 +173,151 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+
+<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+
+<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
+
+<p>lsyncd 配置完事就能跑了</p>
+
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
+
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
+</code></pre></div></div>
+
+<p>问题： 创建了一个新的project， 从库没显示</p>
+
+<p>我显式重启了docker容器才在从库看到</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+</code></pre></div></div>
+
+<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
+        
+        <div class="content">
+            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 'http://ip' 不用写port
+
+
+postgresql['shared_buffers'] = "256MB"
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = "http://localhost:8888"
+
+</code></pre></div></div>
+
+<h2 id="管理员账号初始化">管理员账号初始化</h2>
+<p>a、 切换目录：cd /opt/gitlab/bin</p>
+
+<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
+
+<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
+
+<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
+
+<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
+
+<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
+
+<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
+
+<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
+
+<p>i、至此大功搞成。</p>
+
+<p>https://www.jianshu.com/p/b1736c34c150</p>
+
+<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
+
+<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
+
+<ol>
+  <li>
+    <p>sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix</p>
+  </li>
+  <li>
+    <p>cd /tmp
+ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+
+    <p>less /tmp/script.deb.sh</p>
+
+    <p>sudo bash /tmp/script.deb.sh</p>
+
+    <p>sudo apt install gitlab-ce</p>
+  </li>
+</ol>
+
+<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+
+<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
+<p>则需要去修改配置文件</p>
+
+<p>vim /etc/gitlab/gitlab.rb</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+
+ puma['port'] =9092
+</code></pre></div></div>
+
+<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+
+<p>gitlab-ctl reconfigure</p>
+
+<p>gitlab-ctl restart</p>
+
+<h2 id="查看日志命令">查看日志命令：</h2>
+
+<p>gitlab-ctl tail</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>gitlab-ctl tail</td>
+      <td>grep -i error</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="查看端口命令">查看端口命令：</h2>
+
+<p>lsof -i:9091</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
@@ -354,138 +499,6 @@ https://github.com/apache/dubbo/issues/7274</p>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/maven">Jan 13, 2022 - maven repository 私服搭建</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-repository-私服搭建">maven repository 私服搭建</h1>
-
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
-
-<ol>
-  <li>
-    <p>docker 安装</p>
-
-    <blockquote>
-      <p>docker search nexus</p>
-
-      <p>docker pull docker.io/sonatype/nexus3</p>
-
-      <p>下面的路径可以改成你本地的用户空间</p>
-
-      <p>mkdir -p /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>chmod 777 /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /Users/gongchangyou/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-
-    <p>原文是要去 /usr/local 中新建文件夹，试过chmod 777 后docker还是无法创建一些文件和文件夹,</p>
-
-    <blockquote>
-      <p>mkdir -p /usr/local/nexus3/nexus-data</p>
-
-      <p>chown -R 200 /usr/local/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /usr/local/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>登录Nexus进行配置</p>
-
-    <blockquote>
-      <p>访问：<a href="http://localhost:8081/nexus">http://localhost:8081/nexus</a>  使用默认管理员身份登录 账号admin, 密码在 <strong>/nexus-data/admin.password</strong>,  登录后可以修改密码.</p>
-
-      <p><img src="/images/202205/WechatIMG240.png" alt="" width="800" /></p>
-    </blockquote>
-  </li>
-</ol>
-
-<p>问题：mvn deploy -X</p>
-
-<ol>
-  <li>
-    <p>405错误  Failed to transfer file http://localhost:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</p>
-
-    <p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;distributionManagement&gt;
-
-         &lt;repository&gt;
-
-             &lt;id&gt;nexus-releases&lt;/id&gt;
-
-             &lt;url&gt;
-                 就是这行，要跟maven服务器上的settings中的URL保持一致
-                 http://localhost:8081/nexus/repository/maven-releases/
-
-             &lt;/url&gt;
-
-         &lt;/repository&gt;
-</code></pre></div>    </div>
-    <p><img src="/images/202205/WechatIMG241.png" alt="" width="800" />
- <img src="/images/202205/WechatIMG242.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>401错误  本地的settings.xml账号错误。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;servers&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-snapshots&lt;/id&gt;
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
- &lt;/servers&gt;
-</code></pre></div>    </div>
-
-    <p>如果换了settings.xml 文件，且用mvn 命令行编译，那就指定一下</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mvn deploy -X --settings /Users/gongchangyou/.m2/settings-personal.xml
-</code></pre></div>    </div>
-    <p>可以看到上传成功
-     <img src="/images/202205/WechatIMG244.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
-<p>两个方法</p>
-
-<ol>
-  <li>Nacos官方用nacos client + spring boot 模式</li>
-  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
-</ol>
-
-<p>注意：如果关闭应用的话，nacos中的配置还在</p>
-
-<p>application.properties没有拷贝到target文件夹的原因？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
-</code></pre></div></div>
-<p>改成 下面，或者直接这行删掉</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
-</code></pre></div></div>
-
-<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -493,7 +506,7 @@ https://github.com/apache/dubbo/issues/7274</p>
         <a class="btn btn-default" href="/page25" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 26 of 48</span>
+  <span class="page_number ">Page: 26 of 49</span>
   
     <a class="btn btn-default" href="/page27" class="next">Older</a>
   

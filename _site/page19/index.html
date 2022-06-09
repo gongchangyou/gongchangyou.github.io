@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal">Canal</a></li>
+        
+          <li><a href="/2022/06/seata">seata</a></li>
+        
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
           <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
-        
-          <li><a href="/2022/05/CompletableFuture">CompletableFuture</a></li>
-        
-          <li><a href="/2022/05/maven-antrun-plugin">antrun</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>48</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
 			
 		
 			
@@ -173,6 +173,71 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/opengl-java">Mar 9, 2022 - java-opengl</a></h1>
+        
+        <div class="content">
+            <h1 id="java-opengl">java opengl</h1>
+
+<p>Lwjgl  vs jogl ?</p>
+
+<p>我看https://mvnrepository.com上 jogl很久没更新了，最近一次是2015年, 怕是已经没人维护了。</p>
+
+<p>选择lwjgl试试</p>
+
+<p><a href="https://www.lwjgl.org/guide">https://www.lwjgl.org/guide</a> 官网好看</p>
+
+<p>官方demo :<a href="https://github.com/LWJGL/lwjgl3-demos">https://github.com/LWJGL/lwjgl3-demos</a></p>
+
+<p>可以修改mainclass 查看不同的demo效果</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;transformers&gt;
+	&lt;transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"&gt;
+     &lt;mainClass&gt;org.lwjgl.demo.${class}&lt;/mainClass&gt;
+     &lt;/transformer&gt;
+  &lt;/transformers&gt;
+</code></pre></div></div>
+
+<p>可是这个是一个专门的window， 可以播放opengl。 希望导出一个图片，后续对opengl有研究了再继续这个项目。</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/gitlab-container">Mar 9, 2022 - gitlab-container</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-container-registry">gitlab container registry</h1>
+
+<p>官网说明 ：[https://docs.gitlab.cn/jh/administration/packages/container_registry.html](https://docs.gitlab.cn/jh/administration/packages/container_registry.html</p>
+
+<p>即可以进到docker容器中查看配置文件，也可以先查看挂载数据卷，再看宿主机上的文件。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>docker inspect container_name</td>
+      <td>grep Mounts -A 20</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>在这个配置中可以看到  容器的镜像仓库的port等配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat /srv/gitlab/data/gitlab-rails/etc/gitlab.yml|grep 5005 -C 20
+</code></pre></div></div>
+
+<p>每个工程的镜像在如图这个位置查看
+<img src="/images/202203/WechatIMG350.png" alt="" width="800" /></p>
+
+<p>不知道如何用docker客户端连接私有镜像库</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/gitlab-runner">Mar 4, 2022 - gitlab-runner</a></h1>
@@ -257,213 +322,6 @@ ERROR: Job failed: exit status 1
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/postgis">Mar 2, 2022 - postgis</a></h1>
-        
-        <div class="content">
-            <h1 id="postgis">Postgis</h1>
-
-<p>一个postgresql的扩展，空间数据库</p>
-
-<h3 id="法1-docker安装">法1： docker安装</h3>
-
-<p>1 <a href="https://www.cnblogs.com/6324/p/11947388.html">https://www.cnblogs.com/6324/p/11947388.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run
--v $(pwd)/data:/var/lib/postgresql/data -e POSTGRES_DB="openmaptiles" -e POSTGRES_USER="test" -e POSTGRES_PASSWORD="test" -p 15432:5432 -d openmaptiles/postgis
-</code></pre></div></div>
-
-<p>2  因为上一步里面各种扩展都安装好了， 所以 这里我们就直接 操作DDL 和DML即可<a href="https://zhuanlan.zhihu.com/p/43374582">https://zhuanlan.zhihu.com/p/43374582</a></p>
-
-<p>具体操作面板在这</p>
-
-<p><img src="/images/202203/1646357982434.jpg" alt="pgadmin" width="800" /></p>
-
-<p>3 如何批量导入数据？</p>
-
-<p><img src="/images/202203/1646358797595.jpg" alt="pgadmin" width="800" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#单个的写入point语句是这样的
-insert into point_test (name,pt) values ('p1',ST_GeomFromText('Point(0 0 0)'));
-
-</code></pre></div></div>
-
-<p>4 如何批量导入geometry字段类型的数据。以下可以看到 pt geometry字段是一堆字符串，如果已知三维坐标 恐怕无法自行写出那样的字符串.</p>
-
-<p><img src="/images/202203/1646364305354.jpg" alt="pgadmin" width="800" /></p>
-
-<p>只能曲线救国了</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 先在表里新增字段x, y，z （numeric）
-
-2. 用csv把 x,y,z 字段导入
-
-3. update 一把，将x,y,z 生成的point 写到pt字段中
-
-    ```
-    update point_test set pt = ST_SetSRID(ST_MakePoint(x,y,z),0) [where id=5];
-    ```
-</code></pre></div></div>
-
-<p>这里导入的时候注意 csv中如果有标题的话 header，记得勾选header</p>
-
-<p>column 必须匹配，多一列pgsql就不认识了，导入不了。</p>
-
-<p><img src="/images/202203/1646369341367.jpg" alt="pgadmin" width="500" /></p>
-
-<p>5 如何查看执行效率？性能？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	explain Analyze select id,name,ST_3DDistance(ST_GeomFromText('Point(0 0 0)'),pt)  from point_test;
-</code></pre></div></div>
-
-<p>压测结果，导入了17000个点， 搜索距离最远的两个点</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select p1.id,p2.id, p1.name,p2.name,ST_3DDistance(p1.pt,p2.pt) as distance  from point_test as p1,point_test as p2 where p1.id &gt; p2.id order by distance desc limit 1;
-</code></pre></div></div>
-
-<p>不加索引的情况下是53.4s,加了gist索引 还是 53.4s。 没生效？</p>
-
-<p><a href="http://postgis.net/workshops/postgis-intro/indexing.html">http://postgis.net/workshops/postgis-intro/indexing.html</a></p>
-
-<p>因为这个索引不是所有函数都能生效的，因为索引还是根据空间划分矩形，大部分是cover，intersect之类的功能</p>
-
-<p>至于用gist 还是spgist索引，取决于数据的稠密程度 <a href="https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis">https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis</a></p>
-
-<p>实际使用下来，1百万行，1000^3 的立方体中， 搜索在某个矩阵中的（10x10) 耗时是100ms左右，还是非常快的。如果不加索引的话，计算超时了都，估计1分钟之后都不会有结果。</p>
-
-<p>索引大小52M</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WITH xyz AS (
-SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
-FROM generate_series(1, 1000)),
-boxes AS (
-  SELECT ST_3DMakeBox(ST_MakePoint(x-5, y-5, z-5),
-    ST_MakePoint(x+5 ,y+5.1875, z+15)) AS geom
-  FROM xyz
-)
-SELECT Count(*)
-FROM points, boxes
-WHERE points.geom &amp;&amp; boxes.geom;
-</code></pre></div></div>
-
-<p>有些点是否在某个不规则Polygon中的功能也可以使用该数据库</p>
-
-<p><a href="https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope">https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope</a></p>
-
-<p>但是因为我们的数据是在亿级， 按照 <a href="https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;file=20160119_01.md">PostgreSQL 百亿地理位置数据 近邻查询性能</a>  建立索引确实要花点时间,1亿行gis数据大约5GB索引,查询上述在box中的点耗时只有100ms. 但是如果box再大一点,里面包括1kw数据时，就需要花大约10s时间。生产环境是不可能使用了，OLAP场景还行。</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select pg_relation_size('gist2')
-</code></pre></div></div>
-
-<p><img src="/images/202203/WechatIMG46.png" alt="pgadmin" width="500" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WITH xyz AS (
-SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
-FROM generate_series(1, 1000)),
-boxes AS (
-  SELECT ST_3DMakeBox(ST_MakePoint(x-0.1, y-5, z-5),
-    ST_MakePoint(x+0.1 ,y+5.1875, z+15)) AS geom
-  FROM xyz
-)
-SELECT ST_AsText(points.geom), ST_AsText(boxes.geom)
-FROM points, boxes
-WHERE  ST_3DIntersects(boxes.geom ,points.geom) 
-</code></pre></div></div>
-
-<p>//之前那个 &amp;&amp; 操作会有重复数据，这个 ST_3DIntersects 函数可以给出在这个box中的点, 返回2000个点 耗时差不多 500ms</p>
-
-<h3 id="法2以下的甭看了">法2：以下的甭看了</h3>
-
-<p>源 /etc/apt/sources.list ， 如果无法安装，请变更源</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-cache search postgis
-apt-get install postgis
-
-</code></pre></div></div>
-
-<h3 id="以上这个一般来说搞不定因为源没有postgis-只能下载各种源码-比如postgis的源码-tar包解压缩之后">以上这个一般来说搞不定，因为源没有postgis ，只能下载各种源码 ,比如postgis的源码 ，tar包解压缩之后</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure
-make
-make install
-</code></pre></div></div>
-
-<h3 id="完事之后-还需要安装">完事之后 还需要安装</h3>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install postgresql-9.5-postgis-2.2
-</code></pre></div></div>
-
-<p>一通折腾之后，算是安装完成了。</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/postgresql">Mar 1, 2022 - Postgresql</a></h1>
-        
-        <div class="content">
-            <h1 id="postgresql">Postgresql</h1>
-
-<h3 id="ubuntu-安装-postgresql">ubuntu 安装 postgresql</h3>
-<p><a href="https://linux.cn/article-11480-1.html">https://linux.cn/article-11480-1.html</a></p>
-
-<ol>
-  <li>sudo apt update</li>
-  <li>sudo apt install postgresql postgresql-contrib</li>
-  <li>service postgresql start</li>
-  <li>sudo -s postgresql	 #切换用户</li>
-  <li>pgsql 	#登录PostgreSQL</li>
-  <li>ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码</li>
-</ol>
-
-<h3 id="安装gui--pgadmin">安装GUI  pgadmin</h3>
-
-<ol>
-  <li>
-    <p>docker pull dpage/pgadmin4</p>
-  </li>
-  <li>
-    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4</p>
-
-    <p>注意这里的volume 绑定的位置，未来导入导出csv 可以使用</p>
-  </li>
-  <li>
-    <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
-
-    <p>问题： create server 时发现 无法连接server</p>
-
-    <p>解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*' 
-</code></pre></div>    </div>
-
-    <p>重启postgresql : service postgresql restart</p>
-
-    <p>问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “localhost”, port 5432</p>
-
-    <p>编辑 pg_hba.conf文件</p>
-
-    <p>把报错中的host 拷贝到这个文件中：如下编写</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postgresql/12/main/pg_hba.conf
-   
-host all all 172.17.0.4/24 md5
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的</p>
-  </li>
-</ol>
-
-<p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="800" /></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -471,7 +329,7 @@ host all all 172.17.0.4/24 md5
         <a class="btn btn-default" href="/page18" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 19 of 48</span>
+  <span class="page_number ">Page: 19 of 49</span>
   
     <a class="btn btn-default" href="/page20" class="next">Older</a>
   
