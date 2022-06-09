@@ -40,8 +40,7 @@
 
 &lt;p&gt;下面是一个具体的例子：订单扣库存的解决方案&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![](/images/202205/solution.png){: width=&quot;800&quot; }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/images/202205/solution.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;具体的操作步骤有3步：&lt;/p&gt;
 
@@ -115,7 +114,7 @@ maxWait = 5000
 
 &lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG259.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。&lt;/p&gt;
+&lt;p&gt;二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。 每个微服务的db中都要建这个表，因为各自的undo log存在各自的db的undo_log表中&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE `undo_log`
 (
   `id`            BIGINT(20)   NOT NULL AUTO_INCREMENT,
@@ -229,7 +228,7 @@ http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_t
         &amp;lt;/dependency&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;undo-log中的记录&quot;&gt;undo log中的记录&lt;/h3&gt;
+&lt;h3 id=&quot;undo-log中的记录-例子&quot;&gt;undo log中的记录 例子&lt;/h3&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10,7034894280102293554,192.168.1.3:8091:7034894280102293553,serializer=jackson,&quot;{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.BranchUndoLog&quot;&quot;,&quot;&quot;xid&quot;&quot;:&quot;&quot;192.168.1.3:8091:7034894280102293553&quot;&quot;,&quot;&quot;branchId&quot;&quot;:7034894280102293554,&quot;&quot;sqlUndoLogs&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.SQLUndoLog&quot;&quot;,&quot;&quot;sqlType&quot;&quot;:&quot;&quot;INSERT&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;`order`&quot;&quot;,&quot;&quot;beforeImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords$EmptyTableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[]]},&quot;&quot;afterImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:28},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;status&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:0}]]}]]}}]]}&quot;,0,2022-06-09 12:54:35,2022-06-09 12:54:35,
 
