@@ -60,6 +60,8 @@
 
 &lt;p&gt;在某张表更新了一行记录，可以从canal的客户端中获取变更。&lt;/p&gt;
 
+&lt;p&gt;客户端解析protobuf格式的ByteString.&lt;/p&gt;
+
 &lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG266.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG267.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
