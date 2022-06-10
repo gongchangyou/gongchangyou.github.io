@@ -24,6 +24,20 @@
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;术语&quot;&gt;术语&lt;/h3&gt;
+&lt;p&gt;TC (Transaction Coordinator) - 事务协调者
+维护全局和分支事务的状态，驱动全局事务提交或回滚。&lt;/p&gt;
+
+&lt;p&gt;TM (Transaction Manager) - 事务管理器
+定义全局事务的范围：开始全局事务、提交或回滚全局事务。&lt;/p&gt;
+
+&lt;p&gt;RM (Resource Manager) - 资源管理器
+管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。&lt;/p&gt;
+
+&lt;hr /&gt;
+
 &lt;h2 id=&quot;at的实现方案&quot;&gt;AT的实现方案&lt;/h2&gt;
 
 &lt;p&gt;参考文章 &lt;a href=&quot;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&quot;&gt;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&lt;/a&gt;&lt;/p&gt;
@@ -237,6 +251,16 @@ http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_t
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h3 id=&quot;注意点&quot;&gt;注意点&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;各个服务的group要一致，不然无法实例化. 一家公司的group最好统一吧，不然TM无法调用RM.
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dubbo.application.parameters.group=test-service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG265.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 </description>
 				<pubDate>Wed, 08 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/seata</link>
