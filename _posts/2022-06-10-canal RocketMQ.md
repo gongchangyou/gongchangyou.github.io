@@ -51,6 +51,9 @@ canal.destinations = example
 #这个是mq的主题，这个保证和下图的主题一致即可
 canal.mq.topic=test-topic
 
+#模式从 tcp 改成 rocketMQ
+canal.serverMode = rocketMQ
+
 ```
 
 在消费端的rocketMQ的配置
