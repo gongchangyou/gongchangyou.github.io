@@ -48,7 +48,7 @@ CanalLauncher.java -》 CanalStarter.java
 ```
 #这个不用动
 canal.destinations = example
-#这个是mq的主题，这个保证和下图的主题一致即可
+#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
 canal.mq.topic=test-topic
 
 #模式从 tcp 改成 rocketMQ
