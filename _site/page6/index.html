@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
+        
           <li><a href="/2022/06/canal">canal</a></li>
         
           <li><a href="/2022/06/seata">seata</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
-        
-          <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>50</sup></a></li>
 			
 		
 			
@@ -173,6 +173,153 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
+        
+        <div class="content">
+            <h1 id="disruptor">Disruptor</h1>
+
+<p>Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)</p>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/disruptor">https://github.com/gongchangyou/disruptor</a></p>
+
+<ol>
+  <li>
+    <p>Pom.xml</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lmax&lt;/groupId&gt;
+            &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
+            &lt;version&gt;3.4.4&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>单生产者，单消费者</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+     * 单生产者 单消费者
+     */
+    @Test
+    void contextLoads() {
+        // 队列中的元素
+        class Element {
+   
+            private int value;
+   
+            public int get(){
+                return value;
+            }
+   
+            public void set(int value){
+                this.value= value;
+            }
+   
+        }
+   
+        // 生产者的线程工厂
+        ThreadFactory threadFactory = new ThreadFactory(){
+            int i = 0;
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "simpleThread " + i++);
+            }
+        };
+   
+        // RingBuffer生产工厂,初始化RingBuffer的时候使用
+        EventFactory&lt;Element&gt; factory = new EventFactory&lt;Element&gt;() {
+            @Override
+            public Element newInstance() {
+                return new Element();
+            }
+        };
+   
+        // 处理Event的handler
+        EventHandler&lt;Element&gt; handler = new EventHandler&lt;Element&gt;(){
+            @Override
+            public void onEvent(Element element, long sequence, boolean endOfBatch)
+            {
+                log.info("element={}, sequence={}, endOfBatch={}", element.get(), sequence, endOfBatch);
+//                System.out.println("Element: " + element.get());
+            }
+        };
+   
+        // 阻塞策略
+        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
+   
+        // 指定RingBuffer的大小
+        int bufferSize = 16;
+   
+        // 创建disruptor，采用单生产者模式
+        Disruptor&lt;Element&gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
+   
+        // 设置EventHandler
+        disruptor.handleEventsWith(handler);
+   
+        // 启动disruptor的线程
+        disruptor.start();
+   
+        RingBuffer&lt;Element&gt; ringBuffer = disruptor.getRingBuffer();
+   
+        for (int l = 0; true; l++) {
+            // 获取下一个可用位置的下标
+            long sequence = ringBuffer.next();
+            try {
+                // 返回可用位置的元素
+                Element event = ringBuffer.get(sequence);
+                // 设置该位置元素的值
+                event.set(l);
+            } finally {
+                ringBuffer.publish(sequence);
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>问题1： 有不同的消费者依赖怎么办？
+回答1：  关键字 then</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
+        disruptor.handleEventsWith(new OrderHandler1("1")).then(new OrderHandler1("2"), new OrderHandler1("3")).then(new OrderHandler1("4"));
+       
+</code></pre></div></div>
+
+<p>问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
+回答2:  handleEventsWithWorkerPool</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("2"));
+</code></pre></div></div>
+
+<p>问题3： 希望不同的消费者独立消费
+回答3： handleEventsWith 多个handler即可</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> disruptor.handleEventsWith(new OrderHandler1("1"), new OrderHandler1("2"));
+</code></pre></div></div>
+
+<p>官方文档: <a href="https://lmax-exchange.github.io/disruptor/disruptor.html">https://lmax-exchange.github.io/disruptor/disruptor.html</a></p>
+
+<p>参考文章: <a href="https://tech.meituan.com/2016/11/18/disruptor.html">https://tech.meituan.com/2016/11/18/disruptor.html</a></p>
+
+<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8544700.html">https://www.cnblogs.com/pku-liuqiang/p/8544700.html</a></p>
+
+<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8532737.html">https://www.cnblogs.com/pku-liuqiang/p/8532737.html</a></p>
+
+<p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
+
+<p>源码解析： TODO</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/swagger">May 17, 2022 - swagger</a></h1>
@@ -306,191 +453,6 @@ public class SwaggerConfig {
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/maven_plugin">May 14, 2022 - maven plugin</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-插件编写">maven 插件编写</h1>
-
-<p>参考文章： <a href="https://blog.csdn.net/weixin_44433834/article/details/122620067">https://blog.csdn.net/weixin_44433834/article/details/122620067</a></p>
-
-<p>项目地址： <a href="https://github.com/gongchangyou/mavenplugin">https://github.com/gongchangyou/mavenplugin</a></p>
-
-<ol>
-  <li>
-    <p>修改打包方式</p>
-
-    <ol>
-      <li>
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;maven-plugin&lt;/packaging&gt;
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <h3 id="引入插件开发相关依赖">引入插件开发相关依赖</h3>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;dependencies&gt;
-        &lt;!--插件的抽象类--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-plugin-api&lt;/artifactId&gt;
-            &lt;version&gt;3.6.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;!--MOJO注解的来源--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven.plugin-tools&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-plugin-annotations&lt;/artifactId&gt;
-            &lt;version&gt;3.6.0&lt;/version&gt;
-            &lt;scope&gt;provided&lt;/scope&gt;
-        &lt;/dependency&gt;
-    
-    &lt;/dependencies&gt;
-</code></pre></div>    </div>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-core&lt;/artifactId&gt;
-            &lt;version&gt;3.6.2&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <h3 id="继承插件父类设置目标">继承插件父类，设置目标</h3>
-  </li>
-  <li>
-    <h3 id="绑定到构建生命周期">绑定到构建生命周期</h3>
-  </li>
-  <li>
-    <h3 id="默认可获取的参数">默认可获取的参数</h3>
-  </li>
-  <li>编写代码</li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">hundsun</span><span class="p">.</span><span class="n">broker</span><span class="p">;</span>
- 
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">lang3</span><span class="p">.</span><span class="n">StringUtils</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">AbstractMojo</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoExecutionException</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoFailureException</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">LifecyclePhase</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Mojo</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Parameter</span><span class="p">;</span>
- 
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">File</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="k">List</span><span class="p">;</span>
- 
-<span class="p">/**</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">yyzsx</span>
- <span class="p">*</span> <span class="p">@</span><span class="k">version</span> <span class="m">1.0.0</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">ProjectName</span> <span class="n">yyzsx</span><span class="p">-</span><span class="n">maven</span><span class="p">-</span><span class="n">plugin</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">ClassName</span> <span class="n">MyMojo</span><span class="p">.</span><span class="n">java</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">Description</span> <span class="err">演示</span><span class="p">-</span><span class="err">输出项目信息</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">createTime</span> <span class="m">2021</span><span class="err">年</span><span class="m">08</span><span class="err">月</span><span class="m">08</span><span class="err">日</span> <span class="m">13</span><span class="p">:</span><span class="m">53</span><span class="p">:</span><span class="m">00</span>
- <span class="p">*/</span>
-<span class="p">@</span><span class="n">Mojo</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">"showProjectInfo"</span><span class="p">,</span> <span class="n">defaultPhase</span> <span class="p">=</span> <span class="n">LifecyclePhase</span><span class="p">.</span><span class="nf">COMPILE</span><span class="p">)</span>
-<span class="k">public</span> <span class="n">class</span> <span class="n">MyMojo</span> <span class="n">extends</span> <span class="n">AbstractMojo</span> <span class="p">{</span>
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">项目根路径</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${basedir}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="n">File</span> <span class="n">basedir</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">获取</span><span class="n">pom</span><span class="err">文件中项目版本，或者支持</span><span class="p">-</span><span class="n">Dversion</span><span class="p">=</span><span class="n">xx</span><span class="err">，进行传入</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"version"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${project.version}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="k">version</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">获取本地</span><span class="n">maven</span><span class="err">仓库地址</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${settings.localRepository}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="n">localRepository</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">参数配置，作者</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"author"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${showProjectInfo.author}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="n">author</span><span class="p">;</span>
- 
-    <span class="p">/***</span>
-     <span class="p">*</span> <span class="err">参数集合</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"lists"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">List</span> <span class="n">lists</span><span class="p">;</span>
- 
-    <span class="p">@</span><span class="n">Override</span>
-    <span class="k">public</span> <span class="n">void</span> <span class="n">execute</span><span class="p">()</span> <span class="n">throws</span> <span class="n">MojoExecutionException</span><span class="p">,</span> <span class="n">MojoFailureException</span> <span class="p">{</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"*******************ShowProjectInfo*******************"</span><span class="p">);</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,begin--------------------"</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"欢迎语：Hello Maven Plugin"</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目本地仓库localRepository:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="n">localRepository</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目跟路径basedir:"</span> <span class="p">+</span> <span class="n">basedir</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目版本version:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="k">version</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目作者author:"</span> <span class="p">+</span> <span class="n">author</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目包含文件类型lists："</span> <span class="p">+</span> <span class="n">StringUtils</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">lists</span><span class="p">.</span><span class="n">toArray</span><span class="p">(),</span> <span class="s2">","</span><span class="p">));</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,end-----------------------"</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
- 
-</code></pre></div></div>
-
-<ol>
-  <li>
-    <p>mvn install</p>
-  </li>
-  <li>
-    <p>调用命令执行</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile
-</code></pre></div>    </div>
-
-    <p>或者 指定执行goal</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn com.mouse:test-maven-plugin:0.0.1-SNAPSHOT:showProjectInfo
-   
-格式是这样的: mvn groupId:artifactId:version:goal
-   
-缩写： mvn test:showProjectInfo
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>IDEA 开发maven plugin . 在command line这里无需写mvn</p>
-
-<p><img src="/images/202205/WechatIMG145.png" alt="" width="800" /></p>
-
-<h3 id="每次编辑mojo文件后需要mvn-install-再执行-mvn-testshowprojectinfo">每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo</h3>
-
-<p>问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错</p>
-
-<p>回答1：  添加如下配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;plugin&gt;
-                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-                &lt;artifactId&gt;maven-plugin-plugin&lt;/artifactId&gt;
-                &lt;version&gt;3.6.0&lt;/version&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;id&gt;default-descriptor&lt;/id&gt;
-                        &lt;phase&gt;process-classes&lt;/phase&gt;
-                    &lt;/execution&gt;
-                    &lt;!-- if you want to generate help goal --&gt;
-                    &lt;execution&gt;
-                        &lt;id&gt;help-goal&lt;/id&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;helpmojo&lt;/goal&gt;
-                        &lt;/goals&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-</code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -498,7 +460,7 @@ public class SwaggerConfig {
         <a class="btn btn-default" href="/page5" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 6 of 48</span>
+  <span class="page_number ">Page: 6 of 49</span>
   
     <a class="btn btn-default" href="/page7" class="next">Older</a>
   

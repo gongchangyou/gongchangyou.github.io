@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
+        
           <li><a href="/2022/06/canal">canal</a></li>
         
           <li><a href="/2022/06/seata">seata</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
           <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
-        
-          <li><a href="/2022/05/Dubbo-source-code">dubbo</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>49</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>50</sup></a></li>
 			
 		
 			
@@ -173,6 +173,40 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/ssh">Feb 24, 2022 - ssh</a></h1>
+        
+        <div class="content">
+            <h1 id="ssh-无密码访问">ssh 无密码访问</h1>
+
+<ol>
+  <li>apt-get install openssh-server</li>
+  <li>查看状态 service ssh status</li>
+  <li>
+    <p>启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)</p>
+  </li>
+  <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
+  <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
+</ol>
+
+<p>别名</p>
+
+<p>编辑 ~/.ssh/config</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ksyun_stg
+  HostName 120.92.232.118
+  Port 10022
+  User dingsongyun
+  IdentityFile ~/.ssh/id_rsa
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/02/voice-clone">Feb 22, 2022 - voice</a></h1>
@@ -484,32 +518,6 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/spring-MVC">Feb 19, 2022 - spring mvc</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-mvc-获取url路径和读取本地文件">spring MVC 获取url路径和读取本地文件</h1>
-
-<h2 id="获取路径">获取路径</h2>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RequestMapping("/{animal}/{fileName}")
-    public String getJson(
-            @PathVariable String animal,
-            @PathVariable String fileName
-    ) {
-</code></pre></div></div>
-
-<h2 id="读取本地文件">读取本地文件</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String fullPath = String.format(directory, animal, fileName);
-	String content = Files.readString(Paths.get(fullPath));
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -517,7 +525,7 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
         <a class="btn btn-default" href="/page20" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 21 of 48</span>
+  <span class="page_number ">Page: 21 of 49</span>
   
     <a class="btn btn-default" href="/page22" class="next">Older</a>
   
