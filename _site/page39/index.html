@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/sentinel">sentinel</a></li>
+        
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/seata">seata</a></li>
         
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
-        
-          <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>50</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
 			
 		
 			
@@ -173,6 +173,31 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/12/born">Dec 16, 2015 - 龚一峰出生啦！</a></h1>
+        
+        <div class="content">
+            <p>12月10日17:20，龚一峰出生，人生第一泡尿尿在了自己脸上。</p>
+
+<p><img src="/images/201512/IMG_20151210_234301.jpg" alt="" /></p>
+
+<object id="STK_137687746371535" style="visibility: visible;" width="440" height="356" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="allowscriptaccess" value="never" /><param name="pluginspage" value="http://get.adobe.com/cn/flashplayer/" /><param name="flashvars" value="playMovie=true&amp;auto=1" /><param name="allowfullscreen" value="true" /><param name="quality" value="high" /><param name="src" value="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" /><param name="wmode" value="transparent" /><embed id="STK_137687746371535" style="visibility: visible;" width="440" height="356" type="application/x-shockwave-flash" src="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" allowscriptaccess="never" pluginspage="http://get.adobe.com/cn/flashplayer/" flashvars="playMovie=true&amp;auto=1" allowfullscreen="true" quality="high" wmode="transparent" /></object>
+
+<p>名字取自</p>
+
+<p>会当凌绝顶，一览众山小</p>
+
+<p>海到无边天作岸，山登绝顶我为峰</p>
+
+<p>是你爹我喜欢的句子，少年就应该有这种豪气，是你姑奶奶取了其中两个字哦。</p>
+
+<p><img src="/images/201512/mmexport1453695205909.jpg" alt="" /></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2015/11/c++-reflect">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
@@ -228,35 +253,6 @@
     }
 
 </code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/07/c++">Jul 20, 2015 - c++ 宏中 “##”的意义</a></h1>
-        
-        <div class="content">
-            <p>字符串连接符</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-	<span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="n">string</span> <span class="n">boolean_</span> <span class="o">=</span> <span class="s">"boolean_"</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">int</span> <span class="n">boolean_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">){</span>
-<span class="cp">#define INIT(p, v) case p##type: result = v; break
-</span>	<span class="n">INIT</span><span class="p">(</span><span class="n">boolean_</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-	<span class="cp">#undef INIT
-</span><span class="nl">default:</span> <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>因为 type= 1 = “boolean_” + “type” . 所以 result = 2;</p>
 
         </div>
     </div>

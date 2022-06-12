@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/sentinel">sentinel</a></li>
+        
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/seata">seata</a></li>
         
           <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
-        
-          <li><a href="/2022/06/MappedByteBuffer">mmap</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>50</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
 			
 		
 			
@@ -173,6 +173,27 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
+        
+        <div class="content">
+            <h1 id="cas">CAS</h1>
+
+<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
+
+<p>Unsafe.compareAndSetObject</p>
+
+<p>内部调用native cmpxchg汇编指令</p>
+
+<blockquote>
+  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
+</blockquote>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
@@ -395,58 +416,6 @@ public class SwaggerConfig {
 <img src="/images/202205/WechatIMG158.png" alt="" width="800" /><br />
 这下显示ok了
 <img src="/images/202205/WechatIMG157.png" alt="" width="800" /></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/OWASP">May 15, 2022 - java项目 依赖检查</a></h1>
-        
-        <div class="content">
-            <h1 id="owasp">OWASP</h1>
-
-<p>官网： <a href="https://owasp.org/">https://owasp.org/</a></p>
-
-<p>网站安全top 10: <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></p>
-
-<p>检测插件 <a href="https://blog.csdn.net/qq_35624642/article/details/122438449">https://blog.csdn.net/qq_35624642/article/details/122438449</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--        代码依赖包安全漏洞检测--&gt;
-&lt;!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-    &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-    &lt;version&gt;6.5.2&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;!--        代码依赖包安全漏洞检测--&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-                &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-                &lt;configuration&gt;
-                    &lt;autoUpdate&gt;true&lt;/autoUpdate&gt;
-                &lt;/configuration&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;check&lt;/goal&gt;
-                        &lt;/goals&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-</code></pre></div></div>
-
-<p>如下图点击maven:check</p>
-
-<p><img src="/images/202205/WechatIMG143.png" alt="" width="800" /></p>
-
-<p>运行结束后，会在target下生成检测报告dependency-check-report.html，直接浏览器打开查看就可以了</p>
-
-<p><img src="/images/202205/WechatIMG144.png" alt="" width="800" /></p>
 
 
         </div>
