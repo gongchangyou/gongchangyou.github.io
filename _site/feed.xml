@@ -19,6 +19,13 @@
 &lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/sentinel_test&quot;&gt;https://github.com/gongchangyou/sentinel_test&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;实现较为简单 不赘述了。&lt;/p&gt;
+
+&lt;p&gt;注意点&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法&lt;/li&gt;
+  &lt;li&gt;blockHandler 方法记得添加 BlockException exception 形参&lt;/li&gt;
+&lt;/ol&gt;
 </description>
 				<pubDate>Sat, 11 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/sentinel</link>
