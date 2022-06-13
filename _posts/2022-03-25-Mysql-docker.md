@@ -348,7 +348,7 @@ public class MybatisPlusConfig {
 
 如果想要自动json的转换，或者加解密等操作，可以实现typeHandler 接口
 
-自带的有 JacksonTypeHandler
+自带的有 JacksonTypeHandler， 注意这里不支持泛型
 
 1.  添加jackson依赖
 
