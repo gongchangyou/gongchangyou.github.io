@@ -367,4 +367,4 @@ public class MybatisPlusConfig {
 
 2.  添加注解
 
-![]({{ site.baseurl}}/images/202203/WechatIMG272.png){: width="800" }
+![]({{ site.baseurl}}/images/202203/WechatIMG273.png){: width="800" }
