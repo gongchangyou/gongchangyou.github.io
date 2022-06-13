@@ -667,7 +667,7 @@ grant all privileges on root.* to 'root'@'%';
 <span class="o">}</span>
               </code></pre></figure>
 
-<p>如果需要用分页插件的话，需要添加配置</p>
+<h3 id="如果需要用分页插件的话需要添加配置">如果需要用分页插件的话，需要添加配置</h3>
 
 <p>官网文档: <a href="https://baomidou.com/pages/2976a3/#spring">https://baomidou.com/pages/2976a3/#spring</a></p>
 
@@ -687,6 +687,35 @@ public class MybatisPlusConfig {
 </code></pre></div></div>
 
 <p>注意： LambdaQuery 不支持kotlin 。没法在kotlin中愉快的使用方法引用</p>
+
+<h3 id="typehandler-的使用">typeHandler 的使用</h3>
+
+<p>如果想要自动json的转换，或者加解密等操作，可以实现typeHandler 接口</p>
+
+<p>自带的有 JacksonTypeHandler</p>
+
+<ol>
+  <li>
+    <p>添加jackson依赖</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;dependency&gt;
+            &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+            &lt;artifactId&gt;jackson-core&lt;/artifactId&gt;
+            &lt;version&gt;2.9.3&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+            &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+            &lt;version&gt;2.9.3&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>添加注解</p>
+  </li>
+</ol>
+
+<p><img src="/images/202203/WechatIMG272.png" alt="" width="800" /></p>
 
         </div>
     </div>

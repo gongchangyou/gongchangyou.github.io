@@ -320,7 +320,7 @@ public class DBTest {
 
 
 
-如果需要用分页插件的话，需要添加配置 
+### 如果需要用分页插件的话，需要添加配置 
 
 官网文档: [https://baomidou.com/pages/2976a3/#spring](https://baomidou.com/pages/2976a3/#spring)
 
@@ -341,3 +341,30 @@ public class MybatisPlusConfig {
 ```
 
 注意： LambdaQuery 不支持kotlin 。没法在kotlin中愉快的使用方法引用
+
+
+
+### typeHandler 的使用
+
+如果想要自动json的转换，或者加解密等操作，可以实现typeHandler 接口
+
+自带的有 JacksonTypeHandler
+
+1.  添加jackson依赖
+
+    ```
+     <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.9.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.9.3</version>
+            </dependency>
+    ```
+
+2.  添加注解
+
+![]({{ site.baseurl}}/images/202203/WechatIMG272.png){: width="800" }
