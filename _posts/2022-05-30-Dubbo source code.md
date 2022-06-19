@@ -112,7 +112,23 @@ DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 Servi
 
 
 
+问题4： 如何处理粘包和拆包？
+
+回答4： 参考[https://yestermorrow.github.io/2018/04/10/dubbo%E7%B3%BB%E5%88%97%E4%B9%8B%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85/](https://yestermorrow.github.io/2018/04/10/dubbo%E7%B3%BB%E5%88%97%E4%B9%8B%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85/)
 
 
+我们以netty4/NettyCodecAdapter 为例。内部类 InternalDecoder.decode 方法
 
 
+拆包的处理?
+
+```
+// 关键字 返回这个表示没有在当前包检测到end。 需要等待下个包
+Codec2.DecodeResult.NEED_MORE_INPUT
+```
+
+
+粘包的处理？ 
+
+其中 saveReaderIndex 可以记录message的读索引, 如果粘包，decode部分结果后, 当前的读游标肯定不是0，则可以从 message的 readerIndex 开始读取. 下面代码可以和原先的netty/NettyCodecAdapter比对下，省去了一些关于拆包时拼接的逻辑 比如 buffer.readableBytes() + input.readableBytes(); 
+![]({{ site.baseurl}}/images/202205/WechatIMG277.png){: width="800" }
