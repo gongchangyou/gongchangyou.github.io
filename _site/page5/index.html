@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>51</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>52</sup></a></li>
 			
 		
 			
@@ -277,6 +277,27 @@
 
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/05/tomcat">May 22, 2022 - tomcat</a></h1>
+        
+        <div class="content">
+            <h1 id="tomcat">Tomcat</h1>
+
+<p>常用配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  port: 8085
+  context-path: /url-prefix
+</code></pre></div></div>
+
+<p>context-path是应用的上下文路径，也可以称为项目路径，是构成url地址的一部分。</p>
+
+<p>用 localhost:8085/url-prefix/xxx 来请求接口</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
         
         <div class="content">
@@ -389,162 +410,6 @@ def getPackageName(dir) {
 
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/ES-IK">May 20, 2022 - es 中文分词</a></h1>
-        
-        <div class="content">
-            <h1 id="es-中文分词">ES 中文分词</h1>
-
-<p>这里使用 ES 8.2.0  所以建表不需要_doc关键字了。</p>
-
-<h3 id="建表">建表</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /table_1 
-{
-  "mappings": {
-     "properties": { 
-      "title":    { "type": "text"  }, 
-      "name":     { "type": "keyword"  }, 
-      "description": {"type": "text"},
-      "age":      { "type": "integer" },  
-      "created":  {
-        "type":   "date", 
-        "format": "strict_date_optional_time||epoch_millis"
-      }
-    }
-  }
-}
-</code></pre></div></div>
-
-<h3 id="写入数据">写入数据</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_doc/1
-{
-  "id": 1,
-  "name": "文档名称",
-  "title": "中文标题",
-  "description":"文档描述",
-  "type":"科普",
-  "score": 96
-}
-</code></pre></div></div>
-
-<h3 id="搜索">搜索</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
-{
-  "query": {
-    "match_all": {}
-  }
-}
-</code></pre></div></div>
-
-<h3 id="should--or-子句">should  (or) 子句</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
-{
-  "query": {
-    "bool" : {
-      "should": [
-        {"term": {
-"title": "中"
-}},
-{
-"term": {
-"title": "文"
-}
-}
-      ]
-    }
-    
-  }
-}
-</code></pre></div></div>
-
-<h3 id="中文搜索">中文搜索</h3>
-
-<p>keyword 是全匹配，text有analyzer可以创建分词策略 . 多个field 对应 多个analyzer <a href="https://blog.csdn.net/JineD/article/details/108845906">https://blog.csdn.net/JineD/article/details/108845906</a></p>
-
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html</a></p>
-
-<p>keyword 得全匹配才行， text默认的分词策略， 默认分词  “中文” =&gt; “中” “文”  ，所以输入  “中文”无法命中，</p>
-
-<p><img src="/images/202205/WechatIMG186.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG187.png" alt="" width="800" /></p>
-
-<h4 id="下拉搜索的场景-可以使用whitespace-analyzer">下拉搜索的场景, 可以使用whitespace analyzer</h4>
-<p>保存的时候 写入 “中 中文 中文标 中文标题 文 文标 文标题 标题 题”</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_3
-{
-  "mappings": {
-      "properties": {
-        "title": {
-          "type": "text",
-          "analyzer": "whitespace",
-          "fields": {
-           
-            "standard": {
-              "type": "text",
-              "analyzer": "standard"
-            }
-          }
-        }
-      }
-    }
-}
-</code></pre></div></div>
-
-<p><img src="/images/202205/WechatIMG185.png" alt="" width="800" /></p>
-
-<h4 id="中文分词场景">中文分词场景</h4>
-
-<p>IK分词 参考文章：<a href="https://blog.csdn.net/weixin_40612128/article/details/123476150">https://blog.csdn.net/weixin_40612128/article/details/123476150</a></p>
-
-<p>记得把版本号改对</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>elasticsearch-plugin -v install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v8.2.0/elasticsearch-analysis-ik-8.2.0.zip
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_ik
-{
-  "mappings": {
-      "properties": {
-        "title": {
-          "type": "text",
-          "analyzer": "whitespace",
-          "fields": {
-            "spy": {
-              "type": "text",
-              "analyzer": "ik_smart"
-            },
-            "standard": {
-              "type": "text",
-              "analyzer": "standard"
-            },
-            "fpy": {
-              "type": "text",
-              "analyzer": "ik_smart"
-            }
-          }
-        }
-      }
-    
-  }
-}
-</code></pre></div></div>
-<p><img src="/images/202205/WechatIMG188.png" alt="" width="800" /></p>
-
-<h3 id="after-search">After Search</h3>
-
-<p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
-
-<p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
 
         </div>
     </div>

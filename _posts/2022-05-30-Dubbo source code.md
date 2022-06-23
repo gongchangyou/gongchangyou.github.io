@@ -132,3 +132,4 @@ Codec2.DecodeResult.NEED_MORE_INPUT
 
 其中 saveReaderIndex 可以记录message的读索引, 如果粘包，decode部分结果后, 当前的读游标肯定不是0，则可以从 message的 readerIndex 开始读取. 下面代码可以和原先的netty/NettyCodecAdapter比对下，省去了一些关于拆包时拼接的逻辑 比如 buffer.readableBytes() + input.readableBytes(); 
 ![]({{ site.baseurl}}/images/202205/WechatIMG277.png){: width="800" }
+

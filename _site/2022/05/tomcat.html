@@ -174,19 +174,20 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2013/08/mac-command">Aug 16, 2013 - mac常用命令</a></h1>
+                <h1><a href="/2022/05/tomcat">May 22, 2022 - tomcat</a></h1>
             
             <div class="post-content">
-            <h3>将文件内容复制到剪贴板</h3>
-<p>pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+            <h1 id="tomcat">Tomcat</h1>
 
-<h3>启动虚拟机</h3>
+<p>常用配置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  port: 8085
+  context-path: /url-prefix
+</code></pre></div></div>
 
-<p>$ virtualenv –system-site-packages ~/tensorflow</p>
+<p>context-path是应用的上下文路径，也可以称为项目路径，是构成url地址的一部分。</p>
 
-<p>$ cd ~/tensorflow</p>
-
-<p>source bin/activate</p>
+<p>用 localhost:8085/url-prefix/xxx 来请求接口</p>
 
             </div>
             
@@ -199,10 +200,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2013/08/%E8%8D%89%E5%9D%AA%E5%A9%9A%E7%A4%BC" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2022/05/transactional" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2013/08/ios%E5%9C%A8app%E4%B8%AD%E8%BF%9B%E5%85%A5%E5%95%86%E5%BA%97%E4%BB%A5%E4%BE%BF%E6%9B%B4%E6%96%B0" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/05/pojo-groovy" class="previous">Older Post</a>
               
 </div>
 
@@ -216,7 +217,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2013-08-mac-command';
+        this.page.identifier = '2022-05-tomcat';
     };
 
    (function() {
