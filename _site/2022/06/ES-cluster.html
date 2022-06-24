@@ -174,39 +174,44 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
+                <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
             
             <div class="post-content">
-            <ul>
-<li>创建并指定session名字<br />
-		tmux new -s $session_name</li>
-&lt;/li&gt;
-<li>删除session<br />
- Ctrl+b :kill-session</li>
-<li>临时退出session<br />
-Ctrl+b d</li>
-<li>列出session<br />
-tmux ls</li>
-<li>进入已存在的session<br />
-tmux a -t $session_name</li>
-<li>删除所有session<br />
-Ctrl+b :kill-server</li>
-<li>删除指定session<br />
-tmux kill-session -t $session_name</li>
-<li>删除指定window<br />
-Ctrl+b : &amp;</li>
-</ul>
+            <h1 id="es-集群">ES 集群</h1>
 
-<p>settings 鼠标滚动接管tmux历史窗口</p>
+<p>java访问ES 集群，两种方法：</p>
 
-<ul><li>vi ~/.tmux.conf</li>
-<li>set-window-option -g mode-mouse on</li>
-<li>tmux source-file ~/.tmux.conf</li>
-<li></li>
-<li></li>
+<ol>
+  <li>
+    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
 
+    <ol>
+      <li>
+        <p>配置虚拟ip的命令:</p>
 
-</ul>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
+        
+#下线虚拟ip
+ifconfig eth0:1 down
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>把cluster node都添加到client中,类似下面的代码</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
+                 RestClient.builder(
+                 		//Es连接信息，我用的是伪集群哈哈哈
+                         new HttpHost("localhost", 9200, "http"),
+                         new HttpHost("localhost", 9201, "http"),
+                         new HttpHost("localhost", 9202, "http")
+                 )
+         );
+</code></pre></div>    </div>
+  </li>
+</ol>
+
 
             </div>
             
@@ -219,10 +224,8 @@ Ctrl+b : &amp;</li>
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2019/12/money" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2018/09/GuzzleHttp" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/06/sentinel" class="previous">Older Post</a>
               
 </div>
 
@@ -236,7 +239,7 @@ Ctrl+b : &amp;</li>
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2019-03-tmux';
+        this.page.identifier = '2022-06-es-cluster';
     };
 
    (function() {

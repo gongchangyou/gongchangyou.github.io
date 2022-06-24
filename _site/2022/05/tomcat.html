@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/ES-cluster">es cluster</a></li>
+        
           <li><a href="/2022/06/sentinel">sentinel</a></li>
         
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal">canal</a></li>
         
           <li><a href="/2022/06/seata">seata</a></li>
-        
-          <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>52</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>53</sup></a></li>
 			
 		
 			
@@ -229,40 +229,49 @@ public abstract class BaseController {
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 controller的代码
-</code></pre></div></div>
-<p>/**
+```3
+/**
      * 这个字符串前后空格会被删除 (trim)
      * @param str
      * @return
      */
-    @RequestMapping(“str”)
+    @RequestMapping("str")
     Object str(String str) {
-        log.info(“str={} “,str);
+        log.info("str={} ",str);
         return str;
-    }</p>
+    }
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
- * 注意入参date 传入必须形如 2022-02-12 12:00:00
- * @param date
- * @return
- */
-@RequestMapping(value = "date")
-Object date(Date date) {
-    log.info("date={}", date);
-    return date;
-}
+    /**
+     * 注意入参date 传入必须形如 2022-02-12 12:00:00
+     * @param date
+     * @return
+     */
+    @RequestMapping(value = "date")
+    Object date(Date date) {
+        log.info("date={}", date);
+        return date;
+    }
 
-/**
- * 这个函数进不来了, 因为Time是Date的子类，会被initBinder format，会抛异常
- * @param time
- * @return
- */
-@RequestMapping(value = "time")
-Object time(Time time) {
-    log.info("time={}", time);
-    return time;
-} ```
+    /**
+     * 这个函数进不来了, 因为Time是Date的子类，会被initBinder format，会抛异常
+     * @param time
+     * @return
+     */
+    @RequestMapping(value = "time")
+    Object time(Time time) {
+        log.info("time={}", time);
+        return time;
+    }
 </code></pre></div></div>
+
+<ol>
+  <li>SpringMVC ,如果前后端分离，这个就不看了。 post请求获取入参的方案：@RequestBody 和 @ModelAttribute 的区别？
+    <ol>
+      <li>参考文章: <a href="https://www.cnblogs.com/zeroingToOne/p/8992746.html">https://www.cnblogs.com/zeroingToOne/p/8992746.html</a></li>
+      <li>就是支持的content-type不一样，一般我们使用 application/json 那么就使用 @RequestBody, form表单使用 ModelAttribute</li>
+    </ol>
+  </li>
+</ol>
 
             </div>
             

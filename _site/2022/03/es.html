@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/ES-cluster">es cluster</a></li>
+        
           <li><a href="/2022/06/sentinel">sentinel</a></li>
         
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal">canal</a></li>
         
           <li><a href="/2022/06/seata">seata</a></li>
-        
-          <li><a href="/2022/06/RocketMQ-source-code">RocketMQ source code</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>52</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>53</sup></a></li>
 			
 		
 			
@@ -250,6 +250,10 @@ networks:
 </code></pre></div>    </div>
   </li>
 </ol>
+
+<p>查看所有索引</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices
+</code></pre></div></div>
 
 <p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
 
