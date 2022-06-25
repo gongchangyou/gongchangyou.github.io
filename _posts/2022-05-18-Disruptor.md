@@ -138,6 +138,14 @@ disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("
 
 
 
+问题4： 多生产者情况下，如果其中一个生产者的生产速度太低， 游标迟迟无法往下移，消费者会如何表现？会阻塞吗？
+
+回答4： 一般不会出现这种情况，sequence是先取再发布的，如果先取sequence之后， 又做了一些耗时的操作才publish， 则会阻塞消费者。所以写代码的时候尽量把取sequence和publish 靠近.
+
+
+
+
+
 官方文档: [https://lmax-exchange.github.io/disruptor/disruptor.html](https://lmax-exchange.github.io/disruptor/disruptor.html)
 
 参考文章: [https://tech.meituan.com/2016/11/18/disruptor.html](https://tech.meituan.com/2016/11/18/disruptor.html)
@@ -149,6 +157,41 @@ disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("
 [https://cloud.tencent.com/developer/article/1701690](https://cloud.tencent.com/developer/article/1701690)
 
 
+
+![]({{ site.baseurl}}/images/202205/WechatIMG279.png){: width="800" }
+
+其中第3步做两件事
+
+1.  
+    1.  情况1： 设置游标(单个生产者的情况)
+    2.  情况2：计算availableBuffer中可用的位子 （多个生产者的情况）. 因为生产者获取到sequence和 这个sequence可用是两码事，所以需要额外的availableBuffer来保存哪些sequence是可用的。[https://blog.csdn.net/hilaryfrank/article/details/105484157](https://blog.csdn.net/hilaryfrank/article/details/105484157)
+2.  根据等待策略通知消费者
+
+<font color="red">本质上就是利用cpu性能 来加速</font>
+
+>   # **等待策略**
+>
+>   源码地址：https://github.com/LMAX-Exchange/disruptor/blob/master/src/main/java/com/lmax/disruptor/WaitStrategy.java
+>
+>   **「BlockingWaitStrategy」**
+>
+>   Disruptor的默认策略是BlockingWaitStrategy。在BlockingWaitStrategy内部是使用锁和condition来控制线程的唤醒。BlockingWaitStrategy是最低效的策略，但其对CPU的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现。
+>
+>   **「SleepingWaitStrategy」**
+>
+>   SleepingWaitStrategy 的性能表现跟 BlockingWaitStrategy 差不多，对 CPU 的消耗也类似，但其对生产者线程的影响最小，通过使用`LockSupport.parkNanos(1)`来实现循环等待。
+>
+>   **「YieldingWaitStrategy」**
+>
+>   YieldingWaitStrategy是可以使用在低延迟系统的策略之一。YieldingWaitStrategy将自旋以等待序列增加到适当的值。在循环体内，将调用`Thread.yield()`以允许其他排队的线程运行。在要求极高性能且事件处理线数小于 CPU 逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。
+>
+>   **「BusySpinWaitStrategy」**
+>
+>   性能最好，适合用于低延迟的系统。在要求极高性能且事件处理线程数小于CPU逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。
+>
+>   **「PhasedBackoffWaitStrategy」**
+>
+>   自旋 + yield + 自定义策略，CPU资源紧缺，吞吐量和延迟并不重要的场景。
 
 源码解析： TODO
 
