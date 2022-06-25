@@ -158,6 +158,8 @@ disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("
 
 
 
+### 生产者调用逻辑
+
 ![]({{ site.baseurl}}/images/202205/WechatIMG279.png){: width="800" }
 
 其中第3步做两件事
@@ -166,6 +168,12 @@ disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("
     1.  情况1： 设置游标(单个生产者的情况)
     2.  情况2：计算availableBuffer中可用的位子 （多个生产者的情况）. 因为生产者获取到sequence和 这个sequence可用是两码事，所以需要额外的availableBuffer来保存哪些sequence是可用的。[https://blog.csdn.net/hilaryfrank/article/details/105484157](https://blog.csdn.net/hilaryfrank/article/details/105484157)
 2.  根据等待策略通知消费者
+
+
+
+### 多消费者的情况
+
+每个消费者对应一个线程 BatchEventProcessor，各自维护游标 sequence
 
 <font color="red">本质上就是利用cpu性能 来加速</font>
 

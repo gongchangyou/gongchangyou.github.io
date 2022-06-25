@@ -316,6 +316,8 @@
 
 <p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
 
+<h3 id="生产者调用逻辑">生产者调用逻辑</h3>
+
 <p><img src="/images/202205/WechatIMG279.png" alt="" width="800" /></p>
 
 <p>其中第3步做两件事</p>
@@ -329,6 +331,10 @@
   </li>
   <li>根据等待策略通知消费者</li>
 </ol>
+
+<h3 id="多消费者的情况">多消费者的情况</h3>
+
+<p>每个消费者对应一个线程 BatchEventProcessor，各自维护游标 sequence</p>
 
 <font color="red">本质上就是利用cpu性能 来加速</font>
 
