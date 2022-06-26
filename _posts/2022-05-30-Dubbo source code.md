@@ -79,6 +79,19 @@ com.alibaba.nacos.client.naming.core.PushReceiver 会死循环拉取udp报文，
     
 ![]({{ site.baseurl}}/images/202205/WechatIMG247.png){: width="800" }
 
+
+
+问题2： dubbo如何配置 LB？
+
+回答2：  [https://dubbo.apache.org/zh/docs/advanced/loadbalance/](https://dubbo.apache.org/zh/docs/advanced/loadbalance/)
+
+>   ```
+>   #random / roundrobin
+>   dubbo.consumer.loadbalance=roundrobin
+>   ```
+又目前dubbo还不支持nacos的权重，所以下面的配置不会生效
+![]({{ site.baseurl}}/images/202205/WechatIMG287.png){: width="800" }
+
 ### 服务端bean加载
 
 具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。

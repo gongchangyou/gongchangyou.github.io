@@ -318,6 +318,18 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 <p><img src="/images/202205/WechatIMG247.png" alt="" width="800" /></p>
 
+<p>问题2： dubbo如何配置 LB？</p>
+
+<p>回答2：  <a href="https://dubbo.apache.org/zh/docs/advanced/loadbalance/">https://dubbo.apache.org/zh/docs/advanced/loadbalance/</a></p>
+
+<blockquote>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  #random / roundrobin
+  dubbo.consumer.loadbalance=roundrobin
+</code></pre></div>  </div>
+  <p>又目前dubbo还不支持nacos的权重，所以下面的配置不会生效
+<img src="/images/202205/WechatIMG287.png" alt="" width="800" /></p>
+</blockquote>
+
 <h3 id="服务端bean加载">服务端bean加载</h3>
 
 <p>具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。</p>
