@@ -186,3 +186,17 @@ dubbo-spring-boot-starter  加进去就好了
 
 ```
 
+
+
+问题1： 修改nacos 服务生产者的权重和上下线抛异常 
+
+![]({{ site.baseurl}}/images/202201/WechatIMG286.png){: width="800" }
+
+```
+caused: errCode: 500, errMsg: do metadata operation failed ;caused: com.alibaba.nacos.consistency.exception.ConsistencyException: com.alibaba.nacos.core.distributed.raft.exception.NoLeaderException: The Raft Group [naming_instance_metadata] did not find the Leader node;caused: com.alibaba.nacos.core.distributed.raft.exception.NoLeaderException: The Raft Group [naming_instance_metadata] did not find the Leader node;
+```
+
+回答1： 应该是本地环境经常改变导致leader选举的配置发生了变化
+
+参考文章 : [https://blog.csdn.net/qq_42378797/article/details/120384856](https://blog.csdn.net/qq_42378797/article/details/120384856) 将 nacos data/protocol 文件夹删除并重启nacos即可
+
