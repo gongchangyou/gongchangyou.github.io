@@ -69,7 +69,12 @@ public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegist
 
 问题1： 当服务端切换ip时（比如蓝绿升级），客户端 invokers（里面有ip/port）是如何更新的？
 
-回答1: com.alibaba.nacos.client.naming.core.EventDispatcher 会订阅nacos事件,死循环阻塞poll. 当nacos服务配置变更时，会立即poll到变更内容， 接着执行 EventDispatcher中的listener.onEvent 方法，会去变更RouterChain中的 invokers.
+回答1:
+
+com.alibaba.nacos.client.naming.core.PushReceiver 会死循环拉取udp报文，通知EventDispatcher，在EventDispatcher中 ， 死循环阻塞poll. 当nacos服务配置变更时，会立即poll到变更内容， 接着执行 EventDispatcher中的listener.onEvent 方法，会去变更RouterChain中的 invokers.
+
+![]({{ site.baseurl}}/images/202205/WechatIMG285.png){: width="800" }
+
 ![]({{ site.baseurl}}/images/202205/WechatIMG246.png){: width="800" }
     
 ![]({{ site.baseurl}}/images/202205/WechatIMG247.png){: width="800" }
