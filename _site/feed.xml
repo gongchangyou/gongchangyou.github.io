@@ -7,6 +7,53 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>mongodb</title>
+				<description>&lt;h1 id=&quot;mongodb&quot;&gt;MongoDB&lt;/h1&gt;
+
+&lt;p&gt;代码仓库：&lt;/p&gt;
+
+&lt;p&gt;Java 代码 chunk逻辑&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class SplitListToChunks {
+ 
+    public static &amp;lt;T&amp;gt; List&amp;lt;List&amp;lt;T&amp;gt;&amp;gt; split(List&amp;lt;T&amp;gt; list, int size) {
+        final AtomicInteger counter = new AtomicInteger();
+        return new ArrayList&amp;lt;&amp;gt;(
+                list.stream()
+                        .collect(Collectors.groupingBy(it -&amp;gt; counter.getAndIncrement() / size))
+                        .values());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;batch 搜索&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Test
+    public void batchGet() {
+        val table =db.getCollection(&quot;records&quot;);
+        val ids = new ArrayList&amp;lt;&amp;gt;();
+        for (int i = 20140000; i &amp;lt;20147282; i++) {
+            ids.add(String.valueOf(i));
+        }
+        val chunkedList = split(ids, 100);
+        val firstStart = System.currentTimeMillis();
+        for (val list : chunkedList) {
+            val start = System.currentTimeMillis();
+            BasicDBObject query = new BasicDBObject(&quot;id&quot;, new BasicDBObject(&quot;$in&quot;,list) );
+            table.find(query).forEach((Consumer&amp;lt;Document&amp;gt;) document -&amp;gt;{
+                log.info(&quot;id={}, loc={}&quot;,document.get(&quot;id&quot;),  document.get(&quot;loc&quot;));
+            });
+            log.info(&quot;cost={}&quot;, System.currentTimeMillis()- start);
+        }
+        log.info(&quot;allcost={}&quot;, System.currentTimeMillis()- firstStart);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+				<pubDate>Mon, 27 Jun 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/06/mongodb-batch</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/06/mongodb-batch</guid>
+			</item>
+		
+			<item>
 				<title>es cluster</title>
 				<description>&lt;h1 id=&quot;es-集群&quot;&gt;ES 集群&lt;/h1&gt;
 
@@ -837,60 +884,6 @@ Codec2.DecodeResult.NEED_MORE_INPUT
 				<pubDate>Sun, 29 May 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/05/CompletableFuture</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/05/CompletableFuture</guid>
-			</item>
-		
-			<item>
-				<title>antrun</title>
-				<description>&lt;h1 id=&quot;maven-antrun-plugin&quot;&gt;maven antrun plugin&lt;/h1&gt;
-
-&lt;p&gt;有时候我们希望打包的时候添加一些行为，比如把文件从resource 文件夹下拷贝到另外一个地方.&lt;/p&gt;
-
-&lt;p&gt;这时候就可以使用 maven antrun plugin.&lt;/p&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://maven.apache.org/plugins/maven-antrun-plugin/usage.html&quot;&gt;https://maven.apache.org/plugins/maven-antrun-plugin/usage.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;project&amp;gt;
-  [...]
-  &amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-      &amp;lt;plugin&amp;gt;
-        &amp;lt;artifactId&amp;gt;maven-antrun-plugin&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;1.8&amp;lt;/version&amp;gt;
-        &amp;lt;executions&amp;gt;
-          &amp;lt;execution&amp;gt;
-            &amp;lt;phase&amp;gt; &amp;lt;!-- Maven的生命周期阶段 --&amp;gt; &amp;lt;/phase&amp;gt;
-            &amp;lt;configuration&amp;gt;
-              &amp;lt;target&amp;gt;
-
-                &amp;lt;!--
-                  将任务Ant任务放在这里，还可以在这里添加一个build.xml文件
-                --&amp;gt;
-
-              &amp;lt;/target&amp;gt;
-            &amp;lt;/configuration&amp;gt;
-            &amp;lt;goals&amp;gt;
-              &amp;lt;goal&amp;gt;run&amp;lt;/goal&amp;gt;
-            &amp;lt;/goals&amp;gt;
-          &amp;lt;/execution&amp;gt;
-        &amp;lt;/executions&amp;gt;
-      &amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-  &amp;lt;/build&amp;gt;
-  [...]
-&amp;lt;/project&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;代码仓库:   &lt;a href=&quot;https://github.com/gongchangyou/transactional&quot;&gt;https://github.com/gongchangyou/transactional&lt;/a&gt; 这里借用下transactional仓库演示一下&lt;/p&gt;
-
-&lt;p&gt;直接打包， 就可以看到具体的target任务已经执行了&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mvn package -Dmaven.test.skip=true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Sat, 28 May 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/05/maven-antrun-plugin</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/05/maven-antrun-plugin</guid>
 			</item>
 		
 	</channel>

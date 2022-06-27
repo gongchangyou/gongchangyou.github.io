@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
+        
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
         
           <li><a href="/2022/06/sentinel">sentinel</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
-        
-          <li><a href="/2022/06/seata">seata</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
 			
 		
 			
@@ -175,6 +175,27 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
+        
+        <div class="content">
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
+        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
+    &lt;activity-alias
+        android:name=".wxapi.WXEntryActivity"
+        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
+        android:exported="true" /&gt;
+</code></pre></div></div>
+
+<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
+
+<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
         
         <div class="content">
@@ -206,28 +227,6 @@
             <p>Replica</p>
 
 <p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/06/lambda-catch">Jun 6, 2016 - lambda捕获</a></h1>
-        
-        <div class="content">
-            <p>int x = 1, y=2;</p>
-
-<p>auto z = [x,y]{return x+ y;};</p>
-
-<p>//auto z = [x,&amp;y]{return x+ y;}; //引用就是运行时，值就是编译时</p>
-
-<p>x= 3, y = 4;</p>
-
-<p>cout « z() « endl;</p>
-
-<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
 
 
         </div>

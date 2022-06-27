@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
+        
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
         
           <li><a href="/2022/06/sentinel">sentinel</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
-        
-          <li><a href="/2022/06/seata">seata</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
 			
 		
 			
@@ -173,6 +173,111 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/tomcat">May 22, 2022 - tomcat</a></h1>
+        
+        <div class="content">
+            <h1 id="springmvc">springMVC</h1>
+
+<ol>
+  <li>常用配置
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  port: 8085
+  context-path: /url-prefix
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>context-path是应用的上下文路径，也可以称为项目路径，是构成url地址的一部分。</p>
+
+<p>用 localhost:8085/url-prefix/xxx 来请求接口</p>
+
+<ol>
+  <li>
+    <p>initBinder,  对所有的出参进行格式转换, 优雅</p>
+
+    <p>代码仓库: <a href="https://github.com/gongchangyou/gateway">https://github.com/gongchangyou/gateway</a></p>
+
+    <p>参考文章: <a href="https://blog.csdn.net/KingJin_CSDN_/article/details/53893210">https://blog.csdn.net/KingJin_CSDN_/article/details/53893210</a></p>
+
+    <p><a href="https://blog1.westagilelabs.com/how-to-use-initbinder-in-spring-mvc-ecb974a6884">https://blog1.westagilelabs.com/how-to-use-initbinder-in-spring-mvc-ecb974a6884</a>
+```
+@Controller
+public abstract class BaseController {
+ /**</p>
+    <ul>
+      <li>解决String和javabean中的Date的属性自动转换</li>
+      <li>@param binder
+  */
+ /**</li>
+      <li>接收参数转换</li>
+      <li>@param binder
+  */
+ @InitBinder
+ public void initBinder(WebDataBinder binder) {
+ SimpleDateFormat dateFormat = new SimpleDateFormat(“yyyy-MM-dd HH:mm:ss”);
+ dateFormat.setLenient(false);
+ //所有的Date的子类和Date 参数 ，都会被这个自定义转换
+ binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+ //所有的String都会被trim
+ binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+ }
+}</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+controller的代码
+```3
+/**
+     * 这个字符串前后空格会被删除 (trim)
+     * @param str
+     * @return
+     */
+    @RequestMapping("str")
+    Object str(String str) {
+        log.info("str={} ",str);
+        return str;
+    }
+
+    /**
+     * 注意入参date 传入必须形如 2022-02-12 12:00:00
+     * @param date
+     * @return
+     */
+    @RequestMapping(value = "date")
+    Object date(Date date) {
+        log.info("date={}", date);
+        return date;
+    }
+
+    /**
+     * 这个函数进不来了, 因为Time是Date的子类，会被initBinder format，会抛异常
+     * @param time
+     * @return
+     */
+    @RequestMapping(value = "time")
+    Object time(Time time) {
+        log.info("time={}", time);
+        return time;
+    }
+</code></pre></div></div>
+
+<ol>
+  <li>SpringMVC ,如果前后端分离，这个就不看了。 post请求获取入参的方案：@RequestBody 和 @ModelAttribute 的区别？
+    <ol>
+      <li>参考文章: <a href="https://www.cnblogs.com/zeroingToOne/p/8992746.html">https://www.cnblogs.com/zeroingToOne/p/8992746.html</a></li>
+      <li>就是支持的content-type不一样，一般我们使用 application/json 那么就使用 @RequestBody, form表单使用 ModelAttribute</li>
+    </ol>
+  </li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
@@ -443,27 +548,6 @@ def getPackageName(dir) {
 <p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
 
 <p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
-        
-        <div class="content">
-            <h1 id="cas">CAS</h1>
-
-<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
-
-<p>Unsafe.compareAndSetObject</p>
-
-<p>内部调用native cmpxchg汇编指令</p>
-
-<blockquote>
-  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
-</blockquote>
 
         </div>
     </div>

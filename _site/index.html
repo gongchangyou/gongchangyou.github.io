@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
+        
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
         
           <li><a href="/2022/06/sentinel">sentinel</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
-        
-          <li><a href="/2022/06/seata">seata</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
 			
 		
 			
@@ -173,6 +173,55 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb">MongoDB</h1>
+
+<p>代码仓库：</p>
+
+<p>Java 代码 chunk逻辑</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
+ 
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
+        final AtomicInteger counter = new AtomicInteger();
+        return new ArrayList&lt;&gt;(
+                list.stream()
+                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
+                        .values());
+    }
+}
+</code></pre></div></div>
+
+<p>batch 搜索</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
+    public void batchGet() {
+        val table =db.getCollection("records");
+        val ids = new ArrayList&lt;&gt;();
+        for (int i = 20140000; i &lt;20147282; i++) {
+            ids.add(String.valueOf(i));
+        }
+        val chunkedList = split(ids, 100);
+        val firstStart = System.currentTimeMillis();
+        for (val list : chunkedList) {
+            val start = System.currentTimeMillis();
+            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
+            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
+                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
+            });
+            log.info("cost={}", System.currentTimeMillis()- start);
+        }
+        log.info("allcost={}", System.currentTimeMillis()- firstStart);
+    }
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
@@ -241,66 +290,6 @@ ifconfig eth0:1 down
   <li>如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法</li>
   <li>blockHandler 方法记得添加 BlockException exception 形参</li>
 </ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/canal-RocketMQ">Jun 10, 2022 - canal RocketMQ</a></h1>
-        
-        <div class="content">
-            <h1 id="canal-导入rocketmq">canal 导入RocketMQ</h1>
-
-<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
-
-<p><a href="/2022/06/canal">启动RocketMQ</a></p>
-
-<p><a href="/2022/06/canal">部署canal</a></p>
-
-<p>修改源码的canal.properties ，但是没生效</p>
-
-<p><img src="/images/202206/WechatIMG268.png" alt="" width="800" /></p>
-
-<p>这些实现类是用SPI加载的</p>
-
-<p>CanalLauncher.java -》 CanalStarter.java</p>
-
-<p>追进去看到 classLoader 会去 target/plugin 文件夹中读取class。找不到再走META-INF/canal/xxx.CanalMQProducuer</p>
-
-<p><img src="/images/202206/WechatIMG269.png" alt="" width="800" /></p>
-
-<p>把如下注释掉就行了</p>
-
-<p><img src="/images/202206/WechatIMG270.png" alt="" width="800" /></p>
-
-<p>在canal源码中的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#这个不用动
-canal.destinations = example
-#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
-canal.mq.topic=test-topic
-
-#模式从 tcp 改成 rocketMQ
-canal.serverMode = rocketMQ
-
-</code></pre></div></div>
-
-<p>在消费端的rocketMQ的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-</code></pre></div></div>
-
-<p>成功！</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={"data":[{"id":"5","count":"13"}],"database":"store_db","es":1654874446000,"id":1,"isDdl":false,"mysqlType":{"id":"int","count":"int"},"old":[{"count":"313"}],"pkNames":["id"],"sql":"","sqlType":{"id":4,"count":4},"table":"store","ts":1654911313692,"type":"UPDATE"}
-
-</code></pre></div></div>
-
 
         </div>
     </div>

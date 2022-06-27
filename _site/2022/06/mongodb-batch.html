@@ -174,20 +174,48 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2019/12/money">Dec 1, 2019 - 金钱暗流</a></h1>
+                <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
             
             <div class="post-content">
-            <h1 id="第一章-科赫家族史">第一章 科赫家族史</h1>
+            <h1 id="mongodb">MongoDB</h1>
 
-<ol>
-  <li>弗雷德·科赫  MIT读化学工程，生命中有两个贵人，一个是约瑟夫·斯大林，另一个是阿道夫·希特勒，先后帮助苏联和纳粹建立炼油厂。可见在利益面前，什么党派，什么思想那都不是资本家考虑的。</li>
-  <li>兄弟阋墙，大哥弗雷迪和二哥查尔斯争夺遗产，双胞胎弟弟 大卫和比尔，一个站队大哥，一个站队二哥，让我想起九子夺嫡。最后醉心艺术的大哥败下阵，继承父亲保守主义思想的二哥掌舵科赫集团。
-    <ul>
-      <li>大卫被人问起巨额财产，他的回答：“在我小时候，我父亲给了我一个苹果，我很快卖了5块钱，买了两个苹果，卖了10块钱，日复一日，年复一年，直到父亲去世，留给我3亿美元！”</li>
-    </ul>
-  </li>
-</ol>
+<p>代码仓库：</p>
 
+<p>Java 代码 chunk逻辑</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
+ 
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
+        final AtomicInteger counter = new AtomicInteger();
+        return new ArrayList&lt;&gt;(
+                list.stream()
+                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
+                        .values());
+    }
+}
+</code></pre></div></div>
+
+<p>batch 搜索</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
+    public void batchGet() {
+        val table =db.getCollection("records");
+        val ids = new ArrayList&lt;&gt;();
+        for (int i = 20140000; i &lt;20147282; i++) {
+            ids.add(String.valueOf(i));
+        }
+        val chunkedList = split(ids, 100);
+        val firstStart = System.currentTimeMillis();
+        for (val list : chunkedList) {
+            val start = System.currentTimeMillis();
+            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
+            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
+                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
+            });
+            log.info("cost={}", System.currentTimeMillis()- start);
+        }
+        log.info("allcost={}", System.currentTimeMillis()- firstStart);
+    }
+</code></pre></div></div>
 
             </div>
             
@@ -200,10 +228,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2021/04/grandpa" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2019/03/tmux" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/06/ES-cluster" class="previous">Older Post</a>
               
 </div>
 
@@ -211,13 +237,13 @@
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2019-12-money';
+        this.page.identifier = '2022-06-mongodb-batch';
     };
 
    (function() {

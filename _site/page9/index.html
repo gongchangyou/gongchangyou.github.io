@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
+        
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
         
           <li><a href="/2022/06/sentinel">sentinel</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
           <li><a href="/2022/06/canal">canal</a></li>
-        
-          <li><a href="/2022/06/seata">seata</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>10</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
 			
 		
 			
@@ -173,6 +173,37 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
+        
+        <div class="content">
+            <h1 id="gateway-mono-flux">Gateway Mono Flux</h1>
+
+<p>参考文章: <a href="https://segmentfault.com/a/1190000024499748">https://segmentfault.com/a/1190000024499748</a></p>
+
+<p><a href="https://www.cnblogs.com/littleatp/p/11515458.html">https://www.cnblogs.com/littleatp/p/11515458.html</a></p>
+
+<p>冷流（从头开始消费） 和 热流(从offset处开始消费)  <a href="https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b">https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b</a></p>
+
+<p><a href="https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/">https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/</a></p>
+
+<p>注意：如果热流的上个subscribe已经消费结束了，则下一个subscribe会从头开始，而不是不消费.</p>
+
+<p>响应式编程</p>
+
+<ul>
+  <li>响应流必须是无阻塞的。</li>
+  <li>响应流必须是一个数据流。</li>
+  <li>它必须可以异步执行。</li>
+  <li>并且它也应该能够处理背压。</li>
+</ul>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
@@ -268,152 +299,6 @@ $delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 h
 
 <p>java代码： <a href="https://github.com/gongchangyou/mqtt">https://github.com/gongchangyou/mqtt</a></p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/monitor">May 4, 2022 - monitor</a></h1>
-        
-        <div class="content">
-            <h1 id="业务监控">业务监控</h1>
-
-<p>参考文章: <a href="https://blog.51cto.com/jackl/2797593">https://blog.51cto.com/jackl/2797593</a></p>
-
-<p>Statsd + Graphite  +  Grafana</p>
-
-<p>数据收集，上报 ,  展示, 推荐UDP连接</p>
-
-<p>做的好还可以有报警（手机锁屏推送 + 邮件提醒）</p>
-
-<ol>
-  <li>
-    <p>docker 部署 , 如果本地8001端口被占可以更改下, 时区搞成本地的，否则可能会有时差.</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -d\
-  --name graphite\
-  --restart=always\
-  -p 8001:80\
-  -p 2003-2004:2003-2004\
-  -p 2023-2024:2023-2024\
-  -p 8125:8125/udp\
-  -p 8126:8126\
-  -e GRAPHITE_TIME_ZONE='Asia/Shanghai'\
-  -v /etc/localtime:/etc/localtime\
-  graphiteapp/graphite-statsd
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>udp 上报 数据</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div>    </div>
-  </li>
-  <li>打开本地graphic dashboard  localhost:8001</li>
-  <li>记得把原先这个框里的东西删干净，否则有个心跳的统计数据几千万 干扰查看数据，然后把你要监控的指标add进去即可
-  <img src="/images/202205/WechatIMG190.png" alt="" width="800" /></li>
-  <li>然后把auto-refresh点亮就可以看到数据了
-  <img src="/images/202205/WechatIMG191.png" alt="" width="800" /></li>
-</ol>
-
-<p>除了count以外还有些别的统计类型 参考文章: <a href="https://www.jianshu.com/p/4c2df525b3d6">https://www.jianshu.com/p/4c2df525b3d6</a></p>
-
-<h3 id="因为graphite-dashboard不是很好看我们可以把数据展示集成到grafana中">因为graphite dashboard不是很好看，我们可以把数据展示集成到grafana中</h3>
-
-<ol>
-  <li>docker启动grafana , 建议 用 -u root 用root身份启动，因为方便修改grafana.ini, 这个文件需要root权限.
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name grafana -p 3000:3000 -u root grafana/grafana
-</code></pre></div>    </div>
-  </li>
-  <li>localhost:3000 默认用户名密码都是admin</li>
-  <li>配置graphite数据库，这里我是用两个docker容器 启动graphite和grafana。所以这里需要配置宿主机ip， 防止容器间的网络无法访问</li>
-</ol>
-
-<p><img src="/images/202205/WechatIMG192.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG193.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG194.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG199.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>如何添加指标？
-<img src="/images/202205/WechatIMG200.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG201.png" alt="" width="800" /></p>
-
-<p>添加新的panel， 设置刷新时间</p>
-
-<p><img src="/images/202205/WechatIMG205.png" alt="" width="800" /></p>
-
-<p>在这里设置指标之后，点击apply即可
-<img src="/images/202205/WechatIMG204.png" alt="" width="800" /></p>
-
-<h3 id="设置alert">设置alert</h3>
-
-<p>1 设置报警的邮箱</p>
-
-<p>配置smtp， 发件服务器我选择了qq邮箱</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   	  docker exec -it grafana bash
-   	  
-   	  vi /etc/grafana/grafana.ini
-   	  
-   	  //找到smtp那部分 修改成
-
-   	   #################################### SMTP / Emailing ##########################
-   	  [smtp]
-   	  enabled = true
-   	  host = smtp.qq.com:465
-   	  user = laoshubendan@qq.com
-      # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
-   	     password = xxxx #这里写qq的授权码
-   	     ;cert_file =
-   	     ;key_file =
-   	     ;skip_verify = false
-   	     from_address = laoshubendan@qq.com
-   	     ;from_address = admin@grafana.localhost
-   	     from_name = Grafana
-   	     # EHLO identity in SMTP dialog (defaults to instance_name)
-   	     ;ehlo_identity = dashboard.example.com
-   	     # SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
-   	     ;startTLS_policy = NoStartTLS
-</code></pre></div></div>
-   	<img src="/images/202205/WechatIMG212.png" alt="" width="800" />
-
-<hr />
-
-<p>2 在dashboard配置 contact points， 选择email, 收件人邮箱配置好
-<img src="/images/202205/WechatIMG218.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>3 规则配置， 在这里可以设置各个规则的label,
-   <img src="/images/202205/WechatIMG219.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG215.jpeg" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG214.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG216.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>4 提醒策略 绑定规则和报警邮箱 (notifacatinon policies)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里可以匹配label ,利用label来区分报警类别
-</code></pre></div></div>
-
-<p><img src="/images/202205/WechatIMG213.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>5 多次上报命令</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div></div>
-
-<p>收到报警邮件啦 
-      <img src="/images/202205/WechatIMG217.png" alt="" width="800" /></p>
 
         </div>
     </div>
