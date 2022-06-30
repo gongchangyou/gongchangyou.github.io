@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mysql-log">mysql log</a></li>
+        
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
         
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/sentinel">sentinel</a></li>
         
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
-        
-          <li><a href="/2022/06/canal">canal</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
 			
 		
 			
@@ -173,6 +173,75 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">Apr 26, 2022 - job</a></h1>
+        
+        <div class="content">
+            <h1 id="任务调度系统比对">任务调度系统比对</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>开源框架</th>
+      <th>开发语言</th>
+      <th>任务类型</th>
+      <th>⼯作流</th>
+      <th>能否区分用户</th>
+      <th>可视化</th>
+      <th>API</th>
+      <th>⾼可⽤</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Airflow</td>
+      <td>python</td>
+      <td>通过operator⾃定义，⼤数据组件及Shell，不⽀持Java</td>
+      <td>DAG</td>
+      <td>-</td>
+      <td>⽀持</td>
+      <td>不⽀持</td>
+      <td>主从</td>
+    </tr>
+    <tr>
+      <td>XXL-JOB</td>
+      <td>Java</td>
+      <td>Java/Shell/Python/PHP</td>
+      <td>不⽀持</td>
+      <td>不能, 需要做些改造Runtime.getRuntime().exec()</td>
+      <td>⽀持</td>
+      <td>⽀持</td>
+      <td>主从</td>
+    </tr>
+    <tr>
+      <td>DolphinScheduler</td>
+      <td>Java</td>
+      <td>⼤数据组件及Shell等近20种</td>
+      <td>DAG</td>
+      <td>能，因为内部实现是 sudo -u username</td>
+      <td>⽀持</td>
+      <td>⽀持</td>
+      <td>去中⼼</td>
+    </tr>
+    <tr>
+      <td>Quartz</td>
+      <td>Java</td>
+      <td>Java</td>
+      <td>不⽀持</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/04/xxl-job">Apr 25, 2022 - xxl-job</a></h1>
@@ -243,20 +312,6 @@ AbstractCommandExecutor.buildProcess 在这里面会切换用户执行cmd sudo -
 </code></pre></div></div>
 
 <p>FAQ :  <a href="https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md">https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/MinIO_python">Apr 24, 2022 - minio_python</a></h1>
-        
-        <div class="content">
-            <h1 id="minio-python">MinIO-python</h1>
-
-<p>python client : <a href="http://docs.minio.org.cn/docs/master/python-client-api-reference">http://docs.minio.org.cn/docs/master/python-client-api-reference</a></p>
-
 
         </div>
     </div>

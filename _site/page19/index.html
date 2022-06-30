@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/06/mysql-log">mysql log</a></li>
+        
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
         
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/sentinel">sentinel</a></li>
         
           <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
-        
-          <li><a href="/2022/06/canal">canal</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>11</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
 			
 		
 			
@@ -173,6 +173,153 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
+        
+        <div class="content">
+            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
+
+<p>上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好</p>
+
+<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
+
+<p>测试服务器8核,  线上环境会更好</p>
+
+<p>10000个点热力图40ms</p>
+
+<p>1000000 个点 热力图, 不测了。直接上7kw个点</p>
+
+<p>7kw 个点 热力图</p>
+
+<p>搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。</p>
+
+<p>搜索100*100的矩形， 首次查询10-11s.</p>
+
+<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。</p>
+
+<p><img src="/images/202203/WechatIMG51.png" alt="" width="800" /></p>
+
+<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
+{"persistent": {"search.max_buckets": 2000000}}
+</code></pre></div></div>
+
+<p>现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。</p>
+
+<p><img src="/images/202203/WechatIMG50.png" alt="" width="800" /></p>
+
+<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
+        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
+        &lt;java.version&gt;11&lt;/java.version&gt;
+    &lt;/properties&gt;
+</code></pre></div></div>
+
+<p>问题2： Missing [X-Elastic-Product] header.</p>
+
+<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
+
+<p>问题3：  返回值大于100M</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
+
+</code></pre></div></div>
+
+<p>解决3:  别人的解决方案 <a href="https://www.cnblogs.com/wwjj4811/p/15261125.html">https://www.cnblogs.com/wwjj4811/p/15261125.html</a></p>
+
+<p>解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
+     * 保留小数点后4位
+     */
+    private String decimal(float x){
+        return String.format("%.4f", x);
+    }
+</code></pre></div></div>
+
+<p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
+
+<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat": 400,
+              "lon": 100
+            },
+            "bottom_right": {
+              "lat": 30,
+              "lon": 71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "query_shard_exception",
+        "reason" : "couldn't validate latitude/ longitude values",
+        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+        "index" : "map_geo"
+      }
+    ],
+    "type" : "search_phase_execution_exception",
+    "reason" : "all shards failed",
+    "phase" : "query",
+    "grouped" : true,
+    "failed_shards" : [
+      {
+        "shard" : 0,
+        "index" : "map_geo",
+        "node" : "h6XPf8XwQla0HPzsoZa4KA",
+        "reason" : {
+          "type" : "query_shard_exception",
+          "reason" : "couldn't validate latitude/ longitude values",
+          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+          "index" : "map_geo",
+          "caused_by" : {
+            "type" : "query_validation_exception",
+            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
+          }
+        }
+      }
+    ]
+  },
+  "status" : 400
+}
+
+</code></pre></div></div>
+
+<p>如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。</p>
+
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
@@ -446,22 +593,6 @@ vm.max_map_count=655360
             <h1 id="go1">Go（1）</h1>
 
 <p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/opengl-go-1">Mar 10, 2022 - go-opengl-1</a></h1>
-        
-        <div class="content">
-            <h1 id="go-opengl1">Go OpenGL（1）</h1>
-
-<p>官网教程 <a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/01%20OpenGL/#_3</a></p>
-
-<p>学习使用的代码仓库 <a href="https://github.com/gongchangyou/opengl-learn">https://github.com/gongchangyou/opengl-learn</a></p>
 
 
         </div>
