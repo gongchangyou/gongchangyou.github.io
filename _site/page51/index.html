@@ -175,71 +175,40 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/11/find-git-string">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
+        <h1><a href="/2013/08/c++-call-oc">Aug 13, 2013 - c++调用oc</a></h1>
         
         <div class="content">
-            <p>查看我的修改中是否含有var_dump字符串</p>
+            <p>C++代码</p>
 
-<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.h</span>
+ <span class="c1">//</span>
+<span class="cp">#ifndef SGR_MKStoreForCpp_h
+</span> <span class="cp">#define SGR_MKStoreForCpp_h
+</span><span class="k">class</span> <span class="nc">MKStoreForCpp</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kr">inline</span> <span class="k">static</span> <span class="n">MKStoreForCpp</span><span class="o">&amp;</span> <span class="n">instance</span><span class="p">()</span>
+ <span class="p">{</span>
+ <span class="k">static</span> <span class="n">MKStoreForCpp</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="k">return</span> <span class="n">mkStoreForCpp</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">);</span>
+<span class="p">;</span>
+<span class="cp">#endif</span></code></pre></figure>
 
-<table>
-  <tbody>
-    <tr>
-      <td>find .</td>
-      <td>xargs grep -ri “example_str” -l</td>
-    </tr>
-  </tbody>
-</table>
+<p>OC代码</p>
 
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">Oct 24, 2017 - mysql查找多行重复记录</a></h1>
-        
-        <div class="content">
-            <p>select user_name,count(*) as count from user_table group by user_name having count&gt;1;</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4">Oct 20, 2017 - memcache过期时间</a></h1>
-        
-        <div class="content">
-            <p>memcache 过期时间的设置</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#define REALTIME_MAXDELTA 60*60*24*30  </span>
-   <span class="n">static</span> <span class="n">rel_time_t</span> <span class="n">realtime</span><span class="p">(</span><span class="n">const</span> <span class="n">time_t</span> <span class="n">exptime</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&gt;</span> <span class="no">REALTIME_MAXDELTA</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">#如果超过30天  </span>
-               <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&lt;=</span> <span class="n">process_started</span><span class="p">)</span>   <span class="c1">#又小于进程启动时间，直接失效  </span>
-                      <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>   
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">-</span> <span class="n">process_started</span><span class="p">);</span>   <span class="c1">#返回相对时间 exptime时间戳 - 进程启动时间  </span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>   <span class="c1">#没超过30天的秒数，就是用当前运行时间+exptime  </span>
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">+</span> <span class="n">current_time</span><span class="p">);</span>   <span class="c1">#返回相对时间 服务器运行时间(从启动到现在的时间) + exptime  </span>
-        <span class="p">}</span>  
- <span class="p">}</span>  </code></pre></figure>
-
-<p>当memcache的current_time不对，当(process_started + current_time)落后系统时间戳时，导致cache迟迟不过期,</p>
-
-<p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
-
-<p>uptime就是运行时间<br />
-time是当前时间 （memcache启动时间 + uptime)</p>
-<font color="red">当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！</font>
-<p>(uptime就是代码中的current_time)</p>
-
-<font color="blue">如何处理？ 重启memcache  </font>
-
-<p>ps aux|grep memcache<br />
-kill -9 pid<br />
-/usr/bin/memcached -d restart -m 64 -p 11211 -u memcache -l 127.0.0.1</p>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"> <span class="c1">//</span>
+ <span class="c1">// MKStoreForCpp.mm</span>
+ <span class="c1">//</span>
+<span class="cp">#include "MKStoreForCpp.h"
+</span> <span class="cp">#include "MKStoreManager.h"
+</span><span class="kt">void</span> <span class="n">MKStoreForCpp</span><span class="o">::</span><span class="n">buyFeature</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">feature</span><span class="p">)</span>
+ <span class="p">{</span>
+ <span class="p">[[</span><span class="n">MKStoreManager</span> <span class="n">sharedManager</span><span class="p">]</span> <span class="n">buyFeature</span><span class="o">:</span> <span class="p">[</span><span class="n">NSString</span> <span class="n">stringWithUTF8String</span><span class="o">:</span> <span class="n">feature</span><span class="p">]];</span>
+ <span class="p">}</span>
+ </code></pre></figure>
 
 
         </div>
@@ -250,12 +219,10 @@ kill -9 pid<br />
 <div class="pagination">
   
       
-        <a class="btn btn-default" href="/page33" class="previous">Newer</a>
+        <a class="btn btn-default" href="/page50" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 34 of 51</span>
-  
-    <a class="btn btn-default" href="/page35" class="next">Older</a>
+  <span class="page_number ">Page: 51 of 51</span>
   
 </div>
 

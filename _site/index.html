@@ -76,13 +76,13 @@
         
           <li><a href="/2022/06/mysql-log">mysql log</a></li>
         
+          <li><a href="/2022/06/mvn-settings">maven settings</a></li>
+        
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
         
           <li><a href="/2022/06/ES-cluster">es cluster</a></li>
         
           <li><a href="/2022/06/sentinel">sentinel</a></li>
-        
-          <li><a href="/2022/06/canal-RocketMQ">canal RocketMQ</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>53</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>54</sup></a></li>
 			
 		
 			
@@ -209,6 +209,33 @@
 
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-settings">maven settings</h1>
+
+<p>设置 settings.xml</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
+</code></pre></div></div>
+
+<p>查看当前生效的 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
+</code></pre></div></div>
+
+<p>mvn命令指定 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
         
         <div class="content">
@@ -256,55 +283,10 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
-        
-        <div class="content">
-            <h1 id="es-集群">ES 集群</h1>
-
-<p>java访问ES 集群，两种方法：</p>
-
-<ol>
-  <li>
-    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
-
-    <ol>
-      <li>
-        <p>配置虚拟ip的命令:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
-        
-#下线虚拟ip
-ifconfig eth0:1 down
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>把cluster node都添加到client中,类似下面的代码</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
-                 RestClient.builder(
-                 		//Es连接信息，我用的是伪集群哈哈哈
-                         new HttpHost("localhost", 9200, "http"),
-                         new HttpHost("localhost", 9201, "http"),
-                         new HttpHost("localhost", 9202, "http")
-                 )
-         );
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 50</span>
+  <span class="page_number ">Page: 1 of 51</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   
