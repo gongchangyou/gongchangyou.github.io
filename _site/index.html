@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/python-docker">python docker</a></li>
+        
+          <li><a href="/2022/07/storm">storm</a></li>
+        
           <li><a href="/2022/06/mysql-log">mysql log</a></li>
         
           <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
-        
-          <li><a href="/2022/06/ES-cluster">es cluster</a></li>
-        
-          <li><a href="/2022/06/sentinel">sentinel</a></li>
         
     </ul>
 </div>
@@ -118,7 +118,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>8</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>9</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>54</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>55</sup></a></li>
 			
 		
 			
@@ -175,6 +175,63 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
+        
+        <div class="content">
+            <h1 id="python-docker">python docker</h1>
+
+<p>参考文章： <a href="https://www.runoob.com/docker/docker-install-python.html">https://www.runoob.com/docker/docker-install-python.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/storm">Jul 4, 2022 - storm</a></h1>
+        
+        <div class="content">
+            <h1 id="storm">Storm</h1>
+
+<p>storm是个流数据的处理框架</p>
+
+<p>写在前面：当然我还是推荐使用</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+&lt;groupId&gt;com.alibaba.jstorm&lt;/groupId&gt;
+&lt;artifactId&gt;jstorm-core&lt;/artifactId&gt;
+&lt;version&gt;2.1.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>他山之石: <a href="https://gitee.com/HuQingmiao/storm-demo">https://gitee.com/HuQingmiao/storm-demo</a>  直接就能跑起来</p>
+
+<p>但是因为我维护的还是个老项目，所以必须使用如下依赖</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;org.apache.storm&lt;/groupId&gt;
+            &lt;artifactId&gt;storm-core&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/storm-test">https://github.com/gongchangyou/storm-test</a></p>
+
+<p>注意这是一个maven项目 不是spring项目</p>
+
+<p>参考文章:  <a href="https://zhuanlan.zhihu.com/p/140806701">https://zhuanlan.zhihu.com/p/140806701</a></p>
+
+<p><a href="https://www.cnblogs.com/xuwujing/p/8584684.html">https://www.cnblogs.com/xuwujing/p/8584684.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/06/mysql-log">Jun 30, 2022 - mysql log</a></h1>
         
         <div class="content">
@@ -202,82 +259,6 @@
 </ol>
 
 <p><img src="/images/202206/WechatIMG295.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-settings">maven settings</h1>
-
-<p>设置 settings.xml</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
-</code></pre></div></div>
-
-<p>查看当前生效的 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
-</code></pre></div></div>
-
-<p>mvn命令指定 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
-        
-        <div class="content">
-            <h1 id="mongodb">MongoDB</h1>
-
-<p>代码仓库：</p>
-
-<p>Java 代码 chunk逻辑</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
- 
-    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
-        final AtomicInteger counter = new AtomicInteger();
-        return new ArrayList&lt;&gt;(
-                list.stream()
-                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
-                        .values());
-    }
-}
-</code></pre></div></div>
-
-<p>batch 搜索</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
-    public void batchGet() {
-        val table =db.getCollection("records");
-        val ids = new ArrayList&lt;&gt;();
-        for (int i = 20140000; i &lt;20147282; i++) {
-            ids.add(String.valueOf(i));
-        }
-        val chunkedList = split(ids, 100);
-        val firstStart = System.currentTimeMillis();
-        for (val list : chunkedList) {
-            val start = System.currentTimeMillis();
-            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
-            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
-                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
-            });
-            log.info("cost={}", System.currentTimeMillis()- start);
-        }
-        log.info("allcost={}", System.currentTimeMillis()- firstStart);
-    }
-</code></pre></div></div>
 
         </div>
     </div>

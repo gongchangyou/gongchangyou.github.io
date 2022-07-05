@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/python-docker">python docker</a></li>
+        
+          <li><a href="/2022/07/storm">storm</a></li>
+        
           <li><a href="/2022/06/mysql-log">mysql log</a></li>
         
           <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
-        
-          <li><a href="/2022/06/ES-cluster">es cluster</a></li>
-        
-          <li><a href="/2022/06/sentinel">sentinel</a></li>
         
     </ul>
 </div>
@@ -118,7 +118,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>8</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>9</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>54</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>55</sup></a></li>
 			
 		
 			
@@ -173,6 +173,183 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/ES-IK">May 20, 2022 - es 中文分词</a></h1>
+        
+        <div class="content">
+            <h1 id="es-中文分词">ES 中文分词</h1>
+
+<p>这里使用 ES 8.2.0  所以建表不需要_doc关键字了。</p>
+
+<h3 id="建表">建表</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /table_1 
+{
+  "mappings": {
+     "properties": { 
+      "title":    { "type": "text"  }, 
+      "name":     { "type": "keyword"  }, 
+      "description": {"type": "text"},
+      "age":      { "type": "integer" },  
+      "created":  {
+        "type":   "date", 
+        "format": "strict_date_optional_time||epoch_millis"
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<h3 id="写入数据">写入数据</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_doc/1
+{
+  "id": 1,
+  "name": "文档名称",
+  "title": "中文标题",
+  "description":"文档描述",
+  "type":"科普",
+  "score": 96
+}
+</code></pre></div></div>
+
+<h3 id="搜索">搜索</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+</code></pre></div></div>
+
+<h3 id="should--or-子句">should  (or) 子句</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
+{
+  "query": {
+    "bool" : {
+      "should": [
+        {"term": {
+"title": "中"
+}},
+{
+"term": {
+"title": "文"
+}
+}
+      ]
+    }
+    
+  }
+}
+</code></pre></div></div>
+
+<h3 id="中文搜索">中文搜索</h3>
+
+<p>keyword 是全匹配，text有analyzer可以创建分词策略 . 多个field 对应 多个analyzer <a href="https://blog.csdn.net/JineD/article/details/108845906">https://blog.csdn.net/JineD/article/details/108845906</a></p>
+
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html</a></p>
+
+<p>keyword 得全匹配才行， text默认的分词策略， 默认分词  “中文” =&gt; “中” “文”  ，所以输入  “中文”无法命中，</p>
+
+<p><img src="/images/202205/WechatIMG186.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG187.png" alt="" width="800" /></p>
+
+<h4 id="下拉搜索的场景-可以使用whitespace-analyzer">下拉搜索的场景, 可以使用whitespace analyzer</h4>
+<p>保存的时候 写入 “中 中文 中文标 中文标题 文 文标 文标题 标题 题”</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_3
+{
+  "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "whitespace",
+          "fields": {
+           
+            "standard": {
+              "type": "text",
+              "analyzer": "standard"
+            }
+          }
+        }
+      }
+    }
+}
+</code></pre></div></div>
+
+<p><img src="/images/202205/WechatIMG185.png" alt="" width="800" /></p>
+
+<h4 id="中文分词场景">中文分词场景</h4>
+
+<p>IK分词 参考文章：<a href="https://blog.csdn.net/weixin_40612128/article/details/123476150">https://blog.csdn.net/weixin_40612128/article/details/123476150</a></p>
+
+<p>记得把版本号改对</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>elasticsearch-plugin -v install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v8.2.0/elasticsearch-analysis-ik-8.2.0.zip
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_ik
+{
+  "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "whitespace",
+          "fields": {
+            "spy": {
+              "type": "text",
+              "analyzer": "ik_smart"
+            },
+            "standard": {
+              "type": "text",
+              "analyzer": "standard"
+            },
+            "fpy": {
+              "type": "text",
+              "analyzer": "ik_smart"
+            }
+          }
+        }
+      }
+    
+  }
+}
+</code></pre></div></div>
+<p><img src="/images/202205/WechatIMG188.png" alt="" width="800" /></p>
+
+<h3 id="after-search">After Search</h3>
+
+<p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
+
+<p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
+        
+        <div class="content">
+            <h1 id="cas">CAS</h1>
+
+<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
+
+<p>Unsafe.compareAndSetObject</p>
+
+<p>内部调用native cmpxchg汇编指令</p>
+
+<blockquote>
+  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
+</blockquote>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
@@ -366,139 +543,6 @@
 </blockquote>
 
 <p>源码解析： TODO</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/swagger">May 17, 2022 - swagger</a></h1>
-        
-        <div class="content">
-            <h1 id="swagger">swagger</h1>
-
-<p>官网： <a href="https://swagger.io/">https://swagger.io/</a></p>
-
-<p>参考文章:  <a href="https://www.jianshu.com/p/088163459147">https://www.jianshu.com/p/088163459147</a></p>
-
-<p>​			<a href="http://c.biancheng.net/view/5532.html">http://c.biancheng.net/view/5532.html</a></p>
-
-<p>项目地址:  <a href="https://github.com/gongchangyou/swagger">https://github.com/gongchangyou/swagger</a></p>
-
-<ol>
-  <li>
-    <p>添加依赖</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.spring4all&lt;/groupId&gt;
-            &lt;artifactId&gt;swagger-spring-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>配置swagger</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
-@Profile({"dev","local"})
-@EnableSwagger2
-@EnableWebMvc
-public class SwaggerConfig {
-}
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port</p>
-  </li>
-  <li>
-    <p>添加注解
-<img src="/images/202205/WechatIMG148.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>再次访问，这次说明文档都展示出来了。
-<img src="/images/202205/WechatIMG147.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-<p>问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误</p>
-
-<p>回答1: <a href="https://www.cnblogs.com/rainbow70626/p/15680184.html">https://www.cnblogs.com/rainbow70626/p/15680184.html</a> 添加注解 @EnableWebMvc</p>
-
-<p>问题2： 如何添加response 的schema ?</p>
-
-<p>回答2： 
-直接如下这样写是没用的。
-<img src="/images/202205/WechatIMG151.png" alt="" width="800" /><br />
-需要使用v3的ApiResponse
-<img src="/images/202205/WechatIMG159.png" alt="" width="800" /><br />
-这样ok了
-<img src="/images/202205/WechatIMG153.png" alt="" width="800" /></p>
-
-<p>问题3： 如何添加response为list的schema ?</p>
-
-<p>回答3：如下乱写当然也行，swagger并不会去比对schema的implementation和 method的returnType. 这样当然swagger ui html也会显示成OutputModel，而不是一个list.所以这种写法全靠自觉。
-<img src="/images/202205/WechatIMG154.png" alt="" width="800" /></p>
-
-<p>正确的写法应该如下所示，引入ArraySchema,且把原先的ApiResponse给删掉，否则会冲突，导致无法正常显示。
-<img src="/images/202205/WechatIMG156.png" alt="" width="800" /><br />
-<img src="/images/202205/WechatIMG158.png" alt="" width="800" /><br />
-这下显示ok了
-<img src="/images/202205/WechatIMG157.png" alt="" width="800" /></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/OWASP">May 15, 2022 - java项目 依赖检查</a></h1>
-        
-        <div class="content">
-            <h1 id="owasp">OWASP</h1>
-
-<p>官网： <a href="https://owasp.org/">https://owasp.org/</a></p>
-
-<p>网站安全top 10: <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></p>
-
-<p>检测插件 <a href="https://blog.csdn.net/qq_35624642/article/details/122438449">https://blog.csdn.net/qq_35624642/article/details/122438449</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--        代码依赖包安全漏洞检测--&gt;
-&lt;!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-    &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-    &lt;version&gt;6.5.2&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;!--        代码依赖包安全漏洞检测--&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-                &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-                &lt;configuration&gt;
-                    &lt;autoUpdate&gt;true&lt;/autoUpdate&gt;
-                &lt;/configuration&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;check&lt;/goal&gt;
-                        &lt;/goals&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-</code></pre></div></div>
-
-<p>如下图点击maven:check</p>
-
-<p><img src="/images/202205/WechatIMG143.png" alt="" width="800" /></p>
-
-<p>运行结束后，会在target下生成检测报告dependency-check-report.html，直接浏览器打开查看就可以了</p>
-
-<p><img src="/images/202205/WechatIMG144.png" alt="" width="800" /></p>
 
 
         </div>

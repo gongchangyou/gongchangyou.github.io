@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/python-docker">python docker</a></li>
+        
+          <li><a href="/2022/07/storm">storm</a></li>
+        
           <li><a href="/2022/06/mysql-log">mysql log</a></li>
         
           <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
           <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
-        
-          <li><a href="/2022/06/ES-cluster">es cluster</a></li>
-        
-          <li><a href="/2022/06/sentinel">sentinel</a></li>
         
     </ul>
 </div>
@@ -118,7 +118,7 @@
 			
 		
 			
-				<li><a href="/tag/python" title="python">python<sup>8</sup></a></li>
+				<li><a href="/tag/python" title="python">python<sup>9</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>54</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>55</sup></a></li>
 			
 		
 			
@@ -175,6 +175,36 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/04/MinIO_python">Apr 24, 2022 - minio_python</a></h1>
+        
+        <div class="content">
+            <h1 id="minio-python">MinIO-python</h1>
+
+<p>python client : <a href="http://docs.minio.org.cn/docs/master/python-client-api-reference">http://docs.minio.org.cn/docs/master/python-client-api-reference</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/python_user">Apr 24, 2022 - user</a></h1>
+        
+        <div class="content">
+            <h1 id="python-user">python-User</h1>
+
+<p>获取当前用户</p>
+
+<p>参考文章: <a href="https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/">https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/04/conda">Apr 23, 2022 - conda</a></h1>
         
         <div class="content">
@@ -195,72 +225,6 @@ conda env list
 conda activate ancillary
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/MinIO_policy">Apr 22, 2022 - minio_policy</a></h1>
-        
-        <div class="content">
-            <h1 id="minio-policy">MinIO-policy</h1>
-
-<p>权限控制</p>
-
-<h3 id="有时候场景是-只针对某个账号有权限read-先将bucket设置成privacy-再将这个账号的policy设置成-readonly">有时候场景是 只针对某个账号有权限read， 先将bucket设置成privacy, 再将这个账号的policy设置成 readonly</h3>
-
-<p>policy设置如下</p>
-
-<p><img src="/images/202204/WechatIMG118.png" alt="" width="800" /></p>
-
-<p>S3 action: <a href="https://iam.cloudonaut.io/reference/s3.html">https://iam.cloudonaut.io/reference/s3.html</a></p>
-
-<h3 id="如何获取物理存储地址">如何获取物理存储地址？</h3>
-<p>不可能！ 因为MinIO是将一个文件拆开存放到多个物理磁盘上，不是直接放到某个磁盘。</p>
-
-<h3 id="为什么minio可以保证一半节点不可用的时候服务依然可用">为什么MinIO可以保证一半节点不可用的时候，服务依然可用？</h3>
-<p>参考文章：<a href="https://www.cnblogs.com/FLY_DREAM/p/14587022.html">https://www.cnblogs.com/FLY_DREAM/p/14587022.html</a></p>
-
-<p><a href="https://blog.csdn.net/sinat_27186785/article/details/52034588">https://blog.csdn.net/sinat_27186785/article/details/52034588</a></p>
-
-<p>纠删码</p>
-
-<p>纠删码是一种恢复丢失和损坏数据的数学算法，目前，纠删码技术在分布式存储系统中的应用主要有三类，阵列纠删码（Array Code: RAID5、RAID6 等）、RS(Reed-Solomon)里德-所罗门类纠删码和 LDPC(LowDensity Parity Check Code)低密度奇偶校验纠删码。Erasure Code 是一种编码技术，它可以将 n 份原始数据，增加 m 份数据，并能通过 n+m 份中的任意 n 份数据，还原为原始数据。即如果有任意小于等于 m 份的数据失效，仍然能通过剩下的数据还原出来</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/matomo_archive">Apr 21, 2022 - matomo</a></h1>
-        
-        <div class="content">
-            <h1 id="matomo-archive">Matomo archive</h1>
-
-<p>研究下这个档案缓存 900s是如何生效的</p>
-
-<p><img src="/images/202204/WechatIMG114.png" alt="" width="800" /></p>
-
-<p>namespace Piwik\Plugins\Actions; API.getDownloads</p>
-
-<p>这里根据archive返回数据
-<img src="/images/202204/WechatIMG113.png" alt="" width="800" /></p>
-
-<p>$minDatetimeArchiveProcessedUTC 就是当前时间减去 900s.
-<br />
-ArchiveSelector 中判断archive的时间和  ​$minDatetimeArchiveProcessedUTC 哪个更早，如果archive 的时间更早，则这个archive就失效。</p>
-
-<p><img src="/images/202204/WechatIMG112.png" alt="" width="800" /></p>
-
-<p>如果archive失效 ，则新增
-<img src="/images/202204/WechatIMG116.png" alt="" width="800" /></p>
-
-<p>matomo_archive_blob_2022_04 中的就是对应的二进制缓存
-<img src="/images/202204/WechatIMG117.png" alt="" width="800" /></p>
 
         </div>
     </div>
