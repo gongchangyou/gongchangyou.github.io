@@ -54,8 +54,62 @@ batch 搜索
 
 
 
-批量新增 TODO
+批量编辑 关键字 $set
+
+```
+Bson f = Filters.and(Filters.eq("id", 2),Filters.eq("name", "Eric2"));
+        //成功只更新name字段
+        db.getCollection("user").updateMany(f, new Document("$set",
+                new HashMap<>(){{
+                    put("name", "Eric20");
+                }}
+        ));
+```
 
 
 
-批量修改
+批量追加 关键字 $addToSet
+
+```
+Bson f = Filters.and(Filters.eq("id", 3),Filters.eq("name", "Eric3"));
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap<>(){{
+                    put("nickname", "d3");
+                }}
+        ));
+```
+
+批量追加  合并数组. 关键字 $each
+
+```
+//$each 关键字 在array类型的field中追加 多个element
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap<>() {{
+                    put("nickname", new HashMap<>(){{
+                        put("$each", new ArrayList<>(){{
+                            add("e4");
+                            add("e5");
+
+                        }});
+                    }});
+                }}
+        ));
+```
+
+
+
+单独修改数组中的某个值 .$
+
+```
+//.$ 的意思就是数组的下标
+        Bson f5 = Filters.and(Filters.eq("id", 5), Filters.eq("nickname", "c5"));
+        db.getCollection("user").updateMany(f5, new Document("$set", new HashMap<>(){{
+            put("nickname.$", "f5");
+        }} ));
+```
+
+
+
+参考文章： [https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/](https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/)
+
+[https://www.modb.pro/db/73050](https://www.modb.pro/db/73050)
