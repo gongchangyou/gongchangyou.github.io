@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/pdfreader">pdfreader</a></li>
+        
           <li><a href="/2022/07/python-docker">python docker</a></li>
         
           <li><a href="/2022/07/storm">storm</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/06/mysql-log">mysql log</a></li>
         
           <li><a href="/2022/06/mvn-settings">maven settings</a></li>
-        
-          <li><a href="/2022/06/mongodb-batch">mongodb</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>55</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>56</sup></a></li>
 			
 		
 			
@@ -181,7 +181,7 @@
 
 <p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
 
-<p><a href="/2022/06/canal">启动RocketMQ</a></p>
+<p><a href="/2022/03/RocketMQ-docker">启动RocketMQ</a></p>
 
 <p><a href="/2022/06/canal">部署canal</a></p>
 
@@ -226,6 +226,15 @@ spring.cloud.stream.bindings.input1.group=group
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={"data":[{"id":"5","count":"13"}],"database":"store_db","es":1654874446000,"id":1,"isDdl":false,"mysqlType":{"id":"int","count":"int"},"old":[{"count":"313"}],"pkNames":["id"],"sql":"","sqlType":{"id":4,"count":4},"table":"store","ts":1654911313692,"type":"UPDATE"}
 
 </code></pre></div></div>
+
+<p><img src="/images/202206/WechatIMG312.png" alt="" width="800" /></p>
+
+<ol>
+  <li>红色圈 data中是完整的一行新值</li>
+  <li>绿色的是主键id</li>
+  <li>蓝色的那个只是消息自增id，不是主键</li>
+  <li>old 中的是这次修改的字段的旧值</li>
+</ol>
 
 
             </div>

@@ -7,6 +7,61 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>pdfreader</title>
+				<description>&lt;h1 id=&quot;pdfbox&quot;&gt;pdfbox&lt;/h1&gt;
+
+&lt;p&gt;添加依赖&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox --&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.pdfbox&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;pdfbox&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;3.0.0-alpha3&amp;lt;/version&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;遍历文件夹&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; String path = &quot;/path/to/pdf&quot;;		//要遍历的路径
+        File file = new File(path);		//获取其file对象
+        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
+        for(File f:fs){					//遍历File[]数组
+            if(!f.isDirectory()) {        //若非目录(即文件)，则打印
+//                System.out.println(f);
+                parse(f);
+            }
+        }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;逐页读取&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; try {
+        PDDocument document = Loader.loadPDF(file);
+        if (!document.isEncrypted()) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            var lastNo = &quot;&quot;;
+            var goodOffset = 1;
+
+            for(int i = 1; i&amp;lt;=document.getNumberOfPages(); i ++){
+                stripper.setSortByPosition(true);
+                stripper.setStartPage(i);
+                stripper.setEndPage(i);
+
+                String text = stripper.getText(document);
+            }
+            
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+ }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Wed, 06 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/pdfreader</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/pdfreader</guid>
+			</item>
+		
+			<item>
 				<title>python docker</title>
 				<description>&lt;h1 id=&quot;python-docker&quot;&gt;python docker&lt;/h1&gt;
 
@@ -157,6 +212,10 @@
         log.info(&quot;allcost={}&quot;, System.currentTimeMillis()- firstStart);
     }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;批量新增 TODO&lt;/p&gt;
+
+&lt;p&gt;批量修改&lt;/p&gt;
 </description>
 				<pubDate>Mon, 27 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/mongodb-batch</link>
@@ -238,7 +297,7 @@ ifconfig eth0:1 down
 
 &lt;p&gt;项目地址： &lt;a href=&quot;https://github.com/alibaba/canal/&quot;&gt;https://github.com/alibaba/canal/&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;/2022/06/canal&quot;&gt;启动RocketMQ&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/2022/03/RocketMQ-docker&quot;&gt;启动RocketMQ&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;/2022/06/canal&quot;&gt;部署canal&lt;/a&gt;&lt;/p&gt;
 
@@ -283,6 +342,15 @@ spring.cloud.stream.bindings.input1.group=group
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={&quot;data&quot;:[{&quot;id&quot;:&quot;5&quot;,&quot;count&quot;:&quot;13&quot;}],&quot;database&quot;:&quot;store_db&quot;,&quot;es&quot;:1654874446000,&quot;id&quot;:1,&quot;isDdl&quot;:false,&quot;mysqlType&quot;:{&quot;id&quot;:&quot;int&quot;,&quot;count&quot;:&quot;int&quot;},&quot;old&quot;:[{&quot;count&quot;:&quot;313&quot;}],&quot;pkNames&quot;:[&quot;id&quot;],&quot;sql&quot;:&quot;&quot;,&quot;sqlType&quot;:{&quot;id&quot;:4,&quot;count&quot;:4},&quot;table&quot;:&quot;store&quot;,&quot;ts&quot;:1654911313692,&quot;type&quot;:&quot;UPDATE&quot;}
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG312.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;红色圈 data中是完整的一行新值&lt;/li&gt;
+  &lt;li&gt;绿色的是主键id&lt;/li&gt;
+  &lt;li&gt;蓝色的那个只是消息自增id，不是主键&lt;/li&gt;
+  &lt;li&gt;old 中的是这次修改的字段的旧值&lt;/li&gt;
+&lt;/ol&gt;
 
 </description>
 				<pubDate>Fri, 10 Jun 2022 10:25:06 +0800</pubDate>
@@ -383,258 +451,6 @@ FLUSH PRIVILEGES;
 				<pubDate>Thu, 09 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/canal</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/06/canal</guid>
-			</item>
-		
-			<item>
-				<title>seata</title>
-				<description>&lt;h1 id=&quot;seata-分布式事务&quot;&gt;SEATA 分布式事务&lt;/h1&gt;
-
-&lt;p&gt;官网： &lt;a href=&quot;https://seata.io/zh-cn/docs/overview/what-is-seata.html&quot;&gt;https://seata.io/zh-cn/docs/overview/what-is-seata.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;术语&quot;&gt;术语&lt;/h3&gt;
-&lt;p&gt;TC (Transaction Coordinator) - 事务协调者
-维护全局和分支事务的状态，驱动全局事务提交或回滚。&lt;/p&gt;
-
-&lt;p&gt;TM (Transaction Manager) - 事务管理器
-定义全局事务的范围：开始全局事务、提交或回滚全局事务。&lt;/p&gt;
-
-&lt;p&gt;RM (Resource Manager) - 资源管理器
-管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;at的实现方案&quot;&gt;AT的实现方案&lt;/h2&gt;
-
-&lt;p&gt;参考文章 &lt;a href=&quot;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&quot;&gt;https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://seata.io/zh-cn/docs/user/quickstart.html&quot;&gt;https://seata.io/zh-cn/docs/user/quickstart.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;前提&quot;&gt;前提&lt;/h3&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;基于支持本地 ACID 事务的关系型数据库。&lt;/p&gt;
-
-  &lt;p&gt;Java 应用，通过 JDBC 访问数据库。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;下面是一个具体的例子：订单扣库存的解决方案&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202205/solution.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;具体的操作步骤有3步：&lt;/p&gt;
-
-&lt;p&gt;前提： &lt;a href=&quot;../../../2022/01/nacos&quot;&gt; 我们先本地启动一个nacos &lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;一. 启动seata&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载 1.4.2版本，更高版本不知道配置在哪里，&lt;a href=&quot;https://github.com/seata/seata/releases/tag/v1.4.2&quot;&gt;https://github.com/seata/seata/releases/tag/v1.4.2&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;解压后，去修改 conf/registry.conf 和conf/file.conf 中关于db的配置
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    registry {
-              \# file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
-              type = &quot;nacos&quot;
-       
-
-              nacos {
-                application = &quot;seata-server&quot;
-                serverAddr = &quot;127.0.0.1:8848&quot;
-                group = &quot;SEATA_GROUP&quot;
-                namespace = &quot;&quot;
-                cluster = &quot;default&quot;
-                username = &quot;nacos&quot;
-                password = &quot;nacos&quot;
-              }
-          }
-          config {
-              \# file、nacos 、apollo、zk、consul、etcd3
-              type = &quot;nacos&quot;
-
-              nacos {
-                serverAddr = &quot;127.0.0.1:8848&quot;
-                namespace = &quot;&quot;
-                group = &quot;SEATA_GROUP&quot;
-                username = &quot;nacos&quot;
-                password = &quot;nacos&quot;
-                dataId = &quot;seataServer.properties&quot;
-              }
-          }
-                  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; db {
-## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp)/HikariDataSource(hikari) etc.
-datasource = &quot;druid&quot;
-## mysql/oracle/postgresql/h2/oceanbase etc.
-dbType = &quot;mysql&quot;
-driverClassName = &quot;com.mysql.jdbc.Driver&quot;
-## if using mysql to store the data, recommend add rewriteBatchedStatements=true in jdbc connection param
-url = &quot;jdbc:mysql://127.0.0.1:3306/seata?rewriteBatchedStatements=true&quot;
-user = &quot;root&quot;
-password = &quot;123456&quot;
-minConn = 5
-maxConn = 100
-globalTable = &quot;global_table&quot;
-branchTable = &quot;branch_table&quot;
-lockTable = &quot;lock_table&quot;
-queryLimit = 100
-maxWait = 5000
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;blockquote&gt;
-      &lt;p&gt;cd bin&lt;/p&gt;
-
-      &lt;p&gt;sh seata-server.sh -p 8091 -m file&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG259.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。 每个微服务的db中都要建这个表，因为各自的undo log存在各自的db的undo_log表中&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE `undo_log`
-(
-  `id`            BIGINT(20)   NOT NULL AUTO_INCREMENT,
-  `branch_id`     BIGINT(20)   NOT NULL,
-  `xid`           VARCHAR(100) NOT NULL,
-  `context`       VARCHAR(128) NOT NULL,
-  `rollback_info` LONGBLOB     NOT NULL,
-  `log_status`    INT(11)      NOT NULL,
-  `log_created`   DATETIME     NOT NULL,
-  `log_modified`  DATETIME     NOT NULL,
-  `ext`           VARCHAR(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;三. 搭建微服务&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;先把nacos 启动起来 &lt;a href=&quot;../../../2022/01/nacos&quot;&gt;启动nacos&lt;/a&gt; (这步第0步已经做过了)&lt;/li&gt;
-  &lt;li&gt;启动 maven仓库   &lt;a href=&quot;../../../2022/01/maven&quot;&gt;启动maven仓库&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-order&quot;&gt;https://github.com/gongchangyou/service-order&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-store&quot;&gt;https://github.com/gongchangyou/service-store&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/service-buy&quot;&gt;https://github.com/gongchangyou/service-buy&lt;/a&gt;&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;注意各微服务中关于seata的配置&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #seata nacos配置
- seata.registry.type=nacos
- #这个配置需要跟nacos中的服务名保持一致
- seata.registry.nacos.group=SEATA_GROUP
- seata.registry.nacos.application=seata-server
- #seata.registry.nacos.namespace=${nacos.discovery.namespace}
- seata.registry.nacos.cluster=default
- seata.registry.nacos.server-addr=127.0.0.1:8848
- #账号密码
- #seata.registry.nacos.username=nacos
- #seata.registry.nacos.password=nacos
- seata.tx-service-group=my_test_tx_group
- seata.enabled=true
- #seata 配置
- seata.enable-auto-data-source-proxy=true
- seata.application-id=${spring.application.name}
- seata.config.type=nacos
- seata.config.nacos.group=SEATA_GROUP
- seata.config.nacos.server-addr=127.0.0.1:8848
- #seata.config.nacos.namespace=${nacos.discovery.namespace}
- #seata.config.nacos.username=nacos
- #seata.config.nacos.password=nacos
- #可以切换AT和XA
- seata.data-source-proxy-mode=AT
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题1: io.seata.core.rpc.netty.NettyClientChannelManager : can not get cluster name in registry config ‘service.vgroupMapping.my_test_tx_group’, please make sure registry config correct&lt;/p&gt;
-
-&lt;p&gt;解决1: 从ClientWorker.getServerConfig方法追进去看 http的url，发现是设置了tenant和 accessToken.注意检查下你的nacos的api是否需要携带这俩参数，如果没必要的话，记得在代码中把 username,password, namespace注释掉&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;访问试试
-
-http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;amp;group=SEATA_GROUP&amp;amp;tenant=c7ba173f-29e5-4c58-ae78-b102be11c4f9&amp;amp;accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY1NDc2NTk5N30.Di3xRbagvMl_OCq5lnQFP7wOWN8dupuQX3QXr24DITU
-
-http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;amp;group=SEATA_GROUP
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题2：io.seata.core.rpc.netty.NettyClientChannelManager : no available service found in cluster ‘seata-server’, please make sure registry config correct and keep your seata server running&lt;/p&gt;
-
-&lt;p&gt;解决2：在配置中心设置seata-server 的默认集群(cluster) , 直接写default就行&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG262.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题3: 2022-06-09 14:40:05.340 ERROR [timeoutChecker_2_1] io.seata.core.rpc.netty.NettyClientChannelManager : 0101 can not connect to 192.168.1.4:8091 cause:can not register RM,err:register RMROLE error, errMsg:cost 30004 ms&lt;/p&gt;
-
-&lt;p&gt;解决3： 注册不上RM, 检查了一下seata的 conf/file.conf中 db的配置,  确保username和password都填写正确&lt;/p&gt;
-
-&lt;p&gt;问题4： 2022-06-09 14:56:29.679 ERROR [restartedMain] io.seata.core.rpc.netty.NettyClientChannelManager : 0304 register RM failed.&lt;/p&gt;
-
-&lt;p&gt;解决4： 同3&lt;/p&gt;
-
-&lt;p&gt;问题5：java.lang.NoSuchMethodException: com.mysql.cj.conf.PropertySet.getBooleanReadableProperty(java.lang.String)&lt;/p&gt;
-
-&lt;p&gt;method_6_getPropertySet = class_6_connection.getMethod(“getBooleanReadableProperty”);   JdbcConnection中找不到 getBooleanReadableProperty方法&lt;/p&gt;
-
-&lt;p&gt;解决5：是druid中的MysqlUtils 类的bug. 在1.2.5以后修复了. 升级即可，但是spring-boot可能会无法自动加载DruidDataSourceWrapper. exclude掉即可 @SpringBootApplication(scanBasePackages = {“com.mouse”}, exclude = DruidDataSourceAutoConfigure.class)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;com.alibaba&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;druid-spring-boot-starter&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;1.2.5&amp;lt;/version&amp;gt;
-            &amp;lt;exclusions&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-boot-autoconfigure&amp;lt;/artifactId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-            &amp;lt;/exclusions&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;undo-log中的记录-例子-如果想要看undolog的话记得在事务中添加断点因为事务执行完毕会清空undo_log表&quot;&gt;undo log中的记录 例子, 如果想要看undolog的话记得在事务中添加断点，因为事务执行完毕会清空undo_log表.&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10,7034894280102293554,192.168.1.3:8091:7034894280102293553,serializer=jackson,&quot;{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.BranchUndoLog&quot;&quot;,&quot;&quot;xid&quot;&quot;:&quot;&quot;192.168.1.3:8091:7034894280102293553&quot;&quot;,&quot;&quot;branchId&quot;&quot;:7034894280102293554,&quot;&quot;sqlUndoLogs&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.SQLUndoLog&quot;&quot;,&quot;&quot;sqlType&quot;&quot;:&quot;&quot;INSERT&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;`order`&quot;&quot;,&quot;&quot;beforeImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords$EmptyTableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[]]},&quot;&quot;afterImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;order&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:28},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;status&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:0}]]}]]}}]]}&quot;,0,2022-06-09 12:54:35,2022-06-09 12:54:35,
-
-
-11,7034894280102293555,192.168.1.3:8091:7034894280102293553,serializer=jackson,&quot;{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.BranchUndoLog&quot;&quot;,&quot;&quot;xid&quot;&quot;:&quot;&quot;192.168.1.3:8091:7034894280102293553&quot;&quot;,&quot;&quot;branchId&quot;&quot;:7034894280102293555,&quot;&quot;sqlUndoLogs&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.undo.SQLUndoLog&quot;&quot;,&quot;&quot;sqlType&quot;&quot;:&quot;&quot;UPDATE&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;beforeImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:1},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;count&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:910}]]}]]},&quot;&quot;afterImage&quot;&quot;:{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.TableRecords&quot;&quot;,&quot;&quot;tableName&quot;&quot;:&quot;&quot;store&quot;&quot;,&quot;&quot;rows&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Row&quot;&quot;,&quot;&quot;fields&quot;&quot;:[&quot;&quot;java.util.ArrayList&quot;&quot;,[{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;id&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;PRIMARY_KEY&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:1},{&quot;&quot;@class&quot;&quot;:&quot;&quot;io.seata.rm.datasource.sql.struct.Field&quot;&quot;,&quot;&quot;name&quot;&quot;:&quot;&quot;count&quot;&quot;,&quot;&quot;keyType&quot;&quot;:&quot;&quot;NULL&quot;&quot;,&quot;&quot;type&quot;&quot;:4,&quot;&quot;value&quot;&quot;:907}]]}]]}}]]}&quot;,0,2022-06-09 12:55:56,2022-06-09 12:55:56,
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;注意点&quot;&gt;注意点&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;各个服务的group要一致，不然无法实例化. 一家公司的group最好统一吧，不然TM无法调用RM.
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dubbo.application.parameters.group=test-service
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG265.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-</description>
-				<pubDate>Wed, 08 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/seata</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/seata</guid>
 			</item>
 		
 	</channel>

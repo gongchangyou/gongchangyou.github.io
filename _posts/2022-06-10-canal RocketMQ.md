@@ -15,7 +15,7 @@ tag: [java]
 
 
 
-[启动RocketMQ]({{ site.baseurl}}/2022/06/canal)
+[启动RocketMQ]({{ site.baseurl}}/2022/03/RocketMQ-docker)
 
 [部署canal]({{ site.baseurl}}/2022/06/canal)
 
@@ -75,4 +75,11 @@ spring.cloud.stream.bindings.input1.group=group
 ```
 
 
+
+![]({{ site.baseurl}}/images/202206/WechatIMG312.png){: width="800" }
+
+1.  红色圈 data中是完整的一行新值
+2.  绿色的是主键id
+3.  蓝色的那个只是消息自增id，不是主键
+4.  old 中的是这次修改的字段的旧值
 
