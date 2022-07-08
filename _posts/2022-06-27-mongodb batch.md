@@ -113,3 +113,5 @@ Bson f = Filters.and(Filters.eq("id", 3),Filters.eq("name", "Eric3"));
 参考文章： [https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/](https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/)
 
 [https://www.modb.pro/db/73050](https://www.modb.pro/db/73050)
+
+[https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu](https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu)

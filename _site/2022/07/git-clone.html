@@ -172,82 +172,89 @@
 
         </div>
         <div class="col-md-9">
+          <div class="article">
+            <div class="well">
+                <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
-        
-        <div class="content">
-            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
-
-<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
-
-<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
-
-<p>上传到appStore的时候一直报这个错：Error ITMS-90034:”Missing or invalid signature. The bundle XXX at bundle path ‘Payload/XXX.app’ is not signed using  an Apple submission certificate.”</p>
-
-<p>解决方法:</p>
+            <div class="post-content">
+            <h1 id="git-批量迁移">git 批量迁移</h1>
 
 <ol>
   <li>
-    <p>查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为”使用系统默认”</p>
+    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
 
-    <p>查看你的distribution 的mobileProvision 是否用对，并且将你的distribution证书信任置为”使用系统默认”。//一般这样就ok了 亲测这个ok</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
+</code></pre></div>    </div>
+  </li>
+  <li>找到最后一行 (如下任1命令)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
+
+ 2.sed -n '$p'
+
+ 3.sed '$!N;$!D'
+
+ 4.awk '{b=a"\n"$0;a=$0}END{print b}'
+
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>找到最近一次提交的分支的记录</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>sed提取出分支</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
+	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
+	#获取分支名
+	echo $log
+	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
+    
+	echo $branchname
+</code></pre></div>    </div>
   </li>
 </ol>
 
-<p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
 
-<p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/04/VsVim-shortcut-key">Apr 18, 2016 - VsVim快捷键</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>切换头文件 按住ctrl  依次按下 K和O 你就KO了</li>
-</ul>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/03/c++lamda">Mar 24, 2016 - c++ lamda函数</a></h1>
-        
-        <div class="content">
+            </div>
             
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span>
-<span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">num</span><span class="p">]{</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span><span class="k">return</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">;};</span> <span class="c1">//匿名函数 这里可以写很多行哦</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span><span class="c1">//声明一个函数 可以call=f；或者call.bind(f);</span>
-<span class="n">std</span><span class="o">::</span><span class="n">function</span> <span class="n">call</span><span class="p">;</span></code></pre></figure>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="pagination">
-  
-      
-        <a class="btn btn-default" href="/page40" class="previous">Newer</a>
-      
-  
-  <span class="page_number ">Page: 41 of 52</span>
-  
-    <a class="btn btn-default" href="/page42" class="next">Older</a>
-  
+            <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            </div>
+          </div>
+          <div class="pagination">
+              
+              
+                <a class="btn btn-default" href="/2022/07/prometheus" class="previous">Older Post</a>
+              
 </div>
 
         </div>
     </div>
 </div>
+<!--  -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+
+  <script type="text/javascript">
+    var disqus_shortname = '';
+
+    var disqus_config = function () {
+        this.page.identifier = '2022-07-git-clone';
+    };
+
+   (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
 
 <div class="container-fluid">
     <div class="row-fluid">

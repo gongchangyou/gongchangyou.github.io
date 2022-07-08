@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/git-clone">git</a></li>
+        
+          <li><a href="/2022/07/prometheus">prometheus</a></li>
+        
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
           <li><a href="/2022/07/python-docker">python docker</a></li>
         
           <li><a href="/2022/07/storm">storm</a></li>
-        
-          <li><a href="/2022/06/mysql-log">mysql log</a></li>
-        
-          <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
     </ul>
 </div>
@@ -94,7 +94,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>6</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>56</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
 			
 		
 			
@@ -173,6 +173,175 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/mongodb-geo">Mar 21, 2022 - mongodb</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb-geo搜索测评">MongoDB geo搜索测评</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/mongodb-test">https://github.com/gongchangyou/mongodb-test</a></p>
+
+<p>docker 安装MongoDB <a href="https://www.runoob.com/docker/docker-install-mongodb.html">https://www.runoob.com/docker/docker-install-mongodb.html</a></p>
+
+<p>mongodb命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>如果刚刚创建了用户，进入db操作CRUD的之前记得认证
+db.auth('admin','123456')
+
+#查看所有db
+show dbs
+
+#写入
+db.records.insertOne( {
+  id:1,
+  loc :  [ 55.5, 42.3 ]
+} )
+
+
+#find all
+db.records.find( {} )
+
+#创建地理索引
+db.records.createIndex( { "loc": "2d" } )
+
+</code></pre></div></div>
+
+<p>box搜索 <a href="https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0">https://mongodb-documentation.readthedocs.io/en/latest/reference/operator/within.html#gsc.tab=0</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.records.find( {
+   loc: { $geoWithin: { $box:  [ [ 0, 0 ], [ 100, 100 ] ] } }
+} )
+</code></pre></div></div>
+
+<p>可惜没办法搜索热力图，即多个box 一起查询。1亿数据查询速度约20ms，单个box还行。</p>
+
+<p>注意： 默认的范围是 [-180,180] ，如果需要, 可以修改起止点范围</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>删除索引
+dropIndex(”loc_2d")
+重建索引
+reIndex()
+
+创建索引
+db.records.createIndex( { "loc": "2d" } , { min : 0, max : 100000 } )
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/k8s">Mar 17, 2022 - gitlab-runner-docker</a></h1>
+        
+        <div class="content">
+            <h1 id="k8s">k8s</h1>
+
+<p>文档1 <a href="http://docs.kubernetes.org.cn/475.html">http://docs.kubernetes.org.cn/475.html</a></p>
+
+<p>文档2  <a href="https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/</a></p>
+
+<h3 id="常用的几个命令">常用的几个命令:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>查看各种对象
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl expose #将资源暴露为新的Kubernetes Service。在这里可以实现将宿主机的端口映射给容器,容器端口8000
+kubectl expose rc nginx --port=80 --target-port=8000 
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create # 创建一个Deployment
+$ kubectl create -f https://kubernetes.io/docs/user-guide/nginx-deployment.yaml --record
+deployment "nginx-deployment" created
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Listen on port 8888 locally, forwarding to 5000 in the pod #端口转发
+kubectl port-forward mypod 8888:5000
+</code></pre></div></div>
+
+<h3 id="回退到历史版本-这个可以用jenkins做个job">回退到历史版本, 这个可以用jenkins做个job</h3>
+
+<p>现在，我们可以决定回退当前的 rollout 到之前的版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+<p>也可以使用 –revision参数指定某个历史版本：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl rollout undo deployment/nginx-deployment --to-revision=2
+deployment "nginx-deployment" rolled back
+</code></pre></div></div>
+
+<h3 id="扩容-这个可以用jenkins做个job手动扩容">扩容, 这个可以用jenkins做个job手动扩容</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kubectl scale deployment nginx-deployment --replicas 10
+deployment "nginx-deployment" scaled
+
+$ kubectl autoscale deployment nginx-deployment --min=10 --max=15 --cpu-percent=80
+deployment "nginx-deployment" autoscaled
+</code></pre></div></div>
+
+<h3 id="灰度或者蓝绿发布-可以使用ingress">灰度或者蓝绿发布 可以使用ingress</h3>
+
+<p>命令表 <a href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
+
+<p>Minikube 体验 <a href="https://minikube.sigs.k8s.io/docs/start/">https://minikube.sigs.k8s.io/docs/start/</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#进入minikube终端
+minikube ssh 
+#如果docker pull 拉镜像太慢的话 可以直接进入终端 docker pull XXX
+</code></pre></div></div>
+
+<p>问题1：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exiting due to DRV_AS_ROOT: The "docker" driver should not be used with root privileges.
+</code></pre></div></div>
+
+<p>解决1:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube start --force --driver=docker
+</code></pre></div></div>
+
+<p>问题2: k8s.gcr.io/echoserver:1.4 这个镜像拉不到，导致pod启动失败</p>
+
+<p>解决2： <a href="https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91">https://v2as.com/article/fba7b8ff-e3e7-49bd-ab0b-31e517147e91</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pods  -o wide
+查看pod状态是 ImagePullBackOff
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>minikube ssh
+docker pull cilium/echoserver #换个镜像
+</code></pre></div></div>
+
+<p>问题3:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>an error occurred forwarding 7080 -&gt; 8080: error forwarding port 8080 to pod b86addc13b414f05be12d736ee1904cc02d78c6e7e1889c6e45a76c3a1563e58, uid : exit status 1: 2022/03/18 07:14:31 socat[12900] E connect(5, AF=2 127.0.0.1:8080, 16): Connection refused
+</code></pre></div></div>
+
+<p>解决3: <a href="https://github.com/kubernetes/minikube/issues/13176">https://github.com/kubernetes/minikube/issues/13176</a> 其实也没解决，mac就是这个问题。还是去linux系统操作好一些。</p>
+
+<p>问题4: ❌  Exiting due to DRV_NOT_HEALTHY: Found driver(s) but none were healthy. See above for suggestions how to fix installed drivers.  上面会给出解决方案，就是把用户加到docker组</p>
+
+<p>解决4:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo usermod -aG docker $USER &amp;&amp; newgrp docker
+</code></pre></div></div>
+
+<p>如何 利用 nginx-ingress 请求spring boot项目 <a href="https://blog.csdn.net/weixin_39637921/article/details/111281873">https://blog.csdn.net/weixin_39637921/article/details/111281873</a></p>
+
+<p>主要步骤：</p>
+
+ 	1.  创建两个yaml文件。 分别对应RS和Service .kubectl create 
+ 	2. 创建Ingress Controller. 相当于是个内置的nginx，这样不需要外部配置nginx.conf
+ 	3. 创建Ingress ,定义规则，将不同域名的路由对应到不同的service
+ 	4. 测试效果，请求试试
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/gitlab-runner-docker">Mar 16, 2022 - gitlab-runner-docker</a></h1>
@@ -340,418 +509,6 @@ docker-deploy:
     - kubectl config use-context k8s
     - kubectl set image deployment/neuroviz-server-java master=$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
 
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
-        
-        <div class="content">
-            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
-
-<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
-
-<p>上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好</p>
-
-<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
-
-<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
-
-<p>测试服务器8核,  线上环境会更好</p>
-
-<p>10000个点热力图40ms</p>
-
-<p>1000000 个点 热力图, 不测了。直接上7kw个点</p>
-
-<p>7kw 个点 热力图</p>
-
-<p>搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。</p>
-
-<p>搜索100*100的矩形， 首次查询10-11s.</p>
-
-<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。</p>
-
-<p><img src="/images/202203/WechatIMG51.png" alt="" width="800" /></p>
-
-<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
-{"persistent": {"search.max_buckets": 2000000}}
-</code></pre></div></div>
-
-<p>现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。</p>
-
-<p><img src="/images/202203/WechatIMG50.png" alt="" width="800" /></p>
-
-<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
-        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
-        &lt;java.version&gt;11&lt;/java.version&gt;
-    &lt;/properties&gt;
-</code></pre></div></div>
-
-<p>问题2： Missing [X-Elastic-Product] header.</p>
-
-<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
-
-<p>问题3：  返回值大于100M</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
-
-</code></pre></div></div>
-
-<p>解决3:  别人的解决方案 <a href="https://www.cnblogs.com/wwjj4811/p/15261125.html">https://www.cnblogs.com/wwjj4811/p/15261125.html</a></p>
-
-<p>解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
-     * 保留小数点后4位
-     */
-    private String decimal(float x){
-        return String.format("%.4f", x);
-    }
-</code></pre></div></div>
-
-<p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
-
-<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
-{
-  "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_bounding_box": {
-          "location": {
-            "top_left": {
-              "lat": 400,
-              "lon": 100
-            },
-            "bottom_right": {
-              "lat": 30,
-              "lon": 71.12
-            }
-          }
-        }
-      }
-    }
-  }
-}
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  "error" : {
-    "root_cause" : [
-      {
-        "type" : "query_shard_exception",
-        "reason" : "couldn't validate latitude/ longitude values",
-        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
-        "index" : "map_geo"
-      }
-    ],
-    "type" : "search_phase_execution_exception",
-    "reason" : "all shards failed",
-    "phase" : "query",
-    "grouped" : true,
-    "failed_shards" : [
-      {
-        "shard" : 0,
-        "index" : "map_geo",
-        "node" : "h6XPf8XwQla0HPzsoZa4KA",
-        "reason" : {
-          "type" : "query_shard_exception",
-          "reason" : "couldn't validate latitude/ longitude values",
-          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
-          "index" : "map_geo",
-          "caused_by" : {
-            "type" : "query_validation_exception",
-            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
-          }
-        }
-      }
-    ]
-  },
-  "status" : 400
-}
-
-</code></pre></div></div>
-
-<p>如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。</p>
-
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
-        
-        <div class="content">
-            <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
-
-<h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
-
-<ol>
-  <li>
-    <p>docker pull</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull docker.elastic.co/kibana/kibana:8.1.0
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>docker-compose.yml</p>
-  </li>
-</ol>
-
-<p><a href="/images/202203/docker-compose.yml">下载 yaml</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2.2'
-services:
- node01:
-   image: docker.elastic.co/elasticsearch/elasticsearch:8.2.0
-   container_name: node01
-   environment:
-     - node.name=node01
-     - cluster.name=es-cluster-7
-     - discovery.type=single-node
-     - xpack.security.enabled=false
-     - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
-   ulimits:
-     memlock:
-       soft: -1
-       hard: -1
-   volumes:
-     - es-data01:/usr/share/elasticsearch/data
-   ports:
-     - 9200:9200
-   networks:
-     - es-network
-
- kibana:
-   image: docker.elastic.co/kibana/kibana:8.2.0
-   environment:
-     ELASTICSEARCH_HOSTS: http://node01:9200
-   ports:
-     - 5601:5601
-   networks:
-     - es-network
-   depends_on:
-     - node01
-
-volumes:
- es-data01:
-   driver: local
-
-networks:
- es-network:
-   driver: bridge
-</code></pre></div></div>
-
-<ol>
-  <li>
-    <blockquote>
-      <p>docker-compose up</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>浏览器 访问 http://localhost:5601/</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>查看所有索引</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices
-</code></pre></div></div>
-
-<p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
-
-<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html</a></p>
-
-<p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
-
-<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
-
-<p>可以点击inspect 看request 语句</p>
-
-<p><img src="/images/202203/WechatIMG49.png" alt="" width="800" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET users/_search 
-{
-  "aggs": {
-    "2": {
-      "terms": {
-        "field": "country.keyword",
-        "order": {
-          "_count": "desc"
-        },
-        "size": 2
-      },
-      "aggs": {
-        "3": {
-          "terms": {
-            "field": "age",
-            "order": {
-              "_count": "desc"
-            },
-            "size": 2
-          }
-        }
-      }
-    }
-  },
-  "size": 0,
-  "fields": [],
-  "script_fields": {},
-  "stored_fields": [
-    "*"
-  ],
-  "_source": {
-    "excludes": []
-  },
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "match_all": {}
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}
-</code></pre></div></div>
-
-<p>坐标系的热力图的 query</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get users/_search
-{
-  "aggs": {
-    "2": {
-      "range": {
-        "field": "age",
-        "ranges": [
-          {
-            "to": 10,
-            "from": 0
-          },
-          {
-            "to": 20,
-            "from": 10
-          },
-          {
-            "to": 30,
-            "from": 20
-          },
-          {
-            "to": 37,
-            "from": 30
-          }
-        ],
-        "keyed": true
-      },
-      "aggs": {
-        "2": {
-          "range": {
-            "field": "age",
-            "ranges": [
-              {
-                "to": 10,
-                "from": 0
-              },
-              {
-                "to": 20,
-                "from": 10
-              },
-              {
-                "to": 30,
-                "from": 20
-              },
-              {
-                "to": 40,
-                "from": 30
-              }
-            ],
-            "keyed": true
-          }
-        }
-      }
-    }
-  },
-  "size": 0,
-  "fields": [],
-  "script_fields": {},
-  "stored_fields": [
-    "*"
-  ],
-  "_source": {
-    "excludes": []
-  },
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "match_all": {}
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}
-</code></pre></div></div>
-
-<p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
-
-<h3 id="单独部署-es">单独部署 ES</h3>
-
-<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
-
-docker network create elastic
-
-docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
-
-docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
-
-curl --cacert http_ca.crt -u elastic https://localhost:9200 
-
-输入docker run 时的password即可
-</code></pre></div></div>
-
-<p>问题1： 报错</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
-bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
-</code></pre></div></div>
-
-<p>虚拟内存太小了。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/sysctl.conf 
-vm.max_map_count=655360
-</code></pre></div></div>
-
-<p>重启</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
 </code></pre></div></div>
 
 

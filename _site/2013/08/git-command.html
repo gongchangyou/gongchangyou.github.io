@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/git-clone">git</a></li>
+        
+          <li><a href="/2022/07/prometheus">prometheus</a></li>
+        
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
           <li><a href="/2022/07/python-docker">python docker</a></li>
         
           <li><a href="/2022/07/storm">storm</a></li>
-        
-          <li><a href="/2022/06/mysql-log">mysql log</a></li>
-        
-          <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
     </ul>
 </div>
@@ -94,7 +94,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>6</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>56</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
 			
 		
 			
@@ -243,6 +243,31 @@ git log --grep=“test”</p>
 
 <h3>删除本地标签</h3>
 <p>git tag -d [标签名]</p>
+
+<h3>oneline 查看信息</h3>
+<p>git log branchname –pretty=format:”%C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an] %C(cyan)%ad”  -1</p>
+
+<h3>查找所有分支的最近一次提交</h3>
+<p>git br -vvr |awk ‘{print $1}’ |xargs -I {} git log {} –pretty=format:”%C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an] %C(cyan)%ad”  -1</p>
+
+<h3>查找所有分支的最近一次提交, 并根据时间倒序</h3>
+<p>git br -vvr |awk ‘{print $1}’ |xargs -I {} git log {} –pretty=format:”%C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]”  -1 –date=iso</p>
+
+<p>%at 是 时间戳， 但是因为format这边输出没有换行，所以无法使用sort</p>
+
+<p>换成tformat 不会丢掉最后那个换行符, 这样sort就成为了可能！</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>git br -vvr</td>
+      <td>awk ‘{print $1}’</td>
+      <td>xargs -I {} git log {} –pretty=tformat:”%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]”  -1 –date=iso</td>
+      <td>sort</td>
+    </tr>
+  </tbody>
+</table>
+
 
             </div>
             

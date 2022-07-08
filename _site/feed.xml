@@ -7,6 +7,69 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>git</title>
+				<description>&lt;h1 id=&quot;git-批量迁移&quot;&gt;git 批量迁移&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;找到最后一行 (如下任1命令)
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 1.awk 'END {print}'
+
+ 2.sed -n '$p'
+
+ 3.sed '$!N;$!D'
+
+ 4.awk '{b=a&quot;\n&quot;$0;a=$0}END{print b}'
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;找到最近一次提交的分支的记录&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort|awk 'END {print}' 
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;sed提取出分支&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#获取最近一次提交
+	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort|awk 'END {print}') 
+	#获取分支名
+	echo $log
+	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
+    
+	echo $branchname
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<pubDate>Fri, 08 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/git-clone</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/git-clone</guid>
+			</item>
+		
+			<item>
+				<title>prometheus</title>
+				<description>&lt;h1 id=&quot;prometheus&quot;&gt;prometheus&lt;/h1&gt;
+
+&lt;p&gt;参考文章： &lt;a href=&quot;https://www.prometheus.wang/quickstart/why-monitor.html&quot;&gt;https://www.prometheus.wang/quickstart/why-monitor.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://prometheus.io/docs/introduction/overview/&quot;&gt;https://prometheus.io/docs/introduction/overview/&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Thu, 07 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/prometheus</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/prometheus</guid>
+			</item>
+		
+			<item>
 				<title>pdfreader</title>
 				<description>&lt;h1 id=&quot;pdfbox&quot;&gt;pdfbox&lt;/h1&gt;
 
@@ -250,6 +313,8 @@
 &lt;p&gt;参考文章： &lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/&quot;&gt;https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.modb.pro/db/73050&quot;&gt;https://www.modb.pro/db/73050&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu&quot;&gt;https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu&lt;/a&gt;&lt;/p&gt;
 </description>
 				<pubDate>Mon, 27 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/mongodb-batch</link>
@@ -323,168 +388,6 @@ ifconfig eth0:1 down
 				<pubDate>Sat, 11 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/sentinel</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/06/sentinel</guid>
-			</item>
-		
-			<item>
-				<title>canal RocketMQ</title>
-				<description>&lt;h1 id=&quot;canal-导入rocketmq&quot;&gt;canal 导入RocketMQ&lt;/h1&gt;
-
-&lt;p&gt;项目地址： &lt;a href=&quot;https://github.com/alibaba/canal/&quot;&gt;https://github.com/alibaba/canal/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/2022/03/RocketMQ-docker&quot;&gt;启动RocketMQ&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;/2022/06/canal&quot;&gt;部署canal&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;修改源码的canal.properties ，但是没生效&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG268.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;这些实现类是用SPI加载的&lt;/p&gt;
-
-&lt;p&gt;CanalLauncher.java -》 CanalStarter.java&lt;/p&gt;
-
-&lt;p&gt;追进去看到 classLoader 会去 target/plugin 文件夹中读取class。找不到再走META-INF/canal/xxx.CanalMQProducuer&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG269.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;把如下注释掉就行了&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG270.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在canal源码中的配置&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#这个不用动
-canal.destinations = example
-#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
-canal.mq.topic=test-topic
-
-#模式从 tcp 改成 rocketMQ
-canal.serverMode = rocketMQ
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在消费端的rocketMQ的配置&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;成功！&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={&quot;data&quot;:[{&quot;id&quot;:&quot;5&quot;,&quot;count&quot;:&quot;13&quot;}],&quot;database&quot;:&quot;store_db&quot;,&quot;es&quot;:1654874446000,&quot;id&quot;:1,&quot;isDdl&quot;:false,&quot;mysqlType&quot;:{&quot;id&quot;:&quot;int&quot;,&quot;count&quot;:&quot;int&quot;},&quot;old&quot;:[{&quot;count&quot;:&quot;313&quot;}],&quot;pkNames&quot;:[&quot;id&quot;],&quot;sql&quot;:&quot;&quot;,&quot;sqlType&quot;:{&quot;id&quot;:4,&quot;count&quot;:4},&quot;table&quot;:&quot;store&quot;,&quot;ts&quot;:1654911313692,&quot;type&quot;:&quot;UPDATE&quot;}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG312.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;红色圈 data中是完整的一行新值&lt;/li&gt;
-  &lt;li&gt;绿色的是主键id&lt;/li&gt;
-  &lt;li&gt;蓝色的那个只是消息自增id，不是主键&lt;/li&gt;
-  &lt;li&gt;old 中的是这次修改的字段的旧值&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-				<pubDate>Fri, 10 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/canal-RocketMQ</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/canal-RocketMQ</guid>
-			</item>
-		
-			<item>
-				<title>canal</title>
-				<description>&lt;h1 id=&quot;canal&quot;&gt;canal&lt;/h1&gt;
-
-&lt;p&gt;项目地址： &lt;a href=&quot;https://github.com/alibaba/canal/&quot;&gt;https://github.com/alibaba/canal/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;前提&quot;&gt;前提&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;/2022/03/mysql-docker&quot;&gt;docker部署MySQL&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;开启binlog 写入&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;修改my.cnf 。一般路径在/etc/mysql/my.cnf&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; [mysqld]
- log-bin=mysql-bin # 开启 binlog
- binlog-format=ROW # 选择 ROW 模式
- server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建canal账号&lt;/p&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  CREATE USER canal IDENTIFIED BY 'canal';  
-  GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
-  -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-  FLUSH PRIVILEGES;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;启动canal&quot;&gt;启动canal&lt;/h3&gt;
-
-&lt;p&gt;因为Mysql是docker启动的，如果canal也是docker启动，可能会需要搭建网桥。所以这里我们直接在宿主机上直接启动canal. &lt;a href=&quot;https://github.com/alibaba/canal/wiki/QuickStart&quot;&gt;QuickStart&lt;/a&gt; 这里介绍的很清楚&lt;/p&gt;
-
-&lt;p&gt;注意观察 bin/startup.sh脚本中的配置文件路径，默认是 canal.properties&lt;/p&gt;
-
-&lt;p&gt;目前1.1.6有点问题，见下面的问题2&lt;/p&gt;
-
-&lt;p&gt;我是clone代码 &lt;a href=&quot;https://github.com/alibaba/canal&quot;&gt;https://github.com/alibaba/canal&lt;/a&gt; 之后稍微改了下， 在IDEA中手动启动java进程.&lt;/p&gt;
-
-&lt;h3 id=&quot;测试代码仓库&quot;&gt;测试代码仓库&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/canal_test&quot;&gt;https://github.com/gongchangyou/canal_test&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;效果&quot;&gt;效果&lt;/h3&gt;
-
-&lt;p&gt;在某张表更新了一行记录，可以从canal的客户端中获取变更。&lt;/p&gt;
-
-&lt;p&gt;客户端解析protobuf格式的ByteString.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG266.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202206/WechatIMG267.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;问题1： 启动canal报错，&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Caused by: java.io.IOException: connect /127.0.0.1:3306 failure
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:85)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.connect(MysqlConnection.java:89)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlEventParser.preDump(MysqlEventParser.java:87)
-	at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$1.run(AbstractEventParser.java:176)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-Caused by: java.io.IOException: caching_sha2_password Auth failed
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.negotiate(MysqlConnector.java:260)
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:82)
-	... 4 more
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;解决1: 可能是权限问题，尝试下面的命令&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-FLUSH PRIVILEGES;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;问题2： Caused by: java.io.IOException: ErrorPacket [errorNumber=1146, fieldCount=-1, message=Table ‘XXX.BASE TABLE’ doesn’t exist, sqlState=42S02, sqlStateMarker=#]&lt;/p&gt;
-
-&lt;p&gt;解决2： BASE TABLE这张表没找到？ 不知道为啥要去看这张表，事实上db中并没有这张表啊。深深怀疑是&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;show full tables from `&quot; + schema + &quot;` where Table_type = 'BASE TABLE'&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这句query找出所有的table后的处理逻辑的bug. 这个我提了个&lt;a href=&quot;https://github.com/alibaba/canal/pull/4217&quot;&gt;PR&lt;/a&gt; . 版本1.1.6目前有这个问题.&lt;/p&gt;
-
-</description>
-				<pubDate>Thu, 09 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/canal</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/canal</guid>
 			</item>
 		
 	</channel>

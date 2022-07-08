@@ -75,3 +75,20 @@ git push origin -\-delete tag v0.1
 
 <h3>删除本地标签</h3>
 git tag -d [标签名]
+
+
+<h3>oneline 查看信息</h3>
+git log branchname --pretty=format:"%C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an] %C(cyan)%ad"  -1
+
+<h3>查找所有分支的最近一次提交</h3>
+git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=format:"%C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an] %C(cyan)%ad"  -1
+
+<h3>查找所有分支的最近一次提交, 并根据时间倒序</h3>
+git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=format:"%C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso
+
+%at 是 时间戳， 但是因为format这边输出没有换行，所以无法使用sort
+
+换成tformat 不会丢掉最后那个换行符, 这样sort就成为了可能！
+
+git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
+

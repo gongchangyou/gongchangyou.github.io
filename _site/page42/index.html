@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/git-clone">git</a></li>
+        
+          <li><a href="/2022/07/prometheus">prometheus</a></li>
+        
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
           <li><a href="/2022/07/python-docker">python docker</a></li>
         
           <li><a href="/2022/07/storm">storm</a></li>
-        
-          <li><a href="/2022/06/mysql-log">mysql log</a></li>
-        
-          <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
     </ul>
 </div>
@@ -94,7 +94,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>6</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>56</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
 			
 		
 			
@@ -175,6 +175,44 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/01/%E5%85%B3%E4%BA%8E%E8%B4%AC%E5%80%BC">Jan 14, 2016 - 关于贬值</a></h1>
+        
+        <div class="content">
+            <p>最近半年人民币贬值得厉害，从最初美金兑人民币的6.22变成今天的6.59，心中异常恐慌，把部分存款换成美金又换回来，天天动不动盯着汇率刷，折腾的够呛。其实想想自己成长最快的日子是最不在乎存款的那几年，钱都放活期，也没理财。与其把精力放在理财上，不如用在提升自己上，一个月的理财收益再高肯定没有薪水高。</p>
+
+<p><span style="color: #ff0000;">人民币贬不贬值不重要，你自己别贬值就好。</span></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2015/12/born">Dec 16, 2015 - 龚一峰出生啦！</a></h1>
+        
+        <div class="content">
+            <p>12月10日17:20，龚一峰出生，人生第一泡尿尿在了自己脸上。</p>
+
+<p><img src="/images/201512/IMG_20151210_234301.jpg" alt="" /></p>
+
+<object id="STK_137687746371535" style="visibility: visible;" width="440" height="356" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="allowscriptaccess" value="never" /><param name="pluginspage" value="http://get.adobe.com/cn/flashplayer/" /><param name="flashvars" value="playMovie=true&amp;auto=1" /><param name="allowfullscreen" value="true" /><param name="quality" value="high" /><param name="src" value="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" /><param name="wmode" value="transparent" /><embed id="STK_137687746371535" style="visibility: visible;" width="440" height="356" type="application/x-shockwave-flash" src="http://player.youku.com/player.php/sid/XMTQxNTE3NzI4MA/v.swf" allowscriptaccess="never" pluginspage="http://get.adobe.com/cn/flashplayer/" flashvars="playMovie=true&amp;auto=1" allowfullscreen="true" quality="high" wmode="transparent" /></object>
+
+<p>名字取自</p>
+
+<p>会当凌绝顶，一览众山小</p>
+
+<p>海到无边天作岸，山登绝顶我为峰</p>
+
+<p>是你爹我喜欢的句子，少年就应该有这种豪气，是你姑奶奶取了其中两个字哦。</p>
+
+<p><img src="/images/201512/mmexport1453695205909.jpg" alt="" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2015/11/c++-reflect">Nov 12, 2015 - c++ 反射实现 动态创建实例</a></h1>
         
         <div class="content">
@@ -186,77 +224,6 @@
 
 <p>git clone git@github.com:gongchangyou/dynamic_class.git</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/07/c++-link-list-revert">Jul 31, 2015 - c++链表翻转</a></h1>
-        
-        <div class="content">
-            
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_RandomAccessIterator</span><span class="o">&gt;</span>
-<span class="kt">void</span> <span class="nf">__reverse</span><span class="p">(</span><span class="n">_RandomAccessIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_RandomAccessIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="n">random_access_iterator_tag</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">__first</span> <span class="o">==</span> <span class="n">__last</span><span class="p">)</span>
-		<span class="k">return</span><span class="p">;</span>
-	<span class="o">-</span><span class="err">–</span><span class="n">__last</span><span class="p">;</span>
-	<span class="k">while</span> <span class="p">(</span><span class="n">__first</span> <span class="o">&lt;</span> <span class="n">__last</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="n">std</span><span class="o">::</span><span class="n">iter_swap</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
-		<span class="o">++</span><span class="n">__first</span><span class="p">;</span>
-		<span class="o">--</span><span class="n">__last</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></figure>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ListNode* ReverseList(ListNode* pHead) {
-        if(pHead==nullptr)
-            return nullptr;
-        ListNode* temp=nullptr;
-        ListNode* cur=pHead;
-        ListNode* node=nullptr;
-        while(cur!=nullptr)
-        {
-            node=cur-&gt;next;
-            cur-&gt;next=temp;
-            temp=cur;
-            cur=node; 
-        }
-        return temp;
-    }
-
-</code></pre></div></div>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2015/07/c++">Jul 20, 2015 - c++ 宏中 “##”的意义</a></h1>
-        
-        <div class="content">
-            <p>字符串连接符</p>
-
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
-</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-	<span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="n">string</span> <span class="n">boolean_</span> <span class="o">=</span> <span class="s">"boolean_"</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">result</span><span class="p">;</span>
-<span class="k">const</span> <span class="kt">int</span> <span class="n">boolean_type</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">){</span>
-<span class="cp">#define INIT(p, v) case p##type: result = v; break
-</span>	<span class="n">INIT</span><span class="p">(</span><span class="n">boolean_</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-	<span class="cp">#undef INIT
-</span><span class="nl">default:</span> <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">result</span> <span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span></code></pre></figure>
-
-<p>因为 type= 1 = “boolean_” + “type” . 所以 result = 2;</p>
 
         </div>
     </div>

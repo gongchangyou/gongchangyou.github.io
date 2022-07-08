@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/git-clone">git</a></li>
+        
+          <li><a href="/2022/07/prometheus">prometheus</a></li>
+        
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
           <li><a href="/2022/07/python-docker">python docker</a></li>
         
           <li><a href="/2022/07/storm">storm</a></li>
-        
-          <li><a href="/2022/06/mysql-log">mysql log</a></li>
-        
-          <li><a href="/2022/06/mvn-settings">maven settings</a></li>
         
     </ul>
 </div>
@@ -94,7 +94,7 @@
 			
 		
 			
-				<li><a href="/tag/git" title="git">git<sup>5</sup></a></li>
+				<li><a href="/tag/git" title="git">git<sup>6</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>56</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
 			
 		
 			
@@ -175,6 +175,122 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-settings">maven settings</h1>
+
+<p>设置 settings.xml</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
+</code></pre></div></div>
+
+<p>查看当前生效的 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
+</code></pre></div></div>
+
+<p>mvn命令指定 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb">MongoDB</h1>
+
+<p>代码仓库：</p>
+
+<p>Java 代码 chunk逻辑</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
+ 
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
+        final AtomicInteger counter = new AtomicInteger();
+        return new ArrayList&lt;&gt;(
+                list.stream()
+                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
+                        .values());
+    }
+}
+</code></pre></div></div>
+
+<p>batch 搜索</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
+    public void batchGet() {
+        val table =db.getCollection("records");
+        val ids = new ArrayList&lt;&gt;();
+        for (int i = 20140000; i &lt;20147282; i++) {
+            ids.add(String.valueOf(i));
+        }
+        val chunkedList = split(ids, 100);
+        val firstStart = System.currentTimeMillis();
+        for (val list : chunkedList) {
+            val start = System.currentTimeMillis();
+            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
+            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
+                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
+            });
+            log.info("cost={}", System.currentTimeMillis()- start);
+        }
+        log.info("allcost={}", System.currentTimeMillis()- firstStart);
+    }
+</code></pre></div></div>
+
+<p>批量编辑 关键字 $set</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 2),Filters.eq("name", "Eric2"));
+        //成功只更新name字段
+        db.getCollection("user").updateMany(f, new Document("$set",
+                new HashMap&lt;&gt;()
+        ));
+</code></pre></div></div>
+
+<p>批量追加 关键字 $addToSet</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 3),Filters.eq("name", "Eric3"));
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap&lt;&gt;()
+        ));
+</code></pre></div></div>
+
+<p>批量追加  合并数组. 关键字 $each</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//$each 关键字 在array类型的field中追加 多个element
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap&lt;&gt;() );
+                    }});
+                }}
+        ));
+</code></pre></div></div>
+
+<p>单独修改数组中的某个值 .$</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//.$ 的意思就是数组的下标
+        Bson f5 = Filters.and(Filters.eq("id", 5), Filters.eq("nickname", "c5"));
+        db.getCollection("user").updateMany(f5, new Document("$set", new HashMap&lt;&gt;() ));
+</code></pre></div></div>
+
+<p>参考文章： <a href="https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/">https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/</a></p>
+
+<p><a href="https://www.modb.pro/db/73050">https://www.modb.pro/db/73050</a></p>
+
+<p><a href="https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu">https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
         
         <div class="content">
@@ -211,103 +327,6 @@ ifconfig eth0:1 down
          );
 </code></pre></div>    </div>
   </li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
-        
-        <div class="content">
-            <h1 id="sentinel">Sentinel</h1>
-
-<p>简介： 是对资源（服务，方法）访问的规则配置。 比如流控，黑白名单等</p>
-
-<p>官网: <a href="https://github.com/alibaba/Sentinel">https://github.com/alibaba/Sentinel</a></p>
-
-<p>参考文章: <a href="https://www.jianshu.com/p/8f901abb7af4">https://www.jianshu.com/p/8f901abb7af4</a></p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/sentinel_test">https://github.com/gongchangyou/sentinel_test</a></p>
-
-<p>实现较为简单 不赘述了。</p>
-
-<p>注意点</p>
-
-<ol>
-  <li>如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法</li>
-  <li>blockHandler 方法记得添加 BlockException exception 形参</li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/canal-RocketMQ">Jun 10, 2022 - canal RocketMQ</a></h1>
-        
-        <div class="content">
-            <h1 id="canal-导入rocketmq">canal 导入RocketMQ</h1>
-
-<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
-
-<p><a href="/2022/03/RocketMQ-docker">启动RocketMQ</a></p>
-
-<p><a href="/2022/06/canal">部署canal</a></p>
-
-<p>修改源码的canal.properties ，但是没生效</p>
-
-<p><img src="/images/202206/WechatIMG268.png" alt="" width="800" /></p>
-
-<p>这些实现类是用SPI加载的</p>
-
-<p>CanalLauncher.java -》 CanalStarter.java</p>
-
-<p>追进去看到 classLoader 会去 target/plugin 文件夹中读取class。找不到再走META-INF/canal/xxx.CanalMQProducuer</p>
-
-<p><img src="/images/202206/WechatIMG269.png" alt="" width="800" /></p>
-
-<p>把如下注释掉就行了</p>
-
-<p><img src="/images/202206/WechatIMG270.png" alt="" width="800" /></p>
-
-<p>在canal源码中的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#这个不用动
-canal.destinations = example
-#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
-canal.mq.topic=test-topic
-
-#模式从 tcp 改成 rocketMQ
-canal.serverMode = rocketMQ
-
-</code></pre></div></div>
-
-<p>在消费端的rocketMQ的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-</code></pre></div></div>
-
-<p>成功！</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={"data":[{"id":"5","count":"13"}],"database":"store_db","es":1654874446000,"id":1,"isDdl":false,"mysqlType":{"id":"int","count":"int"},"old":[{"count":"313"}],"pkNames":["id"],"sql":"","sqlType":{"id":4,"count":4},"table":"store","ts":1654911313692,"type":"UPDATE"}
-
-</code></pre></div></div>
-
-<p><img src="/images/202206/WechatIMG312.png" alt="" width="800" /></p>
-
-<ol>
-  <li>红色圈 data中是完整的一行新值</li>
-  <li>绿色的是主键id</li>
-  <li>蓝色的那个只是消息自增id，不是主键</li>
-  <li>old 中的是这次修改的字段的旧值</li>
 </ol>
 
 
