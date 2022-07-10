@@ -183,6 +183,17 @@
 
 <p><a href="https://prometheus.io/docs/introduction/overview/">https://prometheus.io/docs/introduction/overview/</a></p>
 
+<p><img src="/images/202207/architecture.png" alt="" width="800" /></p>
+
+<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/custom_exporter_with_java/client_library_java">java client 接入</a></p>
+
+<p>跟 <a href="/2022/05/monitor">Statsd</a> 的区别 :</p>
+
+<ol>
+  <li>statsd是主动udp上报，推的形式. 而prometheus是 提供http接口供 prometheus server pull， 是拉的形式。</li>
+  <li>statsd 协议提供一些常用的metric的类型，通常有timer、counter、gauge和set四种。这样就无需在java client中自行处理</li>
+</ol>
+
 
             </div>
             
