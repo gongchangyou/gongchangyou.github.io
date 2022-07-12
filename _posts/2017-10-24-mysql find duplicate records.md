@@ -10,3 +10,4 @@ tag: [mysql]
 select user_name,count(*) as count from user_table group by user_name having count>1; 
 
  
+

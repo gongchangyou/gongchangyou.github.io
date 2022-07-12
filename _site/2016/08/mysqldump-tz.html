@@ -174,11 +174,18 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2017/10/mysql%E6%9F%A5%E6%89%BE-%E5%A4%9A%E8%A1%8C%E9%87%8D%E5%A4%8D%E8%AE%B0%E5%BD%95">Oct 24, 2017 - mysql查找多行重复记录</a></h1>
+                <h1><a href="/2016/08/mysqldump-tz">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
             
             <div class="post-content">
-            <p>select user_name,count(*) as count from user_table group by user_name having count&gt;1;</p>
+            <p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
 
+<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
+
+<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
+
+<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
+
+<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
 
             </div>
             
@@ -191,10 +198,10 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2017/11/find-git-string" class="next">Newer Post</a>
+                <a class="btn btn-default" href="/2016/08/vim-%E6%9F%A5%E7%9C%8Btab" class="next">Newer Post</a>
               
               
-                <a class="btn btn-default" href="/2017/10/memcache%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2016/07/ssh-%E4%BF%9D%E5%AD%98host%E5%92%8C%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D" class="previous">Older Post</a>
               
 </div>
 
@@ -208,7 +215,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2017-10-mysql-e6-9f-a5-e6-89-be-e5-a4-9a-e8-a1-8c-e9-87-8d-e5-a4-8d-e8-ae-b0-e5-bd-95';
+        this.page.identifier = '2016-08-mysqldump-tz';
     };
 
    (function() {
