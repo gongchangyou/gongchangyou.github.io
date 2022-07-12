@@ -15,6 +15,14 @@ tag: [mysql]
 
 docker 安装MongoDB [https://www.runoob.com/docker/docker-install-mongodb.html](https://www.runoob.com/docker/docker-install-mongodb.html)
 
+进入容器
+
+```
+docker exec -it mongo mongo admin
+```
+
+
+
 mongodb命令
 
 ```
