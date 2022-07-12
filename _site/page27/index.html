@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+        
+          <li><a href="/2022/07/flink">flink</a></li>
+        
           <li><a href="/2022/07/git-clone">git</a></li>
         
           <li><a href="/2022/07/prometheus">prometheus</a></li>
         
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
-        
-          <li><a href="/2022/07/python-docker">python docker</a></li>
-        
-          <li><a href="/2022/07/storm">storm</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>58</sup></a></li>
 			
 		
 			
@@ -173,6 +173,224 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/dubbo-kryo">Feb 15, 2022 - kryo</a></h1>
+        
+        <div class="content">
+            <h1 id="dubbo-序列化配置-kryo">dubbo 序列化配置 Kryo</h1>
+
+<p>注意版本要跟  dubbo-spring-boot-starter 相同,2.7.8</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.apache.dubbo/dubbo-serialization-kryo --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.dubbo&lt;/groupId&gt;
+    &lt;artifactId&gt;dubbo-serialization-kryo&lt;/artifactId&gt;
+    &lt;version&gt;2.7.8&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+
+<p>在producer 和 consumer加一句配置即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.protocol.serialization=kryo
+</code></pre></div></div>
+
+<p>原理：</p>
+
+<ol>
+  <li>
+    <p>我们配置的序列化框架 比如 kryo , 这个字符串”kryo”是设置在了ProtocolConfig中</p>
+  </li>
+  <li>
+    <p>真正需要序列化的时候，是由AbstractCodec 根据 ExtensionLoader.getExtension 获取</p>
+  </li>
+  <li>
+    <p>ExtensionLoader 中有个属性叫 cachedClasses,  是个map，会创建type名到类的映射</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> private final Holder&lt;Map&lt;String, Class&lt;?&gt;&gt;&gt; cachedClasses = new Holder&lt;&gt;();
+</code></pre></div>    </div>
+
+    <ol>
+      <li>
+        <p>那么 cachedClasses 是何时 初始化的呢？这里涉及到 SPI .   ExtensionLoader(dubbo自定义的) 会去扫描  文件“org.apache.dubbo.common.extension.LoadingStrategy”。</p>
+
+        <p>获取LoadingStrategy(DubboInternalLoadingStrategy(META-INF/dubbo/internal/), ServicesLoadingStrategy(META-INF/services/) ,DubboLoadingStrategy(META-INF/dubbo/) )的所有实现类的指定的文件夹下的文件，其中包括 META-INF/dubbo/internal下的所有 Serialization的实现类。 即文件名是 org.apache.dubbo.common.serialize.Serialization 的 文件。</p>
+      </li>
+    </ol>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #文件 org.apache.dubbo.common.serialize.Serialization 的内容 kryo就是name
+ kryo=org.apache.dubbo.common.serialize.kryo.KryoSerialization
+ kryo2=org.apache.dubbo.common.serialize.kryo.optimized.KryoSerialization2
+</code></pre></div>    </div>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  private Map&lt;String, Class&lt;?&gt;&gt; loadExtensionClasses() {
+          cacheDefaultExtensionName();
+    
+          Map&lt;String, Class&lt;?&gt;&gt; extensionClasses = new HashMap&lt;&gt;();
+    
+          for (LoadingStrategy strategy : strategies) {
+              loadDirectory(extensionClasses, strategy.directory(), type.getName(), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+              loadDirectory(extensionClasses, strategy.directory(), type.getName().replace("org.apache", "com.alibaba"), strategy.preferExtensionClassLoader(), strategy.overridden(), strategy.excludedPackages());
+          }
+    
+          return extensionClasses;
+      }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>最终在 saveInExtensionClass 方法中 把 class 和name的映射设置好</p>
+  </li>
+</ol>
+
+<p><img src="/images/202202/1644917724845.jpg" alt="set class" width="1000" /></p>
+
+<p>问题：</p>
+
+<p>本来想看看默认序列化是如何设置的，有两种方法</p>
+
+<p>法1，在SPI注解上加属性 ，由属性控制</p>
+
+<p><img src="/images/202202/1645257330444.jpg" alt="1" width="1000" /></p>
+
+<p>法2，设置一个Constants类, 将默认值填进去</p>
+
+<p><img src="/images/202202/1645257359049.jpg" alt="1" width="1000" /></p>
+
+<p>现在就是初始化的时候是根据SPI的value，但是获取实现类的时候又用到了Constants类，让人有点疑惑，两个默认值</p>
+
+<p><img src="/images/202202/1645257426431.jpg" alt="1" width="1000" /></p>
+
+<p><img src="/images/202202/WechatIMG587.png" alt="1" width="1000" /></p>
+
+<p>当然由Constants类我们还能知道 默认的nio库是 netty</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String DEFAULT_TRANSPORTER = "netty";
+</code></pre></div></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/spring-cloud-gateway">Feb 10, 2022 - spring-cloud-gateway</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-gateway">Spring-cloud-gateway</h1>
+
+<h2 id="路由规则如果配置在applicationyaml中那么每次新增路由都需要部署重启gateway所以这个路由规则必须动态读取例如存放到nacos中">路由规则如果配置在application.yaml中，那么每次新增路由都需要部署重启gateway，所以这个路由规则必须动态读取，例如存放到nacos中</h2>
+
+<p>代码仓库:   <a href="https://github.com/gongchangyou/gateway">https://github.com/gongchangyou/gateway</a></p>
+
+<p>http服务 <a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
+
+<p>RouteDefinitionWriter 负责修改路由， RouteDefinitionLocator 接口只有一个方法 getRouteDefinitions，获取所有路由。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre></div></div>
+
+<p><img src="/images/202202/1644386286460.jpg" alt="code" width="1000" /></p>
+
+<p>重点是 routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe();</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//        this.publisher.publishEvent(new RefreshRoutesEvent(this)); 这句好像没啥用
+</code></pre></div></div>
+
+<h2 id="nacos-代码只需要添加nacos的listener又因为数据变更时只会执行一次回调没有心跳我们需要自行编写心跳逻辑">Nacos: 代码只需要添加nacos的listener，又因为数据变更时只会执行一次回调，没有心跳，我们需要自行编写心跳逻辑</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+			&lt;exclusions&gt;
+				&lt;exclusion&gt;
+					&lt;groupId&gt;org.apache.httpcomponents&lt;/groupId&gt;
+					&lt;artifactId&gt;httpclient&lt;/artifactId&gt;
+				&lt;/exclusion&gt;
+			&lt;/exclusions&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+			&lt;version&gt;2.2.7.RELEASE&lt;/version&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-loadbalancer&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Component
+@Slf4j
+public class NacosRouteDynamicDataSource implements ApplicationRunner {
+    @Autowired
+    private NacosConfigManager configManager;
+
+    private ConfigService configService;
+    @PostConstruct
+    void init () {
+        configService = configManager.getConfigService();
+    }
+    /**
+     * Callback used to run the bean.
+     *
+     * @param args incoming application arguments
+     * @throws Exception on error
+     */
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        log.info(args.toString());
+        //监听nacos配置变化
+        dynamicRouteByNacosListener("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule");
+        //心跳 顺便 初始化
+        while (true) {
+            String configInfo = configService.getConfig("gateway-dynamic-route-rule.json", "gateway-dynamic-route-rule", 4000);
+            log.info("configInfo = {}", configInfo);
+            Thread.sleep(2000);
+        }
+    }
+
+    /**
+     * 监听nacos的配置
+     * @param dataId
+     * @param group
+     */
+    public void dynamicRouteByNacosListener (String dataId, String group){
+        try {
+            configService.addListener(dataId, group, new Listener()  {
+                @Override
+                public void receiveConfigInfo(String configInfo) {
+                    log.info("进行网关更新:\n\r{}",configInfo);
+                }
+                @Override
+                public Executor getExecutor() {
+                    log.info("getExecutor\n\r");
+                    return null;
+                }
+            });
+        } catch (NacosException e) {
+            log.error("从nacos接收动态路由配置出错!!!",e);
+        }
+    }
+}
+
+</code></pre></div></div>
+
+<p>在nacos手动配置路由</p>
+
+<p><img src="/images/202202/1644471609530.jpg" alt="nacos config" width="1000" /></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/02/slf4j-logback">Feb 8, 2022 - slf4j</a></h1>
@@ -264,114 +482,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/Spring-Cloud-Stream(RocketMQ)">Jan 28, 2022 - spring cloud stream</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-cloud-stream---rocketmq">Spring Cloud Stream  &amp; RocketMQ</h1>
-
-<h2 id="rocketmq有两种实现方式">RocketMQ有两种实现方式</h2>
-
-<ol>
-  <li>Rocketmq-spring-boot-starter 框架 (rocketmq &amp;&amp; spring-boot)</li>
-  <li>Spring-cloud-starter-stream-rocketmq 框架。 推荐使用这种，因为spring-cloud-stream 集成多种MQ <a href="https://spring.io/projects/spring-cloud-stream">https://spring.io/projects/spring-cloud-stream</a></li>
-</ol>
-
-<p>我选择版本2.2.7.RELEASE: <a href="https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq">https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-stream-rocketmq</a></p>
-
-<p>注意处理冲突和添加依赖，我这边缺少了  spring-boot-actuator-autoconfigure</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-actuator-autoconfigure --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-actuator-autoconfigure&lt;/artifactId&gt;
-            &lt;version&gt;2.3.12.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<p>sample <a href="https://github.com/spring-cloud/spring-cloud-stream-samples">https://github.com/spring-cloud/spring-cloud-stream-samples</a></p>
-
-<p>代码很简单
-<img src="/images/202201/1643521131415.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643521145955.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643521166242.jpg" alt="embbed" width="1000" /></p>
-
-<p>配置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.output1.destination=test-topic #主题 topic
-spring.cloud.stream.bindings.output1.content-type=application/json
-
-</code></pre></div></div>
-
-<h2 id="消费者">消费者</h2>
-
-<p>配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-</code></pre></div></div>
-
-<p>代码</p>
-
-<p><img src="/images/202201/1643523658805.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643523559576.jpg" alt="embbed" width="1000" />
-<img src="/images/202201/1643523584792.jpg" alt="embbed" width="1000" /></p>
-
-<p>调试ok</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/jira">Jan 24, 2022 - jira</a></h1>
-        
-        <div class="content">
-            <h1 id="jira-部署">Jira 部署</h1>
-
-<ol>
-  <li>
-    <p>下载bin文件 <a href="https://www.atlassian.com/software/jira/update">https://www.atlassian.com/software/jira/update</a>  8.12.0</p>
-  </li>
-  <li>
-    <p>创建db</p>
-  </li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>creat database jira
-
-create user 'jira'@'%' IDENTIFIED BY 'password';
-
-grant all privileges on jira.* to 'jira'@'%';
-
-</code></pre></div></div>
-
-<ol>
-  <li>
-    <p>mysql connector jar包  <a href="https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27">https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.27</a></p>
-  </li>
-  <li>
-    <p>破解jar包 <a href="https://www.cnblogs.com/houchaoying/p/9096118.html">https://www.cnblogs.com/houchaoying/p/9096118.html</a> 拉到最下面</p>
-  </li>
-  <li>cd /opt/atlassian/jira/bin</li>
-  <li>sh startup.sh</li>
-</ol>
-
-<h1 id="又">又</h1>
-
-<p>卸载是在 /opt/atlassian/jira/uninstall</p>
-
-<p>关闭是在  /opt/atlassian/jira/bin/shutdown.sh</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -379,7 +489,7 @@ grant all privileges on jira.* to 'jira'@'%';
         <a class="btn btn-default" href="/page26" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 27 of 52</span>
+  <span class="page_number ">Page: 27 of 53</span>
   
     <a class="btn btn-default" href="/page28" class="next">Older</a>
   

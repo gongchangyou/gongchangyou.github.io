@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+        
+          <li><a href="/2022/07/flink">flink</a></li>
+        
           <li><a href="/2022/07/git-clone">git</a></li>
         
           <li><a href="/2022/07/prometheus">prometheus</a></li>
         
           <li><a href="/2022/07/pdfreader">pdfreader</a></li>
-        
-          <li><a href="/2022/07/python-docker">python docker</a></li>
-        
-          <li><a href="/2022/07/storm">storm</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>12</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>57</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>58</sup></a></li>
 			
 		
 			
@@ -175,6 +175,140 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb">MongoDB</h1>
+
+<p>代码仓库：</p>
+
+<p>Java 代码 chunk逻辑</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
+ 
+    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
+        final AtomicInteger counter = new AtomicInteger();
+        return new ArrayList&lt;&gt;(
+                list.stream()
+                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
+                        .values());
+    }
+}
+</code></pre></div></div>
+
+<p>batch 搜索</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
+    public void batchGet() {
+        val table =db.getCollection("records");
+        val ids = new ArrayList&lt;&gt;();
+        for (int i = 20140000; i &lt;20147282; i++) {
+            ids.add(String.valueOf(i));
+        }
+        val chunkedList = split(ids, 100);
+        val firstStart = System.currentTimeMillis();
+        for (val list : chunkedList) {
+            val start = System.currentTimeMillis();
+            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
+            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
+                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
+            });
+            log.info("cost={}", System.currentTimeMillis()- start);
+        }
+        log.info("allcost={}", System.currentTimeMillis()- firstStart);
+    }
+</code></pre></div></div>
+
+<p>批量编辑 关键字 $set</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 2),Filters.eq("name", "Eric2"));
+        //成功只更新name字段
+        db.getCollection("user").updateMany(f, new Document("$set",
+                new HashMap&lt;&gt;()
+        ));
+</code></pre></div></div>
+
+<p>批量追加 关键字 $addToSet</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 3),Filters.eq("name", "Eric3"));
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap&lt;&gt;()
+        ));
+</code></pre></div></div>
+
+<p>批量追加  合并数组. 关键字 $each</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//$each 关键字 在array类型的field中追加 多个element
+        db.getCollection("user").updateMany(f, new Document("$addToSet",
+                new HashMap&lt;&gt;() );
+                    }});
+                }}
+        ));
+</code></pre></div></div>
+
+<p>单独修改数组中的某个值 .$</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//.$ 的意思就是数组的下标
+        Bson f5 = Filters.and(Filters.eq("id", 5), Filters.eq("nickname", "c5"));
+        db.getCollection("user").updateMany(f5, new Document("$set", new HashMap&lt;&gt;() ));
+</code></pre></div></div>
+
+<p>参考文章： <a href="https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/">https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/</a></p>
+
+<p><a href="https://www.modb.pro/db/73050">https://www.modb.pro/db/73050</a></p>
+
+<p><a href="https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu">https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
+        
+        <div class="content">
+            <h1 id="es-集群">ES 集群</h1>
+
+<p>java访问ES 集群，两种方法：</p>
+
+<ol>
+  <li>
+    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
+
+    <ol>
+      <li>
+        <p>配置虚拟ip的命令:</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
+        
+#下线虚拟ip
+ifconfig eth0:1 down
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>把cluster node都添加到client中,类似下面的代码</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
+                 RestClient.builder(
+                 		//Es连接信息，我用的是伪集群哈哈哈
+                         new HttpHost("localhost", 9200, "http"),
+                         new HttpHost("localhost", 9201, "http"),
+                         new HttpHost("localhost", 9202, "http")
+                 )
+         );
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
         
         <div class="content">
@@ -201,172 +335,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/canal-RocketMQ">Jun 10, 2022 - canal RocketMQ</a></h1>
-        
-        <div class="content">
-            <h1 id="canal-导入rocketmq">canal 导入RocketMQ</h1>
-
-<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
-
-<p><a href="/2022/03/RocketMQ-docker">启动RocketMQ</a></p>
-
-<p><a href="/2022/06/canal">部署canal</a></p>
-
-<p>修改源码的canal.properties ，但是没生效</p>
-
-<p><img src="/images/202206/WechatIMG268.png" alt="" width="800" /></p>
-
-<p>这些实现类是用SPI加载的</p>
-
-<p>CanalLauncher.java -》 CanalStarter.java</p>
-
-<p>追进去看到 classLoader 会去 target/plugin 文件夹中读取class。找不到再走META-INF/canal/xxx.CanalMQProducuer</p>
-
-<p><img src="/images/202206/WechatIMG269.png" alt="" width="800" /></p>
-
-<p>把如下注释掉就行了</p>
-
-<p><img src="/images/202206/WechatIMG270.png" alt="" width="800" /></p>
-
-<p>在canal源码中的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#这个不用动
-canal.destinations = example
-#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
-canal.mq.topic=test-topic
-
-#模式从 tcp 改成 rocketMQ
-canal.serverMode = rocketMQ
-
-</code></pre></div></div>
-
-<p>在消费端的rocketMQ的配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
-spring.cloud.stream.bindings.input1.destination=test-topic
-spring.cloud.stream.bindings.input1.content-type=application/json
-spring.cloud.stream.bindings.input1.group=group
-</code></pre></div></div>
-
-<p>成功！</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={"data":[{"id":"5","count":"13"}],"database":"store_db","es":1654874446000,"id":1,"isDdl":false,"mysqlType":{"id":"int","count":"int"},"old":[{"count":"313"}],"pkNames":["id"],"sql":"","sqlType":{"id":4,"count":4},"table":"store","ts":1654911313692,"type":"UPDATE"}
-
-</code></pre></div></div>
-
-<p><img src="/images/202206/WechatIMG312.png" alt="" width="800" /></p>
-
-<ol>
-  <li>红色圈 data中是完整的一行新值</li>
-  <li>绿色的是主键id</li>
-  <li>蓝色的那个只是消息自增id，不是主键</li>
-  <li>old 中的是这次修改的字段的旧值</li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/canal">Jun 9, 2022 - canal</a></h1>
-        
-        <div class="content">
-            <h1 id="canal">canal</h1>
-
-<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
-
-<h3 id="前提">前提</h3>
-<ol>
-  <li>
-    <p><a href="/2022/03/mysql-docker">docker部署MySQL</a></p>
-  </li>
-  <li>
-    <p>开启binlog 写入</p>
-
-    <ol>
-      <li>
-        <p>修改my.cnf 。一般路径在/etc/mysql/my.cnf</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [mysqld]
- log-bin=mysql-bin # 开启 binlog
- binlog-format=ROW # 选择 ROW 模式
- server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>创建canal账号</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  CREATE USER canal IDENTIFIED BY 'canal';  
-  GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
-  -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-  FLUSH PRIVILEGES;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<h3 id="启动canal">启动canal</h3>
-
-<p>因为Mysql是docker启动的，如果canal也是docker启动，可能会需要搭建网桥。所以这里我们直接在宿主机上直接启动canal. <a href="https://github.com/alibaba/canal/wiki/QuickStart">QuickStart</a> 这里介绍的很清楚</p>
-
-<p>注意观察 bin/startup.sh脚本中的配置文件路径，默认是 canal.properties</p>
-
-<p>目前1.1.6有点问题，见下面的问题2</p>
-
-<p>我是clone代码 <a href="https://github.com/alibaba/canal">https://github.com/alibaba/canal</a> 之后稍微改了下， 在IDEA中手动启动java进程.</p>
-
-<h3 id="测试代码仓库">测试代码仓库</h3>
-
-<p><a href="https://github.com/gongchangyou/canal_test">https://github.com/gongchangyou/canal_test</a></p>
-
-<h3 id="效果">效果</h3>
-
-<p>在某张表更新了一行记录，可以从canal的客户端中获取变更。</p>
-
-<p>客户端解析protobuf格式的ByteString.</p>
-
-<p><img src="/images/202206/WechatIMG266.png" alt="" width="800" /></p>
-
-<p><img src="/images/202206/WechatIMG267.png" alt="" width="800" /></p>
-
-<p>问题1： 启动canal报错，</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caused by: java.io.IOException: connect /127.0.0.1:3306 failure
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:85)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.connect(MysqlConnection.java:89)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlEventParser.preDump(MysqlEventParser.java:87)
-	at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$1.run(AbstractEventParser.java:176)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-Caused by: java.io.IOException: caching_sha2_password Auth failed
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.negotiate(MysqlConnector.java:260)
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:82)
-	... 4 more
-</code></pre></div></div>
-
-<p>解决1: 可能是权限问题，尝试下面的命令</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-FLUSH PRIVILEGES;
-</code></pre></div></div>
-
-<p>问题2： Caused by: java.io.IOException: ErrorPacket [errorNumber=1146, fieldCount=-1, message=Table ‘XXX.BASE TABLE’ doesn’t exist, sqlState=42S02, sqlStateMarker=#]</p>
-
-<p>解决2： BASE TABLE这张表没找到？ 不知道为啥要去看这张表，事实上db中并没有这张表啊。深深怀疑是</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"show full tables from `" + schema + "` where Table_type = 'BASE TABLE'"
-</code></pre></div></div>
-
-<p>这句query找出所有的table后的处理逻辑的bug. 这个我提了个<a href="https://github.com/alibaba/canal/pull/4217">PR</a> . 版本1.1.6目前有这个问题.</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -374,7 +342,7 @@ FLUSH PRIVILEGES;
         <a class="btn btn-default" href="/page3" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 4 of 52</span>
+  <span class="page_number ">Page: 4 of 53</span>
   
     <a class="btn btn-default" href="/page5" class="next">Older</a>
   

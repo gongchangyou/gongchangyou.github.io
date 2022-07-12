@@ -7,6 +7,60 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>mongodb index</title>
+				<description>&lt;h1 id=&quot;mongodb-索引&quot;&gt;mongodb 索引&lt;/h1&gt;
+
+&lt;p&gt;通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6844903520747929614&quot;&gt;https://juejin.cn/post/6844903520747929614&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://haicoder.net/mongodb/mongodb-index-principle.html&quot;&gt;https://haicoder.net/mongodb/mongodb-index-principle.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/guangyacyb/article/details/104339183&quot;&gt;https://blog.csdn.net/guangyacyb/article/details/104339183&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://mongoing.com/archives/2797&quot;&gt;https://mongoing.com/archives/2797&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; db.person.createIndex( {age: 1, name: -1} )  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看索引&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.person.getIndexes() 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看query 是否使用索引,  如果是 &lt;a href=&quot;https://docs.mongodb.org/manual/reference/explain-results/#queryplanner&quot;&gt;COLLSCAN&lt;/a&gt; 说明全表扫描， 如果是 IXSCAN ，就是使用了索引&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.person.find({age:18}).explain()
+db.person.find({age:18}).explain(&quot;executionStats&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+				<pubDate>Tue, 12 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/mongodb-index</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/mongodb-index</guid>
+			</item>
+		
+			<item>
+				<title>flink</title>
+				<description>&lt;h1 id=&quot;flink&quot;&gt;Flink&lt;/h1&gt;
+
+&lt;p&gt;官方文档 : &lt;a href=&quot;https://flink.apache.org/&quot;&gt;https://flink.apache.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;参考文章 : &lt;a href=&quot;https://www.jianshu.com/p/d5ccb3aaabc5&quot;&gt;https://www.jianshu.com/p/d5ccb3aaabc5&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在执行引擎这一层，流处理系统与批处理系统最大不同在于节点间的数据传输方式。&lt;strong&gt;对于一个流处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，然后立刻通过网络传输到下一个节点，由下一个节点继续处理。&lt;/strong&gt; 而对于一个&lt;strong&gt;批处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，并不会立刻通过网络传输到下一个节点，当缓存写满，就持久化到本地硬盘上，当所有数据都被处理完成后，才开始将处理后的数据通过网络传输到下一个节点。&lt;/strong&gt;这两种数据传输模式是两个极端，对应的是流处理系统对低延迟的要求和批处理系统对高吞吐量的要求。Flink的执行引擎采用了一种十分灵活的方式，同时支持了这两种数据传输模型。Flink以固定的缓存块为单位进行网络数据传输，用户可以通过缓存块超时值指定缓存块的传输时机。如果缓存块的超时值为0，则Flink的数据传输方式类似上文所提到流处理系统的标准模型，此时系统可以获得最低的处理延迟。如果缓存块的超时值为无限大，则Flink的数据传输方式类似上文所提到批处理系统的标准模型，此时系统可以获得最高的吞吐量。同时缓存块的超时值也可以设置为0到无限大之间的任意值。缓存块的超时阈值越小，则Flink流处理执行引擎的数据处理延迟越低，但吞吐量也会降低，反之亦然。通过调整缓存块的超时阈值，用户可根据需求灵活地权衡系统延迟和吞吐量。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+				<pubDate>Mon, 11 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/flink</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/flink</guid>
+			</item>
+		
+			<item>
 				<title>git</title>
 				<description>&lt;h1 id=&quot;git-批量迁移&quot;&gt;git 批量迁移&lt;/h1&gt;
 
@@ -330,75 +384,6 @@
 				<pubDate>Mon, 27 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/mongodb-batch</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/06/mongodb-batch</guid>
-			</item>
-		
-			<item>
-				<title>es cluster</title>
-				<description>&lt;h1 id=&quot;es-集群&quot;&gt;ES 集群&lt;/h1&gt;
-
-&lt;p&gt;java访问ES 集群，两种方法：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;推荐 走内网虚拟ip(VIP) 参考文章： &lt;a href=&quot;https://cloud.tencent.com/document/product/845/19538&quot;&gt;https://cloud.tencent.com/document/product/845/19538&lt;/a&gt;&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;
-        &lt;p&gt;配置虚拟ip的命令:&lt;/p&gt;
-
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
-        
-#下线虚拟ip
-ifconfig eth0:1 down
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
-      &lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;把cluster node都添加到client中,类似下面的代码&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RestHighLevelClient client = new RestHighLevelClient(
-                 RestClient.builder(
-                 		//Es连接信息，我用的是伪集群哈哈哈
-                         new HttpHost(&quot;localhost&quot;, 9200, &quot;http&quot;),
-                         new HttpHost(&quot;localhost&quot;, 9201, &quot;http&quot;),
-                         new HttpHost(&quot;localhost&quot;, 9202, &quot;http&quot;)
-                 )
-         );
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-				<pubDate>Fri, 24 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/ES-cluster</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/ES-cluster</guid>
-			</item>
-		
-			<item>
-				<title>sentinel</title>
-				<description>&lt;h1 id=&quot;sentinel&quot;&gt;Sentinel&lt;/h1&gt;
-
-&lt;p&gt;简介： 是对资源（服务，方法）访问的规则配置。 比如流控，黑白名单等&lt;/p&gt;
-
-&lt;p&gt;官网: &lt;a href=&quot;https://github.com/alibaba/Sentinel&quot;&gt;https://github.com/alibaba/Sentinel&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://www.jianshu.com/p/8f901abb7af4&quot;&gt;https://www.jianshu.com/p/8f901abb7af4&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/sentinel_test&quot;&gt;https://github.com/gongchangyou/sentinel_test&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;实现较为简单 不赘述了。&lt;/p&gt;
-
-&lt;p&gt;注意点&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法&lt;/li&gt;
-  &lt;li&gt;blockHandler 方法记得添加 BlockException exception 形参&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-				<pubDate>Sat, 11 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/sentinel</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/sentinel</guid>
 			</item>
 		
 	</channel>
