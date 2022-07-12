@@ -54,7 +54,7 @@ SVN_VERSION=`svn info |sed -n 's/Revision: \(.*\)/\1/p'` #shell结果输出到�
 	ssh aiming@lfs-cn-manage "
 	cd ${SCRIPT_DIR}
 	echo '${PUSH_CONTENT}' > ${SCRIPT_DIR}tmp
-
+	
 	./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
 	"
 	#'\/var\/home\/aiming\/world_all\/bin\/tmp'
