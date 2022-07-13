@@ -8,6 +8,29 @@
 		
 			<item>
 				<title>mongodb index</title>
+				<description>&lt;h1 id=&quot;kafka&quot;&gt;kafka&lt;/h1&gt;
+
+&lt;p&gt;参考文章： &lt;a href=&quot;https://blog.csdn.net/qq_36042938/article/details/86690188&quot;&gt;https://blog.csdn.net/qq_36042938/article/details/86690188&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;广播和单播：&lt;/p&gt;
+
+&lt;p&gt;广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。&lt;/p&gt;
+
+&lt;p&gt;单播：多个consumer 使用相同的group。 这样每个consumer被分配到不同的消息，加速消费。&lt;/p&gt;
+
+&lt;h2 id=&quot;实际场景&quot;&gt;实际场景&lt;/h2&gt;
+
+&lt;p&gt;当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。&lt;/p&gt;
+
+&lt;p&gt;话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。&lt;/p&gt;
+</description>
+				<pubDate>Tue, 12 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/kafka</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/kafka</guid>
+			</item>
+		
+			<item>
+				<title>mongodb index</title>
 				<description>&lt;h1 id=&quot;mongodb-索引&quot;&gt;mongodb 索引&lt;/h1&gt;
 
 &lt;p&gt;通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.&lt;/p&gt;
@@ -297,93 +320,6 @@ db.person.find({age:18}).explain(&quot;executionStats&quot;)
 				<pubDate>Wed, 29 Jun 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/06/mvn-settings</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/06/mvn-settings</guid>
-			</item>
-		
-			<item>
-				<title>mongodb</title>
-				<description>&lt;h1 id=&quot;mongodb&quot;&gt;MongoDB&lt;/h1&gt;
-
-&lt;p&gt;代码仓库：&lt;/p&gt;
-
-&lt;p&gt;Java 代码 chunk逻辑&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class SplitListToChunks {
- 
-    public static &amp;lt;T&amp;gt; List&amp;lt;List&amp;lt;T&amp;gt;&amp;gt; split(List&amp;lt;T&amp;gt; list, int size) {
-        final AtomicInteger counter = new AtomicInteger();
-        return new ArrayList&amp;lt;&amp;gt;(
-                list.stream()
-                        .collect(Collectors.groupingBy(it -&amp;gt; counter.getAndIncrement() / size))
-                        .values());
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;batch 搜索&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Test
-    public void batchGet() {
-        val table =db.getCollection(&quot;records&quot;);
-        val ids = new ArrayList&amp;lt;&amp;gt;();
-        for (int i = 20140000; i &amp;lt;20147282; i++) {
-            ids.add(String.valueOf(i));
-        }
-        val chunkedList = split(ids, 100);
-        val firstStart = System.currentTimeMillis();
-        for (val list : chunkedList) {
-            val start = System.currentTimeMillis();
-            BasicDBObject query = new BasicDBObject(&quot;id&quot;, new BasicDBObject(&quot;$in&quot;,list) );
-            table.find(query).forEach((Consumer&amp;lt;Document&amp;gt;) document -&amp;gt;{
-                log.info(&quot;id={}, loc={}&quot;,document.get(&quot;id&quot;),  document.get(&quot;loc&quot;));
-            });
-            log.info(&quot;cost={}&quot;, System.currentTimeMillis()- start);
-        }
-        log.info(&quot;allcost={}&quot;, System.currentTimeMillis()- firstStart);
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;批量编辑 关键字 $set&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Bson f = Filters.and(Filters.eq(&quot;id&quot;, 2),Filters.eq(&quot;name&quot;, &quot;Eric2&quot;));
-        //成功只更新name字段
-        db.getCollection(&quot;user&quot;).updateMany(f, new Document(&quot;$set&quot;,
-                new HashMap&amp;lt;&amp;gt;()
-        ));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;批量追加 关键字 $addToSet&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Bson f = Filters.and(Filters.eq(&quot;id&quot;, 3),Filters.eq(&quot;name&quot;, &quot;Eric3&quot;));
-        db.getCollection(&quot;user&quot;).updateMany(f, new Document(&quot;$addToSet&quot;,
-                new HashMap&amp;lt;&amp;gt;()
-        ));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;批量追加  合并数组. 关键字 $each&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//$each 关键字 在array类型的field中追加 多个element
-        db.getCollection(&quot;user&quot;).updateMany(f, new Document(&quot;$addToSet&quot;,
-                new HashMap&amp;lt;&amp;gt;() );
-                    }});
-                }}
-        ));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;单独修改数组中的某个值 .$&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//.$ 的意思就是数组的下标
-        Bson f5 = Filters.and(Filters.eq(&quot;id&quot;, 5), Filters.eq(&quot;nickname&quot;, &quot;c5&quot;));
-        db.getCollection(&quot;user&quot;).updateMany(f5, new Document(&quot;$set&quot;, new HashMap&amp;lt;&amp;gt;() ));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/&quot;&gt;https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.modb.pro/db/73050&quot;&gt;https://www.modb.pro/db/73050&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu&quot;&gt;https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu&lt;/a&gt;&lt;/p&gt;
-</description>
-				<pubDate>Mon, 27 Jun 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/06/mongodb-batch</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/06/mongodb-batch</guid>
 			</item>
 		
 	</channel>

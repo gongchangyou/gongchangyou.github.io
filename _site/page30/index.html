@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/kafka">mongodb index</a></li>
+        
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/git-clone">git</a></li>
         
           <li><a href="/2022/07/prometheus">prometheus</a></li>
-        
-          <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
 			
 		
 			
@@ -175,6 +175,85 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/01/load-balance">Jan 20, 2022 - load balance</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-4-负载均衡">Spring Cloud Alibaba - nacos 4 负载均衡</h1>
+
+<ol>
+  <li>
+    <p>创建两个不同端口的 producer</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    	<span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">braindata</span><span class="p">.</span><span class="n">dubbodemo</span><span class="p">.</span><span class="n">config</span><span class="p">;</span>
+       
+     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">.</span><span class="n">Entry</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">javax</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">PostConstruct</span><span class="p">;</span>
+
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">common</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">NetUtils</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">dubbo</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">ProtocolConfig</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">BeansException</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">beans</span><span class="p">.</span><span class="n">factory</span><span class="p">.</span><span class="n">annotation</span><span class="p">.</span><span class="n">Autowired</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContext</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ApplicationContextAware</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">ConfigurableApplicationContext</span><span class="p">;</span>
+     <span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">stereotype</span><span class="p">.</span><span class="n">Component</span><span class="p">;</span>
+
+     <span class="p">/**</span>
+      <span class="p">*</span> <span class="err">一个机器部署两个</span><span class="n">dubbo</span><span class="err">生产者会产生端口占用问题，为了解决这个问题，在加载</span><span class="n">dubbo</span><span class="err">配置文件之前，先设置没被占用的端口</span>
+      <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">cookie</span>
+      <span class="p">*/</span>
+     <span class="p">@</span><span class="n">Component</span>
+     <span class="k">public</span> <span class="n">class</span> <span class="n">DynamicDubboPortReader</span> <span class="n">implements</span> <span class="n">ApplicationContextAware</span><span class="p">{</span>
+         <span class="p">@</span><span class="n">Autowired</span>
+         <span class="n">private</span> <span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">;</span>
+
+         <span class="n">private</span> <span class="n">int</span> <span class="n">port</span> <span class="p">=</span> <span class="m">20880</span><span class="p">;</span>
+
+         <span class="p">@</span><span class="n">PostConstruct</span>
+         <span class="k">public</span> <span class="n">void</span> <span class="n">init</span><span class="p">(){</span>
+             <span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">map</span> <span class="p">=</span> <span class="n">applicationContext</span><span class="p">.</span><span class="n">getBeansOfType</span><span class="p">(</span><span class="n">ProtocolConfig</span><span class="p">.</span><span class="n">class</span><span class="p">);</span>
+             <span class="n">for</span><span class="p">(</span><span class="n">Entry</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span><span class="n">ProtocolConfig</span><span class="p">&gt;</span> <span class="n">con</span><span class="p">:</span> <span class="n">map</span><span class="p">.</span><span class="n">entrySet</span><span class="p">()){</span>
+                 <span class="n">port</span> <span class="p">=</span> <span class="n">NetUtils</span><span class="p">.</span><span class="n">getAvailablePort</span><span class="p">();</span>
+                 <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"=========="</span><span class="p">+</span><span class="n">port</span><span class="p">);</span>
+                 <span class="n">con</span><span class="p">.</span><span class="nf">getValue</span><span class="p">().</span><span class="n">setPort</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+
+         <span class="p">@</span><span class="n">Override</span>
+         <span class="k">public</span> <span class="n">void</span> <span class="n">setApplicationContext</span><span class="p">(</span><span class="n">ApplicationContext</span> <span class="n">applicationContext</span><span class="p">)</span> <span class="n">throws</span> <span class="n">BeansException</span> <span class="p">{</span>
+             <span class="n">this</span><span class="p">.</span><span class="n">applicationContext</span> <span class="p">=</span> <span class="p">(</span><span class="n">ConfigurableApplicationContext</span><span class="p">)</span><span class="n">applicationContext</span><span class="p">;</span>
+         <span class="p">}</span>
+
+     <span class="p">}</span>
+
+</code></pre></div>    </div>
+  </li>
+  <li>如果producer 还有 server.port 可以通过设置启动项 -Dserver.port=7824 来改变</li>
+  <li>启动consumer ，测试发现 DubboReference 注解已经集成负载均衡功能了， 如果想指定某一个producer，可以通过 sticky=true 来设置。</li>
+</ol>
+
+<p>那dubbo是如何实现负载均衡的呢？ 我们来看下源代码 <a href="https://github.com/apache/dubbo">https://github.com/apache/dubbo</a></p>
+
+<p><a href="https://blog.csdn.net/caoyuanyenang/article/details/114837786">https://blog.csdn.net/caoyuanyenang/article/details/114837786</a> 这篇文章说的很详尽了</p>
+
+<p>我使用dubbo 2.7.8</p>
+
+<p>其中 AbstractClusterInvoker</p>
+
+<p>line 257 会根据服务名去注册中心获取ip</p>
+
+<p>Line 258 获取loadbalance</p>
+
+<p><img src="/images/202201/1642651014052.jpg" alt="lb" width="1000" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/01/jenkins">Jan 19, 2022 - jenkins-install</a></h1>
         
         <div class="content">
@@ -227,116 +306,6 @@
 </code></pre></div></div>
 
 <p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
-        
-        <div class="content">
-            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
-
-docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-
-
-可能需要改一些配置
-
-vi /srv/gitlab/config/gitlab.rb
-
-external_url 'http://ip' 不用写port
-
-
-postgresql['shared_buffers'] = "256MB"
-
-如果puma 启动不了 看到pid不停变大
-gitlab-ctl tail puma
-
-puma['port'] = 8888
-gitlab_workhorse['auth_backend'] = "http://localhost:8888"
-
-</code></pre></div></div>
-
-<h2 id="管理员账号初始化">管理员账号初始化</h2>
-<p>a、 切换目录：cd /opt/gitlab/bin</p>
-
-<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
-
-<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
-
-<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
-
-<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
-
-<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
-
-<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
-
-<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
-
-<p>i、至此大功搞成。</p>
-
-<p>https://www.jianshu.com/p/b1736c34c150</p>
-
-<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
-
-<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
-
-<ol>
-  <li>
-    <p>sudo apt update
-sudo apt install ca-certificates curl openssh-server postfix</p>
-  </li>
-  <li>
-    <p>cd /tmp
- curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
-
-    <p>less /tmp/script.deb.sh</p>
-
-    <p>sudo bash /tmp/script.deb.sh</p>
-
-    <p>sudo apt install gitlab-ce</p>
-  </li>
-</ol>
-
-<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
-
-<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
-<p>则需要去修改配置文件</p>
-
-<p>vim /etc/gitlab/gitlab.rb</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
-
- puma['port'] =9092
-</code></pre></div></div>
-
-<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
-
-<p>gitlab-ctl reconfigure</p>
-
-<p>gitlab-ctl restart</p>
-
-<h2 id="查看日志命令">查看日志命令：</h2>
-
-<p>gitlab-ctl tail</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>gitlab-ctl tail</td>
-      <td>grep -i error</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="查看端口命令">查看端口命令：</h2>
-
-<p>lsof -i:9091</p>
-
 
         </div>
     </div>

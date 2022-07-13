@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/kafka">mongodb index</a></li>
+        
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/git-clone">git</a></li>
         
           <li><a href="/2022/07/prometheus">prometheus</a></li>
-        
-          <li><a href="/2022/07/pdfreader">pdfreader</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
 			
 		
 			
@@ -175,6 +175,36 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
+<p>两个方法</p>
+
+<ol>
+  <li>Nacos官方用nacos client + spring boot 模式</li>
+  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
+</ol>
+
+<p>注意：如果关闭应用的话，nacos中的配置还在</p>
+
+<p>application.properties没有拷贝到target文件夹的原因？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
+</code></pre></div></div>
+<p>改成 下面，或者直接这行删掉</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
+</code></pre></div></div>
+
+<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/01/nacos">Jan 11, 2022 - nacos 1 安装和启动</a></h1>
         
         <div class="content">
@@ -229,80 +259,6 @@
 <p>sequence chunked 列表分块处理</p>
 
 <p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2021/12/selenium-java">Dec 20, 2021 - java-selenium</a></h1>
-        
-        <div class="content">
-            <h1 id="下载-chrome-driver">下载 chrome-driver</h1>
-<p><a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></p>
-
-<p>ChromeDriver 96.0.4664.45 对应 selenium-java版本 3.14.0 (这个版本比较稳定. 最新版本4.1.4 会class not found)</p>
-
-<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
-
-<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
-MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
-
-<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
-
-<h1 id="添加依赖">添加依赖</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-   &lt;version&gt;3.14.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<h1 id="编写代码">编写代码</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
-        val driver = new ChromeDriver();
-        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
-        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
-        log.info("problemList={}", problemList);
-</code></pre></div></div>
-
-<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
-js.executeScript("window.open();");
-
-JavascriptExecutor js = (JavascriptExecutor) driver;
-js.executeScript("window.open(\"http://www.baidu.com\");");
-</code></pre></div></div>
-
-<h3 id="有时候会报-chromedriver-支持的chrome版本不匹配安装和你本地chrome对应的-chromedriver即可-httpschromedriverchromiumorgdownloads">有时候会报 chromedriver 支持的chrome版本不匹配。安装和你本地chrome对应的 chromedriver即可 <a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-05-08 21:21:26.810 ERROR [http-nio-8081-exec-1] o.a.c.c.C.[.[localhost].[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 96
-Current browser version is 101.0.4951.54 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
-</code></pre></div></div>
-
-<p>代码中设置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver_101");
-</code></pre></div></div>
-
-<p>Selector 选择器语法</p>
-
-<p><a href="https://blog.csdn.net/kuangjuelian229/article/details/87868816">https://blog.csdn.net/kuangjuelian229/article/details/87868816</a></p>
-
-<p>tab的操作</p>
-
-<p><a href="https://www.browserstack.com/guide/handling-tabs-in-selenium">https://www.browserstack.com/guide/handling-tabs-in-selenium</a></p>
-
-<p>阿里云可能需要安装一些依赖：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install libxcb
-
-yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-</code></pre></div></div>
 
 
         </div>
