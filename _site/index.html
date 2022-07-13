@@ -185,15 +185,14 @@
 <p><a href="https://segmentfault.com/a/1190000021746086">https://segmentfault.com/a/1190000021746086</a></p>
 
 <ol>
-  <li>Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)</li>
-</ol>
+  <li>
+    <p>Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
 
 docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
-</code></pre></div></div>
-
-<ol>
+</code></pre></div>    </div>
+  </li>
   <li>
     <p>进入容器</p>
 
