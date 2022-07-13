@@ -5,7 +5,7 @@ title: "pojo"
 date: 2022-05-21 10:25:06 +0800
 comments: true
 category: mysql
-tag: [mysql]
+tag: [mysql, java]
 
 ---
 
