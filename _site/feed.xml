@@ -12,6 +12,45 @@
 
 &lt;p&gt;参考文章： &lt;a href=&quot;https://blog.csdn.net/qq_36042938/article/details/86690188&quot;&gt;https://blog.csdn.net/qq_36042938/article/details/86690188&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000021746086&quot;&gt;https://segmentfault.com/a/1190000021746086&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
+
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;进入容器&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it kafka sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动消费者进程&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kafka-console-consumer.sh --bootstrap-server 192.168.1.60:9092 --topic kafeidou --from-beginning
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;再开个窗口，执行第2步，再启动生产者进程
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; kafka-console-producer.sh --broker-list 192.168.1.60(机器IP):9092 --topic kafeidou
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;输入消息payload&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;gt;hello
+ &amp;gt;
+ &amp;gt;
+ &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
 &lt;p&gt;广播和单播：&lt;/p&gt;
 
 &lt;p&gt;广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。&lt;/p&gt;
@@ -24,7 +63,7 @@
 
 &lt;p&gt;话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。&lt;/p&gt;
 </description>
-				<pubDate>Tue, 12 Jul 2022 10:25:06 +0800</pubDate>
+				<pubDate>Wed, 13 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/kafka</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/kafka</guid>
 			</item>
