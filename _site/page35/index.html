@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/07/kafka">mongodb index</a></li>
-        
-          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+          <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
         
-          <li><a href="/2022/07/git-clone">git</a></li>
+          <li><a href="/2022/07/feign">feign</a></li>
         
-          <li><a href="/2022/07/prometheus">prometheus</a></li>
+          <li><a href="/2022/07/kafka">kafka</a></li>
+        
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>59</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>3</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
 			
 		
 			
@@ -175,77 +175,210 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2018/01/mod-mysql-password">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+        <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
         
         <div class="content">
-            <ol>
-  <li>
-    <p>mysql stop</p>
-  </li>
-  <li>
-    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
-  </li>
-  <li>
-    <p>mysql -u root mysql</p>
-  </li>
-  <li>
-    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
-  </li>
-  <li>
-    <p>flush privileges;</p>
-  </li>
-  <li>
-    <p>unset TMPDIR</p>
-  </li>
-  <li>
-    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
-  </li>
-</ol>
+            <ul>
+<li>创建并指定session名字<br />
+		tmux new -s $session_name</li>
+&lt;/li&gt;
+<li>删除session<br />
+ Ctrl+b :kill-session</li>
+<li>临时退出session<br />
+Ctrl+b d</li>
+<li>列出session<br />
+tmux ls</li>
+<li>进入已存在的session<br />
+tmux a -t $session_name</li>
+<li>删除所有session<br />
+Ctrl+b :kill-server</li>
+<li>删除指定session<br />
+tmux kill-session -t $session_name</li>
+<li>删除指定window<br />
+Ctrl+b : &amp;</li>
+</ul>
 
-<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+<p>settings 鼠标滚动接管tmux历史窗口</p>
+
+<ul><li>vi ~/.tmux.conf</li>
+<li>set-window-option -g mode-mouse on</li>
+<li>tmux source-file ~/.tmux.conf</li>
+<li></li>
+<li></li>
+
+
+</ul>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2018/09/GuzzleHttp">Sep 29, 2018 - GuzzleHttp</a></h1>
+        
+        <div class="content">
+            <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nn">GuzzleHttp\Promise\Promise</span><span class="p">;</span>
+
+<span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span>
+    <span class="c1">// $onFulfilled</span>
+    <span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s1">'The promise was fulfilled.'</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="c1">// $onRejected</span>
+    <span class="k">function</span> <span class="p">(</span><span class="nv">$reason</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s1">'The promise was rejected.'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nn">GuzzleHttp\Promise\Promise</span><span class="p">;</span>
+
+<span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+<span class="nv">$promise</span>
+    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Return a value and don't break the chain</span>
+        <span class="k">return</span> <span class="s2">"Hello, "</span> <span class="o">.</span> <span class="nv">$value</span><span class="p">;</span> <span class="c1">//创建一个新的promise实例，并且为之注册下一个then中的成功和失败的回调函数</span>
+    <span class="p">})</span>
+    <span class="c1">// This then is executed after the first then and receives the value</span>
+    <span class="c1">// returned from the first then.</span>
+    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+    <span class="p">});</span>
+
+<span class="c1">// Resolving the promise triggers the $onFulfilled callbacks and outputs</span>
+<span class="c1">// "Hello, reader".</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="s1">'reader.'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+<span class="nv">$nextPromise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+
+<span class="nv">$promise</span>
+    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$nextPromise</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nv">$nextPromise</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="o">-&gt;</span><span class="na">then</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$value</span><span class="p">;</span>
+    <span class="p">});</span>
+
+<span class="c1">// Triggers the first callback and outputs "A"</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="s1">'A'</span><span class="p">);</span>
+<span class="c1">// Triggers the second callback and outputs "B"</span>
+<span class="nv">$nextPromise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="s1">'B'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>关于wait</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Promise</span> <span class="p">{</span>
+	<span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span>
+        <span class="nx">callable</span> <span class="nv">$waitFn</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nx">callable</span> <span class="nv">$cancelFn</span> <span class="o">=</span> <span class="kc">null</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">waitFn</span> <span class="o">=</span> <span class="nv">$waitFn</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cancelFn</span> <span class="o">=</span> <span class="nv">$cancelFn</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$promise</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Calling wait will return the value of the promise.</span>
+<span class="k">echo</span> <span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span> <span class="c1">// outputs "foo"</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="o">&amp;</span><span class="nv">$promise</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span> <span class="c1">// throws the exception.</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">die</span><span class="p">(</span><span class="s1">'this is not called!'</span><span class="p">);</span> <span class="p">});</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">resolve</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span> <span class="c1">// outputs "foo"</span>
+</code></pre></div></div>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$promise</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">();</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">reject</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">);</span>
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span><span class="c1">//throws the exception.</span>
+</code></pre></div></div>
+
+<p>一个异步请求的例子</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nn">GuzzleHttp\Client</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nn">GuzzleHttp\Pool</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nn">GuzzleHttp\Promise\Promise</span><span class="p">;</span>
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">();</span>
+
+
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$total</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$uri</span> <span class="o">=</span> <span class="s1">'https://shanghai.anjuke.com/community/view/'</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$total</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">yield</span> <span class="k">new</span> <span class="nx">\GuzzleHttp\Psr7\Request</span><span class="p">(</span><span class="s1">'Get'</span><span class="p">,</span> <span class="nv">$uri</span> <span class="o">.</span> <span class="nv">$i</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nv">$pool</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pool</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nv">$request</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="p">[</span>
+        <span class="s1">'concurrency'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">'fulfilled'</span> <span class="o">=&gt;</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$response</span><span class="p">,</span> <span class="nv">$index</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'fulfilled '</span> <span class="o">.</span> <span class="nv">$index</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="s1">'rejected'</span> <span class="o">=&gt;</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$reason</span><span class="p">,</span> <span class="nv">$index</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">echo</span> <span class="s1">'rejected '</span> <span class="o">.</span> <span class="nv">$index</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">);</span>
+
+<span class="nv">$promise</span> <span class="o">=</span> <span class="nv">$pool</span><span class="o">-&gt;</span><span class="na">promise</span><span class="p">();</span>
+
+<span class="nv">$promise</span><span class="o">-&gt;</span><span class="na">wait</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="/images/201809/client.png" alt="client" /></p>
+
+<p><img src="/images/201809/pool.png" alt="pool" /></p>
+
+<p><img src="/images/201809/GuzzleHttp.png" alt="类图" /></p>
+
+<p><img src="/images/201809/pool-promise.png" alt="pool-&gt;promise()时序图" /></p>
+
+<p>wait时序图</p>
+
+<p><img src="/images/201809/wait.png" alt="wait时序图" /></p>
+
+<p>在FulfilledPromise和 RejectPromise中 then方法都会将成功或者失败回调加入到queue中，等待下一次run的时候执行这些task</p>
+
+<p>疑问? 
+<img src="/images/201809/promise_question.png" alt="question" /></p>
+
+<p><img src="/images/201809/addPending.png" alt="question" />
+<img src="/images/201809/advanceIterator.png" alt="question" />
+<img src="/images/201809/next.png" alt="question" /></p>
+
+<p>最终会执行 CurlMultiHandler 的 addRequest 方法 将新的request加入到 _mh中</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2018/04/python-keyring">Apr 11, 2018 - python keyring 在macos的cron中无效</a></h1>
+        
+        <div class="content">
+            <p>写了个定时定会议室的脚本，要利用keyring模块获取chrome中的cookie。
+在终端中执行python没问题，写到cron中就报错 Can’t fetch password from system</p>
 
 <ol>
   <li>
-    <p>mysql.server start</p>
+    <p>解锁钥匙串 在cron中先执行 security unlock-keychain -p MYPASS /path/to/login.keychain</p>
   </li>
   <li>
-    <p>mysql -uroot -proot 进去啦！！</p>
+    <p>代码中设置钥匙串的路径    keyring.get_keyring().keychain = ‘/Users/gongchangyou/Library/Keychains/login.keychain-db’</p>
   </li>
 </ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/12/curl-command">Dec 14, 2017 - curl常用命令</a></h1>
-        
-        <div class="content">
-            <p>模拟队列插入
-curl -d ‘{“id”:853098,”event”:”update”,”timestamp”:1463641228622}’ ‘http://nydus.tj.a.ajkdns.com/publish?tunnel=service.internal.community&amp;routingKey=service.internal.community.data_change’</p>
-
-<p>上传图片
-curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg” ‘http://upd1.anjuke.com/upload’</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/11/sublime-command">Nov 30, 2017 - sublime常用命令</a></h1>
-        
-        <div class="content">
-            <p>批量修改  <br />
-    1. command + F 搜索字符串  <br />
-    2. alt + enter 批量选中</p>
-
-<p>编译配置</p>
-
-<p>/Users/gongchangyou/Library/Application Support/Sublime Text 2/Packages/User</p>
-
-<p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
 
 
         </div>
@@ -259,7 +392,7 @@ curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg
         <a class="btn btn-default" href="/page34" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 35 of 53</span>
+  <span class="page_number ">Page: 35 of 54</span>
   
     <a class="btn btn-default" href="/page36" class="next">Older</a>
   

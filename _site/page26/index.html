@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/07/kafka">mongodb index</a></li>
-        
-          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+          <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
         
-          <li><a href="/2022/07/git-clone">git</a></li>
+          <li><a href="/2022/07/feign">feign</a></li>
         
-          <li><a href="/2022/07/prometheus">prometheus</a></li>
+          <li><a href="/2022/07/kafka">kafka</a></li>
+        
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>59</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>3</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
 			
 		
 			
@@ -175,154 +175,63 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/02/voice-clone">Feb 22, 2022 - voice</a></h1>
+        <h1><a href="/2022/03/postgresql">Mar 1, 2022 - Postgresql</a></h1>
         
         <div class="content">
-            <h1 id="python-ai语音合成">python AI语音合成</h1>
+            <h1 id="postgresql">Postgresql</h1>
 
-<p>https://mp.weixin.qq.com/s/ROETeFo4Q__8hkX9Ss-CAw 看到这篇报道。觉得可以试试将自己的语音变成语音包，这样就可以给自己读文章了，或者去喜马拉雅领任务。</p>
+<h3 id="ubuntu-安装-postgresql">ubuntu 安装 postgresql</h3>
+<p><a href="https://linux.cn/article-11480-1.html">https://linux.cn/article-11480-1.html</a></p>
 
-<p>pyttsx3是一套基于实现SAPI5文语合成引擎的Python封装库，该库的设计者为Natesh M Bhat，该库其实是 <a href="https://pypi.org/project/pyTTS/">pyTTS</a> 和 <a href="https://github.com/RapidWareTech/pyttsx">pyttsx</a> 项目的延续，pyttsx3主要是为Python3版本设计的，但同时也兼容Python2。JaysPySPEECH使用的是pyttsx3 2.7。</p>
+<ol>
+  <li>sudo apt update</li>
+  <li>sudo apt install postgresql postgresql-contrib</li>
+  <li>service postgresql start</li>
+  <li>sudo -s postgresql	 #切换用户</li>
+  <li>pgsql 	#登录PostgreSQL</li>
+  <li>ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码</li>
+</ol>
 
-<p>但是因为依赖的是当前PC的语音环境，所以无法将我们自己的语音导入。</p>
-
-<h2 id="mockingbird----貌似这个只是学习音色"><a href="https://github.com/babysor/MockingBird">MockingBird</a>  - 貌似这个只是学习音色</h2>
-
-<p>https://github.com/babysor/MockingBird/blob/main/README-CN.md</p>
-
-<h2 id="注意第8步下载数据集非常大建议先做">注意第8步下载数据集非常大，建议先做</h2>
-
-<p>我是ubuntu系统</p>
+<h3 id="安装gui--pgadmin">安装GUI  pgadmin</h3>
 
 <ol>
   <li>
-    <p>安装 <a href="https://pytorch.org/get-started/locally/">PyTorch</a></p>
-
-    <ol>
-      <li>
-        <p>先看本地有没有python.一般是python3了</p>
-      </li>
-      <li>
-        <p>再安装pip: apt install python3-pip</p>
-      </li>
-      <li>
-        <p>安装python torch  : pip3 install torch torchivision torchaudio</p>
-      </li>
-      <li>
-        <p>验证:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import torch
-x = torch.rand(5,3)
-print(x)
-</code></pre></div>        </div>
-      </li>
-    </ol>
+    <p>docker pull dpage/pgadmin4</p>
   </li>
   <li>
-    <p>安装 <a href="https://ffmpeg.org/download.html#get-packages">ffmpeg</a>。</p>
+    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4</p>
 
-    <ol>
-      <li>
-        <p>下载源码/source code 并解压缩</p>
-      </li>
-      <li>
-        <p>库的安装</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y autoconf automake build-essential git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev
-</code></pre></div>        </div>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install libavformat-dev
-apt install libavcodec-dev
-apt install libswresample-dev
-apt install libswscale-dev
-apt install libavutil-dev
-apt install libsdl1.2-dev
-</code></pre></div>        </div>
-
-        <p>如果没用的话 先 apt-get update, 再 apt-get install XXX.</p>
-      </li>
-      <li>
-        <p>安装libx264</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libx264-dev
-</code></pre></div>        </div>
-      </li>
-      <li>安装 yasm
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> apt-get install yasm
-</code></pre></div>        </div>
-      </li>
-      <li>
-        <p>安装 ffmpeg</p>
-      </li>
-      <li>
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure   --enable-shared  --prefix=/usr/local/ffmpeg  --enable-gpl --enable-libx264 --extra-cflags=-I/usr/local/ffmpeg/include --extra-ldflags=-L/usr/local/ffmpeg/lib
-make
-make install
-</code></pre></div>        </div>
-      </li>
-    </ol>
+    <p>注意这里的volume 绑定的位置，未来导入导出csv 可以使用</p>
   </li>
   <li>
-    <p>安装 MockingBird</p>
+    <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:babysor/MockingBird.git
+    <p>问题： create server 时发现 无法连接server</p>
+
+    <p>解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*' 
+</code></pre></div>    </div>
+
+    <p>重启postgresql : service postgresql restart</p>
+
+    <p>问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “localhost”, port 5432</p>
+
+    <p>编辑 pg_hba.conf文件</p>
+
+    <p>把报错中的host 拷贝到这个文件中：如下编写</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postgresql/12/main/pg_hba.conf
    
-cd MockingBird
-#安装剩余的依赖
-pip install -r requirements.txt
+host all all 172.17.0.4/24 md5
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>安装 webrtcvad</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install webrtcvad-wheels
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>在 MockingBird/synthesizer 下新建文件夹 saved_models</p>
-  </li>
-  <li>
-    <p>把下载到的或者训练好的 pt文件拷贝到 saved_models文件夹下</p>
-  </li>
-  <li>
-    <p>浏览器访问 localhost:8080 ， 如果端口被占用的话，可以修改default.py 变更 PORT</p>
-  </li>
-  <li>
-    <p>下载数据集 <a href="https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89">https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89</a></p>
-  </li>
-  <li>
-    <p>将上一部的数据集 放到某个文件夹下 <datasets_root>, 该解压的解压</datasets_root></p>
-  </li>
-  <li>
-    <p>打开工具</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python demo_toolbox.py -d &lt;datasets_root&gt;
-</code></pre></div>    </div>
+    <p>把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的</p>
   </li>
 </ol>
 
-<p>Notice：</p>
-
-<ol>
-  <li>
-    <p>如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.</p>
-  </li>
-  <li>
-    <p>如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
-_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
-即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
-   
-不同的模型(*.pt) 这里可能还要改回去
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>演示视频 <a href="https://www.bilibili.com/video/BV1uh411B7AD/">https://www.bilibili.com/video/BV1uh411B7AD/</a></p>
-  </li>
-</ol>
-
-<h3 id="可是实际操作下来上传了我的音频转换成一段刺耳的声音无法将中文text-转换成音频">可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频</h3>
+<p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="800" /></p>
 
 
         </div>
@@ -331,154 +240,29 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/02/voice-synthesis">Feb 20, 2022 - voice</a></h1>
+        <h1><a href="/2022/02/grafana">Feb 25, 2022 - grafana</a></h1>
         
         <div class="content">
-            <h1 id="python-ai语音合成">python AI语音合成</h1>
+            <h1 id="grafana">grafana</h1>
 
-<p>https://mp.weixin.qq.com/s/ROETeFo4Q__8hkX9Ss-CAw 看到这篇报道。觉得可以试试将自己的语音变成语音包，这样就可以给自己读文章了，或者去喜马拉雅领任务。</p>
+<p><a href="https://github.com/grafana/grafana/">https://github.com/grafana/grafana/</a></p>
 
-<p>pyttsx3是一套基于实现SAPI5文语合成引擎的Python封装库，该库的设计者为Natesh M Bhat，该库其实是 <a href="https://pypi.org/project/pyTTS/">pyTTS</a> 和 <a href="https://github.com/RapidWareTech/pyttsx">pyttsx</a> 项目的延续，pyttsx3主要是为Python3版本设计的，但同时也兼容Python2。JaysPySPEECH使用的是pyttsx3 2.7。</p>
+<p>一个开源的系统监控软件，尤其是GPU和slurm的监控</p>
 
-<p>但是因为依赖的是当前PC的语音环境，所以无法将我们自己的语音导入。</p>
+<p><a href="https://github.com/grafana/grafana/issues/45710">https://github.com/grafana/grafana/issues/45710</a></p>
 
-<h2 id="mockingbird---貌似这个只是学习音色"><a href="https://github.com/babysor/MockingBird">MockingBird</a> - 貌似这个只是学习音色</h2>
+<p>看起来纵坐标和tooltip上的数值不太一样</p>
 
-<p>https://github.com/babysor/MockingBird/blob/main/README-CN.md</p>
+<p>图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json</p>
 
-<h2 id="注意第8步下载数据集非常大建议先做">注意第8步下载数据集非常大，建议先做</h2>
+<p>grep  GPU Power Usage</p>
 
-<p>我是ubuntu系统</p>
+<p>stack 改成 false</p>
 
-<ol>
-  <li>
-    <p>安装 <a href="https://pytorch.org/get-started/locally/">PyTorch</a></p>
+<p>重启  grafana 。</p>
 
-    <ol>
-      <li>
-        <p>先看本地有没有python.一般是python3了</p>
-      </li>
-      <li>
-        <p>再安装pip: apt install python3-pip</p>
-      </li>
-      <li>
-        <p>安装python torch  : pip3 install torch torchivision torchaudio</p>
-      </li>
-      <li>
-        <p>验证:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import torch
-x = torch.rand(5,3)
-print(x)
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>安装 <a href="https://ffmpeg.org/download.html#get-packages">ffmpeg</a>。</p>
-
-    <ol>
-      <li>
-        <p>下载源码/source code 并解压缩</p>
-      </li>
-      <li>
-        <p>库的安装</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y autoconf automake build-essential git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev
-</code></pre></div>        </div>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install libavformat-dev
-apt install libavcodec-dev
-apt install libswresample-dev
-apt install libswscale-dev
-apt install libavutil-dev
-apt install libsdl1.2-dev
-</code></pre></div>        </div>
-
-        <p>如果没用的话 先 apt-get update, 再 apt-get install XXX.</p>
-      </li>
-      <li>
-        <p>安装libx264</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libx264-dev
-</code></pre></div>        </div>
-      </li>
-      <li>安装 yasm
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> apt-get install yasm
-</code></pre></div>        </div>
-      </li>
-      <li>
-        <p>安装 ffmpeg</p>
-      </li>
-      <li>
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure   --enable-shared  --prefix=/usr/local/ffmpeg  --enable-gpl --enable-libx264 --extra-cflags=-I/usr/local/ffmpeg/include --extra-ldflags=-L/usr/local/ffmpeg/lib
-make
-make install
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>安装 MockingBird</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:babysor/MockingBird.git
-   
-cd MockingBird
-#安装剩余的依赖
-pip install -r requirements.txt
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>安装 webrtcvad</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install webrtcvad-wheels
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>在 MockingBird/synthesizer 下新建文件夹 saved_models</p>
-  </li>
-  <li>
-    <p>把下载到的或者训练好的 pt文件拷贝到 saved_models文件夹下</p>
-  </li>
-  <li>
-    <p>浏览器访问 localhost:8080 ， 如果端口被占用的话，可以修改default.py 变更 PORT</p>
-  </li>
-  <li>
-    <p>下载数据集 <a href="https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89">https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89</a></p>
-  </li>
-  <li>
-    <p>将上一部的数据集 放到某个文件夹下 <datasets_root>, 该解压的解压</datasets_root></p>
-  </li>
-  <li>
-    <p>打开工具</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python demo_toolbox.py -d &lt;datasets_root&gt;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>Notice：</p>
-
-<ol>
-  <li>
-    <p>如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.</p>
-  </li>
-  <li>
-    <p>如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
-_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
-即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
-   
-不同的模型(*.pt) 这里可能还要改回去
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>演示视频 <a href="https://www.bilibili.com/video/BV1uh411B7AD/">https://www.bilibili.com/video/BV1uh411B7AD/</a></p>
-  </li>
-</ol>
-
-<h3 id="可是实际操作下来上传了我的音频转换成一段刺耳的声音无法将中文text-转换成音频">可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频</h3>
+<p>root        3180  0.0  0.0 2380228 59904 ?       Ssl  Feb16   1:54 /usr/bin/docker run –rm –network host –name docker.grafana.service -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana grafana/grafana
+472         3925  0.1  0.0 796740 70028 ?        Ssl  Feb16  15:57 grafana-server –homepath=/usr/share/grafana –config=/etc/grafana/grafana.ini –packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins</p>
 
         </div>
     </div>
@@ -486,23 +270,31 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/02/spring-MVC">Feb 19, 2022 - spring mvc</a></h1>
+        <h1><a href="/2022/02/ssh">Feb 24, 2022 - ssh</a></h1>
         
         <div class="content">
-            <h1 id="spring-mvc-获取url路径和读取本地文件">spring MVC 获取url路径和读取本地文件</h1>
+            <h1 id="ssh-无密码访问">ssh 无密码访问</h1>
 
-<h2 id="获取路径">获取路径</h2>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RequestMapping("/{animal}/{fileName}")
-    public String getJson(
-            @PathVariable String animal,
-            @PathVariable String fileName
-    ) {
-</code></pre></div></div>
+<ol>
+  <li>apt-get install openssh-server</li>
+  <li>查看状态 service ssh status</li>
+  <li>
+    <p>启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)</p>
+  </li>
+  <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
+  <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
+</ol>
 
-<h2 id="读取本地文件">读取本地文件</h2>
+<p>别名</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String fullPath = String.format(directory, animal, fileName);
-	String content = Files.readString(Paths.get(fullPath));
+<p>编辑 ~/.ssh/config</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ksyun_stg
+  HostName 120.92.232.118
+  Port 10022
+  User dingsongyun
+  IdentityFile ~/.ssh/id_rsa
+
 </code></pre></div></div>
 
 
@@ -517,7 +309,7 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
         <a class="btn btn-default" href="/page25" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 26 of 53</span>
+  <span class="page_number ">Page: 26 of 54</span>
   
     <a class="btn btn-default" href="/page27" class="next">Older</a>
   

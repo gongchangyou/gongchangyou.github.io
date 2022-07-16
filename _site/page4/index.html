@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/07/kafka">mongodb index</a></li>
-        
-          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+          <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
         
-          <li><a href="/2022/07/git-clone">git</a></li>
+          <li><a href="/2022/07/feign">feign</a></li>
         
-          <li><a href="/2022/07/prometheus">prometheus</a></li>
+          <li><a href="/2022/07/kafka">kafka</a></li>
+        
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>59</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>3</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
 			
 		
 			
@@ -175,25 +175,12 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
+        <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
         
         <div class="content">
-            <h1 id="maven-settings">maven settings</h1>
+            <h1 id="python-docker">python docker</h1>
 
-<p>设置 settings.xml</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
-</code></pre></div></div>
-
-<p>查看当前生效的 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
-</code></pre></div></div>
-
-<p>mvn命令指定 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
-</code></pre></div></div>
+<p>参考文章： <a href="https://www.runoob.com/docker/docker-install-python.html">https://www.runoob.com/docker/docker-install-python.html</a></p>
 
 
         </div>
@@ -202,88 +189,42 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
+        <h1><a href="/2022/07/storm">Jul 4, 2022 - storm</a></h1>
         
         <div class="content">
-            <h1 id="mongodb">MongoDB</h1>
+            <h1 id="storm">Storm</h1>
 
-<p>代码仓库：</p>
+<p>storm是个流数据的处理框架</p>
 
-<p>Java 代码 chunk逻辑</p>
+<p>写在前面：当然我还是推荐使用</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public class SplitListToChunks {
- 
-    public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; split(List&lt;T&gt; list, int size) {
-        final AtomicInteger counter = new AtomicInteger();
-        return new ArrayList&lt;&gt;(
-                list.stream()
-                        .collect(Collectors.groupingBy(it -&gt; counter.getAndIncrement() / size))
-                        .values());
-    }
-}
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+&lt;groupId&gt;com.alibaba.jstorm&lt;/groupId&gt;
+&lt;artifactId&gt;jstorm-core&lt;/artifactId&gt;
+&lt;version&gt;2.1.1&lt;/version&gt;
+&lt;/dependency&gt;
 </code></pre></div></div>
 
-<p>batch 搜索</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Test
-    public void batchGet() {
-        val table =db.getCollection("records");
-        val ids = new ArrayList&lt;&gt;();
-        for (int i = 20140000; i &lt;20147282; i++) {
-            ids.add(String.valueOf(i));
-        }
-        val chunkedList = split(ids, 100);
-        val firstStart = System.currentTimeMillis();
-        for (val list : chunkedList) {
-            val start = System.currentTimeMillis();
-            BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in",list) );
-            table.find(query).forEach((Consumer&lt;Document&gt;) document -&gt;{
-                log.info("id={}, loc={}",document.get("id"),  document.get("loc"));
-            });
-            log.info("cost={}", System.currentTimeMillis()- start);
-        }
-        log.info("allcost={}", System.currentTimeMillis()- firstStart);
-    }
+<p>他山之石: <a href="https://gitee.com/HuQingmiao/storm-demo">https://gitee.com/HuQingmiao/storm-demo</a>  直接就能跑起来</p>
+
+<p>但是因为我维护的还是个老项目，所以必须使用如下依赖</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;org.apache.storm&lt;/groupId&gt;
+            &lt;artifactId&gt;storm-core&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2&lt;/version&gt;
+&lt;/dependency&gt;
+
 </code></pre></div></div>
 
-<p>批量编辑 关键字 $set</p>
+<p>代码仓库：<a href="https://github.com/gongchangyou/storm-test">https://github.com/gongchangyou/storm-test</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 2),Filters.eq("name", "Eric2"));
-        //成功只更新name字段
-        db.getCollection("user").updateMany(f, new Document("$set",
-                new HashMap&lt;&gt;()
-        ));
-</code></pre></div></div>
+<p>注意这是一个maven项目 不是spring项目</p>
 
-<p>批量追加 关键字 $addToSet</p>
+<p>参考文章:  <a href="https://zhuanlan.zhihu.com/p/140806701">https://zhuanlan.zhihu.com/p/140806701</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Bson f = Filters.and(Filters.eq("id", 3),Filters.eq("name", "Eric3"));
-        db.getCollection("user").updateMany(f, new Document("$addToSet",
-                new HashMap&lt;&gt;()
-        ));
-</code></pre></div></div>
+<p><a href="https://www.cnblogs.com/xuwujing/p/8584684.html">https://www.cnblogs.com/xuwujing/p/8584684.html</a></p>
 
-<p>批量追加  合并数组. 关键字 $each</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//$each 关键字 在array类型的field中追加 多个element
-        db.getCollection("user").updateMany(f, new Document("$addToSet",
-                new HashMap&lt;&gt;() );
-                    }});
-                }}
-        ));
-</code></pre></div></div>
-
-<p>单独修改数组中的某个值 .$</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//.$ 的意思就是数组的下标
-        Bson f5 = Filters.and(Filters.eq("id", 5), Filters.eq("nickname", "c5"));
-        db.getCollection("user").updateMany(f5, new Document("$set", new HashMap&lt;&gt;() ));
-</code></pre></div></div>
-
-<p>参考文章： <a href="https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/">https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/</a></p>
-
-<p><a href="https://www.modb.pro/db/73050">https://www.modb.pro/db/73050</a></p>
-
-<p><a href="https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu">https://stackoverflow.com/questions/37612448/mongodb-error-the-positional-operator-did-not-find-the-match-needed-from-the-qu</a></p>
 
         </div>
     </div>
@@ -291,44 +232,33 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
+        <h1><a href="/2022/06/mysql-log">Jun 30, 2022 - mysql log</a></h1>
         
         <div class="content">
-            <h1 id="es-集群">ES 集群</h1>
+            <h1 id="mysql-log">mysql log</h1>
 
-<p>java访问ES 集群，两种方法：</p>
+<p>代码仓库： <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
 
 <ol>
-  <li>
-    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
-
-    <ol>
-      <li>
-        <p>配置虚拟ip的命令:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
-        
-#下线虚拟ip
-ifconfig eth0:1 down
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>把cluster node都添加到client中,类似下面的代码</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
-                 RestClient.builder(
-                 		//Es连接信息，我用的是伪集群哈哈哈
-                         new HttpHost("localhost", 9200, "http"),
-                         new HttpHost("localhost", 9201, "http"),
-                         new HttpHost("localhost", 9202, "http")
-                 )
-         );
+  <li>如果是mybatis plus, 一行搞定
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 </code></pre></div>    </div>
   </li>
+  <li>
+    <p>如果是 jpa 。基于 org.springframework.data.repository.CrudRepository;  如何添加日志呢？</p>
+
+    <p>注意到 JdbcTemplate.execute 方法中有个 logger.isDebugEnabled() 判断
+ <img src="/images/202206/WechatIMG294.png" alt="" width="800" /></p>
+
+    <p>那就配置下 logging.level.root 就行</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> logging.level.root=DEBUG
+</code></pre></div>    </div>
+  </li>
+  <li>如果是mybatis 1.3.1 看到代码没有注入log的地方。只能把断点加到 CachingExecutor.query 方法中 看 boundSql变量了</li>
 </ol>
 
+<p><img src="/images/202206/WechatIMG295.png" alt="" width="800" /></p>
 
         </div>
     </div>
@@ -341,7 +271,7 @@ ifconfig eth0:1 down
         <a class="btn btn-default" href="/page3" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 4 of 53</span>
+  <span class="page_number ">Page: 4 of 54</span>
   
     <a class="btn btn-default" href="/page5" class="next">Older</a>
   

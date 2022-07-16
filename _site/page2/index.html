@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
-          <li><a href="/2022/07/kafka">mongodb index</a></li>
-        
-          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+          <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/flink">flink</a></li>
         
-          <li><a href="/2022/07/git-clone">git</a></li>
+          <li><a href="/2022/07/feign">feign</a></li>
         
-          <li><a href="/2022/07/prometheus">prometheus</a></li>
+          <li><a href="/2022/07/kafka">kafka</a></li>
+        
+          <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>14</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>59</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>3</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
 			
 		
 			
@@ -175,49 +175,99 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
+        <h1><a href="/2022/07/kafka">Jul 13, 2022 - kafka</a></h1>
         
         <div class="content">
-            <h1 id="git-批量迁移">git 批量迁移</h1>
+            <h1 id="kafka">kafka</h1>
+
+<p>参考文章： <a href="https://blog.csdn.net/qq_36042938/article/details/86690188">https://blog.csdn.net/qq_36042938/article/details/86690188</a></p>
+
+<p><a href="https://segmentfault.com/a/1190000021746086">https://segmentfault.com/a/1190000021746086</a></p>
 
 <ol>
   <li>
-    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
+    <p>Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
-</code></pre></div>    </div>
-  </li>
-  <li>找到最后一行 (如下任1命令)
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
 
- 2.sed -n '$p'
-
- 3.sed '$!N;$!D'
-
- 4.awk '{b=a"\n"$0;a=$0}END{print b}'
-
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>找到最近一次提交的分支的记录</p>
+    <p>进入容器</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
-    
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it kafka sh
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>sed提取出分支</p>
+    <p>启动消费者进程</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
-	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
-	#获取分支名
-	echo $log
-	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
-    
-	echo $branchname
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafka-console-consumer.sh --bootstrap-server 192.168.1.60:9092 --topic kafeidou --from-beginning
+</code></pre></div>    </div>
+  </li>
+  <li>再开个窗口，执行第2步，再启动生产者进程
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kafka-console-producer.sh --broker-list 192.168.1.60(机器IP):9092 --topic kafeidou
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>输入消息payload</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &gt;hello
+ &gt;
+ &gt;
+ &gt;
 </code></pre></div>    </div>
   </li>
 </ol>
+
+<p>广播和单播：</p>
+
+<p>广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。</p>
+
+<p>单播：多个consumer 使用相同的group。 这样每个consumer被分配到不同的消息，加速消费。</p>
+
+<h2 id="实际场景">实际场景</h2>
+
+<p>当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。</p>
+
+<p>话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
+        
+        <div class="content">
+            <h1 id="mongodb-索引">mongodb 索引</h1>
+
+<p>通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.</p>
+
+<p>参考文章: <a href="https://juejin.cn/post/6844903520747929614">https://juejin.cn/post/6844903520747929614</a></p>
+
+<p><a href="https://haicoder.net/mongodb/mongodb-index-principle.html">https://haicoder.net/mongodb/mongodb-index-principle.html</a></p>
+
+<p><a href="https://blog.csdn.net/guangyacyb/article/details/104339183">https://blog.csdn.net/guangyacyb/article/details/104339183</a></p>
+
+<p><a href="https://mongoing.com/archives/2797">https://mongoing.com/archives/2797</a></p>
+
+<p>可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db.person.createIndex( {age: 1, name: -1} )  
+</code></pre></div></div>
+
+<p>查看索引</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.getIndexes() 
+</code></pre></div></div>
+
+<p>查看query 是否使用索引,  如果是 <a href="https://docs.mongodb.org/manual/reference/explain-results/#queryplanner">COLLSCAN</a> 说明全表扫描， 如果是 IXSCAN ，就是使用了索引</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.find({age:18}).explain()
+db.person.find({age:18}).explain("executionStats")
+</code></pre></div></div>
 
 
         </div>
@@ -226,82 +276,18 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/prometheus">Jul 7, 2022 - prometheus</a></h1>
+        <h1><a href="/2022/07/flink">Jul 11, 2022 - flink</a></h1>
         
         <div class="content">
-            <h1 id="prometheus">prometheus</h1>
+            <h1 id="flink">Flink</h1>
 
-<p>参考文章： <a href="https://www.prometheus.wang/quickstart/why-monitor.html">https://www.prometheus.wang/quickstart/why-monitor.html</a></p>
+<p>官方文档 : <a href="https://flink.apache.org/">https://flink.apache.org/</a></p>
 
-<p><a href="https://prometheus.io/docs/introduction/overview/">https://prometheus.io/docs/introduction/overview/</a></p>
+<p>参考文章 : <a href="https://www.jianshu.com/p/d5ccb3aaabc5">https://www.jianshu.com/p/d5ccb3aaabc5</a></p>
 
-<p><img src="/images/202207/architecture.png" alt="" width="800" /></p>
-
-<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/custom_exporter_with_java/client_library_java">java client 接入</a></p>
-
-<p>跟 <a href="/2022/05/monitor">Statsd</a> 的区别 :</p>
-
-<ol>
-  <li>statsd是主动udp上报，推的形式. 而prometheus是 提供http接口供 prometheus server pull， 是拉的形式。</li>
-  <li>statsd 协议提供一些常用的metric的类型，通常有timer、counter、gauge和set四种。这样就无需在java client中自行处理</li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/pdfreader">Jul 6, 2022 - pdfreader</a></h1>
-        
-        <div class="content">
-            <h1 id="pdfbox">pdfbox</h1>
-
-<p>添加依赖</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.pdfbox&lt;/groupId&gt;
-            &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;
-            &lt;version&gt;3.0.0-alpha3&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<p>遍历文件夹</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> String path = "/path/to/pdf";		//要遍历的路径
-        File file = new File(path);		//获取其file对象
-        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
-        for(File f:fs){					//遍历File[]数组
-            if(!f.isDirectory()) {        //若非目录(即文件)，则打印
-//                System.out.println(f);
-                parse(f);
-            }
-        }
-</code></pre></div></div>
-
-<p>逐页读取</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> try {
-        PDDocument document = Loader.loadPDF(file);
-        if (!document.isEncrypted()) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            var lastNo = "";
-            var goodOffset = 1;
-
-            for(int i = 1; i&lt;=document.getNumberOfPages(); i ++){
-                stripper.setSortByPosition(true);
-                stripper.setStartPage(i);
-                stripper.setEndPage(i);
-
-                String text = stripper.getText(document);
-            }
-            
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
- }
-</code></pre></div></div>
+<blockquote>
+  <p>在执行引擎这一层，流处理系统与批处理系统最大不同在于节点间的数据传输方式。<strong>对于一个流处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，然后立刻通过网络传输到下一个节点，由下一个节点继续处理。</strong> 而对于一个<strong>批处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，并不会立刻通过网络传输到下一个节点，当缓存写满，就持久化到本地硬盘上，当所有数据都被处理完成后，才开始将处理后的数据通过网络传输到下一个节点。</strong>这两种数据传输模式是两个极端，对应的是流处理系统对低延迟的要求和批处理系统对高吞吐量的要求。Flink的执行引擎采用了一种十分灵活的方式，同时支持了这两种数据传输模型。Flink以固定的缓存块为单位进行网络数据传输，用户可以通过缓存块超时值指定缓存块的传输时机。如果缓存块的超时值为0，则Flink的数据传输方式类似上文所提到流处理系统的标准模型，此时系统可以获得最低的处理延迟。如果缓存块的超时值为无限大，则Flink的数据传输方式类似上文所提到批处理系统的标准模型，此时系统可以获得最高的吞吐量。同时缓存块的超时值也可以设置为0到无限大之间的任意值。缓存块的超时阈值越小，则Flink流处理执行引擎的数据处理延迟越低，但吞吐量也会降低，反之亦然。通过调整缓存块的超时阈值，用户可根据需求灵活地权衡系统延迟和吞吐量。</p>
+</blockquote>
 
 
         </div>
@@ -315,7 +301,7 @@
         <a class="btn btn-default" href="/index.html" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 2 of 53</span>
+  <span class="page_number ">Page: 2 of 54</span>
   
     <a class="btn btn-default" href="/page3" class="next">Older</a>
   
