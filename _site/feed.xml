@@ -50,7 +50,7 @@
 
 &lt;p&gt;重点看 InvocableHandlerMethod.getMethodArgumentValues 其中的
 RequestResponseBodyMethodProcessor.readWithMessageConverters
-最终发现是 AbstractJackson2HttpMessageConverter 中的一句 objectMapper.readValue(inputMessage.getBody(), javaType) 跟预期一致&lt;/p&gt;
+最终发现是 AbstractJackson2HttpMessageConverter 中的一句 objectMapper.readValue(inputMessage.getBody(), javaType)。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG321.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
 
