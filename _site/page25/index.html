@@ -76,13 +76,13 @@
         
           <li><a href="/2022/07/java-agent">java agent</a></li>
         
-          <li><a href="/2022/07/flink">flink</a></li>
-        
           <li><a href="/2022/07/feign">feign</a></li>
         
           <li><a href="/2022/07/kafka">kafka</a></li>
         
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+        
+          <li><a href="/2022/07/flink">flink</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>61</sup></a></li>
 			
 		
 			
@@ -173,39 +173,6 @@
         </div>
         <div class="col-md-9">
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/gitlab-container">Mar 9, 2022 - gitlab-container</a></h1>
-        
-        <div class="content">
-            <h1 id="gitlab-container-registry">gitlab container registry</h1>
-
-<p>官网说明 ：[https://docs.gitlab.cn/jh/administration/packages/container_registry.html](https://docs.gitlab.cn/jh/administration/packages/container_registry.html</p>
-
-<p>即可以进到docker容器中查看配置文件，也可以先查看挂载数据卷，再看宿主机上的文件。</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>docker inspect container_name</td>
-      <td>grep Mounts -A 20</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>在这个配置中可以看到  容器的镜像仓库的port等配置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat /srv/gitlab/data/gitlab-rails/etc/gitlab.yml|grep 5005 -C 20
-</code></pre></div></div>
-
-<p>每个工程的镜像在如图这个位置查看
-<img src="/images/202203/WechatIMG350.png" alt="" width="800" /></p>
-
-<p>不知道如何用docker客户端连接私有镜像库</p>
-
-        </div>
-    </div>
-</div>
-
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/gitlab-runner">Mar 4, 2022 - gitlab-runner</a></h1>
@@ -426,6 +393,71 @@ make install
 </code></pre></div></div>
 
 <p>一通折腾之后，算是安装完成了。</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/postgresql">Mar 1, 2022 - Postgresql</a></h1>
+        
+        <div class="content">
+            <h1 id="postgresql">Postgresql</h1>
+
+<h3 id="ubuntu-安装-postgresql">ubuntu 安装 postgresql</h3>
+<p><a href="https://linux.cn/article-11480-1.html">https://linux.cn/article-11480-1.html</a></p>
+
+<ol>
+  <li>sudo apt update</li>
+  <li>sudo apt install postgresql postgresql-contrib</li>
+  <li>service postgresql start</li>
+  <li>sudo -s postgresql	 #切换用户</li>
+  <li>pgsql 	#登录PostgreSQL</li>
+  <li>ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码</li>
+</ol>
+
+<h3 id="安装gui--pgadmin">安装GUI  pgadmin</h3>
+
+<ol>
+  <li>
+    <p>docker pull dpage/pgadmin4</p>
+  </li>
+  <li>
+    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4</p>
+
+    <p>注意这里的volume 绑定的位置，未来导入导出csv 可以使用</p>
+  </li>
+  <li>
+    <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
+
+    <p>问题： create server 时发现 无法连接server</p>
+
+    <p>解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*' 
+</code></pre></div>    </div>
+
+    <p>重启postgresql : service postgresql restart</p>
+
+    <p>问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “localhost”, port 5432</p>
+
+    <p>编辑 pg_hba.conf文件</p>
+
+    <p>把报错中的host 拷贝到这个文件中：如下编写</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postgresql/12/main/pg_hba.conf
+   
+host all all 172.17.0.4/24 md5
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的</p>
+  </li>
+</ol>
+
+<p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="800" /></p>
 
 
         </div>

@@ -76,13 +76,13 @@
         
           <li><a href="/2022/07/java-agent">java agent</a></li>
         
-          <li><a href="/2022/07/flink">flink</a></li>
-        
           <li><a href="/2022/07/feign">feign</a></li>
         
           <li><a href="/2022/07/kafka">kafka</a></li>
         
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+        
+          <li><a href="/2022/07/flink">flink</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>61</sup></a></li>
 			
 		
 			
@@ -173,33 +173,6 @@
         </div>
         <div class="col-md-9">
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-settings">maven settings</h1>
-
-<p>设置 settings.xml</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
-</code></pre></div></div>
-
-<p>查看当前生效的 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
-</code></pre></div></div>
-
-<p>mvn命令指定 settings</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
@@ -329,6 +302,34 @@ ifconfig eth0:1 down
   </li>
 </ol>
 
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
+        
+        <div class="content">
+            <h1 id="sentinel">Sentinel</h1>
+
+<p>简介： 是对资源（服务，方法）访问的规则配置。 比如流控，黑白名单等</p>
+
+<p>官网: <a href="https://github.com/alibaba/Sentinel">https://github.com/alibaba/Sentinel</a></p>
+
+<p>参考文章: <a href="https://www.jianshu.com/p/8f901abb7af4">https://www.jianshu.com/p/8f901abb7af4</a></p>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/sentinel_test">https://github.com/gongchangyou/sentinel_test</a></p>
+
+<p>实现较为简单 不赘述了。</p>
+
+<p>注意点</p>
+
+<ol>
+  <li>如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法</li>
+  <li>blockHandler 方法记得添加 BlockException exception 形参</li>
+</ol>
 
         </div>
     </div>

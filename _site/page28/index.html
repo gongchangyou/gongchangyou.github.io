@@ -76,13 +76,13 @@
         
           <li><a href="/2022/07/java-agent">java agent</a></li>
         
-          <li><a href="/2022/07/flink">flink</a></li>
-        
           <li><a href="/2022/07/feign">feign</a></li>
         
           <li><a href="/2022/07/kafka">kafka</a></li>
         
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
+        
+          <li><a href="/2022/07/flink">flink</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>61</sup></a></li>
 			
 		
 			
@@ -173,40 +173,6 @@
         </div>
         <div class="col-md-9">
             
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/alibaba-nacos-client-server">Feb 16, 2022 - nacos serverlist</a></h1>
-        
-        <div class="content">
-            <h1 id="nacos-serverlist--endpoint">nacos serverList &amp; endpoint</h1>
-
-<h2 id="两种设置nacos-服务地址的方式">两种设置nacos 服务地址的方式</h2>
-
-<ol>
-  <li>
-    <p>生产环境的话，我们一般使用endpoint 固定域名</p>
-  </li>
-  <li>
-    <p>测试环境我们可以指定server-addr</p>
-  </li>
-</ol>
-
-<p>如下所示</p>
-
-<p><img src="/images/202202/1644977241350.jpg" alt="config" width="1000" /></p>
-
-<p><img src="/images/202202/1644977146089.jpg" alt="set server list" width="1000" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>优先选择server list, 如果没有配置，则请求http://域名/nacos/serverlist 接口获取 nacos注册服务器列表
-</code></pre></div></div>
-
-<p><img src="/images/202202/1644977321417.jpg" alt="set server list code" width="1000" /></p>
-
-
-        </div>
-    </div>
-</div>
-
 <div class="article">
     <div class="well">
         <h1><a href="/2022/02/dubbo-kryo">Feb 15, 2022 - kryo</a></h1>
@@ -420,6 +386,97 @@ public class NacosRouteDynamicDataSource implements ApplicationRunner {
 <p>在nacos手动配置路由</p>
 
 <p><img src="/images/202202/1644471609530.jpg" alt="nacos config" width="1000" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/slf4j-logback">Feb 8, 2022 - slf4j</a></h1>
+        
+        <div class="content">
+            <h1 id="slf4j--logback">slf4j &amp; logback</h1>
+
+<p>slf4j是基于门面模式的日志模块，logback是其中的一个实现，另个常用的是log4j</p>
+
+<p>去年log4j 的漏洞整怕了，还是用logback实现吧。</p>
+
+<p>有几个常用的slf4j和logback相关模块</p>
+
+<ol>
+  <li>
+    <p>logback-classic 日志的实现 ，内置logback-core</p>
+  </li>
+  <li>
+    <p>logback-access <a href="https://logback.qos.ch/access.html#configuration">https://logback.qos.ch/access.html#configuration</a> 可以在 <em>$TOMCAT_HOME/conf/server.xml</em> 中添加</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;Connector port="8050" 
+  handler.list="mx"
+  mx.enabled="true" 
+  mx.httpHost="localhost" 
+  mx.httpPort="8082" 
+  protocol="AJP/1.3" /&gt;
+</code></pre></div>    </div>
+
+    <p>访问模块与 Servlet 容器集成提供通过 Http 来访问日记的功能。</p>
+  </li>
+  <li>logstash-logback-encoder 以json格式来保存日志</li>
+  <li>lombok 可以使用@Slf4j注解，避免每个类中都写LoggerFactory</li>
+</ol>
+
+<p>Logback-spring.xml</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>
+
+<span class="nt">&lt;configuration</span> <span class="na">debug=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 控制台输出 --&gt;</span>
+    <span class="nt">&lt;conversionRule</span> <span class="na">conversionWord=</span><span class="s">"clr"</span> <span class="na">converterClass=</span><span class="s">"org.springframework.boot.logging.logback.ColorConverter"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;conversionRule</span> <span class="na">conversionWord=</span><span class="s">"wex"</span>
+                    <span class="na">converterClass=</span><span class="s">"org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;conversionRule</span> <span class="na">conversionWord=</span><span class="s">"wEx"</span>
+                    <span class="na">converterClass=</span><span class="s">"org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"</span><span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- 按照每天生成日志文件 --&gt;</span>
+        <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"FILE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.RollingFileAppender"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;file&gt;</span>${LOGS_DIR}/service.log<span class="nt">&lt;/file&gt;</span>
+            <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!--日志文件输出的文件名--&gt;</span>
+                <span class="nt">&lt;FileNamePattern&gt;</span>${LOGS_DIR}/service.%d{yyyy-MM-dd}.%i.log<span class="nt">&lt;/FileNamePattern&gt;</span>
+                <span class="c">&lt;!--日志文件保留天数--&gt;</span>
+                <span class="nt">&lt;maxFileSize&gt;</span>5GB<span class="nt">&lt;/maxFileSize&gt;</span>
+            <span class="nt">&lt;/rollingPolicy&gt;</span>
+            <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.encoder.PatternLayoutEncoder"</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span>
+                <span class="nt">&lt;pattern&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS}┇%-5level┇[%thread]┇%logger{50}┇%msg%n<span class="nt">&lt;/pattern&gt;</span>
+            <span class="nt">&lt;/encoder&gt;</span>
+            <span class="nt">&lt;filter</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.filter.ThresholdFilter"</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!-- 在日志配置级别的基础上过滤掉warn级别以下的日志 --&gt;</span>
+                <span class="nt">&lt;level&gt;</span>WARN<span class="nt">&lt;/level&gt;</span>
+            <span class="nt">&lt;/filter&gt;</span>
+        <span class="nt">&lt;/appender&gt;</span>
+
+        <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"STDOUT"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.encoder.PatternLayoutEncoder"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;pattern&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS}┇%-5level┇[%thread]┇%logger{50}┇%msg%n<span class="nt">&lt;/pattern&gt;</span>
+            <span class="nt">&lt;/encoder&gt;</span>
+        <span class="nt">&lt;/appender&gt;</span>
+
+    <span class="nt">&lt;springProfile</span> <span class="na">name=</span><span class="s">"dev"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">"INFO"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"STDOUT"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"FILE"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/root&gt;</span>
+    <span class="nt">&lt;/springProfile&gt;</span>
+
+<span class="nt">&lt;/configuration&gt;</span>
+
+</code></pre></div></div>
+
+<p>记得在 application.properties中添加如下参数，或者启动项中添加，这样springProfile能生效</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.profiles.active=dev
+</code></pre></div></div>
+
 
         </div>
     </div>
