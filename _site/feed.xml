@@ -501,7 +501,7 @@ db.person.find({age:18}).explain(&quot;executionStats&quot;)
 
 &lt;p&gt;storm是个流数据的处理框架&lt;/p&gt;
 
-&lt;p&gt;写在前面：当然我还是推荐使用&lt;/p&gt;
+&lt;p&gt;写在前面：当然我还是推荐使用flink&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
 &amp;lt;groupId&amp;gt;com.alibaba.jstorm&amp;lt;/groupId&amp;gt;
