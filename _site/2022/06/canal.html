@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/skywalking">skywalking</a></li>
+        
           <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/feign">feign</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/kafka">kafka</a></li>
         
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
-        
-          <li><a href="/2022/07/flink">flink</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>15</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>61</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>5</sup></a></li>
 			
 		
 			
@@ -253,6 +253,8 @@ Caused by: java.io.IOException: caching_sha2_password Auth failed
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
 FLUSH PRIVILEGES;
+
+ALTER USER 'canal'@'%' IDENTIFIED WITH mysql_native_password BY 'canal';
 </code></pre></div></div>
 
 <p>问题2： Caused by: java.io.IOException: ErrorPacket [errorNumber=1146, fieldCount=-1, message=Table ‘XXX.BASE TABLE’ doesn’t exist, sqlState=42S02, sqlStateMarker=#]</p>
@@ -287,7 +289,7 @@ FLUSH PRIVILEGES;
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tags"></i>: <a href="/tag/c++/">c++</a>, <a href="/tag/c++/">c++</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';

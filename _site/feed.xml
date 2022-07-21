@@ -7,6 +7,16 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>skywalking</title>
+				<description>&lt;h1 id=&quot;skywalking&quot;&gt;skywalking&lt;/h1&gt;
+
+</description>
+				<pubDate>Thu, 21 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/skywalking</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/skywalking</guid>
+			</item>
+		
+			<item>
 				<title>java agent</title>
 				<description>&lt;h1 id=&quot;java-agent&quot;&gt;java agent&lt;/h1&gt;
 
@@ -493,47 +503,6 @@ db.person.find({age:18}).explain(&quot;executionStats&quot;)
 				<pubDate>Tue, 05 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/python-docker</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/python-docker</guid>
-			</item>
-		
-			<item>
-				<title>storm</title>
-				<description>&lt;h1 id=&quot;storm&quot;&gt;Storm&lt;/h1&gt;
-
-&lt;p&gt;storm是个流数据的处理框架&lt;/p&gt;
-
-&lt;p&gt;写在前面：当然我还是推荐使用flink&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-&amp;lt;groupId&amp;gt;com.alibaba.jstorm&amp;lt;/groupId&amp;gt;
-&amp;lt;artifactId&amp;gt;jstorm-core&amp;lt;/artifactId&amp;gt;
-&amp;lt;version&amp;gt;2.1.1&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;他山之石: &lt;a href=&quot;https://gitee.com/HuQingmiao/storm-demo&quot;&gt;https://gitee.com/HuQingmiao/storm-demo&lt;/a&gt;  直接就能跑起来&lt;/p&gt;
-
-&lt;p&gt;但是因为我维护的还是个老项目，所以必须使用如下依赖&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.storm&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;storm-core&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;1.2.2&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/storm-test&quot;&gt;https://github.com/gongchangyou/storm-test&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;注意这是一个maven项目 不是spring项目&lt;/p&gt;
-
-&lt;p&gt;参考文章:  &lt;a href=&quot;https://zhuanlan.zhihu.com/p/140806701&quot;&gt;https://zhuanlan.zhihu.com/p/140806701&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/xuwujing/p/8584684.html&quot;&gt;https://www.cnblogs.com/xuwujing/p/8584684.html&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Mon, 04 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/storm</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/storm</guid>
 			</item>
 		
 	</channel>

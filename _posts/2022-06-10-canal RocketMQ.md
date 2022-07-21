@@ -4,7 +4,7 @@ title: "canal RocketMQ"
 date: 2022-06-10 10:25:06 +0800
 comments: true
 category: java
-tag: [java]
+tag: [java, rocketmq, mysql]
 
 
 ---
@@ -83,3 +83,59 @@ spring.cloud.stream.bindings.input1.group=group
 3.  蓝色的那个只是消息自增id，不是主键
 4.  old 中的是这次修改的字段的旧值
 
+---
+
+
+
+如何实现动态主题？
+
+注意到 类 CanalRocketMQProducer 中的 send方法 ,需要设置一个 dynamicTopic的配置
+
+![]({{ site.baseurl}}/images/202207/WechatIMG345.png){: width="800" }
+
+```
+canal.mq.topic=test-topic
+# dynamic topic route by schema or table regex
+canal.mq.dynamicTopic=mytest1.user,topic2:mytest2\\..*,.*\\..*
+```
+
+其中  
+```
+mytest1.user 表示 mytest1db user 表 发送到主题为 mytest1_user 中
+
+topic2:mytest2\\..* 表示  mytest2的所有表的操作 都发送到主题  topic2
+
+.*\\..*  表示匹配所有db所有table  并发送到 db_table 的主题中
+```
+注意： 如果 没匹配到 动态主题的话，会选择 默认的 canal.mq.topic 主题发送
+
+
+
+![]({{ site.baseurl}}/images/202207/WechatIMG346.png){: width="800" }
+
+参考文章: [https://blog.csdn.net/god8816/article/details/117308235](https://blog.csdn.net/god8816/article/details/117308235)
+
+
+
+问题1：
+
+Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'test-topic.group.errors.recoverer' defined in null: Cannot register bean definition [Generic bean: class [org.springframework.integration.handler.advice.ErrorMessageSendingRecoverer]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] for bean 'test-topic.group.errors.recoverer': There is already [Generic bean: class [org.springframework.integration.handler.advice.ErrorMessageSendingRecoverer]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] bound.
+
+
+
+回答1：不同topic的 group必须设置成不同的. 具体可以看 MQClientInstance.registerConsumer 方法，consumerTable 是一个group对应一个consumer的map.
+
+```
+nested exception is org.apache.rocketmq.client.exception.MQClientException: The consumer group[group] has been created before, specify another name please.
+See http://rocketmq.apache.org/docs/faq/ for further details.
+```
+
+
+
+![]({{ site.baseurl}}/images/202207/WechatIMG347.png){: width="800" }
+
+
+
+在BindingService这里有个递归，但其实递归不了，会抛上述异常。因为 ErrorMessageSendingRecoverer 已经实例化过了。
+
+![]({{ site.baseurl}}/images/202207/WechatIMG348.png){: width="800" }

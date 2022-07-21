@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/07/skywalking">skywalking</a></li>
+        
           <li><a href="/2022/07/java-agent">java agent</a></li>
         
           <li><a href="/2022/07/feign">feign</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/kafka">kafka</a></li>
         
           <li><a href="/2022/07/mongodb-index">mongodb index</a></li>
-        
-          <li><a href="/2022/07/flink">flink</a></li>
         
     </ul>
 </div>
@@ -110,7 +110,7 @@
 			
 		
 			
-				<li><a href="/tag/mysql" title="mysql">mysql<sup>13</sup></a></li>
+				<li><a href="/tag/mysql" title="mysql">mysql<sup>15</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>61</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>62</sup></a></li>
 			
 		
 			
@@ -138,7 +138,7 @@
 			
 		
 			
-				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>4</sup></a></li>
+				<li><a href="/tag/rocketmq" title="rocketmq">rocketmq<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,81 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/07/sed-command">Jul 7, 2016 - sed替换命令</a></h1>
+        
+        <div class="content">
+            <p><a herf="http://my.oschina.net/shelllife/blog/118337"> http://my.oschina.net/shelllife/blog/118337</a></p>
+
+<p>下面是网上找到的一些用法，经实践效果是各不相同的，只有一种是完全可行的。</p>
+
+<p>sed ‘:label;N;s/\n/:/;b label’ filename</p>
+
+<p>sed ‘:label;N;s/\n/:/;t label’ filename</p>
+
+<p>上面的两条命令可以实现将文件中的所有换行符替换为指定的字串，如命令中的冒号。命令的解释：</p>
+
+<p>:label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令</p>
+
+<p>N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见</p>
+
+<p>s/\n/:/;   s是sed的替换命令，将换行符替换为冒号</p>
+
+<p>b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处</p>
+
+<p>标签跳转和N的追加命令实现了每一行的不间断放入模式处理空间，从而不会漏掉每一个换行符，而没有标签的话跳转的话，就只能每两行替换掉一个换行符，对比效果：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘:x;N;s/\n/,/;b x’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b,c,d</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$  echo “a,b,c,d”</td>
+      <td>sed ‘s/,/\n/g’</td>
+      <td>sed ‘N;s/\n/,/’</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>a,b</p>
+
+<p>c,d</p>
+
+<p><a herf="http://blog.chinaunix.net/uid-26150691-id-3054317.html">sed awk grep 筛选  http://blog.chinaunix.net/uid-26150691-id-3054317.html</a></p>
+
+<p><a herf="https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc"> sed awk grep 筛选 https://www.evernote.com/l/AKkZj1NmrPFIrIdnucubuEjEaLtAI5KjeVc</a></p>
+
+<p>SVN_VERSION=<code class="highlighter-rouge">svn info |sed -n 's/Revision: \(.*\)/\1/p'</code> #shell结果输出到变量 用`符号即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在ssh之前先整理好参数 只要在ssh中 '${ESCAPE_PATH}'即可
+SCRIPT_DIR=/var/home/aiming/world_all/bin/
+ESCAPE_PATH=$(echo ${SCRIPT_DIR}tmp |sed 's/\//\\\//g')
+echo ${ESCAPE_PATH}
+ssh aiming@lfs-cn-manage "
+cd ${SCRIPT_DIR}
+echo '${PUSH_CONTENT}' &gt; ${SCRIPT_DIR}tmp
+
+./idc_world_all_update.sh update_notification '${ESCAPE_PATH}' 
+"
+#'\/var\/home\/aiming\/world_all\/bin\/tmp'
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
@@ -214,20 +289,6 @@
 <p>上传ipa:</p>
 
 <p>利用mac自带软件 Application Loader上传ipa</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
-        
-        <div class="content">
-            <p>Replica</p>
-
-<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
-
 
         </div>
     </div>
