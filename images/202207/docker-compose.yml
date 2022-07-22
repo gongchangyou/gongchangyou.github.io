@@ -1,0 +1,67 @@
+version: '2.2'
+services:
+  es-node:
+   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+   container_name: es-node
+   environment:
+     - node.name=es-node
+     - cluster.name=es-cluster-7
+     - discovery.type=single-node
+     - xpack.security.enabled=false
+     - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+   ulimits:
+     memlock:
+       soft: -1
+       hard: -1
+   volumes:
+     - ./data:/usr/share/elasticsearch/data
+   ports:
+     - 9200:9200
+   networks:
+     - skywalking-network
+
+  kibana:
+   image: docker.elastic.co/kibana/kibana:7.5.0
+   environment:
+     ELASTICSEARCH_HOSTS: http://es-node:9200
+   ports:
+     - 5601:5601
+   networks:
+     - skywalking-network
+   depends_on:
+     - es-node
+
+  oap:
+   image: apache/skywalking-oap-server:8.9.1
+   container_name: oap1
+   environment:
+     SW_STORAGE: elasticsearch
+     SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
+     TZ: Asia/Shanghai 
+   ports:
+     - 12800:12800
+     - 11800:11800
+   networks:
+     - skywalking-network
+   depends_on:
+     - es-node
+
+  ui:
+    image: apache/skywalking-ui:8.9.1
+    environment:
+      SW_OAP_ADDRESS: http://oap1:12800
+      TZ: Asia/Shanghai 
+    ports:
+      - 8088:8080
+    networks:
+      - skywalking-network
+    depends_on:
+      - es-node    
+
+volumes:
+ es-data01:
+   driver: local
+
+networks:
+ skywalking-network:
+   driver: bridge
