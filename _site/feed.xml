@@ -7,6 +7,24 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>poi</title>
+				<description>&lt;h1 id=&quot;poi-excel-读写&quot;&gt;poi excel 读写&lt;/h1&gt;
+
+&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/excelreader&quot;&gt;https://github.com/gongchangyou/excelreader&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;枚举项可以 利用 XSSFDataValidationConstraint 增加 数据有效性的 限制。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG357.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/Janson_Lin/article/details/108379333&quot;&gt;https://blog.csdn.net/Janson_Lin/article/details/108379333&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Fri, 22 Jul 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/07/poi</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/07/poi</guid>
+			</item>
+		
+			<item>
 				<title>skywalking</title>
 				<description>&lt;h1 id=&quot;skywalking&quot;&gt;skywalking&lt;/h1&gt;
 
@@ -602,18 +620,6 @@ db.person.find({age:18}).explain(&quot;executionStats&quot;)
 				<pubDate>Wed, 06 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/pdfreader</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/pdfreader</guid>
-			</item>
-		
-			<item>
-				<title>python docker</title>
-				<description>&lt;h1 id=&quot;python-docker&quot;&gt;python docker&lt;/h1&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://www.runoob.com/docker/docker-install-python.html&quot;&gt;https://www.runoob.com/docker/docker-install-python.html&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 05 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/python-docker</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/python-docker</guid>
 			</item>
 		
 	</channel>
