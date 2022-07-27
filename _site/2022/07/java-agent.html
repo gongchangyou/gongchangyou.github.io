@@ -183,6 +183,76 @@
 
 <p><a href="https://www.cnblogs.com/rickiyang/p/11368932.html">https://www.cnblogs.com/rickiyang/p/11368932.html</a></p>
 
+<p>代码仓库: <a href="https://github.com/gongchangyou/javaagent_test">https://github.com/gongchangyou/javaagent_test</a></p>
+
+<ol>
+  <li>premain 启动应用的同时 添加 -javaagent:/path/to/agent.jar</li>
+</ol>
+
+<p>问题1：Failed to find Premain-Class manifest attribute</p>
+
+<p>回答1:  解压缩我打的包之后发现 MANIFEST.MF文件被替换成了默认的. 我们用maven 插件修改他</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven 3.6.3
+Built-By: gongchangyou
+Build-Jdk: 11.0.12
+
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;archive&gt;
+            &lt;!--自动添加META-INF/MANIFEST.MF --&gt;
+            &lt;manifest&gt;
+                &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+            &lt;/manifest&gt;
+            &lt;manifestEntries&gt;
+                &lt;Premain-Class&gt;com.mouse.PreDemo&lt;/Premain-Class&gt;
+                &lt;Agent-Class&gt;com.mouse.AgentDemo&lt;/Agent-Class&gt;
+                &lt;Can-Redefine-Classes&gt;true&lt;/Can-Redefine-Classes&gt;
+                &lt;Can-Retransform-Classes&gt;true&lt;/Can-Retransform-Classes&gt;
+            &lt;/manifestEntries&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre></div></div>
+
+<hr />
+
+<ol>
+  <li>agentmain 应用已经启动的情况下，将agent.jar attach上去</li>
+</ol>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/agent_main">https://github.com/gongchangyou/agent_main</a>
+  <a href="https://github.com/gongchangyou/agent_demo">https://github.com/gongchangyou/agent_demo</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      java -jar agent.jar pid /path/to/app.jar
+      
+      # 一个例子
+      java -jar javaagent_test-1.0-SNAPSHOT.jar 40843 /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar
+      
+      
+</code></pre></div></div>
+
+<hr />
+
+<p>问题1： Agent JAR not found or no Agent-Class attribute</p>
+
+<p>回答1：loadAgent ， agent.jar注意用绝对路径</p>
+
+<hr />
+
+<p>问题2：Exception in thread “main” com.sun.tools.attach.AgentLoadException: Failed to load agent library: /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar was not loaded.dlopen(/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar, 0x0001): tried: ‘/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar’ (not a mach-o file)</p>
+
+<p>回答2：</p>
+
+<p>参考文章: <a href="https://blog.csdn.net/weixin_37828719/article/details/106237872">https://blog.csdn.net/weixin_37828719/article/details/106237872</a></p>
 
             </div>
             
