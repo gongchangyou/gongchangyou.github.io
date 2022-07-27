@@ -91,16 +91,4 @@ Build-Jdk: 11.0.12
 
 
 
----
-
-
-
-问题2：Exception in thread "main" com.sun.tools.attach.AgentLoadException: Failed to load agent library: /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar was not loaded.dlopen(/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar, 0x0001): tried: '/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar' (not a mach-o file)
-
-
-
-回答2：
-
-
-
 参考文章: [https://blog.csdn.net/weixin_37828719/article/details/106237872](https://blog.csdn.net/weixin_37828719/article/details/106237872)

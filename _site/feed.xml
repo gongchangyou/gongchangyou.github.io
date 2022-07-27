@@ -216,12 +216,6 @@ Build-Jdk: 11.0.12
 
 &lt;p&gt;回答1：loadAgent ， agent.jar注意用绝对路径&lt;/p&gt;
 
-&lt;hr /&gt;
-
-&lt;p&gt;问题2：Exception in thread “main” com.sun.tools.attach.AgentLoadException: Failed to load agent library: /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar was not loaded.dlopen(/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar, 0x0001): tried: ‘/Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar’ (not a mach-o file)&lt;/p&gt;
-
-&lt;p&gt;回答2：&lt;/p&gt;
-
 &lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/weixin_37828719/article/details/106237872&quot;&gt;https://blog.csdn.net/weixin_37828719/article/details/106237872&lt;/a&gt;&lt;/p&gt;
 </description>
 				<pubDate>Sat, 16 Jul 2022 10:25:06 +0800</pubDate>
