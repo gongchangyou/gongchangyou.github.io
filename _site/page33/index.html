@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/08/scope">autowired</a></li>
+        
           <li><a href="/2022/07/autowired-list">autowired</a></li>
         
           <li><a href="/2022/07/xml">xml</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/poi">poi</a></li>
         
           <li><a href="/2022/07/skywalking">skywalking</a></li>
-        
-          <li><a href="/2022/07/java-agent">java agent</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>65</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>66</sup></a></li>
 			
 		
 			
@@ -173,6 +173,41 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
+        
+        <div class="content">
+            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+
+<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+
+<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
+
+<p>lsyncd 配置完事就能跑了</p>
+
+<p>配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
+
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
+</code></pre></div></div>
+
+<p>问题： 创建了一个新的project， 从库没显示</p>
+
+<p>我显式重启了docker容器才在从库看到</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+</code></pre></div></div>
+
+<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
@@ -475,108 +510,6 @@ https://github.com/apache/dubbo/issues/7274</p>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/nexus">Jan 13, 2022 - maven repository 私服搭建</a></h1>
-        
-        <div class="content">
-            <h1 id="maven-repository-私服-nexus搭建">maven repository 私服 nexus搭建</h1>
-
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
-
-<ol>
-  <li>
-    <p>docker 安装</p>
-
-    <blockquote>
-      <p>docker search nexus</p>
-
-      <p>docker pull docker.io/sonatype/nexus3</p>
-
-      <p>下面的路径可以改成你本地的用户空间</p>
-
-      <p>mkdir -p /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>chmod 777 /Users/gongchangyou/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /Users/gongchangyou/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-
-    <p>原文是要去 /usr/local 中新建文件夹，试过chmod 777 后docker还是无法创建一些文件和文件夹,</p>
-
-    <blockquote>
-      <p>mkdir -p /usr/local/nexus3/nexus-data</p>
-
-      <p>chown -R 200 /usr/local/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /usr/local/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>登录Nexus进行配置</p>
-
-    <blockquote>
-      <p>访问：<a href="http://localhost:8081/nexus">http://localhost:8081/nexus</a>  使用默认管理员身份登录 账号admin, 密码在 <strong>/nexus-data/admin.password</strong>,  登录后可以修改密码.</p>
-
-      <p><img src="/images/202205/WechatIMG240.png" alt="" width="800" /></p>
-    </blockquote>
-  </li>
-</ol>
-
-<p>问题：mvn deploy -X</p>
-
-<ol>
-  <li>
-    <p>405错误  Failed to transfer file http://localhost:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</p>
-
-    <p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;distributionManagement&gt;
-
-         &lt;repository&gt;
-
-             &lt;id&gt;nexus-releases&lt;/id&gt;
-
-             &lt;url&gt;
-                 &lt;!-- 就是这行，要跟maven服务器上的settings中的URL保持一致--&gt;
-                 http://localhost:8081/nexus/repository/maven-releases/
-
-             &lt;/url&gt;
-
-         &lt;/repository&gt;
-</code></pre></div>    </div>
-    <p><img src="/images/202205/WechatIMG241.png" alt="" width="800" />
- <img src="/images/202205/WechatIMG242.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>401错误  本地的settings.xml账号错误。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;servers&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-snapshots&lt;/id&gt;
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
- &lt;/servers&gt;
-</code></pre></div>    </div>
-
-    <p>如果换了settings.xml 文件，且用mvn 命令行编译，那就指定一下</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mvn deploy -X --settings /Users/gongchangyou/.m2/settings-personal.xml
-</code></pre></div>    </div>
-    <p>可以看到上传成功
-     <img src="/images/202205/WechatIMG244.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -584,7 +517,7 @@ https://github.com/apache/dubbo/issues/7274</p>
         <a class="btn btn-default" href="/page32" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 33 of 55</span>
+  <span class="page_number ">Page: 33 of 56</span>
   
     <a class="btn btn-default" href="/page34" class="next">Older</a>
   

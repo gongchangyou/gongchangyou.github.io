@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/08/scope">autowired</a></li>
+        
           <li><a href="/2022/07/autowired-list">autowired</a></li>
         
           <li><a href="/2022/07/xml">xml</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/poi">poi</a></li>
         
           <li><a href="/2022/07/skywalking">skywalking</a></li>
-        
-          <li><a href="/2022/07/java-agent">java agent</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>65</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>66</sup></a></li>
 			
 		
 			
@@ -173,6 +173,51 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
+        
+        <div class="content">
+            <h1 id="es-集群">ES 集群</h1>
+
+<p>java访问ES 集群，两种方法：</p>
+
+<ol>
+  <li>
+    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
+
+    <ol>
+      <li>
+        <p>配置虚拟ip的命令:</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
+        
+#下线虚拟ip
+ifconfig eth0:1 down
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>把cluster node都添加到client中,类似下面的代码</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
+                 RestClient.builder(
+                 		//Es连接信息，我用的是伪集群哈哈哈
+                         new HttpHost("localhost", 9200, "http"),
+                         new HttpHost("localhost", 9201, "http"),
+                         new HttpHost("localhost", 9202, "http")
+                 )
+         );
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
@@ -311,105 +356,6 @@ See http://rocketmq.apache.org/docs/faq/ for further details.
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/canal">Jun 9, 2022 - canal</a></h1>
-        
-        <div class="content">
-            <h1 id="canal">canal</h1>
-
-<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
-
-<h3 id="前提">前提</h3>
-<ol>
-  <li>
-    <p><a href="/2022/03/mysql-docker">docker部署MySQL</a></p>
-  </li>
-  <li>
-    <p>开启binlog 写入</p>
-
-    <ol>
-      <li>
-        <p>修改my.cnf 。一般路径在/etc/mysql/my.cnf</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [mysqld]
- log-bin=mysql-bin # 开启 binlog
- binlog-format=ROW # 选择 ROW 模式
- server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>创建canal账号</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  CREATE USER canal IDENTIFIED BY 'canal';  
-  GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
-  -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-  FLUSH PRIVILEGES;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<h3 id="启动canal">启动canal</h3>
-
-<p>因为Mysql是docker启动的，如果canal也是docker启动，可能会需要搭建网桥。所以这里我们直接在宿主机上直接启动canal. <a href="https://github.com/alibaba/canal/wiki/QuickStart">QuickStart</a> 这里介绍的很清楚</p>
-
-<p>注意观察 bin/startup.sh脚本中的配置文件路径，默认是 canal.properties</p>
-
-<p>目前1.1.6有点问题，见下面的问题2</p>
-
-<p>我是clone代码 <a href="https://github.com/alibaba/canal">https://github.com/alibaba/canal</a> 之后稍微改了下， 在IDEA中手动启动java进程.</p>
-
-<h3 id="测试代码仓库">测试代码仓库</h3>
-
-<p><a href="https://github.com/gongchangyou/canal_test">https://github.com/gongchangyou/canal_test</a></p>
-
-<h3 id="效果">效果</h3>
-
-<p>在某张表更新了一行记录，可以从canal的客户端中获取变更。</p>
-
-<p>客户端解析protobuf格式的ByteString.</p>
-
-<p><img src="/images/202206/WechatIMG266.png" alt="" width="800" /></p>
-
-<p><img src="/images/202206/WechatIMG267.png" alt="" width="800" /></p>
-
-<p>问题1： 启动canal报错，</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caused by: java.io.IOException: connect /127.0.0.1:3306 failure
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:85)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.connect(MysqlConnection.java:89)
-	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlEventParser.preDump(MysqlEventParser.java:87)
-	at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$1.run(AbstractEventParser.java:176)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-Caused by: java.io.IOException: caching_sha2_password Auth failed
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.negotiate(MysqlConnector.java:260)
-	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:82)
-	... 4 more
-</code></pre></div></div>
-
-<p>解决1: 可能是权限问题，尝试下面的命令</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-FLUSH PRIVILEGES;
-
-ALTER USER 'canal'@'%' IDENTIFIED WITH mysql_native_password BY 'canal';
-</code></pre></div></div>
-
-<p>问题2： Caused by: java.io.IOException: ErrorPacket [errorNumber=1146, fieldCount=-1, message=Table ‘XXX.BASE TABLE’ doesn’t exist, sqlState=42S02, sqlStateMarker=#]</p>
-
-<p>解决2： BASE TABLE这张表没找到？ 不知道为啥要去看这张表，事实上db中并没有这张表啊。深深怀疑是</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"show full tables from `" + schema + "` where Table_type = 'BASE TABLE'"
-</code></pre></div></div>
-
-<p>这句query找出所有的table后的处理逻辑的bug. 这个我提了个<a href="https://github.com/alibaba/canal/pull/4217">PR</a> . 版本1.1.6目前有这个问题.</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -417,7 +363,7 @@ ALTER USER 'canal'@'%' IDENTIFIED WITH mysql_native_password BY 'canal';
         <a class="btn btn-default" href="/page6" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 7 of 55</span>
+  <span class="page_number ">Page: 7 of 56</span>
   
     <a class="btn btn-default" href="/page8" class="next">Older</a>
   

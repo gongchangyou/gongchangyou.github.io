@@ -8,6 +8,18 @@
 		
 			<item>
 				<title>autowired</title>
+				<description>&lt;h1 id=&quot;scope&quot;&gt;Scope&lt;/h1&gt;
+
+&lt;p&gt;如果不想bean 创建的是单例，只需要添加 @Scope(“prototype”) 注解即可&lt;/p&gt;
+
+</description>
+				<pubDate>Wed, 03 Aug 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/08/scope</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/08/scope</guid>
+			</item>
+		
+			<item>
+				<title>autowired</title>
 				<description>&lt;h1 id=&quot;autowired-注入list&quot;&gt;autowired 注入list&lt;/h1&gt;
 
 &lt;p&gt;代码仓库： &lt;a href=&quot;https://github.com/gongchangyou/spring_xml_test&quot;&gt;https://github.com/gongchangyou/spring_xml_test&lt;/a&gt;&lt;/p&gt;
@@ -542,55 +554,6 @@ db.person.find({age:18}).explain(&quot;executionStats&quot;)
 				<pubDate>Mon, 11 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/flink</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/flink</guid>
-			</item>
-		
-			<item>
-				<title>git</title>
-				<description>&lt;h1 id=&quot;git-批量迁移&quot;&gt;git 批量迁移&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;找到最后一行 (如下任1命令)
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; 1.awk 'END {print}'
-
- 2.sed -n '$p'
-
- 3.sed '$!N;$!D'
-
- 4.awk '{b=a&quot;\n&quot;$0;a=$0}END{print b}'
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;找到最近一次提交的分支的记录&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort|awk 'END {print}' 
-    
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;sed提取出分支&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#获取最近一次提交
-	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:&quot;%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]&quot;  -1 --date=iso | sort|awk 'END {print}') 
-	#获取分支名
-	echo $log
-	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
-    
-	echo $branchname
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-				<pubDate>Fri, 08 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/git-clone</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/git-clone</guid>
 			</item>
 		
 	</channel>
