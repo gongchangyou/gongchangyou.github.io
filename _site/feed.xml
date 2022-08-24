@@ -7,7 +7,7 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>autowired</title>
+				<title>scope</title>
 				<description>&lt;h1 id=&quot;scope&quot;&gt;Scope&lt;/h1&gt;
 
 &lt;p&gt;如果不想bean 创建的是单例，只需要添加 @Scope(“prototype”) 注解即可&lt;/p&gt;
