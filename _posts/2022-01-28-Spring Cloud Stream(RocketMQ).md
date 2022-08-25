@@ -30,8 +30,9 @@ tag: [java]
         </dependency>
 ```
 
-
   sample [https://github.com/spring-cloud/spring-cloud-stream-samples](https://github.com/spring-cloud/spring-cloud-stream-samples)
+
+[https://github.com/gongchangyou/dubbo-demo-consumer](https://github.com/gongchangyou/dubbo-demo-consumer)
 
 代码很简单
 ![embbed]({{ site.baseurl}}/images/202201/1643521131415.jpg){: width="1000" }
