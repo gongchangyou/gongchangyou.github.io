@@ -32,6 +32,12 @@ tag: [java]
 
   sample [https://github.com/spring-cloud/spring-cloud-stream-samples](https://github.com/spring-cloud/spring-cloud-stream-samples)
 
+
+
+生产者 和消费者，懒得新增仓库了。直接写在了原来的dubbo demo  中.
+
+[https://github.com/gongchangyou/dubbo-demo-producer](https://github.com/gongchangyou/dubbo-demo-producer)
+
 [https://github.com/gongchangyou/dubbo-demo-consumer](https://github.com/gongchangyou/dubbo-demo-consumer)
 
 代码很简单
