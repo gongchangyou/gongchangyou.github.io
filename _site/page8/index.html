@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/08/b+tree">b+tree</a></li>
+        
           <li><a href="/2022/08/scope">scope</a></li>
         
           <li><a href="/2022/07/autowired-list">autowired</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/xml">xml</a></li>
         
           <li><a href="/2022/07/poi">poi</a></li>
-        
-          <li><a href="/2022/07/skywalking">skywalking</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>66</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
 			
 		
 			
@@ -173,6 +173,116 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/canal-RocketMQ">Jun 10, 2022 - canal RocketMQ</a></h1>
+        
+        <div class="content">
+            <h1 id="canal-导入rocketmq">canal 导入RocketMQ</h1>
+
+<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
+
+<p><a href="/2022/03/RocketMQ-docker">启动RocketMQ</a></p>
+
+<p><a href="/2022/06/canal">部署canal</a></p>
+
+<p>修改源码的canal.properties ，但是没生效</p>
+
+<p><img src="/images/202206/WechatIMG268.png" alt="" width="800" /></p>
+
+<p>这些实现类是用SPI加载的</p>
+
+<p>CanalLauncher.java -》 CanalStarter.java</p>
+
+<p>追进去看到 classLoader 会去 target/plugin 文件夹中读取class。找不到再走META-INF/canal/xxx.CanalMQProducuer</p>
+
+<p><img src="/images/202206/WechatIMG269.png" alt="" width="800" /></p>
+
+<p>把如下注释掉就行了</p>
+
+<p><img src="/images/202206/WechatIMG270.png" alt="" width="800" /></p>
+
+<p>在canal源码中的配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#这个不用动
+canal.destinations = example
+#这个是mq的主题，这个保证和rocketMQ的消费端的主题一致即可
+canal.mq.topic=test-topic
+
+#模式从 tcp 改成 rocketMQ
+canal.serverMode = rocketMQ
+
+</code></pre></div></div>
+
+<p>在消费端的rocketMQ的配置</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.rocketmq.binder.name-server=127.0.0.1:9876
+spring.cloud.stream.bindings.input1.destination=test-topic
+spring.cloud.stream.bindings.input1.content-type=application/json
+spring.cloud.stream.bindings.input1.group=group
+</code></pre></div></div>
+
+<p>成功！</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-06-11 10:11:29.366  INFO 2493 --- [MessageThread_1] com.mouse.canal_test.rocketmq.Consumer   : payload={"data":[{"id":"5","count":"13"}],"database":"store_db","es":1654874446000,"id":1,"isDdl":false,"mysqlType":{"id":"int","count":"int"},"old":[{"count":"313"}],"pkNames":["id"],"sql":"","sqlType":{"id":4,"count":4},"table":"store","ts":1654911313692,"type":"UPDATE"}
+
+</code></pre></div></div>
+
+<p><img src="/images/202206/WechatIMG312.png" alt="" width="800" /></p>
+
+<ol>
+  <li>红色圈 data中是完整的一行新值</li>
+  <li>绿色的是主键id</li>
+  <li>蓝色的那个只是消息自增id，不是主键</li>
+  <li>old 中的是这次修改的字段的旧值</li>
+</ol>
+
+<hr />
+
+<p>如何实现动态主题？</p>
+
+<p>注意到 类 CanalRocketMQProducer 中的 send方法 ,需要设置一个 dynamicTopic的配置</p>
+
+<p><img src="/images/202207/WechatIMG345.png" alt="" width="800" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>canal.mq.topic=test-topic
+# dynamic topic route by schema or table regex
+canal.mq.dynamicTopic=mytest1.user,topic2:mytest2\\..*,.*\\..*
+</code></pre></div></div>
+
+<p>其中</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mytest1.user 表示 mytest1db user 表 发送到主题为 mytest1_user 中
+
+topic2:mytest2\\..* 表示  mytest2的所有表的操作 都发送到主题  topic2
+
+.*\\..*  表示匹配所有db所有table  并发送到 db_table 的主题中
+</code></pre></div></div>
+<p>注意： 如果 没匹配到 动态主题的话，会选择 默认的 canal.mq.topic 主题发送</p>
+
+<p><img src="/images/202207/WechatIMG346.png" alt="" width="800" /></p>
+
+<p>参考文章: <a href="https://blog.csdn.net/god8816/article/details/117308235">https://blog.csdn.net/god8816/article/details/117308235</a></p>
+
+<p>问题1：</p>
+
+<p>Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name ‘test-topic.group.errors.recoverer’ defined in null: Cannot register bean definition [Generic bean: class [org.springframework.integration.handler.advice.ErrorMessageSendingRecoverer]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] for bean ‘test-topic.group.errors.recoverer’: There is already [Generic bean: class [org.springframework.integration.handler.advice.ErrorMessageSendingRecoverer]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] bound.</p>
+
+<p>回答1：不同topic的 group必须设置成不同的. 具体可以看 MQClientInstance.registerConsumer 方法，consumerTable 是一个group对应一个consumer的map.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nested exception is org.apache.rocketmq.client.exception.MQClientException: The consumer group[group] has been created before, specify another name please.
+See http://rocketmq.apache.org/docs/faq/ for further details.
+</code></pre></div></div>
+
+<p><img src="/images/202207/WechatIMG347.png" alt="" width="800" /></p>
+
+<p>在BindingService这里有个递归，但其实递归不了，会抛上述异常。因为 ErrorMessageSendingRecoverer 已经实例化过了。</p>
+
+<p><img src="/images/202207/WechatIMG348.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/canal">Jun 9, 2022 - canal</a></h1>
@@ -521,113 +631,6 @@ http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_t
 </ol>
 
 <p><img src="/images/202206/WechatIMG265.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/RocketMQ-source-code">Jun 2, 2022 - RocketMQ source code</a></h1>
-        
-        <div class="content">
-            <h1 id="rocketmq-源码解析">RocketMQ 源码解析</h1>
-
-<p>参考文章: <a href="https://juejin.cn/post/6847902221577748487">https://juejin.cn/post/6847902221577748487</a></p>
-
-<p>代码仓库： <a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
-
-<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
-
-<p>这里借用了dubbo的demo， 所以可能需要启动nacos.</p>
-
-<h3 id="netty基础知识">netty基础知识:</h3>
-<p>RocketMQ是的TCP通信基于 netty的
-初始化时, NettyRemotingClient.start 中， 实例化一个bootstrap, 设置一个 ChannelHandler，这个handler给pipeline注册一堆 ChannelHandler，比如 SimpleChannelInboundHandler， 可以read channel中的报文。</p>
-
-<p><img src="/images/202206/WechatIMG256.png" alt="" width="800" /></p>
-
-<h3 id="生产端-producer">生产端 producer</h3>
-<p><img src="/images/202206/producer_uml.drawio.png" alt="" width="800" /></p>
-
-<hr />
-<h3 id="消费端-consumer">消费端 consumer</h3>
-
-<p>参考文章: <a href="https://blog.csdn.net/weixin_34452850/article/details/82712634">https://blog.csdn.net/weixin_34452850/article/details/82712634</a></p>
-
-<p>长轮询上面这篇文章介绍过了，具体方法就是 DefaultMQPushConsumerImpl.executePullRequestLater</p>
-
-<font color="red">管理类是 MQClientInstance，一个主题对应一个，里面有很多成员，管理主题路由信息（topicRouteTable），消费者(consumerTable) 等 </font>
-
-<p>consumer的设计简直回调地狱.</p>
-
-<p><img src="/images/202206/consumer_uml.drawio.png" alt="" width="800" /> 
-<img src="/images/202206/consumer_receive_uml.drawio.png" alt="" width="800" /></p>
-
-<ol>
-  <li>
-    <p>consumer是利用 PullMessageService 中的 LinkedBlockingQueue<PullRequest> pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.</PullRequest></p>
-
-    <p><img src="/images/202206/WechatIMG257.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息(根据topic 获取addr)，清理掉线的broker，上报offset给broker，心跳检测。</p>
-  </li>
-</ol>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>this.startScheduledTask();
-
-private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable r) {
-            return new Thread(r, "MQClientFactoryScheduledThread");
-        }
-    });
-scheduledThreadPoolExecutor.scheduleAtFixedRate
-</code></pre></div></div>
-
-<hr />
-
-<h3 id="核心组件-broker">核心组件 broker</h3>
-<p>这个我说不好，暂时没时间看源码了，参考文章:</p>
-
-<p><a href="https://juejin.cn/post/6844904191916245000">https://juejin.cn/post/6844904191916245000</a></p>
-
-<p><a href="https://cloud.tencent.com/developer/article/1645897">https://cloud.tencent.com/developer/article/1645897</a></p>
-
-<p><a href="https://zhuanlan.zhihu.com/p/427602828">https://zhuanlan.zhihu.com/p/427602828</a></p>
-
-<p><a href="https://gsmtoday.github.io/2018/03/26/rocketmq-broker/">https://gsmtoday.github.io/2018/03/26/rocketmq-broker/</a></p>
-
-<p><a href="https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html">https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html</a></p>
-
-<p><a href="https://www.modb.pro/db/72476">https://www.modb.pro/db/72476</a></p>
-
-<hr />
-
-<p>问题1：超时是如何实现的？</p>
-
-<p>回答1:  NettyRemotingAbstract 中 ,  responseFuture的 responseCommand 初始化的时候就是null， 如果发送成功 但是迟迟没有收到response 就会抛timeout异常。这里的实现是基于countDownLatch. 如果是我的话可能会用个 completableFuture.orTimeout, 或者get(2, TimeUnit.SECONDS)  .示例代码:
-<a href="https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46">https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46</a>.</p>
-
-<p>当然  responseFuture.isSendRequestOK() 这个判断还是需要的，用来区分是否发送成功。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);
-            if (null == responseCommand) { //netty迟迟没有receive 消息，这里就是null
-                if (responseFuture.isSendRequestOK()) { //但是request已经发送成功了
-                    throw new RemotingTimeoutException(RemotingHelper.parseSocketAddressAddr(addr), timeoutMillis,
-                        responseFuture.getCause());
-                } else {
-                    throw new RemotingSendRequestException(RemotingHelper.parseSocketAddressAddr(addr), responseFuture.getCause());
-                }
-            }
-</code></pre></div></div>
-
-<p>问题2:  多个consumer的offset是如何管理的？
-回答2： 参考文章 <a href="https://www.jianshu.com/p/4929947c0b31">https://www.jianshu.com/p/4929947c0b31</a>  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.</p>
-
-<p>问题3： broker是如何处理某个offset上的消息一直没消费成功的?
-回答3:    没有时间看源码，结合一些文章看大概是，consumer本地重试 + sendBack， 将异常的消息重新发送一次，这样offset往前走也没问题。</p>
 
         </div>
     </div>

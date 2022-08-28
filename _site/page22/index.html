@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/08/b+tree">b+tree</a></li>
+        
           <li><a href="/2022/08/scope">scope</a></li>
         
           <li><a href="/2022/07/autowired-list">autowired</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/xml">xml</a></li>
         
           <li><a href="/2022/07/poi">poi</a></li>
-        
-          <li><a href="/2022/07/skywalking">skywalking</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>66</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
 			
 		
 			
@@ -173,6 +173,90 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/arthas">Mar 29, 2022 - arthas</a></h1>
+        
+        <div class="content">
+            <h1 id="arthas使用">Arthas使用</h1>
+
+<p>参考文章: <a href="https://www.jianshu.com/p/507f7e0cc3a3">https://www.jianshu.com/p/507f7e0cc3a3</a></p>
+
+<p>官方文档: <a href="https://arthas.aliyun.com/doc/profiler.html#id4">https://arthas.aliyun.com/doc/profiler.html#id4</a></p>
+
+<h3 id="查看java进程">查看java进程</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jps -mlVv
+或
+ps -ef| grep java
+</code></pre></div></div>
+
+<h3 id="查看火焰图">查看火焰图</h3>
+
+<p>下载arthas<a href="https://arthas.aliyun.com/doc/profiler.html"> https://arthas.aliyun.com/doc/profiler.html</a></p>
+
+<p>启动，一般用 “java -jar arthas-boot.jar” 。我这里端口冲突了，可以指定端口</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar arthas-boot.jar --telnet-port 9998 --http-port -1
+</code></pre></div></div>
+
+<h2 id="启动profiler">启动profiler</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler start
+Started [cpu] profiling
+</code></pre></div></div>
+
+<blockquote>
+  <p>默认情况下，生成的是cpu的火焰图，即event为<code class="highlighter-rouge">cpu</code>。可以用<code class="highlighter-rouge">--event</code>参数来指定。</p>
+</blockquote>
+
+<h2 id="获取已采集的sample的数量">获取已采集的sample的数量</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler getSamples
+23
+</code></pre></div></div>
+
+<h2 id="查看profiler状态">查看profiler状态</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler status
+[cpu] profiling is running for 4 seconds
+</code></pre></div></div>
+
+<p>可以查看当前profiler在采样哪种<code class="highlighter-rouge">event</code>和采样时间。</p>
+
+<h2 id="停止profiler">停止profiler</h2>
+
+<h3 id="生成html格式结果">生成html格式结果</h3>
+
+<p>默认情况下，结果文件是<code class="highlighter-rouge">html</code>格式，也可以用<code class="highlighter-rouge">--format</code>参数指定：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler stop --format html
+profiler output file: /tmp/test/arthas-output/20211207-111550.html
+OK
+</code></pre></div></div>
+
+<p>默认情况下，arthas使用3658端口，则可以打开： http://localhost:3658/arthas-output/ 查看到arthas-output目录下面的profiler结果：</p>
+
+<p><img src="/images/202203/WechatIMG71.png" alt="" width="800" /></p>
+
+<p><img src="/images/202203/WechatIMG70.png" alt="" width="800" /></p>
+
+<font color="red" size="4">
+分析思路总结只有一句话：火焰图里，横条越长，代表使用的越多，从下到上是调用堆栈信息
+
+越宽表示被调用越多执行时间长，越高表示调用栈越深
+</font>
+
+<h3 id="profiler默认采样cpu的时间如果需要采样内存则使用event参数">profiler默认采样cpu的时间，如果需要采样内存，则使用event参数</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>profiler start --duration 30 --event alloc
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/minIO">Mar 28, 2022 - minIO-docker</a></h1>
@@ -632,61 +716,6 @@ public class MybatisPlusConfig {
 </ol>
 
 <p><img src="/images/202203/WechatIMG273.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/es-scroll">Mar 24, 2022 - es-scroll</a></h1>
-        
-        <div class="content">
-            <h1 id="elasticsearch-scroll">ElasticSearch Scroll</h1>
-
-<p>因为ES from+size 有10000限制，当然也可以通过修改index.max_result_window参数来修改，但是有更好的工具scroll。咱们就不修改参数了。 使用方式很简单， 只需在请求后加scroll字段，缓存上下文1m(1分钟). query中的”from”字段去掉即可。</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map1c/_search?scroll=1m
-{
-  "query":{
-    "bool": {
-      "must": [
-        {
-          "range": {
-            "x": {
-              "gte": 0,
-              "lte": 0.1
-            }
-          }
-        },
-         {
-          "range": {
-            "y": {
-              "gte": 0,
-              "lte": 0.1
-            }
-          }
-        }
-      ]
-    }
-  },
-  "size":10000
-}
-</code></pre></div></div>
-
-<p>注意返回值里有个游标, “_scroll_id”. 下次请求带上他就能继续往下翻页了。</p>
-
-<p><img src="/images/202203/WechatIMG61.png" alt="" width="800" /></p>
-
-<h3 id="下个请求就这么简单对不用写表名和query和size因为这个scroll_id中已经保存了上下文">下个请求就这么简单，对，不用写表名和query和size。因为这个scroll_id中已经保存了上下文。</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST _search/scroll 
-{
-  "scroll":"10m",
-  "scroll_id":"FGluY2x1ZGVfY29udGV4dF91dWlkDXF1ZXJ5QW5kRmV0Y2gBFmIyRklwWWUyVFNDd1BFcHhxZjk3VEEAAAAAAAFaDxZoNlhQZjhYd1FsYTBIUHpzb1phNEtB"
-}
-</code></pre></div></div>
-
 
         </div>
     </div>

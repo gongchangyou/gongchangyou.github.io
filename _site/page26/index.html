@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/08/b+tree">b+tree</a></li>
+        
           <li><a href="/2022/08/scope">scope</a></li>
         
           <li><a href="/2022/07/autowired-list">autowired</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/07/xml">xml</a></li>
         
           <li><a href="/2022/07/poi">poi</a></li>
-        
-          <li><a href="/2022/07/skywalking">skywalking</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>66</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
 			
 		
 			
@@ -173,6 +173,105 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/opengl-go">Mar 10, 2022 - go-opengl</a></h1>
+        
+        <div class="content">
+            <h1 id="go-opengl">Go OpenGL</h1>
+
+<ol>
+  <li>
+    <p>先安装一个 goland <a href="https://www.jetbrains.com/zh-cn/go/">https://www.jetbrains.com/zh-cn/go/</a></p>
+  </li>
+  <li>
+    <p>配置GOROOT, GOPATH, 注意GO Modules配置成如下这样
+<img src="/images/202203/421646811018_.pic.jpg" alt="" width="800" />
+<img src="/images/202203/401646810998_.pic.jpg" alt="" width="800" />
+<img src="/images/202203/411646811008_.pic.jpg" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>proxy也设置一下
+  <img src="/images/202203/451646811683_.pic.jpg" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>如果要使用命令行的话 ，还需要 ~/.bash_profile中添加 ，并source ~/.bash_profile</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export GOPROXY=https://goproxy.io
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>去有 go.mod 的文件同级敲命令</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> go mod tidy
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>external libraries中应该就引入了</p>
+
+<p>问题1: 多个文件时， go run main.go 会报错 某个函数undefined。</p>
+
+<p>两种解决方案：</p>
+
+<ol>
+  <li>将函数，变量等都挪到 main.go 里面</li>
+  <li>执行 go run *.go 而不是 go run main.go</li>
+</ol>
+
+<p>问题2： ubuntu缺少组件库 会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@mouse-Precision-3650-Tower:/home/mouse/Downloads/opengl-heatmap/trial# go run *.go
+# pkg-config --cflags  -- gl gl
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+Package gl was not found in the pkg-config search path.
+Perhaps you should add the directory containing `gl.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'gl' found
+pkg-config: exit status 1
+# github.com/go-gl/glfw/v3.3/glfw
+In file included from ./glfw/src/internal.h:188,
+                 from ./glfw/src/context.c:30,
+                 from /root/go/pkg/mod/github.com/go-gl/glfw/v3.3/glfw@v0.0.0-20211213063430-748e38ca8aec/c_glfw.go:4:
+./glfw/src/x11_platform.h:36:10: fatal error: X11/Xcursor/Xcursor.h: No such file or directory
+   36 | #include &lt;X11/Xcursor/Xcursor.h&gt;
+      |          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+
+</code></pre></div></div>
+
+<p><a href="https://github.com/go-gl/glfw/issues/129">https://github.com/go-gl/glfw/issues/129</a></p>
+
+<p>那就根据报错找到对应的lib 安装即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libxcursor-dev
+
+apt-get install libxinerama-dev
+
+apt-get install libxrandr-dev
+
+apt-get install libxi-dev
+
+sudo apt-get install mesa-common-dev
+sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+
+sudo apt-get install Xxf86vm*
+</code></pre></div></div>
+
+<p>问题3： ubuntu 如何查看opengl版本？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install mesa-utils
+glxinfo | grep -i opengl
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/03/opengl-java">Mar 9, 2022 - java-opengl</a></h1>
@@ -233,90 +332,6 @@
 <img src="/images/202203/WechatIMG350.png" alt="" width="800" /></p>
 
 <p>不知道如何用docker客户端连接私有镜像库</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/gitlab-runner">Mar 4, 2022 - gitlab-runner</a></h1>
-        
-        <div class="content">
-            <h1 id="gitlab-cicd">gitlab CI/CD</h1>
-
-<p>持续集成和部署，其实我更倾向于使用jenkins，因为可以自由编写脚本和手动触发，回滚也比较方便。</p>
-
-<p>gitlab CI/CD就是把部署的脚本 统一到代码仓库。</p>
-
-<p>但是因为现有项目使用 CI/CD 所以还是先熟悉起来。</p>
-
-<p><a href="https://docs.gitlab.com/ee/ci/">官方文档</a></p>
-
-<p><a href="https://zhuanlan.zhihu.com/p/105157319">https://zhuanlan.zhihu.com/p/105157319</a></p>
-
-<p>runner分两种，shared runner / specific runner 看名字就知道了，前者是很多工程共享的runner，后者跟工程是1对1的。</p>
-
-<p>我们先试试看 shared runner. 先打开 http://gitlab.cebsit.ac.cn/admin/runners</p>
-
-<p><img src="/images/202203/1646634355101.jpg" alt="pgadmin" width="800" /></p>
-
-<p>注册的时候把url 和token写进去</p>
-
-<p>官方文档写的很清楚了 <a href="https://docs.gitlab.com/runner/install/docker.html">https://docs.gitlab.com/runner/install/docker.html</a></p>
-
-<ol>
-  <li>docker 启动
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  docker run -d --name gitlab-runner --restart always \
-     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
-     -v /var/run/docker.sock:/var/run/docker.sock \
-     gitlab/gitlab-runner:latest
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>注册 runner ，这样gitlab就知道让这台服务器执行job了</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>给现有的工程添加runner:
-<img src="/images/202203/WechatIMG53.png" alt="pgadmin" width="800" /></p>
-
-<p>测试.gitlab-ci.yml文件 CI-Lint 按钮。 <a href="http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint">http://gitlab.cebsit.ac.cn/gongcy/test202/-/ci/lint</a></p>
-
-<p>问题1： 一直timeout，可能需要显式写tags, 如果你的 .gitlab-ci.yml 中没有显式写tags ,那就把这个选项勾上 “Run untagged jobs”</p>
-
-<p><img src="/images/202203/WechatIMG37.png" alt="pgadmin" width="800" /></p>
-
-<p>问题2： remote: You are not allowed to download code from this project.</p>
-
-<p><img src="/images/202203/WechatIMG38.jpeg" alt="pgadmin" width="800" /></p>
-
-<p>尝试去docker容器中新增</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen -t RSA
-</code></pre></div></div>
-<p>把 ~/.ssh/id_rsa.pub 添加到工程的用户的ssh key中,  搞定!</p>
-
-<p>注意： gitlab-runner的配置是在 /etc/gitlab-runner/config.toml</p>
-
-<p>问题3 ：</p>
-
-<p>偶发 报错 ，重试几次又好了</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: could not lock config file /home/gitlab-runner/builds/eFSxVaBE/0/gongcy/test202/.git/config: Permission denied
-fatal: could not set 'core.repositoryformatversion' to '0'
-Cleaning up project directory and file based variables
-00:00
-ERROR: Job failed: exit status 1
-</code></pre></div></div>
-
-<p>有看到网上这么解，没试过。 <a href="https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0">https://stackoverflow.com/questions/59995132/could-not-set-core-repositoryformatversion-to-0</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config --file=.git/config core.repositoryformatversion 1  
-</code></pre></div></div>
-
 
         </div>
     </div>

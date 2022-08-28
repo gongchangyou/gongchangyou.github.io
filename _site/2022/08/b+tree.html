@@ -174,20 +174,18 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
+                <h1><a href="/2022/08/b+tree">Aug 20, 2022 - b+tree</a></h1>
             
             <div class="post-content">
-            <h1 id="cas">CAS</h1>
+            <h1 id="btree">b+tree</h1>
 
-<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
+<p>因为 ignite 搜索后迭代效率有点低，所以找找看有没有现成的内存 B+树。</p>
 
-<p>Unsafe.compareAndSetObject</p>
+<p>代码仓库: <a href="https://github.com/gongchangyou/dolphincache">https://github.com/gongchangyou/dolphincache</a></p>
 
-<p>内部调用native cmpxchg汇编指令</p>
+<p>参考文章: <a href="https://www.cnblogs.com/zzk0/p/14656189.html">https://www.cnblogs.com/zzk0/p/14656189.html</a></p>
 
-<blockquote>
-  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
-</blockquote>
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html">https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html</a></p>
 
             </div>
             
@@ -200,10 +198,8 @@
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2022/05/ES-IK" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2022/05/Disruptor" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2022/08/scope" class="previous">Older Post</a>
               
 </div>
 
@@ -217,7 +213,7 @@
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2022-05-cas';
+        this.page.identifier = '2022-08-b-tree';
     };
 
    (function() {
