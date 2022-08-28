@@ -12,6 +12,8 @@
 
 &lt;p&gt;因为 ignite 搜索后迭代效率有点低，所以找找看有没有现成的内存 B+树。&lt;/p&gt;
 
+&lt;p&gt;开源的有btree4j 有 bug， 网上搜到的范围查询 要遍历所有节点，性能不佳，所以自行开发。&lt;/p&gt;
+
 &lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/dolphincache&quot;&gt;https://github.com/gongchangyou/dolphincache&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;参考文章: &lt;a href=&quot;https://www.cnblogs.com/zzk0/p/14656189.html&quot;&gt;https://www.cnblogs.com/zzk0/p/14656189.html&lt;/a&gt;&lt;/p&gt;
