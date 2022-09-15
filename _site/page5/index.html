@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,130 +175,35 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/prometheus">Jul 7, 2022 - prometheus</a></h1>
+        <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
         
         <div class="content">
-            <h1 id="prometheus">prometheus</h1>
+            <h1 id="mongodb-索引">mongodb 索引</h1>
 
-<p>参考文章： <a href="https://www.prometheus.wang/quickstart/why-monitor.html">https://www.prometheus.wang/quickstart/why-monitor.html</a></p>
+<p>通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.</p>
 
-<p><a href="https://prometheus.io/docs/introduction/overview/">https://prometheus.io/docs/introduction/overview/</a></p>
+<p>参考文章: <a href="https://juejin.cn/post/6844903520747929614">https://juejin.cn/post/6844903520747929614</a></p>
 
-<p><img src="/images/202207/architecture.png" alt="" width="800" /></p>
+<p><a href="https://haicoder.net/mongodb/mongodb-index-principle.html">https://haicoder.net/mongodb/mongodb-index-principle.html</a></p>
 
-<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/custom_exporter_with_java/client_library_java">java client 接入</a></p>
+<p><a href="https://blog.csdn.net/guangyacyb/article/details/104339183">https://blog.csdn.net/guangyacyb/article/details/104339183</a></p>
 
-<p>跟 <a href="/2022/05/monitor">Statsd</a> 的区别 :</p>
+<p><a href="https://mongoing.com/archives/2797">https://mongoing.com/archives/2797</a></p>
 
-<ol>
-  <li>statsd是主动udp上报，推的形式. 而prometheus是 提供http接口供 prometheus server pull， 是拉的形式。</li>
-  <li>statsd 协议提供一些常用的metric的类型，通常有timer、counter、gauge和set四种。这样就无需在java client中自行处理</li>
-</ol>
+<p>可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序</p>
 
-<hr />
-
-<h2 id="一个监控mysql的例子">一个监控mysql的例子：</h2>
-
-<p>参考文章:</p>
-
-<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql">https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql</a></p>
-
-<p><a href="https://hub.docker.com/r/prom/mysqld-exporter">https://hub.docker.com/r/prom/mysqld-exporter</a></p>
-<ol>
-  <li>启动 mysql-exporter 采集指标
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull prom/mysqld-exporter
-
- docker run -d -p 9104:9104 --link=my_mysql_container:bdd  \
-         -e DATA_SOURCE_NAME="user:password@(bdd:3306)/database" prom/mysqld-exporter
-</code></pre></div>    </div>
-
-    <p>访问 http://localhost:9104/  发现已经采集到指标了</p>
-  </li>
-  <li>
-    <p>启动 Prometheus 将指标保存到 promSQL中</p>
-
-    <p><a href="/images/202207/prometheus.yml">配置yml文件</a>
- docker 启动 Prometheus ， 注意 -v  前面的路径是宿主机的 ，后面是容器中的。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run  -d \
-  -p 9090:9090 \
-  -v /Users/gongchangyou/learn/prometheus:/etc/prometheus/  \
-  prom/prometheus
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>访问 http://localhost:9090/targets 确认mysql的metris 都收集到了
- <img src="/images/202207/WechatIMG340.jpeg" alt="image" width="800" /></p>
-  </li>
-  <li>
-    <p>在grafana中配置 prometheus数据源, 找个好看的dashboard.</p>
-
-    <p>因为都是docker启动的，这里填写宿主机的ip
- <img src="/images/202207/WechatIMG341.png" alt="" width="800" />
- <a href="https://grafana.com/docs/grafana/v7.5/dashboards/export-import/">import dashboard</a></p>
-
-    <p><a href="https://grafana.com/grafana/dashboards/7362/reviews">https://grafana.com/grafana/dashboards/7362/reviews</a> download json 或者  copy ID</p>
-
-    <p><a href="https://www.cnblogs.com/chanshuyi/p/02_grafana_quick_start.html">grafana 添加 Prometheus</a></p>
-  </li>
-  <li>大功告成
- <img src="/images/202207/WechatIMG342.png" alt="" width="800" /></li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/pdfreader">Jul 6, 2022 - pdfreader</a></h1>
-        
-        <div class="content">
-            <h1 id="pdfbox">pdfbox</h1>
-
-<p>添加依赖</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.pdfbox&lt;/groupId&gt;
-            &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;
-            &lt;version&gt;3.0.0-alpha3&lt;/version&gt;
-        &lt;/dependency&gt;
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db.person.createIndex( {age: 1, name: -1} )  
 </code></pre></div></div>
 
-<p>遍历文件夹</p>
+<p>查看索引</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> String path = "/path/to/pdf";		//要遍历的路径
-        File file = new File(path);		//获取其file对象
-        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
-        for(File f:fs){					//遍历File[]数组
-            if(!f.isDirectory()) {        //若非目录(即文件)，则打印
-//                System.out.println(f);
-                parse(f);
-            }
-        }
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.getIndexes() 
 </code></pre></div></div>
 
-<p>逐页读取</p>
+<p>查看query 是否使用索引,  如果是 <a href="https://docs.mongodb.org/manual/reference/explain-results/#queryplanner">COLLSCAN</a> 说明全表扫描， 如果是 IXSCAN ，就是使用了索引</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> try {
-        PDDocument document = Loader.loadPDF(file);
-        if (!document.isEncrypted()) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            var lastNo = "";
-            var goodOffset = 1;
-
-            for(int i = 1; i&lt;=document.getNumberOfPages(); i ++){
-                stripper.setSortByPosition(true);
-                stripper.setStartPage(i);
-                stripper.setEndPage(i);
-
-                String text = stripper.getText(document);
-            }
-            
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
- }
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.find({age:18}).explain()
+db.person.find({age:18}).explain("executionStats")
 </code></pre></div></div>
 
 
@@ -308,12 +213,77 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
+        <h1><a href="/2022/07/flink">Jul 11, 2022 - flink</a></h1>
         
         <div class="content">
-            <h1 id="python-docker">python docker</h1>
+            <h1 id="flink">Flink</h1>
 
-<p>参考文章： <a href="https://www.runoob.com/docker/docker-install-python.html">https://www.runoob.com/docker/docker-install-python.html</a></p>
+<p>官方文档 : <a href="https://flink.apache.org/">https://flink.apache.org/</a></p>
+
+<p>参考文章 : <a href="https://www.jianshu.com/p/d5ccb3aaabc5">https://www.jianshu.com/p/d5ccb3aaabc5</a></p>
+
+<p><a href="https://tech.meituan.com/2018/10/18/meishi-data-flink.html">https://tech.meituan.com/2018/10/18/meishi-data-flink.html</a></p>
+
+<p><a href="https://tech.youzan.com/flink-practice/">https://tech.youzan.com/flink-practice/</a></p>
+
+<blockquote>
+  <p>在执行引擎这一层，流处理系统与批处理系统最大不同在于节点间的数据传输方式。<strong>对于一个流处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，然后立刻通过网络传输到下一个节点，由下一个节点继续处理。</strong> 而对于一个<strong>批处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，并不会立刻通过网络传输到下一个节点，当缓存写满，就持久化到本地硬盘上，当所有数据都被处理完成后，才开始将处理后的数据通过网络传输到下一个节点。</strong>这两种数据传输模式是两个极端，对应的是流处理系统对低延迟的要求和批处理系统对高吞吐量的要求。Flink的执行引擎采用了一种十分灵活的方式，同时支持了这两种数据传输模型。Flink以固定的缓存块为单位进行网络数据传输，用户可以通过缓存块超时值指定缓存块的传输时机。如果缓存块的超时值为0，则Flink的数据传输方式类似上文所提到流处理系统的标准模型，此时系统可以获得最低的处理延迟。如果缓存块的超时值为无限大，则Flink的数据传输方式类似上文所提到批处理系统的标准模型，此时系统可以获得最高的吞吐量。同时缓存块的超时值也可以设置为0到无限大之间的任意值。缓存块的超时阈值越小，则Flink流处理执行引擎的数据处理延迟越低，但吞吐量也会降低，反之亦然。通过调整缓存块的超时阈值，用户可根据需求灵活地权衡系统延迟和吞吐量。</p>
+</blockquote>
+
+<p><a href="https://hub.docker.com/_/flink">docker flink</a></p>
+
+<p><a href="https://nightlies.apache.org/flink/flink-docs-release-1.2/quickstart/setup_quickstart.html">quick start</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
+        
+        <div class="content">
+            <h1 id="git-批量迁移">git 批量迁移</h1>
+
+<ol>
+  <li>
+    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
+</code></pre></div>    </div>
+  </li>
+  <li>找到最后一行 (如下任1命令)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
+
+ 2.sed -n '$p'
+
+ 3.sed '$!N;$!D'
+
+ 4.awk '{b=a"\n"$0;a=$0}END{print b}'
+
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>找到最近一次提交的分支的记录</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>sed提取出分支</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
+	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
+	#获取分支名
+	echo $log
+	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
+    
+	echo $branchname
+</code></pre></div>    </div>
+  </li>
+</ol>
 
 
         </div>
@@ -327,7 +297,7 @@
         <a class="btn btn-default" href="/page4" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 5 of 56</span>
+  <span class="page_number ">Page: 5 of 57</span>
   
     <a class="btn btn-default" href="/page6" class="next">Older</a>
   

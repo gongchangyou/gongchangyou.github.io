@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,7 +175,71 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/02/voice-synthesis">Feb 20, 2022 - voice</a></h1>
+        <h1><a href="/2022/02/grafana">Feb 25, 2022 - grafana</a></h1>
+        
+        <div class="content">
+            <h1 id="grafana">grafana</h1>
+
+<p><a href="https://github.com/grafana/grafana/">https://github.com/grafana/grafana/</a></p>
+
+<p>一个开源的系统监控软件，尤其是GPU和slurm的监控</p>
+
+<p><a href="https://github.com/grafana/grafana/issues/45710">https://github.com/grafana/grafana/issues/45710</a></p>
+
+<p>看起来纵坐标和tooltip上的数值不太一样</p>
+
+<p>图表的配置在 /var/lib/grafana/dashboards/gpu-dashboard.json</p>
+
+<p>grep  GPU Power Usage</p>
+
+<p>stack 改成 false</p>
+
+<p>重启  grafana 。</p>
+
+<p>root        3180  0.0  0.0 2380228 59904 ?       Ssl  Feb16   1:54 /usr/bin/docker run –rm –network host –name docker.grafana.service -v /etc/grafana:/etc/grafana -v /var/lib/grafana:/var/lib/grafana grafana/grafana
+472         3925  0.1  0.0 796740 70028 ?        Ssl  Feb16  15:57 grafana-server –homepath=/usr/share/grafana –config=/etc/grafana/grafana.ini –packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/ssh">Feb 24, 2022 - ssh</a></h1>
+        
+        <div class="content">
+            <h1 id="ssh-无密码访问">ssh 无密码访问</h1>
+
+<ol>
+  <li>apt-get install openssh-server</li>
+  <li>查看状态 service ssh status</li>
+  <li>
+    <p>启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)</p>
+  </li>
+  <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
+  <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
+</ol>
+
+<p>别名</p>
+
+<p>编辑 ~/.ssh/config</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ksyun_stg
+  HostName 120.92.232.118
+  Port 10022
+  User dingsongyun
+  IdentityFile ~/.ssh/id_rsa
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/02/voice-clone">Feb 22, 2022 - voice</a></h1>
         
         <div class="content">
             <h1 id="python-ai语音合成">python AI语音合成</h1>
@@ -186,7 +250,7 @@
 
 <p>但是因为依赖的是当前PC的语音环境，所以无法将我们自己的语音导入。</p>
 
-<h2 id="mockingbird---貌似这个只是学习音色"><a href="https://github.com/babysor/MockingBird">MockingBird</a> - 貌似这个只是学习音色</h2>
+<h2 id="mockingbird----貌似这个只是学习音色"><a href="https://github.com/babysor/MockingBird">MockingBird</a>  - 貌似这个只是学习音色</h2>
 
 <p>https://github.com/babysor/MockingBird/blob/main/README-CN.md</p>
 
@@ -324,65 +388,6 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 
 <h3 id="可是实际操作下来上传了我的音频转换成一段刺耳的声音无法将中文text-转换成音频">可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频</h3>
 
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/spring-MVC">Feb 19, 2022 - spring mvc</a></h1>
-        
-        <div class="content">
-            <h1 id="spring-mvc-获取url路径和读取本地文件">spring MVC 获取url路径和读取本地文件</h1>
-
-<h2 id="获取路径">获取路径</h2>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@RequestMapping("/{animal}/{fileName}")
-    public String getJson(
-            @PathVariable String animal,
-            @PathVariable String fileName
-    ) {
-</code></pre></div></div>
-
-<h2 id="读取本地文件">读取本地文件</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    String fullPath = String.format(directory, animal, fileName);
-	String content = Files.readString(Paths.get(fullPath));
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/alibaba-nacos-client-server">Feb 16, 2022 - nacos serverlist</a></h1>
-        
-        <div class="content">
-            <h1 id="nacos-serverlist--endpoint">nacos serverList &amp; endpoint</h1>
-
-<h2 id="两种设置nacos-服务地址的方式">两种设置nacos 服务地址的方式</h2>
-
-<ol>
-  <li>
-    <p>生产环境的话，我们一般使用endpoint 固定域名</p>
-  </li>
-  <li>
-    <p>测试环境我们可以指定server-addr</p>
-  </li>
-</ol>
-
-<p>如下所示</p>
-
-<p><img src="/images/202202/1644977241350.jpg" alt="config" width="1000" /></p>
-
-<p><img src="/images/202202/1644977146089.jpg" alt="set server list" width="1000" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>优先选择server list, 如果没有配置，则请求http://域名/nacos/serverlist 接口获取 nacos注册服务器列表
-</code></pre></div></div>
-
-<p><img src="/images/202202/1644977321417.jpg" alt="set server list code" width="1000" /></p>
-
 
         </div>
     </div>
@@ -395,7 +400,7 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
         <a class="btn btn-default" href="/page28" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 29 of 56</span>
+  <span class="page_number ">Page: 29 of 57</span>
   
     <a class="btn btn-default" href="/page30" class="next">Older</a>
   

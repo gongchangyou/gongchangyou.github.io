@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,218 +175,222 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
+        <h1><a href="/2022/05/tomcat">May 22, 2022 - tomcat</a></h1>
         
         <div class="content">
-            <h1 id="cas">CAS</h1>
-
-<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
-
-<p>Unsafe.compareAndSetObject</p>
-
-<p>内部调用native cmpxchg汇编指令</p>
-
-<blockquote>
-  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
-</blockquote>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
-        
-        <div class="content">
-            <h1 id="disruptor">Disruptor</h1>
-
-<p>Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)</p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/disruptor">https://github.com/gongchangyou/disruptor</a></p>
+            <h1 id="springmvc">springMVC</h1>
 
 <ol>
-  <li>
-    <p>Pom.xml</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.lmax&lt;/groupId&gt;
-            &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
-            &lt;version&gt;3.4.4&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>单生产者，单消费者</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
-     * 单生产者 单消费者
-     */
-    @Test
-    void contextLoads() {
-        // 队列中的元素
-        class Element {
-   
-            private int value;
-   
-            public int get(){
-                return value;
-            }
-   
-            public void set(int value){
-                this.value= value;
-            }
-   
-        }
-   
-        // 生产者的线程工厂
-        ThreadFactory threadFactory = new ThreadFactory(){
-            int i = 0;
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "simpleThread " + i++);
-            }
-        };
-   
-        // RingBuffer生产工厂,初始化RingBuffer的时候使用
-        EventFactory&lt;Element&gt; factory = new EventFactory&lt;Element&gt;() {
-            @Override
-            public Element newInstance() {
-                return new Element();
-            }
-        };
-   
-        // 处理Event的handler
-        EventHandler&lt;Element&gt; handler = new EventHandler&lt;Element&gt;(){
-            @Override
-            public void onEvent(Element element, long sequence, boolean endOfBatch)
-            {
-                log.info("element={}, sequence={}, endOfBatch={}", element.get(), sequence, endOfBatch);
-//                System.out.println("Element: " + element.get());
-            }
-        };
-   
-        // 阻塞策略
-        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
-   
-        // 指定RingBuffer的大小
-        int bufferSize = 16;
-   
-        // 创建disruptor，采用单生产者模式
-        Disruptor&lt;Element&gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
-   
-        // 设置EventHandler
-        disruptor.handleEventsWith(handler);
-   
-        // 启动disruptor的线程
-        disruptor.start();
-   
-        RingBuffer&lt;Element&gt; ringBuffer = disruptor.getRingBuffer();
-   
-        for (int l = 0; true; l++) {
-            // 获取下一个可用位置的下标
-            long sequence = ringBuffer.next();
-            try {
-                // 返回可用位置的元素
-                Element event = ringBuffer.get(sequence);
-                // 设置该位置元素的值
-                event.set(l);
-            } finally {
-                ringBuffer.publish(sequence);
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+  <li>常用配置
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server:
+  port: 8085
+  context-path: /url-prefix
 </code></pre></div>    </div>
   </li>
 </ol>
 
-<p>问题1： 有不同的消费者依赖怎么办？
-回答1：  关键字 then</p>
+<p>context-path是应用的上下文路径，也可以称为项目路径，是构成url地址的一部分。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
-        disruptor.handleEventsWith(new OrderHandler1("1")).then(new OrderHandler1("2"), new OrderHandler1("3")).then(new OrderHandler1("4"));
-       
-</code></pre></div></div>
-
-<p>问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
-回答2:  handleEventsWithWorkerPool</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>问题3： 希望不同的消费者独立消费
-回答3： handleEventsWith 多个handler即可</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> disruptor.handleEventsWith(new OrderHandler1("1"), new OrderHandler1("2"));
-</code></pre></div></div>
-
-<p>问题4： 多生产者情况下，如果其中一个生产者的生产速度太低， 游标迟迟无法往下移，消费者会如何表现？会阻塞吗？</p>
-
-<p>回答4： 一般不会出现这种情况，sequence是先取再发布的，如果先取sequence之后， 又做了一些耗时的操作才publish， 则会阻塞消费者。所以写代码的时候尽量把取sequence和publish 靠近.</p>
-
-<p>官方文档: <a href="https://lmax-exchange.github.io/disruptor/disruptor.html">https://lmax-exchange.github.io/disruptor/disruptor.html</a></p>
-
-<p>参考文章: <a href="https://tech.meituan.com/2016/11/18/disruptor.html">https://tech.meituan.com/2016/11/18/disruptor.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8544700.html">https://www.cnblogs.com/pku-liuqiang/p/8544700.html</a></p>
-
-<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8532737.html">https://www.cnblogs.com/pku-liuqiang/p/8532737.html</a></p>
-
-<p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
-
-<h3 id="生产者调用逻辑">生产者调用逻辑</h3>
-
-<p><img src="/images/202205/WechatIMG279.png" alt="" width="800" /></p>
-
-<p>其中第3步做两件事</p>
+<p>用 localhost:8085/url-prefix/xxx 来请求接口</p>
 
 <ol>
   <li>
+    <p>initBinder,  对所有的出参进行格式转换, 优雅</p>
+
+    <p>代码仓库: <a href="https://github.com/gongchangyou/gateway">https://github.com/gongchangyou/gateway</a></p>
+
+    <p>参考文章: <a href="https://blog.csdn.net/KingJin_CSDN_/article/details/53893210">https://blog.csdn.net/KingJin_CSDN_/article/details/53893210</a></p>
+
+    <p><a href="https://blog1.westagilelabs.com/how-to-use-initbinder-in-spring-mvc-ecb974a6884">https://blog1.westagilelabs.com/how-to-use-initbinder-in-spring-mvc-ecb974a6884</a>
+```
+@Controller
+public abstract class BaseController {
+ /**</p>
+    <ul>
+      <li>解决String和javabean中的Date的属性自动转换</li>
+      <li>@param binder
+  */
+ /**</li>
+      <li>接收参数转换</li>
+      <li>@param binder
+  */
+ @InitBinder
+ public void initBinder(WebDataBinder binder) {
+ SimpleDateFormat dateFormat = new SimpleDateFormat(“yyyy-MM-dd HH:mm:ss”);
+ dateFormat.setLenient(false);
+ //所有的Date的子类和Date 参数 ，都会被这个自定义转换
+ binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+ //所有的String都会被trim
+ binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+ }
+}</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+controller的代码
+```3
+/**
+     * 这个字符串前后空格会被删除 (trim)
+     * @param str
+     * @return
+     */
+    @RequestMapping("str")
+    Object str(String str) {
+        log.info("str={} ",str);
+        return str;
+    }
+
+    /**
+     * 注意入参date 传入必须形如 2022-02-12 12:00:00
+     * @param date
+     * @return
+     */
+    @RequestMapping(value = "date")
+    Object date(Date date) {
+        log.info("date={}", date);
+        return date;
+    }
+
+    /**
+     * 这个函数进不来了, 因为Time是Date的子类，会被initBinder format，会抛异常
+     * @param time
+     * @return
+     */
+    @RequestMapping(value = "time")
+    Object time(Time time) {
+        log.info("time={}", time);
+        return time;
+    }
+</code></pre></div></div>
+
+<ol>
+  <li>SpringMVC ,如果前后端分离，这个就不看了。 post请求获取入参的方案：@RequestBody 和 @ModelAttribute 的区别？
     <ol>
-      <li>情况1： 设置游标(单个生产者的情况)</li>
-      <li>情况2：计算availableBuffer中可用的位子 （多个生产者的情况）. 因为生产者获取到sequence和 这个sequence可用是两码事，所以需要额外的availableBuffer来保存哪些sequence是可用的。<a href="https://blog.csdn.net/hilaryfrank/article/details/105484157">https://blog.csdn.net/hilaryfrank/article/details/105484157</a></li>
+      <li>参考文章: <a href="https://www.cnblogs.com/zeroingToOne/p/8992746.html">https://www.cnblogs.com/zeroingToOne/p/8992746.html</a></li>
+      <li>就是支持的content-type不一样，一般我们使用 application/json 那么就使用 @RequestBody, form表单使用 ModelAttribute</li>
     </ol>
   </li>
-  <li>根据等待策略通知消费者</li>
 </ol>
 
-<h3 id="多消费者的情况">多消费者的情况</h3>
+        </div>
+    </div>
+</div>
 
-<p>每个消费者对应一个线程 BatchEventProcessor，各自维护游标 sequence</p>
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/pojo-groovy">May 21, 2022 - pojo</a></h1>
+        
+        <div class="content">
+            <h1 id="pojo-groovy">Pojo groovy</h1>
 
-<font color="red">本质上就是利用cpu性能 来加速</font>
+<p>代码仓库:  <a href="https://github.com/gongchangyou/tool">https://github.com/gongchangyou/tool</a></p>
 
-<blockquote>
-  <p># <strong>等待策略</strong></p>
+<p>自动生成pojo</p>
 
-  <p>源码地址：https://github.com/LMAX-Exchange/disruptor/blob/master/src/main/java/com/lmax/disruptor/WaitStrategy.java</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.intellij.database.model.DasTable
+import com.intellij.database.util.Case
+import com.intellij.database.util.DasUtil
 
-  <p><strong>「BlockingWaitStrategy」</strong></p>
+/*
+ * Available context bindings:
+ *   SELECTION   Iterable&lt;DasObject&gt;
+ *   PROJECT     project
+ *   FILES       files helper
+ */
 
-  <p>Disruptor的默认策略是BlockingWaitStrategy。在BlockingWaitStrategy内部是使用锁和condition来控制线程的唤醒。BlockingWaitStrategy是最低效的策略，但其对CPU的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现。</p>
+typeMapping = [
+  (~/(?i)int/)                      : "Long",
+  (~/(?i)float|double|decimal|real/): "Double",
+  (~/(?i)datetime|timestamp/)       : "java.sql.Timestamp",
+  (~/(?i)date/)                     : "java.sql.Date",
+  (~/(?i)time/)                     : "java.sql.Time",
+  (~/(?i)/)                         : "String"
+]
 
-  <p><strong>「SleepingWaitStrategy」</strong></p>
+FILES.chooseDirectoryAndSave("Choose directory", "Choose where to store generated files") { dir -&gt;
+  SELECTION.filter { it instanceof DasTable }.each { generate(it, dir) }
+}
 
-  <p>SleepingWaitStrategy 的性能表现跟 BlockingWaitStrategy 差不多，对 CPU 的消耗也类似，但其对生产者线程的影响最小，通过使用<code class="highlighter-rouge">LockSupport.parkNanos(1)</code>来实现循环等待。</p>
+def generate(table, dir) {
+  def className = javaName(table.getName(), true)
+  def fields = calcFields(table)
+  def packageName = getPackageName(dir)
+  new File(dir, className + ".java").withPrintWriter { out -&gt; generate(out, className, fields, packageName, table) }
+}
 
-  <p><strong>「YieldingWaitStrategy」</strong></p>
+def generate(out, className, fields, packageName, table) {
+  out.println "package $packageName"
+  out.println ""
+  out.println ""
+  out.println "import com.baomidou.mybatisplus.annotation.IdType;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableId;\n" +
+          "import com.baomidou.mybatisplus.annotation.TableName;\n" +
+          "import lombok.AllArgsConstructor;\n" +
+          "import lombok.Builder;\n" +
+          "import lombok.Data;\n" +
+          "import lombok.NoArgsConstructor;"
+    out.println ""
+    out.println "@Builder\n" +
+            "@AllArgsConstructor\n" +
+            "@NoArgsConstructor\n" +
+            "@Data\n" +
+            "@TableName(\"${table.getName()}\")"
+    out.println "public class $className {"
+  out.println ""
+  fields.each() {
+    if (it.comment != "") {
+        out.println "  /**"
+        out.println "   * ${it.comment}"
+        out.println "   */"
+    }
+      if (it.isPrimaryKey) {
+          out.println "  @TableId(type = IdType.AUTO)"
+      }
+    out.println "  private ${it.type} ${it.name};"
+  }
+  out.println ""
+//  fields.each() {
+//    out.println ""
+//    out.println "  public ${it.type} get${it.name.capitalize()}() {"
+//    out.println "    return ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//    out.println "  public void set${it.name.capitalize()}(${it.type} ${it.name}) {"
+//    out.println "    this.${it.name} = ${it.name};"
+//    out.println "  }"
+//    out.println ""
+//  }
+  out.println "}"
+}
 
-  <p>YieldingWaitStrategy是可以使用在低延迟系统的策略之一。YieldingWaitStrategy将自旋以等待序列增加到适当的值。在循环体内，将调用<code class="highlighter-rouge">Thread.yield()</code>以允许其他排队的线程运行。在要求极高性能且事件处理线数小于 CPU 逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。</p>
+def calcFields(table) {
+    DasUtil.getColumns(table).reduce([]) { fields, col -&gt;
+    def spec = Case.LOWER.apply(col.getDataType().getSpecification())
+    def typeStr = typeMapping.find { p, t -&gt; p.matcher(spec).find() }.value
+    fields += [[
+                 name : javaName(col.getName(), false),
+                 type : typeStr,
+                 comment : col.getComment(),
+                 isPrimaryKey :  DasUtil.isPrimary(col),
+                 annos: ""]]
+  }
+}
 
-  <p><strong>「BusySpinWaitStrategy」</strong></p>
+def javaName(str, capitalize) {
+  def s = com.intellij.psi.codeStyle.NameUtil.splitNameIntoWords(str)
+    .collect { Case.LOWER.apply(it).capitalize() }
+    .join("")
+    .replaceAll(/[^\p{javaJavaIdentifierPart}[_]]/, "_")
+  capitalize || s.length() == 1? s : Case.LOWER.apply(s[0]) + s[1..-1]
+}
 
-  <p>性能最好，适合用于低延迟的系统。在要求极高性能且事件处理线程数小于CPU逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。</p>
+def getPackageName(dir) {
+    return dir.toString().replaceAll("\\\\", ".").replaceAll("/", ".").replaceAll("^.*src(\\.main\\.java\\.)?", "") + ";"
+}
 
-  <p><strong>「PhasedBackoffWaitStrategy」</strong></p>
-
-  <p>自旋 + yield + 自定义策略，CPU资源紧缺，吞吐量和延迟并不重要的场景。</p>
-</blockquote>
-
-<p>源码解析： TODO</p>
+</code></pre></div></div>
 
 
         </div>
@@ -395,80 +399,155 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/swagger">May 17, 2022 - swagger</a></h1>
+        <h1><a href="/2022/05/ES-IK">May 20, 2022 - es 中文分词</a></h1>
         
         <div class="content">
-            <h1 id="swagger">swagger</h1>
+            <h1 id="es-中文分词">ES 中文分词</h1>
 
-<p>官网： <a href="https://swagger.io/">https://swagger.io/</a></p>
+<p>这里使用 ES 8.2.0  所以建表不需要_doc关键字了。</p>
 
-<p>参考文章:  <a href="https://www.jianshu.com/p/088163459147">https://www.jianshu.com/p/088163459147</a></p>
+<h3 id="建表">建表</h3>
 
-<p>​			<a href="http://c.biancheng.net/view/5532.html">http://c.biancheng.net/view/5532.html</a></p>
-
-<p>项目地址:  <a href="https://github.com/gongchangyou/swagger">https://github.com/gongchangyou/swagger</a></p>
-
-<ol>
-  <li>
-    <p>添加依赖</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.spring4all&lt;/groupId&gt;
-            &lt;artifactId&gt;swagger-spring-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>配置swagger</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
-@Profile({"dev","local"})
-@EnableSwagger2
-@EnableWebMvc
-public class SwaggerConfig {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /table_1 
+{
+  "mappings": {
+     "properties": { 
+      "title":    { "type": "text"  }, 
+      "name":     { "type": "keyword"  }, 
+      "description": {"type": "text"},
+      "age":      { "type": "integer" },  
+      "created":  {
+        "type":   "date", 
+        "format": "strict_date_optional_time||epoch_millis"
+      }
+    }
+  }
 }
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port</p>
-  </li>
-  <li>
-    <p>添加注解
-<img src="/images/202205/WechatIMG148.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>再次访问，这次说明文档都展示出来了。
-<img src="/images/202205/WechatIMG147.png" alt="" width="800" /></p>
-  </li>
-</ol>
+</code></pre></div></div>
 
-<p>问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误</p>
+<h3 id="写入数据">写入数据</h3>
 
-<p>回答1: <a href="https://www.cnblogs.com/rainbow70626/p/15680184.html">https://www.cnblogs.com/rainbow70626/p/15680184.html</a> 添加注解 @EnableWebMvc</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_doc/1
+{
+  "id": 1,
+  "name": "文档名称",
+  "title": "中文标题",
+  "description":"文档描述",
+  "type":"科普",
+  "score": 96
+}
+</code></pre></div></div>
 
-<p>问题2： 如何添加response 的schema ?</p>
+<h3 id="搜索">搜索</h3>
 
-<p>回答2： 
-直接如下这样写是没用的。
-<img src="/images/202205/WechatIMG151.png" alt="" width="800" /><br />
-需要使用v3的ApiResponse
-<img src="/images/202205/WechatIMG159.png" alt="" width="800" /><br />
-这样ok了
-<img src="/images/202205/WechatIMG153.png" alt="" width="800" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+</code></pre></div></div>
 
-<p>问题3： 如何添加response为list的schema ?</p>
+<h3 id="should--or-子句">should  (or) 子句</h3>
 
-<p>回答3：如下乱写当然也行，swagger并不会去比对schema的implementation和 method的returnType. 这样当然swagger ui html也会显示成OutputModel，而不是一个list.所以这种写法全靠自觉。
-<img src="/images/202205/WechatIMG154.png" alt="" width="800" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST table_1/_search
+{
+  "query": {
+    "bool" : {
+      "should": [
+        {"term": {
+"title": "中"
+}},
+{
+"term": {
+"title": "文"
+}
+}
+      ]
+    }
+    
+  }
+}
+</code></pre></div></div>
 
-<p>正确的写法应该如下所示，引入ArraySchema,且把原先的ApiResponse给删掉，否则会冲突，导致无法正常显示。
-<img src="/images/202205/WechatIMG156.png" alt="" width="800" /><br />
-<img src="/images/202205/WechatIMG158.png" alt="" width="800" /><br />
-这下显示ok了
-<img src="/images/202205/WechatIMG157.png" alt="" width="800" /></p>
+<h3 id="中文搜索">中文搜索</h3>
 
+<p>keyword 是全匹配，text有analyzer可以创建分词策略 . 多个field 对应 多个analyzer <a href="https://blog.csdn.net/JineD/article/details/108845906">https://blog.csdn.net/JineD/article/details/108845906</a></p>
+
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html</a></p>
+
+<p>keyword 得全匹配才行， text默认的分词策略， 默认分词  “中文” =&gt; “中” “文”  ，所以输入  “中文”无法命中，</p>
+
+<p><img src="/images/202205/WechatIMG186.png" alt="" width="800" />
+<img src="/images/202205/WechatIMG187.png" alt="" width="800" /></p>
+
+<h4 id="下拉搜索的场景-可以使用whitespace-analyzer">下拉搜索的场景, 可以使用whitespace analyzer</h4>
+<p>保存的时候 写入 “中 中文 中文标 中文标题 文 文标 文标题 标题 题”</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_3
+{
+  "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "whitespace",
+          "fields": {
+           
+            "standard": {
+              "type": "text",
+              "analyzer": "standard"
+            }
+          }
+        }
+      }
+    }
+}
+</code></pre></div></div>
+
+<p><img src="/images/202205/WechatIMG185.png" alt="" width="800" /></p>
+
+<h4 id="中文分词场景">中文分词场景</h4>
+
+<p>IK分词 参考文章：<a href="https://blog.csdn.net/weixin_40612128/article/details/123476150">https://blog.csdn.net/weixin_40612128/article/details/123476150</a></p>
+
+<p>记得把版本号改对</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>elasticsearch-plugin -v install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v8.2.0/elasticsearch-analysis-ik-8.2.0.zip
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT table_ik
+{
+  "mappings": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "whitespace",
+          "fields": {
+            "spy": {
+              "type": "text",
+              "analyzer": "ik_smart"
+            },
+            "standard": {
+              "type": "text",
+              "analyzer": "standard"
+            },
+            "fpy": {
+              "type": "text",
+              "analyzer": "ik_smart"
+            }
+          }
+        }
+      }
+    
+  }
+}
+</code></pre></div></div>
+<p><img src="/images/202205/WechatIMG188.png" alt="" width="800" /></p>
+
+<h3 id="after-search">After Search</h3>
+
+<p>本质上是个where语句。 scroll查询 那样保存上下文，开销比较大。 注意这个search_after是开区间，不包括当前值97 ，所以尽量用一些唯一的值比如 id来search.</p>
+
+<p><img src="/images/202205/WechatIMG189.png" alt="" width="800" /></p>
 
         </div>
     </div>
@@ -481,7 +560,7 @@ public class SwaggerConfig {
         <a class="btn btn-default" href="/page12" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 13 of 56</span>
+  <span class="page_number ">Page: 13 of 57</span>
   
     <a class="btn btn-default" href="/page14" class="next">Older</a>
   

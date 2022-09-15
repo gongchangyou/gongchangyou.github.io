@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -215,7 +215,7 @@ Started [cpu] profiling
 23
 </code></pre></div></div>
 
-<h2 id="查看profiler状态">查看profiler状态</h2>
+<h2 id="查看profiler状态-最新版本366-windows-不支持">查看profiler状态 （最新版本3.6.6 windows 不支持）</h2>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler status
 [cpu] profiling is running for 4 seconds
@@ -251,6 +251,14 @@ OK
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>profiler start --duration 30 --event alloc
 </code></pre></div></div>
 
+<p>如何查看当前java进程？ 如果jps失效了 .加个断点</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ManagementFactory.getRuntimeMXBean().getName()
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+        System.out.println(runtimeMXBean.getName());
+</code></pre></div></div>
 
             </div>
             

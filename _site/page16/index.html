@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,148 +175,30 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/monitor">May 4, 2022 - monitor</a></h1>
+        <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
         
         <div class="content">
-            <h1 id="业务监控">业务监控</h1>
+            <h1 id="gateway-mono-flux">Gateway Mono Flux</h1>
 
-<p>参考文章: <a href="https://blog.51cto.com/jackl/2797593">https://blog.51cto.com/jackl/2797593</a>
-<a href="https://www.jianshu.com/p/f6f18cc268a4">https://www.jianshu.com/p/f6f18cc268a4</a></p>
+<p>参考文章: <a href="https://segmentfault.com/a/1190000024499748">https://segmentfault.com/a/1190000024499748</a></p>
 
-<p>其中statsd协议中的type是metric的类型，通常有timer、counter、gauge和set四种。</p>
+<p><a href="https://www.cnblogs.com/littleatp/p/11515458.html">https://www.cnblogs.com/littleatp/p/11515458.html</a></p>
 
-<p>Statsd + Graphite  +  Grafana</p>
+<p>冷流（从头开始消费） 和 热流(从offset处开始消费)  <a href="https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b">https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b</a></p>
 
-<p>数据收集，上报 ,  展示, 推荐UDP连接</p>
+<p><a href="https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/">https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/</a></p>
 
-<p>做的好还可以有报警（手机锁屏推送 + 邮件提醒）</p>
+<p>注意：如果热流的上个subscribe已经消费结束了，则下一个subscribe会从头开始，而不是不消费.</p>
 
-<ol>
-  <li>
-    <p>docker 部署 , 如果本地8001端口被占可以更改下, 时区搞成本地的，否则可能会有时差.</p>
+<p>响应式编程</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run -d\
-  --name graphite\
-  --restart=always\
-  -p 8001:80\
-  -p 2003-2004:2003-2004\
-  -p 2023-2024:2023-2024\
-  -p 8125:8125/udp\
-  -p 8126:8126\
-  -e GRAPHITE_TIME_ZONE='Asia/Shanghai'\
-  -v /etc/localtime:/etc/localtime\
-  graphiteapp/graphite-statsd
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>udp 上报 数据</p>
+<ul>
+  <li>响应流必须是无阻塞的。</li>
+  <li>响应流必须是一个数据流。</li>
+  <li>它必须可以异步执行。</li>
+  <li>并且它也应该能够处理背压。</li>
+</ul>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div>    </div>
-  </li>
-  <li>打开本地graphic dashboard  localhost:8001</li>
-  <li>记得把原先这个框里的东西删干净，否则有个心跳的统计数据几千万 干扰查看数据，然后把你要监控的指标add进去即可
-  <img src="/images/202205/WechatIMG190.png" alt="" width="800" /></li>
-  <li>然后把auto-refresh点亮就可以看到数据了
-  <img src="/images/202205/WechatIMG191.png" alt="" width="800" /></li>
-</ol>
-
-<p>除了count以外还有些别的统计类型 参考文章: <a href="https://www.jianshu.com/p/4c2df525b3d6">https://www.jianshu.com/p/4c2df525b3d6</a></p>
-
-<h3 id="因为graphite-dashboard不是很好看我们可以把数据展示集成到grafana中">因为graphite dashboard不是很好看，我们可以把数据展示集成到grafana中</h3>
-
-<ol>
-  <li>docker启动grafana , 建议 用 -u root 用root身份启动，因为方便修改grafana.ini, 这个文件需要root权限.
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name grafana -p 3000:3000 -u root grafana/grafana
-</code></pre></div>    </div>
-  </li>
-  <li>localhost:3000 默认用户名密码都是admin</li>
-  <li>配置graphite数据库，这里我是用两个docker容器 启动graphite和grafana。所以这里需要配置宿主机ip， 防止容器间的网络无法访问</li>
-</ol>
-
-<p><img src="/images/202205/WechatIMG192.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG193.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG194.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG199.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>如何添加指标？
-<img src="/images/202205/WechatIMG200.png" alt="" width="800" />
-<img src="/images/202205/WechatIMG201.png" alt="" width="800" /></p>
-
-<p>添加新的panel， 设置刷新时间</p>
-
-<p><img src="/images/202205/WechatIMG205.png" alt="" width="800" /></p>
-
-<p>在这里设置指标之后，点击apply即可
-<img src="/images/202205/WechatIMG204.png" alt="" width="800" /></p>
-
-<h3 id="设置alert">设置alert</h3>
-
-<p>1 设置报警的邮箱</p>
-
-<p>配置smtp， 发件服务器我选择了qq邮箱</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   	  docker exec -it grafana bash
-   	  
-   	  vi /etc/grafana/grafana.ini
-   	  
-   	  //找到smtp那部分 修改成
-
-   	   #################################### SMTP / Emailing ##########################
-   	  [smtp]
-   	  enabled = true
-   	  host = smtp.qq.com:465
-   	  user = laoshubendan@qq.com
-      # If the password contains # or ; you have to wrap it with triple quotes. Ex """#password;"""
-   	     password = xxxx #这里写qq的授权码
-   	     ;cert_file =
-   	     ;key_file =
-   	     ;skip_verify = false
-   	     from_address = laoshubendan@qq.com
-   	     ;from_address = admin@grafana.localhost
-   	     from_name = Grafana
-   	     # EHLO identity in SMTP dialog (defaults to instance_name)
-   	     ;ehlo_identity = dashboard.example.com
-   	     # SMTP startTLS policy (defaults to 'OpportunisticStartTLS')
-   	     ;startTLS_policy = NoStartTLS
-</code></pre></div></div>
-   	<img src="/images/202205/WechatIMG212.png" alt="" width="800" />
-
-<hr />
-
-<p>2 在dashboard配置 contact points， 选择email, 收件人邮箱配置好
-<img src="/images/202205/WechatIMG218.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>3 规则配置， 在这里可以设置各个规则的label,
-   <img src="/images/202205/WechatIMG219.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG215.jpeg" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG214.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG216.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>4 提醒策略 绑定规则和报警邮箱 (notifacatinon policies)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里可以匹配label ,利用label来区分报警类别
-</code></pre></div></div>
-
-<p><img src="/images/202205/WechatIMG213.png" alt="" width="800" /></p>
-
-<hr />
-
-<p>5 多次上报命令</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   echo "foo:1|c" | nc -u -w0 127.0.0.1 8125
-</code></pre></div></div>
-
-<p>收到报警邮件啦 
-      <img src="/images/202205/WechatIMG217.png" alt="" width="800" /></p>
 
         </div>
     </div>
@@ -324,18 +206,21 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/redis">May 2, 2022 - redis</a></h1>
+        <h1><a href="/2022/05/lock">May 6, 2022 - lock</a></h1>
         
         <div class="content">
-            <h1 id="docker-redis">Docker redis</h1>
+            <h1 id="lock">Lock</h1>
 
-<p><a href="https://www.runoob.com/docker/docker-install-redis.html">https://www.runoob.com/docker/docker-install-redis.html</a></p>
+<p>参考文章: <a href="https://blog.csdn.net/pmc0_0/article/details/121061692">https://blog.csdn.net/pmc0_0/article/details/121061692</a></p>
 
-<p>lpush lpop 栈</p>
+<p><img src="/images/202205/912e39d231b1440aa72b1529c61e7cf2.png" alt="" width="800" /></p>
 
-<p>lpush rpop 队列</p>
+<p>偏向锁:  在 mark word中 cas记录 当前线程ID</p>
 
-<p>lpush brpop 消息队列 （可以设置timeout. 并阻塞)</p>
+<p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
+
+<p>重量级锁 ：借助操作系统的monitor</p>
+
 
         </div>
     </div>
@@ -343,67 +228,76 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">Apr 26, 2022 - job</a></h1>
+        <h1><a href="/2022/05/MQTT">May 5, 2022 - mqtt</a></h1>
         
         <div class="content">
-            <h1 id="任务调度系统比对">任务调度系统比对</h1>
+            <h1 id="mqtt">MQTT</h1>
+
+<p><a href="https://www.cnblogs.com/yourstars/p/15247707.html">https://www.cnblogs.com/yourstars/p/15247707.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull emqx
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
+</code></pre></div></div>
+
+<p>默认账号：admin
+默认密码：public</p>
+
+<p>QOS:</p>
+
+<p>参考文章: <a href="https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html">https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html</a></p>
+
+<p>​	<a href="https://blog.csdn.net/qq_24505127/article/details/101701011">https://blog.csdn.net/qq_24505127/article/details/101701011</a></p>
+
+<p>​	<a href="https://blog.csdn.net/m0_50668851/article/details/112555171">https://blog.csdn.net/m0_50668851/article/details/112555171</a></p>
+
+<p>原理 :</p>
 
 <table>
   <thead>
     <tr>
-      <th>开源框架</th>
-      <th>开发语言</th>
-      <th>任务类型</th>
-      <th>⼯作流</th>
-      <th>能否区分用户</th>
-      <th>可视化</th>
-      <th>API</th>
-      <th>⾼可⽤</th>
+      <th>QOS</th>
+      <th>SAVE MESSAGE</th>
+      <th> </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Airflow</td>
-      <td>python</td>
-      <td>通过operator⾃定义，⼤数据组件及Shell，不⽀持Java</td>
-      <td>DAG</td>
-      <td>-</td>
-      <td>⽀持</td>
-      <td>不⽀持</td>
-      <td>主从</td>
+      <td>0</td>
+      <td>broker</td>
+      <td>at most once</td>
     </tr>
     <tr>
-      <td>XXL-JOB</td>
-      <td>Java</td>
-      <td>Java/Shell/Python/PHP</td>
-      <td>不⽀持</td>
-      <td>不能, 需要做些改造Runtime.getRuntime().exec()</td>
-      <td>⽀持</td>
-      <td>⽀持</td>
-      <td>主从</td>
+      <td>1</td>
+      <td>publisher  broker</td>
+      <td>at least once</td>
     </tr>
     <tr>
-      <td>DolphinScheduler</td>
-      <td>Java</td>
-      <td>⼤数据组件及Shell等近20种</td>
-      <td>DAG</td>
-      <td>能，因为内部实现是 sudo -u username</td>
-      <td>⽀持</td>
-      <td>⽀持</td>
-      <td>去中⼼</td>
-    </tr>
-    <tr>
-      <td>Quartz</td>
-      <td>Java</td>
-      <td>Java</td>
-      <td>不⽀持</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
+      <td>2</td>
+      <td>publisher broker subscriber</td>
+      <td>exactly once</td>
     </tr>
   </tbody>
 </table>
+
+<p>will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线</p>
+
+<p>那么如何知道消费端是否掉线呢？ connectionLost 方法</p>
+
+<p>延迟消息： <a href="https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html">https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html</a></p>
+
+<p>特定的topic格式：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/{DelayInterval}/{TopicName}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
+$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
+$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
+</code></pre></div></div>
+
+<p>java代码： <a href="https://github.com/gongchangyou/mqtt">https://github.com/gongchangyou/mqtt</a></p>
 
 
         </div>
@@ -417,7 +311,7 @@
         <a class="btn btn-default" href="/page15" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 16 of 56</span>
+  <span class="page_number ">Page: 16 of 57</span>
   
     <a class="btn btn-default" href="/page17" class="next">Older</a>
   

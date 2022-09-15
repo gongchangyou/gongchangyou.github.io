@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,21 +175,20 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/lambda-catch">Jun 6, 2016 - lambda捕获</a></h1>
+        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
         
         <div class="content">
-            <p>int x = 1, y=2;</p>
+            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
+        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
+    &lt;activity-alias
+        android:name=".wxapi.WXEntryActivity"
+        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
+        android:exported="true" /&gt;
+</code></pre></div></div>
 
-<p>auto z = [x,y]{return x+ y;};</p>
+<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
 
-<p>//auto z = [x,&amp;y]{return x+ y;}; //引用就是运行时，值就是编译时</p>
-
-<p>x= 3, y = 4;</p>
-
-<p>cout « z() « endl;</p>
-
-<p>[]捕获的如果是weak_ptr 貌似会丢失? why?</p>
-
+<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
 
         </div>
     </div>
@@ -197,13 +196,24 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/python%E8%99%9A%E6%8B%9F%E6%9C%BA">Jun 2, 2016 - python虚拟机</a></h1>
+        <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
         
         <div class="content">
-            <p>安装 创建 基本命令</p>
+            <p>打开Terminal，进入到build/Debug-iphoneos</p>
 
-<p><a href="http://www.cnblogs.com/ifantastic/p/4090726.html">http://www.cnblogs.com/ifantastic/p/4090726.html</a></p>
+<p>使用命令:</p>
 
+<p>$atos -arch armv7 -o XXX.app/XXX 0xabcdef</p>
+
+<p>XXX是你的App名字，用需要解析的地址替换上面的0xabcdef</p>
+
+<p>armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386</p>
+
+<p>=====================</p>
+
+<p>上传ipa:</p>
+
+<p>利用mac自带软件 Application Loader上传ipa</p>
 
         </div>
     </div>
@@ -211,30 +221,13 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/05/iOS-mobileProvision">May 4, 2016 - mobileProvision</a></h1>
+        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
         
         <div class="content">
-            <p>No matching provisioning profile found: XXXX, however, no such provisioning profile was found.CodeSign error: code signing is required for product type ‘Application’ in SDK ‘iOS 7.0’</p>
+            <p>Replica</p>
 
-<p>可是~/Library/MobileDevice/Provisioning Profiles是有的</p>
+<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
 
-<p>可能用户用到了root中的 所以需要将MobileDevice 整个文件夹拷到/Libraray/下</p>
-
-<p>上传到appStore的时候一直报这个错：Error ITMS-90034:”Missing or invalid signature. The bundle XXX at bundle path ‘Payload/XXX.app’ is not signed using  an Apple submission certificate.”</p>
-
-<p>解决方法:</p>
-
-<ol>
-  <li>
-    <p>查看 Apple Worldwide Developer Relations Certification Authority 这个证书过期了没，重新下载并且将信任置为”使用系统默认”</p>
-
-    <p>查看你的distribution 的mobileProvision 是否用对，并且将你的distribution证书信任置为”使用系统默认”。//一般这样就ok了 亲测这个ok</p>
-  </li>
-</ol>
-
-<p>2.如果是用xcodebuild 命令编译的，最好用xcode 的Archive再编译一次重新提交试试</p>
-
-<p>3.如果 Apple Worldwide Developer  系统默认，你的distribution证书 始终信任 就会出现Error ITMS-90034</p>
 
         </div>
     </div>
@@ -247,7 +240,7 @@
         <a class="btn btn-default" href="/page43" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 44 of 56</span>
+  <span class="page_number ">Page: 44 of 57</span>
   
     <a class="btn btn-default" href="/page45" class="next">Older</a>
   

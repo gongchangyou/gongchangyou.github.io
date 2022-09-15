@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,51 +175,20 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/OWASP">May 15, 2022 - java项目 依赖检查</a></h1>
+        <h1><a href="/2022/05/CAS">May 19, 2022 - cas</a></h1>
         
         <div class="content">
-            <h1 id="owasp">OWASP</h1>
+            <h1 id="cas">CAS</h1>
 
-<p>官网： <a href="https://owasp.org/">https://owasp.org/</a></p>
+<p>参考文章： <a href="https://coderatwork.cn/posts/linux-cmpxchg/">https://coderatwork.cn/posts/linux-cmpxchg/</a></p>
 
-<p>网站安全top 10: <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></p>
+<p>Unsafe.compareAndSetObject</p>
 
-<p>检测插件 <a href="https://blog.csdn.net/qq_35624642/article/details/122438449">https://blog.csdn.net/qq_35624642/article/details/122438449</a></p>
+<p>内部调用native cmpxchg汇编指令</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--        代码依赖包安全漏洞检测--&gt;
-&lt;!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-    &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-    &lt;version&gt;6.5.2&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;!--        代码依赖包安全漏洞检测--&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.owasp&lt;/groupId&gt;
-                &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
-                &lt;configuration&gt;
-                    &lt;autoUpdate&gt;true&lt;/autoUpdate&gt;
-                &lt;/configuration&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;check&lt;/goal&gt;
-                        &lt;/goals&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-</code></pre></div></div>
-
-<p>如下图点击maven:check</p>
-
-<p><img src="/images/202205/WechatIMG143.png" alt="" width="800" /></p>
-
-<p>运行结束后，会在target下生成检测报告dependency-check-report.html，直接浏览器打开查看就可以了</p>
-
-<p><img src="/images/202205/WechatIMG144.png" alt="" width="800" /></p>
-
+<blockquote>
+  <p>在多核环境中，一般还在指令前加上 LOCK 前缀，来保证指令执行的原子性（LOCK 前缀的主要功能应该是锁内存总线）。</p>
+</blockquote>
 
         </div>
     </div>
@@ -227,184 +196,198 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/maven_plugin">May 14, 2022 - maven plugin</a></h1>
+        <h1><a href="/2022/05/Disruptor">May 18, 2022 - disruptor</a></h1>
         
         <div class="content">
-            <h1 id="maven-插件编写">maven 插件编写</h1>
+            <h1 id="disruptor">Disruptor</h1>
 
-<p>参考文章： <a href="https://blog.csdn.net/weixin_44433834/article/details/122620067">https://blog.csdn.net/weixin_44433834/article/details/122620067</a></p>
+<p>Disruptor是英国外汇交易公司LMAX开发的一个高性能队列. 多消费者之间还能形成依赖(then关键字)</p>
 
-<p>项目地址： <a href="https://github.com/gongchangyou/mavenplugin">https://github.com/gongchangyou/mavenplugin</a></p>
+<p>代码仓库: <a href="https://github.com/gongchangyou/disruptor">https://github.com/gongchangyou/disruptor</a></p>
 
 <ol>
   <li>
-    <p>修改打包方式</p>
+    <p>Pom.xml</p>
 
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.lmax/disruptor --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.lmax&lt;/groupId&gt;
+            &lt;artifactId&gt;disruptor&lt;/artifactId&gt;
+            &lt;version&gt;3.4.4&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>单生产者，单消费者</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+     * 单生产者 单消费者
+     */
+    @Test
+    void contextLoads() {
+        // 队列中的元素
+        class Element {
+   
+            private int value;
+   
+            public int get(){
+                return value;
+            }
+   
+            public void set(int value){
+                this.value= value;
+            }
+   
+        }
+   
+        // 生产者的线程工厂
+        ThreadFactory threadFactory = new ThreadFactory(){
+            int i = 0;
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "simpleThread " + i++);
+            }
+        };
+   
+        // RingBuffer生产工厂,初始化RingBuffer的时候使用
+        EventFactory&lt;Element&gt; factory = new EventFactory&lt;Element&gt;() {
+            @Override
+            public Element newInstance() {
+                return new Element();
+            }
+        };
+   
+        // 处理Event的handler
+        EventHandler&lt;Element&gt; handler = new EventHandler&lt;Element&gt;(){
+            @Override
+            public void onEvent(Element element, long sequence, boolean endOfBatch)
+            {
+                log.info("element={}, sequence={}, endOfBatch={}", element.get(), sequence, endOfBatch);
+//                System.out.println("Element: " + element.get());
+            }
+        };
+   
+        // 阻塞策略
+        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
+   
+        // 指定RingBuffer的大小
+        int bufferSize = 16;
+   
+        // 创建disruptor，采用单生产者模式
+        Disruptor&lt;Element&gt; disruptor = new Disruptor(factory, bufferSize, threadFactory, ProducerType.SINGLE, strategy);
+   
+        // 设置EventHandler
+        disruptor.handleEventsWith(handler);
+   
+        // 启动disruptor的线程
+        disruptor.start();
+   
+        RingBuffer&lt;Element&gt; ringBuffer = disruptor.getRingBuffer();
+   
+        for (int l = 0; true; l++) {
+            // 获取下一个可用位置的下标
+            long sequence = ringBuffer.next();
+            try {
+                // 返回可用位置的元素
+                Element event = ringBuffer.get(sequence);
+                // 设置该位置元素的值
+                event.set(l);
+            } finally {
+                ringBuffer.publish(sequence);
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>问题1： 有不同的消费者依赖怎么办？
+回答1：  关键字 then</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	//多个消费者间形成依赖关系，每个依赖节点的消费者为单线程。
+        disruptor.handleEventsWith(new OrderHandler1("1")).then(new OrderHandler1("2"), new OrderHandler1("3")).then(new OrderHandler1("4"));
+       
+</code></pre></div></div>
+
+<p>问题2： 希望不同的消费者不重复的消费怎么办？即多个consumer 加速消费
+回答2:  handleEventsWithWorkerPool</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>disruptor.handleEventsWithWorkerPool(new OrderHandler1("1"), new OrderHandler1("2"));
+</code></pre></div></div>
+
+<p>问题3： 希望不同的消费者独立消费
+回答3： handleEventsWith 多个handler即可</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> disruptor.handleEventsWith(new OrderHandler1("1"), new OrderHandler1("2"));
+</code></pre></div></div>
+
+<p>问题4： 多生产者情况下，如果其中一个生产者的生产速度太低， 游标迟迟无法往下移，消费者会如何表现？会阻塞吗？</p>
+
+<p>回答4： 一般不会出现这种情况，sequence是先取再发布的，如果先取sequence之后， 又做了一些耗时的操作才publish， 则会阻塞消费者。所以写代码的时候尽量把取sequence和publish 靠近.</p>
+
+<p>官方文档: <a href="https://lmax-exchange.github.io/disruptor/disruptor.html">https://lmax-exchange.github.io/disruptor/disruptor.html</a></p>
+
+<p>参考文章: <a href="https://tech.meituan.com/2016/11/18/disruptor.html">https://tech.meituan.com/2016/11/18/disruptor.html</a></p>
+
+<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8544700.html">https://www.cnblogs.com/pku-liuqiang/p/8544700.html</a></p>
+
+<p><a href="https://www.cnblogs.com/pku-liuqiang/p/8532737.html">https://www.cnblogs.com/pku-liuqiang/p/8532737.html</a></p>
+
+<p><a href="https://cloud.tencent.com/developer/article/1701690">https://cloud.tencent.com/developer/article/1701690</a></p>
+
+<h3 id="生产者调用逻辑">生产者调用逻辑</h3>
+
+<p><img src="/images/202205/WechatIMG279.png" alt="" width="800" /></p>
+
+<p>其中第3步做两件事</p>
+
+<ol>
+  <li>
     <ol>
-      <li>
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;maven-plugin&lt;/packaging&gt;
-</code></pre></div>        </div>
-      </li>
+      <li>情况1： 设置游标(单个生产者的情况)</li>
+      <li>情况2：计算availableBuffer中可用的位子 （多个生产者的情况）. 因为生产者获取到sequence和 这个sequence可用是两码事，所以需要额外的availableBuffer来保存哪些sequence是可用的。<a href="https://blog.csdn.net/hilaryfrank/article/details/105484157">https://blog.csdn.net/hilaryfrank/article/details/105484157</a></li>
     </ol>
   </li>
-  <li>
-    <h3 id="引入插件开发相关依赖">引入插件开发相关依赖</h3>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;dependencies&gt;
-        &lt;!--插件的抽象类--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-plugin-api&lt;/artifactId&gt;
-            &lt;version&gt;3.6.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;!--MOJO注解的来源--&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven.plugin-tools&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-plugin-annotations&lt;/artifactId&gt;
-            &lt;version&gt;3.6.0&lt;/version&gt;
-            &lt;scope&gt;provided&lt;/scope&gt;
-        &lt;/dependency&gt;
-    
-    &lt;/dependencies&gt;
-</code></pre></div>    </div>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.maven&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-core&lt;/artifactId&gt;
-            &lt;version&gt;3.6.2&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <h3 id="继承插件父类设置目标">继承插件父类，设置目标</h3>
-  </li>
-  <li>
-    <h3 id="绑定到构建生命周期">绑定到构建生命周期</h3>
-  </li>
-  <li>
-    <h3 id="默认可获取的参数">默认可获取的参数</h3>
-  </li>
-  <li>编写代码</li>
+  <li>根据等待策略通知消费者</li>
 </ol>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">hundsun</span><span class="p">.</span><span class="n">broker</span><span class="p">;</span>
- 
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">lang3</span><span class="p">.</span><span class="n">StringUtils</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">AbstractMojo</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoExecutionException</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugin</span><span class="p">.</span><span class="n">MojoFailureException</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">LifecyclePhase</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Mojo</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">apache</span><span class="p">.</span><span class="n">maven</span><span class="p">.</span><span class="n">plugins</span><span class="p">.</span><span class="n">annotations</span><span class="p">.</span><span class="n">Parameter</span><span class="p">;</span>
- 
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">File</span><span class="p">;</span>
-<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="k">List</span><span class="p">;</span>
- 
-<span class="p">/**</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">author</span> <span class="n">yyzsx</span>
- <span class="p">*</span> <span class="p">@</span><span class="k">version</span> <span class="m">1.0.0</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">ProjectName</span> <span class="n">yyzsx</span><span class="p">-</span><span class="n">maven</span><span class="p">-</span><span class="n">plugin</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">ClassName</span> <span class="n">MyMojo</span><span class="p">.</span><span class="n">java</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">Description</span> <span class="err">演示</span><span class="p">-</span><span class="err">输出项目信息</span>
- <span class="p">*</span> <span class="p">@</span><span class="n">createTime</span> <span class="m">2021</span><span class="err">年</span><span class="m">08</span><span class="err">月</span><span class="m">08</span><span class="err">日</span> <span class="m">13</span><span class="p">:</span><span class="m">53</span><span class="p">:</span><span class="m">00</span>
- <span class="p">*/</span>
-<span class="p">@</span><span class="n">Mojo</span><span class="p">(</span><span class="n">name</span> <span class="p">=</span> <span class="s2">"showProjectInfo"</span><span class="p">,</span> <span class="n">defaultPhase</span> <span class="p">=</span> <span class="n">LifecyclePhase</span><span class="p">.</span><span class="nf">COMPILE</span><span class="p">)</span>
-<span class="k">public</span> <span class="n">class</span> <span class="n">MyMojo</span> <span class="n">extends</span> <span class="n">AbstractMojo</span> <span class="p">{</span>
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">项目根路径</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${basedir}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="n">File</span> <span class="n">basedir</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">获取</span><span class="n">pom</span><span class="err">文件中项目版本，或者支持</span><span class="p">-</span><span class="n">Dversion</span><span class="p">=</span><span class="n">xx</span><span class="err">，进行传入</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"version"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${project.version}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="k">version</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">获取本地</span><span class="n">maven</span><span class="err">仓库地址</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${settings.localRepository}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="n">localRepository</span><span class="p">;</span>
- 
-    <span class="p">/**</span>
-     <span class="p">*</span> <span class="err">参数配置，作者</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"author"</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="p">=</span> <span class="s2">"${showProjectInfo.author}"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">,</span> <span class="n">required</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">String</span> <span class="n">author</span><span class="p">;</span>
- 
-    <span class="p">/***</span>
-     <span class="p">*</span> <span class="err">参数集合</span>
-     <span class="p">*/</span>
-    <span class="p">@</span><span class="n">Parameter</span><span class="p">(</span><span class="n">property</span> <span class="p">=</span> <span class="s2">"lists"</span><span class="p">,</span> <span class="n">readonly</span> <span class="p">=</span> <span class="nb">true</span><span class="p">)</span>
-    <span class="n">private</span> <span class="k">List</span> <span class="n">lists</span><span class="p">;</span>
- 
-    <span class="p">@</span><span class="n">Override</span>
-    <span class="k">public</span> <span class="n">void</span> <span class="n">execute</span><span class="p">()</span> <span class="n">throws</span> <span class="n">MojoExecutionException</span><span class="p">,</span> <span class="n">MojoFailureException</span> <span class="p">{</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"*******************ShowProjectInfo*******************"</span><span class="p">);</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,begin--------------------"</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"欢迎语：Hello Maven Plugin"</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目本地仓库localRepository:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="n">localRepository</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目跟路径basedir:"</span> <span class="p">+</span> <span class="n">basedir</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目版本version:"</span> <span class="p">+</span> <span class="n">this</span><span class="p">.</span><span class="k">version</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目作者author:"</span> <span class="p">+</span> <span class="n">author</span><span class="p">);</span>
-        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s2">"项目包含文件类型lists："</span> <span class="p">+</span> <span class="n">StringUtils</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">lists</span><span class="p">.</span><span class="n">toArray</span><span class="p">(),</span> <span class="s2">","</span><span class="p">));</span>
-        <span class="n">getLog</span><span class="p">().</span><span class="n">info</span><span class="p">(</span><span class="s2">"--------------------MyFirstMojo,end-----------------------"</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
- 
-</code></pre></div></div>
+<h3 id="多消费者的情况">多消费者的情况</h3>
 
-<ol>
-  <li>
-    <p>mvn install</p>
-  </li>
-  <li>
-    <p>调用命令执行</p>
+<p>每个消费者对应一个线程 BatchEventProcessor，各自维护游标 sequence</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn compile
-</code></pre></div>    </div>
+<font color="red">本质上就是利用cpu性能 来加速</font>
 
-    <p>或者 指定执行goal</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn com.mouse:test-maven-plugin:0.0.1-SNAPSHOT:showProjectInfo
-   
-格式是这样的: mvn groupId:artifactId:version:goal
-   
-缩写： mvn test:showProjectInfo
-</code></pre></div>    </div>
-  </li>
-</ol>
+<blockquote>
+  <p># <strong>等待策略</strong></p>
 
-<p>IDEA 开发maven plugin . 在command line这里无需写mvn</p>
+  <p>源码地址：https://github.com/LMAX-Exchange/disruptor/blob/master/src/main/java/com/lmax/disruptor/WaitStrategy.java</p>
 
-<p><img src="/images/202205/WechatIMG145.png" alt="" width="800" /></p>
+  <p><strong>「BlockingWaitStrategy」</strong></p>
 
-<h3 id="每次编辑mojo文件后需要mvn-install-再执行-mvn-testshowprojectinfo">每次编辑mojo文件后，需要mvn install 再执行 mvn test:showProjectInfo</h3>
+  <p>Disruptor的默认策略是BlockingWaitStrategy。在BlockingWaitStrategy内部是使用锁和condition来控制线程的唤醒。BlockingWaitStrategy是最低效的策略，但其对CPU的消耗最小并且在各种不同部署环境中能提供更加一致的性能表现。</p>
 
-<p>问题1： 有时候会报 Index 23886 out of bounds for length 6498 之类的错</p>
+  <p><strong>「SleepingWaitStrategy」</strong></p>
 
-<p>回答1：  添加如下配置</p>
+  <p>SleepingWaitStrategy 的性能表现跟 BlockingWaitStrategy 差不多，对 CPU 的消耗也类似，但其对生产者线程的影响最小，通过使用<code class="highlighter-rouge">LockSupport.parkNanos(1)</code>来实现循环等待。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;plugin&gt;
-                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-                &lt;artifactId&gt;maven-plugin-plugin&lt;/artifactId&gt;
-                &lt;version&gt;3.6.0&lt;/version&gt;
-                &lt;executions&gt;
-                    &lt;execution&gt;
-                        &lt;id&gt;default-descriptor&lt;/id&gt;
-                        &lt;phase&gt;process-classes&lt;/phase&gt;
-                    &lt;/execution&gt;
-                    &lt;!-- if you want to generate help goal --&gt;
-                    &lt;execution&gt;
-                        &lt;id&gt;help-goal&lt;/id&gt;
-                        &lt;goals&gt;
-                            &lt;goal&gt;helpmojo&lt;/goal&gt;
-                        &lt;/goals&gt;
-                    &lt;/execution&gt;
-                &lt;/executions&gt;
-            &lt;/plugin&gt;
-</code></pre></div></div>
+  <p><strong>「YieldingWaitStrategy」</strong></p>
+
+  <p>YieldingWaitStrategy是可以使用在低延迟系统的策略之一。YieldingWaitStrategy将自旋以等待序列增加到适当的值。在循环体内，将调用<code class="highlighter-rouge">Thread.yield()</code>以允许其他排队的线程运行。在要求极高性能且事件处理线数小于 CPU 逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。</p>
+
+  <p><strong>「BusySpinWaitStrategy」</strong></p>
+
+  <p>性能最好，适合用于低延迟的系统。在要求极高性能且事件处理线程数小于CPU逻辑核心数的场景中，推荐使用此策略；例如，CPU开启超线程的特性。</p>
+
+  <p><strong>「PhasedBackoffWaitStrategy」</strong></p>
+
+  <p>自旋 + yield + 自定义策略，CPU资源紧缺，吞吐量和延迟并不重要的场景。</p>
+</blockquote>
+
+<p>源码解析： TODO</p>
+
 
         </div>
     </div>
@@ -412,14 +395,79 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/05/c++">May 8, 2022 - c++ starter</a></h1>
+        <h1><a href="/2022/05/swagger">May 17, 2022 - swagger</a></h1>
         
         <div class="content">
-            <h1 id="c-入门">c++ 入门</h1>
+            <h1 id="swagger">swagger</h1>
 
-<p>参考文章: <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">https://www.runoob.com/cplusplus/cpp-tutorial.html</a></p>
+<p>官网： <a href="https://swagger.io/">https://swagger.io/</a></p>
 
-<p>vector 初始化: https://blog.csdn.net/veghlreywg/article/details/80400382</p>
+<p>参考文章:  <a href="https://www.jianshu.com/p/088163459147">https://www.jianshu.com/p/088163459147</a></p>
+
+<p>​			<a href="http://c.biancheng.net/view/5532.html">http://c.biancheng.net/view/5532.html</a></p>
+
+<p>项目地址:  <a href="https://github.com/gongchangyou/swagger">https://github.com/gongchangyou/swagger</a></p>
+
+<ol>
+  <li>
+    <p>添加依赖</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      &lt;!-- https://mvnrepository.com/artifact/com.spring4all/swagger-spring-boot-starter --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.spring4all&lt;/groupId&gt;
+            &lt;artifactId&gt;swagger-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置swagger</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
+@Profile({"dev","local"})
+@EnableSwagger2
+@EnableWebMvc
+public class SwaggerConfig {
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>访问地址 :  http://localhost:8082/swagger-ui/index.html  这个8082就是 Tomcat 的 port</p>
+  </li>
+  <li>
+    <p>添加注解
+<img src="/images/202205/WechatIMG148.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>再次访问，这次说明文档都展示出来了。
+<img src="/images/202205/WechatIMG147.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+<p>问题1 ： Failed to start bean ‘documentationPluginsBootstrapper‘的编译错误</p>
+
+<p>回答1: <a href="https://www.cnblogs.com/rainbow70626/p/15680184.html">https://www.cnblogs.com/rainbow70626/p/15680184.html</a> 添加注解 @EnableWebMvc</p>
+
+<p>问题2： 如何添加response 的schema ?</p>
+
+<p>回答2： 
+直接如下这样写是没用的。
+<img src="/images/202205/WechatIMG151.png" alt="" width="800" /><br />
+需要使用v3的ApiResponse
+<img src="/images/202205/WechatIMG159.png" alt="" width="800" /><br />
+这样ok了
+<img src="/images/202205/WechatIMG153.png" alt="" width="800" /></p>
+
+<p>问题3： 如何添加response为list的schema ?</p>
+
+<p>回答3：如下乱写当然也行，swagger并不会去比对schema的implementation和 method的returnType. 这样当然swagger ui html也会显示成OutputModel，而不是一个list.所以这种写法全靠自觉。
+<img src="/images/202205/WechatIMG154.png" alt="" width="800" /></p>
+
+<p>正确的写法应该如下所示，引入ArraySchema,且把原先的ApiResponse给删掉，否则会冲突，导致无法正常显示。
+<img src="/images/202205/WechatIMG156.png" alt="" width="800" /><br />
+<img src="/images/202205/WechatIMG158.png" alt="" width="800" /><br />
+这下显示ok了
+<img src="/images/202205/WechatIMG157.png" alt="" width="800" /></p>
 
 
         </div>
@@ -433,7 +481,7 @@
         <a class="btn btn-default" href="/page13" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 14 of 56</span>
+  <span class="page_number ">Page: 14 of 57</span>
   
     <a class="btn btn-default" href="/page15" class="next">Older</a>
   

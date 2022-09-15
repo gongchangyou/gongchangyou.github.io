@@ -7,6 +7,52 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>quic</title>
+				<description>&lt;h1 id=&quot;quic&quot;&gt;quic&lt;/h1&gt;
+
+</description>
+				<pubDate>Thu, 15 Sep 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/09/quic</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/09/quic</guid>
+			</item>
+		
+			<item>
+				<title>spel</title>
+				<description>&lt;h1 id=&quot;spel&quot;&gt;SpEL&lt;/h1&gt;
+
+&lt;p&gt;spring 是一个支持查询和操作运行时对象导航图功能的强大的表达式语言. 它的语法类似于传统EL.&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;http://itmyhome.com/spring/expressions.html&quot;&gt;http://itmyhome.com/spring/expressions.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://juejin.cn/post/6921491842865299469&quot;&gt;https://juejin.cn/post/6921491842865299469&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://spring.hhui.top/spring-blog/2020/05/18/200518-SpringBoot%E7%B3%BB%E5%88%97%E4%B9%8BSpEL%E8%AF%AD%E6%B3%95%E6%89%AB%E7%9B%B2%E4%B8%8E%E6%9F%A5%E8%AF%A2%E6%89%8B%E5%86%8C/&quot;&gt;https://spring.hhui.top/spring-blog/2020/05/18/200518-SpringBoot%E7%B3%BB%E5%88%97%E4%B9%8BSpEL%E8%AF%AD%E6%B3%95%E6%89%AB%E7%9B%B2%E4%B8%8E%E6%9F%A5%E8%AF%A2%E6%89%8B%E5%86%8C/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.baeldung.com/spring-expression-language&quot;&gt;https://www.baeldung.com/spring-expression-language&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/spel_demo&quot;&gt;https://github.com/gongchangyou/spel_demo&lt;/a&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 13 Sep 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/09/SpEL</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/09/SpEL</guid>
+			</item>
+		
+			<item>
+				<title>udp</title>
+				<description>&lt;h1 id=&quot;udp-multicast&quot;&gt;Udp multicast&lt;/h1&gt;
+
+&lt;p&gt;因为传统的tcp 在金融领域的延迟太高了（1ms)&lt;/p&gt;
+
+&lt;p&gt;一般选择udp，再添加定制化开发一些服务的保证。&lt;/p&gt;
+
+</description>
+				<pubDate>Mon, 05 Sep 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/09/udp</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/09/udp</guid>
+			</item>
+		
+			<item>
 				<title>b+tree</title>
 				<description>&lt;h1 id=&quot;btree&quot;&gt;b+tree&lt;/h1&gt;
 
@@ -288,265 +334,6 @@ Build-Jdk: 11.0.12
 				<pubDate>Sat, 16 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/java-agent</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/java-agent</guid>
-			</item>
-		
-			<item>
-				<title>feign</title>
-				<description>&lt;h1 id=&quot;feign-集成-到nacos上&quot;&gt;Feign 集成 到nacos上&lt;/h1&gt;
-
-&lt;p&gt;feign 集成nacos,  先启动&lt;a href=&quot;/2022/01/nacos&quot;&gt;nacos&lt;/a&gt;, 再搭一个&lt;a href=&quot;/2022/01/nexus&quot;&gt;nexus&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;代码仓库:  &lt;a href=&quot;https://github.com/gongchangyou/feign_producer&quot;&gt;https://github.com/gongchangyou/feign_producer&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/feign_consumer&quot;&gt;https://github.com/gongchangyou/feign_consumer&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;处理依赖真的是……一言难尽&lt;/p&gt;
-
-&lt;p&gt;主要思路是: &lt;font color=&quot;red&quot;&gt; 为了能够通过服务名发现注册到Nacos的服务，所以需要引入spring-cloud-starter-alibaba-nacos-discovery；为了使用Spring官方的负载均衡器来替换Ribbon，需要引入spring-cloud-starter-loadbalancer，并添加配置 spring.cloud.loadbalancer.ribbon.enabled=false
-&lt;/font&gt;&lt;/p&gt;
-
-&lt;p&gt;总之feign集成到nacos 比dubbo 难用很多，因为本身feign是netflix出品，而nacos是 alibaba出品。&lt;/p&gt;
-
-&lt;p&gt;注意： 入参是对象的话，要将method指定为post， 且在参数上添加 @RequestBody 注解. 原理说明 &lt;a href=&quot;https://www.jianshu.com/p/c1b8315c5a03&quot;&gt;https://www.jianshu.com/p/c1b8315c5a03&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;@RequestBody修饰的参数会使用RequestResponseBodyMethodProcessor解析，&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;重点看 InvocableHandlerMethod.getMethodArgumentValues 其中的
-RequestResponseBodyMethodProcessor.readWithMessageConverters
-最终发现是 AbstractJackson2HttpMessageConverter 中的一句 objectMapper.readValue(inputMessage.getBody(), javaType)。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG321.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG322.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG323.jpeg&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题1： client error: invalid param. com.alibaba.nacos.client.naming.NacosNamingService&lt;/p&gt;
-
-&lt;p&gt;解决1： 从这里追进去看 是class NacosNamingService 找不到 ， 添加依赖即可&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG318.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;com.alibaba.nacos&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;nacos-client&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;1.3.1&amp;lt;/version&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题2： Caused by: java.lang.ClassNotFoundException: org.springframework.boot.logging.DeferredLogFactory
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]&lt;/p&gt;
-
-&lt;p&gt;回答2： spring-cloud 和 spring-boot的版本不匹配， 可以参考文章: &lt;a href=&quot;https://spring.io/projects/spring-cloud&quot;&gt;https://spring.io/projects/spring-cloud&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://start.spring.io/actuator/info&quot;&gt;https://start.spring.io/actuator/info&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题3：No Feign Client for loadBalancing defined. Did you forget to include spring-cloud-starter-netflix-ribbon or spring-cloud-starter-loadbalancer?&lt;/p&gt;
-
-&lt;p&gt;回答3：加入 spring-cloud-starter-loadbalancer 并在nacos中排除ribbon依赖&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-loadbalancer --&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;spring-cloud-starter-loadbalancer&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;2.2.9.RELEASE&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;参考文章 &lt;a href=&quot;https://blog.csdn.net/eclipse1024/article/details/115587984&quot;&gt;https://blog.csdn.net/eclipse1024/article/details/115587984&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题4： 无法根据 feignClient中的name获取实际的ip:port 
-&lt;img src=&quot;/images/202207/WechatIMG320.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;
-回答4： 需要引入 spring-cloud-starter-alibaba-nacos-discovery, 注意选择和项目中 spring-boot 匹配的版本&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery --&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;com.alibaba.cloud&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;spring-cloud-starter-alibaba-nacos-discovery&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;2.2.6.RELEASE&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;参考文章 &lt;a href=&quot;https://blog.csdn.net/hbtj_1216/article/details/108190231&quot;&gt;https://blog.csdn.net/hbtj_1216/article/details/108190231&lt;/a&gt;
-&lt;a href=&quot;https://cloud.tencent.com/developer/article/1957463&quot;&gt;https://cloud.tencent.com/developer/article/1957463&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题5： Caused by: java.lang.ClassNotFoundException: com.alibaba.nacos.client.logging.NacosLogging
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]&lt;/p&gt;
-
-&lt;p&gt;回答5：  把 spring-cloud-starter-alibaba-nacos-discovery 降到合适的版本&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-            &amp;lt;groupId&amp;gt;com.alibaba.cloud&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;spring-cloud-starter-alibaba-nacos-discovery&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;2.2.0.RELEASE&amp;lt;/version&amp;gt;
-            &amp;lt;exclusions&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;nacos-client&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;com.alibaba.nacos&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;servo-core&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;com.netflix.servo&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-context-support&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;com.alibaba.spring&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;hystrix-core&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;com.netflix.hystrix&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-cloud-commons&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-cloud-context&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-cloud-netflix-ribbon&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-cloud-starter&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-                &amp;lt;exclusion&amp;gt;
-                    &amp;lt;artifactId&amp;gt;spring-cloud-netflix-archaius&amp;lt;/artifactId&amp;gt;
-                    &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;
-                &amp;lt;/exclusion&amp;gt;
-            &amp;lt;/exclusions&amp;gt;
-        &amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题6： java.lang.ClassNotFoundException: com.netflix.servo.monitor.Monitors&lt;/p&gt;
-
-&lt;p&gt;回答6：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;com.netflix.servo&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;servo-core&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;0.12.7&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Thu, 14 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/feign</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/feign</guid>
-			</item>
-		
-			<item>
-				<title>kafka</title>
-				<description>&lt;h1 id=&quot;kafka&quot;&gt;kafka&lt;/h1&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://blog.csdn.net/qq_36042938/article/details/86690188&quot;&gt;https://blog.csdn.net/qq_36042938/article/details/86690188&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000021746086&quot;&gt;https://segmentfault.com/a/1190000021746086&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
-
-docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;进入容器&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it kafka sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;启动消费者进程&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kafka-console-consumer.sh --bootstrap-server 192.168.1.60:9092 --topic kafeidou --from-beginning
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;再开个窗口，执行第2步，再启动生产者进程
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; kafka-console-producer.sh --broker-list 192.168.1.60(机器IP):9092 --topic kafeidou
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;输入消息payload&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;gt;hello
- &amp;gt;
- &amp;gt;
- &amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;广播和单播：&lt;/p&gt;
-
-&lt;p&gt;广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。&lt;/p&gt;
-
-&lt;p&gt;单播：多个consumer 使用相同的group。 这样每个consumer被分配到不同的消息，加速消费。&lt;/p&gt;
-
-&lt;h2 id=&quot;实际场景&quot;&gt;实际场景&lt;/h2&gt;
-
-&lt;p&gt;当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。&lt;/p&gt;
-
-&lt;p&gt;话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。&lt;/p&gt;
-</description>
-				<pubDate>Wed, 13 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/kafka</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/kafka</guid>
-			</item>
-		
-			<item>
-				<title>mongodb index</title>
-				<description>&lt;h1 id=&quot;mongodb-索引&quot;&gt;mongodb 索引&lt;/h1&gt;
-
-&lt;p&gt;通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6844903520747929614&quot;&gt;https://juejin.cn/post/6844903520747929614&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://haicoder.net/mongodb/mongodb-index-principle.html&quot;&gt;https://haicoder.net/mongodb/mongodb-index-principle.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/guangyacyb/article/details/104339183&quot;&gt;https://blog.csdn.net/guangyacyb/article/details/104339183&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://mongoing.com/archives/2797&quot;&gt;https://mongoing.com/archives/2797&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; db.person.createIndex( {age: 1, name: -1} )  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看索引&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.person.getIndexes() 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;查看query 是否使用索引,  如果是 &lt;a href=&quot;https://docs.mongodb.org/manual/reference/explain-results/#queryplanner&quot;&gt;COLLSCAN&lt;/a&gt; 说明全表扫描， 如果是 IXSCAN ，就是使用了索引&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.person.find({age:18}).explain()
-db.person.find({age:18}).explain(&quot;executionStats&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-</description>
-				<pubDate>Tue, 12 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/mongodb-index</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/mongodb-index</guid>
 			</item>
 		
 	</channel>

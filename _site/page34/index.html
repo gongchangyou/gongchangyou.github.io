@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/09/quic">quic</a></li>
+        
+          <li><a href="/2022/09/SpEL">spel</a></li>
+        
+          <li><a href="/2022/09/udp">udp</a></li>
+        
           <li><a href="/2022/08/b+tree">b+tree</a></li>
         
           <li><a href="/2022/08/scope">scope</a></li>
-        
-          <li><a href="/2022/07/autowired-list">autowired</a></li>
-        
-          <li><a href="/2022/07/xml">xml</a></li>
-        
-          <li><a href="/2022/07/poi">poi</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>67</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
 			
 		
 			
@@ -175,191 +175,23 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/nacos-service-providerconsumer">Jan 14, 2022 - nacos 3 服务注册和订阅</a></h1>
+        <h1><a href="/2022/01/jenkins">Jan 19, 2022 - jenkins-install</a></h1>
         
         <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-3-服务注册和订阅">Spring Cloud Alibaba - nacos 3 服务注册和订阅</h1>
+            <h1 id="jenkins-install">Jenkins-install</h1>
 
-<h2 id="http调用">HTTP调用</h2>
+<p><a href="https://www.jenkins.io/zh/doc/book/installing/">https://www.jenkins.io/zh/doc/book/installing/</a></p>
 
-<ol>
-  <li>在Application添加 @EnableDiscoveryClient 注解 就能通过 以下调用通</li>
-</ol>
+<h2 id="记得把timezone设置成东8区">记得把timezone设置成东8区</h2>
+<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v /Users/gongchangyou/learn:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
+<p>docker ps</p>
 
-</code></pre></div></div>
+<p>docker exec -it  ad5f918f0e58 bash</p>
 
-<h2 id="dubbo服务">Dubbo服务</h2>
-<ol>
-  <li>dubbo服务 注册  nacos 接口汇总 <a href="https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html">https://www.cnblogs.com/lykbk/p/werwerwer35434343434343.html</a></li>
-</ol>
+<p>bash-5.1# cat /var/jenkins_home/secrets/initialAdminPassword</p>
 
-<p>问题： @DubboService 添加 不管用？</p>
-
-<p>注意到 Nacos-client中 NamingProxy这个类的 callServer方法 line 600，这里会跟nacos服务器交互，包括注册，心跳等
-我们来看看为啥注册不成功</p>
-
-<p>正常情况下 应该是能注册成功的</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880'
-</code></pre></div></div>
-
-<p>但是我的代码偏偏多了几个参数</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --location --request POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=dubbo-demo-service@@providers:com.braindata.dubbodemo.intf.StuRpcService:1.0.0:dubbo-demo&amp;ip=192.168.1.145&amp;port=20880&amp;app=unknown&amp;healthy=true&amp;clusterName=null&amp;enable=true&amp;ephemeral=true&amp;groupName=dubbo-demo-service&amp;namespaceId=c7ba173f-29e5-4c58-ae78-b102be11c4f9'
-</code></pre></div></div>
-<p>尝试下来是 namespace这个参数导致注册失败，具体原因可能需要去看nacos源码了</p>
-
-<ol>
-  <li>
-    <p>dubbo RPC调用 TODO</p>
-
-    <p>问题1</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.lang.Class
-
-</code></pre></div>    </div>
-    <p>解决： 将spring-conxtext-support 从1.0.11 降到 1.0.10 即可
-https://github.com/apache/dubbo/issues/7274</p>
-
-    <p>问题2 明明服务已经注册到nacos中了，但是消费端报错</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Caused by: java.lang.IllegalStateException: Failed to check the status of the service com.braindata.dubbodemo.intf.StuRpcService. No provider available for the service dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0 from the url nacos://127.0.0.1:8848/org.apache.dubbo.registry.RegistryService?application=dubbo-demo-client&amp;dubbo=2.0.2&amp;group=dubbo-demo&amp;init=false&amp;interface=com.braindata.dubbodemo.intf.StuRpcService&amp;metadata-type=remote&amp;methods=add&amp;pid=67340&amp;register.ip=192.168.1.145&amp;release=2.7.8&amp;revision=0.0.1-SNAPSHOT&amp;side=consumer&amp;sticky=false&amp;timestamp=1642129445698&amp;version=1.0.0 to the consumer 192.168.1.145 use dubbo version 2.7.8
-	
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>注意到 RgistryDirectory 的refreshInvoker方法并没有进来 ，意识到可能依赖少了</p>
-
-<p>dubbo-spring-boot-starter  加进去就好了</p>
-
-<h2 id="最佳实践">最佳实践</h2>
-<p>以下两个项目可以自行clone 注意需要变更producer pom.xml中的 maven repository ip 。改成你自己maven repository私服的ip</p>
-
-<p><a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
-
-<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
-
-<p>注意： ~/.m2/settings.xml 或者 ~/.m2/settings.xml 中的 repository记得把私服的ip加进去</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- &lt;settings&gt;
-  &lt;localRepository&gt;/Users/suixinyu/Documents/java/repository/repository&lt;/localRepository&gt;
-&lt;/settings&gt;
-
- --&gt;
- &lt;settings&gt;
-&lt;servers&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-releases&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;naozhi123&lt;/password&gt;
-  &lt;/server&gt;
-  &lt;server&gt;
-    &lt;id&gt;nexus-snapshots&lt;/id&gt;
-    &lt;username&gt;admin&lt;/username&gt;
-    &lt;password&gt;naozhi123&lt;/password&gt;
-  &lt;/server&gt;  
-&lt;/servers&gt;
-
-  &lt;mirrors&gt;
-      &lt;mirror&gt;
-      &lt;id&gt;alimaven&lt;/id&gt;
-      &lt;name&gt;aliyun maven&lt;/name&gt;
-      &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
-      &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;        
-    &lt;/mirror&gt;
-  
-  &lt;/mirrors&gt;
-  
-  &lt;profiles&gt;
-    &lt;profile&gt;
-      &lt;id&gt;development&lt;/id&gt;
-      &lt;repositories&gt;
-        &lt;repository&gt;
-          &lt;id&gt;central&lt;/id&gt;
-          &lt;url&gt;http://central&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/repository&gt;
-      &lt;/repositories&gt;
-     &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-          &lt;id&gt;central&lt;/id&gt;
-          &lt;url&gt;http://central&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-      &lt;/pluginRepositories&gt;
-    &lt;/profile&gt;
-    &lt;profile&gt;
-      &lt;!--this profile will allow snapshots to be searched when activated--&gt;
-      &lt;id&gt;public-snapshots&lt;/id&gt;
-      &lt;repositories&gt;
-        &lt;repository&gt;
-      &lt;id&gt;ali&lt;/id&gt;
-          &lt;name&gt;ali Maven repository&lt;/name&gt;
-          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt;  
-       &lt;repository&gt;
-      &lt;id&gt;ali-snapshot&lt;/id&gt;
-          &lt;name&gt;ali Maven repository snapshot&lt;/name&gt;
-          &lt;url&gt;https://maven.aliyun.com/nexus/content/groups/snapshots/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt; 
-    &lt;repository&gt;
-      &lt;id&gt;local&lt;/id&gt;
-          &lt;name&gt;Local Maven repository&lt;/name&gt;
-          &lt;url&gt;http://10.10.48.192:8081/nexus/content/groups/public/&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
-      &lt;/repository&gt;  
-      &lt;/repositories&gt;
-     &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-          &lt;id&gt;public-snapshots&lt;/id&gt;
-          &lt;url&gt;http://public-snapshots&lt;/url&gt;
-          &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
-          &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;updatePolicy&gt;always&lt;/updatePolicy&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-      &lt;/pluginRepositories&gt;
-    &lt;/profile&gt;
-  &lt;profile&gt;
-    &lt;id&gt;sonar&lt;/id&gt;
-    &lt;activation&gt;
-      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
-    &lt;/activation&gt;
-    &lt;properties&gt;
-      &lt;sonar.jdbc.url&gt;jdbc:mysql://10.58.156.108:3306/sonar?characterEncoding=utf8&lt;/sonar.jdbc.url&gt;
-      &lt;sonar.jdbc.driverClassName&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driverClassName&gt;
-      &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
-      &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
-      &lt;sonar.host.url&gt;http://10.58.156.108:9000/&lt;/sonar.host.url&gt;
-    &lt;/properties&gt;
-  &lt;/profile&gt;
-  &lt;/profiles&gt;
-  &lt;activeProfiles&gt;
-    &lt;activeProfile&gt;development&lt;/activeProfile&gt;
-    &lt;activeProfile&gt;public-snapshots&lt;/activeProfile&gt;
-  &lt;/activeProfiles&gt;
-
-&lt;/settings&gt;
-
-</code></pre></div></div>
-
-<p>问题1： 修改nacos 服务生产者的权重和上下线抛异常</p>
-
-<p><img src="/images/202201/WechatIMG286.png" alt="" width="800" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caused: errCode: 500, errMsg: do metadata operation failed ;caused: com.alibaba.nacos.consistency.exception.ConsistencyException: com.alibaba.nacos.core.distributed.raft.exception.NoLeaderException: The Raft Group [naming_instance_metadata] did not find the Leader node;caused: com.alibaba.nacos.core.distributed.raft.exception.NoLeaderException: The Raft Group [naming_instance_metadata] did not find the Leader node;
-</code></pre></div></div>
-
-<p>回答1： 应该是本地环境经常改变导致leader选举的配置发生了变化</p>
-
-<p>参考文章 : <a href="https://blog.csdn.net/qq_42378797/article/details/120384856">https://blog.csdn.net/qq_42378797/article/details/120384856</a> 将 nacos data/protocol 文件夹删除并重启nacos即可</p>
-
+<p>10.10.48.192:8080/</p>
 
         </div>
     </div>
@@ -367,101 +199,34 @@ https://github.com/apache/dubbo/issues/7274</p>
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/nexus">Jan 13, 2022 - maven repository 私服搭建</a></h1>
+        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
         
         <div class="content">
-            <h1 id="maven-repository-私服-nexus搭建">maven repository 私服 nexus搭建</h1>
+            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
 
-<p><a href="https://www.cnblogs.com/wuwei928/p/10338307.html">https://www.cnblogs.com/wuwei928/p/10338307.html</a></p>
+<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
 
-<ol>
-  <li>
-    <p>docker 安装</p>
+<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
 
-    <blockquote>
-      <p>docker search nexus</p>
+<p>lsyncd 配置完事就能跑了</p>
 
-      <p>docker pull docker.io/sonatype/nexus3</p>
+<p>配置</p>
 
-      <p>下面的路径可以改成你本地的用户空间</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
+</code></pre></div></div>
 
-      <p>mkdir -p /Users/gongchangyou/nexus3/nexus-data</p>
+<p>日志</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
+</code></pre></div></div>
 
-      <p>chmod 777 /Users/gongchangyou/nexus3/nexus-data</p>
+<p>问题： 创建了一个新的project， 从库没显示</p>
 
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /Users/gongchangyou/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
+<p>我显式重启了docker容器才在从库看到</p>
 
-    <p>原文是要去 /usr/local 中新建文件夹，试过chmod 777 后docker还是无法创建一些文件和文件夹,</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+</code></pre></div></div>
 
-    <blockquote>
-      <p>mkdir -p /usr/local/nexus3/nexus-data</p>
-
-      <p>chown -R 200 /usr/local/nexus3/nexus-data</p>
-
-      <p>docker run -tid –restart=always -p 8081:8081 –name nexus -e NEXUS_CONTEXT=nexus -v /usr/local/nexus3/nexus-data:/nexus-data  docker.io/sonatype/nexus3</p>
-    </blockquote>
-  </li>
-  <li>
-    <p>登录Nexus进行配置</p>
-
-    <blockquote>
-      <p>访问：<a href="http://localhost:8081/nexus">http://localhost:8081/nexus</a>  使用默认管理员身份登录 账号admin, 密码在 <strong>/nexus-data/admin.password</strong>,  登录后可以修改密码.</p>
-
-      <p><img src="/images/202205/WechatIMG240.png" alt="" width="800" /></p>
-    </blockquote>
-  </li>
-</ol>
-
-<p>问题：mvn deploy -X</p>
-
-<ol>
-  <li>
-    <p>405错误  Failed to transfer file http://localhost:8081/nexus/content/repositories/releases/com/braindata/dubbo-demo-contract/0.0.1/dubbo-demo-contract-0.0.1.jar with status code 405</p>
-
-    <p>注意将 url 的路径改成和 maven中的Repositories中的一致</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;distributionManagement&gt;
-
-         &lt;repository&gt;
-
-             &lt;id&gt;nexus-releases&lt;/id&gt;
-
-             &lt;url&gt;
-                 &lt;!-- 就是这行，要跟maven服务器上的settings中的URL保持一致--&gt;
-                 http://localhost:8081/nexus/repository/maven-releases/
-
-             &lt;/url&gt;
-
-         &lt;/repository&gt;
-</code></pre></div>    </div>
-    <p><img src="/images/202205/WechatIMG241.png" alt="" width="800" />
- <img src="/images/202205/WechatIMG242.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>401错误  本地的settings.xml账号错误。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;servers&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-releases&lt;/id&gt; //注意这里的id需要跟工程中的pom.xml中的id保持一致
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
-   &lt;server&gt;
-     &lt;id&gt;nexus-snapshots&lt;/id&gt;
-     &lt;username&gt;admin&lt;/username&gt;
-     &lt;password&gt;xxx&lt;/password&gt;
-   &lt;/server&gt;
- &lt;/servers&gt;
-</code></pre></div>    </div>
-
-    <p>如果换了settings.xml 文件，且用mvn 命令行编译，那就指定一下</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mvn deploy -X --settings /Users/gongchangyou/.m2/settings-personal.xml
-</code></pre></div>    </div>
-    <p>可以看到上传成功
-     <img src="/images/202205/WechatIMG244.png" alt="" width="800" /></p>
-  </li>
-</ol>
+<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
 
         </div>
     </div>
@@ -469,28 +234,108 @@ https://github.com/apache/dubbo/issues/7274</p>
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/nacos-registry">Jan 12, 2022 - nacos 2 应用接入</a></h1>
+        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
         
         <div class="content">
-            <h1 id="spring-cloud-alibaba---nacos-2-应用接入">Spring Cloud Alibaba - nacos 2 应用接入</h1>
-<p>两个方法</p>
+            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
+
+docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
+
+
+可能需要改一些配置
+
+vi /srv/gitlab/config/gitlab.rb
+
+external_url 'http://ip' 不用写port
+
+
+postgresql['shared_buffers'] = "256MB"
+
+如果puma 启动不了 看到pid不停变大
+gitlab-ctl tail puma
+
+puma['port'] = 8888
+gitlab_workhorse['auth_backend'] = "http://localhost:8888"
+
+</code></pre></div></div>
+
+<h2 id="管理员账号初始化">管理员账号初始化</h2>
+<p>a、 切换目录：cd /opt/gitlab/bin</p>
+
+<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
+
+<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
+
+<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
+
+<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
+
+<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
+
+<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
+
+<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
+
+<p>i、至此大功搞成。</p>
+
+<p>https://www.jianshu.com/p/b1736c34c150</p>
+
+<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
+
+<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
 
 <ol>
-  <li>Nacos官方用nacos client + spring boot 模式</li>
-  <li>Spring Cloud Alibaba 提供的 Discovery 模式</li>
+  <li>
+    <p>sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix</p>
+  </li>
+  <li>
+    <p>cd /tmp
+ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+
+    <p>less /tmp/script.deb.sh</p>
+
+    <p>sudo bash /tmp/script.deb.sh</p>
+
+    <p>sudo apt install gitlab-ce</p>
+  </li>
 </ol>
 
-<p>注意：如果关闭应用的话，nacos中的配置还在</p>
+<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
 
-<p>application.properties没有拷贝到target文件夹的原因？</p>
+<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
+<p>则需要去修改配置文件</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;pom&lt;/packaging&gt;
+<p>vim /etc/gitlab/gitlab.rb</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+
+ puma['port'] =9092
 </code></pre></div></div>
-<p>改成 下面，或者直接这行删掉</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;packaging&gt;jar&lt;/packaging&gt;
-</code></pre></div></div>
 
-<p>https://blog.csdn.net/qq_37651267/article/details/99305176</p>
+<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+
+<p>gitlab-ctl reconfigure</p>
+
+<p>gitlab-ctl restart</p>
+
+<h2 id="查看日志命令">查看日志命令：</h2>
+
+<p>gitlab-ctl tail</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>gitlab-ctl tail</td>
+      <td>grep -i error</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="查看端口命令">查看端口命令：</h2>
+
+<p>lsof -i:9091</p>
 
 
         </div>
@@ -504,7 +349,7 @@ https://github.com/apache/dubbo/issues/7274</p>
         <a class="btn btn-default" href="/page33" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 34 of 56</span>
+  <span class="page_number ">Page: 34 of 57</span>
   
     <a class="btn btn-default" href="/page35" class="next">Older</a>
   
