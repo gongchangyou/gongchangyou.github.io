@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/10/reflect">reflect</a></li>
+        
+          <li><a href="/2022/09/xmind">xmind</a></li>
+        
           <li><a href="/2022/09/quic">quic</a></li>
         
           <li><a href="/2022/09/SpEL">spel</a></li>
         
           <li><a href="/2022/09/udp">udp</a></li>
-        
-          <li><a href="/2022/08/b+tree">b+tree</a></li>
-        
-          <li><a href="/2022/08/scope">scope</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>72</sup></a></li>
 			
 		
 			
@@ -175,50 +175,95 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/10/reflect">Oct 11, 2022 - reflect</a></h1>
+        
+        <div class="content">
+            <h1 id="reflect">reflect</h1>
+
+<p>反射取值的性能？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
+@SpringBootTest
+public class ReflectTest {
+    @Test
+    void test() {
+        val a = Node.builder()
+                .name("a")
+                .age(10)
+                .node(SubNode.builder()
+                        .name("sub_a")
+                        .age(5)
+                        .build())
+                .build();
+
+        val b = Node.builder()
+                .name("a")
+                .age(10)
+                .node(SubNode.builder()
+                        .name("sub_a")
+                        .age(6)
+                        .build())
+                .build();
+
+        val sw= new StopWatch();
+        sw.start();
+        for(int i = 0; i &lt;1000; i++) {
+            for(val f : a.getClass().getDeclaredFields()) {
+                f.setAccessible(true);
+                try {
+                    f.get(a).equals(f.get(b));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+                //            log.info("result={}", isEqual(a, b));
+        }
+        sw.stop();
+        log.info(sw.prettyPrint());
+    }
+}
+</code></pre></div></div>
+
+<p>字段数, 耗时</p>
+
+<p>100,  0.68ms</p>
+
+<p>1000, 3ms</p>
+
+<p>10000, 11ms</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/09/xmind">Sep 23, 2022 - xmind</a></h1>
+        
+        <div class="content">
+            <h1 id="xmind">Xmind</h1>
+
+<p>利用java api 读取代码，并自动生成 xmind</p>
+
+<p>类的依赖关系一目了然</p>
+
+<p>参考文章: <a href="https://juejin.cn/post/6844904012915933191">https://juejin.cn/post/6844904012915933191</a>
+<a href="https://blog.51cto.com/u_7932852/3753021">https://blog.51cto.com/u_7932852/3753021</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/09/quic">Sep 15, 2022 - quic</a></h1>
         
         <div class="content">
             <h1 id="quic">quic</h1>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/09/SpEL">Sep 13, 2022 - spel</a></h1>
-        
-        <div class="content">
-            <h1 id="spel">SpEL</h1>
-
-<p>spring 是一个支持查询和操作运行时对象导航图功能的强大的表达式语言. 它的语法类似于传统EL.</p>
-
-<p>参考文章: <a href="http://itmyhome.com/spring/expressions.html">http://itmyhome.com/spring/expressions.html</a></p>
-
-<p><a href="https://juejin.cn/post/6921491842865299469">https://juejin.cn/post/6921491842865299469</a></p>
-
-<p><a href="https://spring.hhui.top/spring-blog/2020/05/18/200518-SpringBoot%E7%B3%BB%E5%88%97%E4%B9%8BSpEL%E8%AF%AD%E6%B3%95%E6%89%AB%E7%9B%B2%E4%B8%8E%E6%9F%A5%E8%AF%A2%E6%89%8B%E5%86%8C/">https://spring.hhui.top/spring-blog/2020/05/18/200518-SpringBoot%E7%B3%BB%E5%88%97%E4%B9%8BSpEL%E8%AF%AD%E6%B3%95%E6%89%AB%E7%9B%B2%E4%B8%8E%E6%9F%A5%E8%AF%A2%E6%89%8B%E5%86%8C/</a></p>
-
-<p><a href="https://www.baeldung.com/spring-expression-language">https://www.baeldung.com/spring-expression-language</a></p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/spel_demo">https://github.com/gongchangyou/spel_demo</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/09/udp">Sep 5, 2022 - udp</a></h1>
-        
-        <div class="content">
-            <h1 id="udp-multicast">Udp multicast</h1>
-
-<p>因为传统的tcp 在金融领域的延迟太高了（1ms)</p>
-
-<p>一般选择udp，再添加定制化开发一些服务的保证。</p>
+<p>参考文章: <a href="https://zhuanlan.zhihu.com/p/270628018">https://zhuanlan.zhihu.com/p/270628018</a></p>
 
 
         </div>
@@ -228,7 +273,7 @@
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 57</span>
+  <span class="page_number ">Page: 1 of 58</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   

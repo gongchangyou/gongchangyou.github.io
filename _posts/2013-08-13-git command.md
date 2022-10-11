@@ -26,7 +26,9 @@ git update-index –no-assume-unchanged
 1.先commit
 </li>
 <li>	
-2.git format-patch version/HEAD^
+2.git format-patch HEAD^
+2.git format-patch commit md5的值
+
 </li>
 <h4>使用patch:</h4>
 git am XXX.patch

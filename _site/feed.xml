@@ -7,8 +7,89 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>reflect</title>
+				<description>&lt;h1 id=&quot;reflect&quot;&gt;reflect&lt;/h1&gt;
+
+&lt;p&gt;反射取值的性能？&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
+@SpringBootTest
+public class ReflectTest {
+    @Test
+    void test() {
+        val a = Node.builder()
+                .name(&quot;a&quot;)
+                .age(10)
+                .node(SubNode.builder()
+                        .name(&quot;sub_a&quot;)
+                        .age(5)
+                        .build())
+                .build();
+
+        val b = Node.builder()
+                .name(&quot;a&quot;)
+                .age(10)
+                .node(SubNode.builder()
+                        .name(&quot;sub_a&quot;)
+                        .age(6)
+                        .build())
+                .build();
+
+        val sw= new StopWatch();
+        sw.start();
+        for(int i = 0; i &amp;lt;1000; i++) {
+            for(val f : a.getClass().getDeclaredFields()) {
+                f.setAccessible(true);
+                try {
+                    f.get(a).equals(f.get(b));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+                //            log.info(&quot;result={}&quot;, isEqual(a, b));
+        }
+        sw.stop();
+        log.info(sw.prettyPrint());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;字段数, 耗时&lt;/p&gt;
+
+&lt;p&gt;100,  0.68ms&lt;/p&gt;
+
+&lt;p&gt;1000, 3ms&lt;/p&gt;
+
+&lt;p&gt;10000, 11ms&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 11 Oct 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/10/reflect</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/10/reflect</guid>
+			</item>
+		
+			<item>
+				<title>xmind</title>
+				<description>&lt;h1 id=&quot;xmind&quot;&gt;Xmind&lt;/h1&gt;
+
+&lt;p&gt;利用java api 读取代码，并自动生成 xmind&lt;/p&gt;
+
+&lt;p&gt;类的依赖关系一目了然&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://juejin.cn/post/6844904012915933191&quot;&gt;https://juejin.cn/post/6844904012915933191&lt;/a&gt;
+&lt;a href=&quot;https://blog.51cto.com/u_7932852/3753021&quot;&gt;https://blog.51cto.com/u_7932852/3753021&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Fri, 23 Sep 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/09/xmind</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/09/xmind</guid>
+			</item>
+		
+			<item>
 				<title>quic</title>
 				<description>&lt;h1 id=&quot;quic&quot;&gt;quic&lt;/h1&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://zhuanlan.zhihu.com/p/270628018&quot;&gt;https://zhuanlan.zhihu.com/p/270628018&lt;/a&gt;&lt;/p&gt;
 
 </description>
 				<pubDate>Thu, 15 Sep 2022 10:25:06 +0800</pubDate>
@@ -135,205 +216,6 @@
 				<pubDate>Fri, 22 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/poi</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/poi</guid>
-			</item>
-		
-			<item>
-				<title>skywalking</title>
-				<description>&lt;h1 id=&quot;skywalking&quot;&gt;skywalking&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;docker-compose up -d 启动 es + kibana + oap + UI
-  &lt;a href=&quot;/images/202207/docker-compose.yml&quot;&gt;docker-compose.yml&lt;/a&gt;  docker-compose up -d&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  version: '2.2'
-  services:
-    es-node:
-     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-     container_name: es-node
-     environment:
-       - node.name=es-node
-       - cluster.name=es-cluster-7
-       - discovery.type=single-node
-       - xpack.security.enabled=false
-       - &quot;ES_JAVA_OPTS=-Xms1G -Xmx1G&quot;
-     ulimits:
-       memlock:
-         soft: -1
-         hard: -1
-     volumes:
-       - ./data:/usr/share/elasticsearch/data
-     ports:
-       - 9200:9200
-     networks:
-       - skywalking-network
-
-    kibana:
-     image: docker.elastic.co/kibana/kibana:7.5.0
-     environment:
-       ELASTICSEARCH_HOSTS: http://es-node:9200
-     ports:
-       - 5601:5601
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    oap:
-     image: apache/skywalking-oap-server:8.9.1
-     container_name: oap1
-     environment:
-       SW_STORAGE: elasticsearch
-       SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
-       TZ: Asia/Shanghai 
-     ports:
-       - 12800:12800
-       - 11800:11800
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    ui:
-      image: apache/skywalking-ui:8.9.1
-      environment:
-        SW_OAP_ADDRESS: http://oap1:12800
-        TZ: Asia/Shanghai 
-      ports:
-        - 8088:8080
-      networks:
-        - skywalking-network
-      depends_on:
-        - es-node    
-
-  volumes:
-   es-data01:
-     driver: local
-
-  networks:
-   skywalking-network:
-     driver: bridge
-  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-
-    &lt;p&gt;发现 es中会创建一堆索引
-&lt;img src=&quot;/images/202207/WechatIMG350.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;检查以上4个容器是否都正常启动 docker logs XXX ， 打开 localhost:8088 看到 UI启动好了&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;下载 java agent &lt;a href=&quot;https://skywalking.apache.org/downloads/#Agents&quot;&gt;https://skywalking.apache.org/downloads/#Agents&lt;/a&gt; 通过设置 -javaagent 配置 SkyWalking Agent&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;在idea中设置vm options,   -javaagent:/Users/gongchangyou/learn/skywalking/skywalking-agent/skywalking-agent.jar,  具体的配置可以去 /Users/gongchangyou/learn/skywalking/skywalking-agent/config/agent.config 看看&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG355.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;完成 打开 http://localhost:8088/trace 看看&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG356.png&quot; alt=&quot;&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题1: org.apache.skywalking.oap.server.library.module.ProviderNotFoundException&lt;/p&gt;
-
-&lt;p&gt;回答1: 应该是ES版本和skywalking版本不匹配导致，把版本先对应好，比如上面的yml中的ES从 8.2.0降到:7.5.0&lt;/p&gt;
-
-&lt;p&gt;skywalking版本保持在 8.9.1&lt;/p&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/&quot;&gt;https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/xiao987334176/p/13530575.html&quot;&gt;https://www.cnblogs.com/xiao987334176/p/13530575.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://hub.docker.com/r/apache/skywalking-oap-server&quot;&gt;https://hub.docker.com/r/apache/skywalking-oap-server&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/&quot;&gt;https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/&lt;/a&gt;&lt;/p&gt;
-</description>
-				<pubDate>Thu, 21 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/skywalking</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/skywalking</guid>
-			</item>
-		
-			<item>
-				<title>java agent</title>
-				<description>&lt;h1 id=&quot;java-agent&quot;&gt;java agent&lt;/h1&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://xz.aliyun.com/t/9450&quot;&gt;https://xz.aliyun.com/t/9450&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/rickiyang/p/11368932.html&quot;&gt;https://www.cnblogs.com/rickiyang/p/11368932.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/javaagent_test&quot;&gt;https://github.com/gongchangyou/javaagent_test&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;premain 启动应用的同时 添加 -javaagent:/path/to/agent.jar&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;问题1：Failed to find Premain-Class manifest attribute&lt;/p&gt;
-
-&lt;p&gt;回答1:  解压缩我打的包之后发现 MANIFEST.MF文件被替换成了默认的. 我们用maven 插件修改他&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven 3.6.3
-Built-By: gongchangyou
-Build-Jdk: 11.0.12
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;plugin&amp;gt;
-    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;maven-jar-plugin&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;3.1.0&amp;lt;/version&amp;gt;
-    &amp;lt;configuration&amp;gt;
-        &amp;lt;archive&amp;gt;
-            &amp;lt;!--自动添加META-INF/MANIFEST.MF --&amp;gt;
-            &amp;lt;manifest&amp;gt;
-                &amp;lt;addClasspath&amp;gt;true&amp;lt;/addClasspath&amp;gt;
-            &amp;lt;/manifest&amp;gt;
-            &amp;lt;manifestEntries&amp;gt;
-                &amp;lt;Premain-Class&amp;gt;com.mouse.PreDemo&amp;lt;/Premain-Class&amp;gt;
-                &amp;lt;Agent-Class&amp;gt;com.mouse.AgentDemo&amp;lt;/Agent-Class&amp;gt;
-                &amp;lt;Can-Redefine-Classes&amp;gt;true&amp;lt;/Can-Redefine-Classes&amp;gt;
-                &amp;lt;Can-Retransform-Classes&amp;gt;true&amp;lt;/Can-Retransform-Classes&amp;gt;
-            &amp;lt;/manifestEntries&amp;gt;
-        &amp;lt;/archive&amp;gt;
-    &amp;lt;/configuration&amp;gt;
-&amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;agentmain 应用已经启动的情况下，将agent.jar attach上去&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;代码仓库: &lt;a href=&quot;https://github.com/gongchangyou/agent_main&quot;&gt;https://github.com/gongchangyou/agent_main&lt;/a&gt;
-  &lt;a href=&quot;https://github.com/gongchangyou/agent_demo&quot;&gt;https://github.com/gongchangyou/agent_demo&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;      java -jar agent.jar pid /path/to/app.jar
-      
-      # 一个例子
-      java -jar javaagent_test-1.0-SNAPSHOT.jar 40843 /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar
-      
-      
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;问题1： Agent JAR not found or no Agent-Class attribute&lt;/p&gt;
-
-&lt;p&gt;回答1：loadAgent ， agent.jar注意用绝对路径&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/weixin_37828719/article/details/106237872&quot;&gt;https://blog.csdn.net/weixin_37828719/article/details/106237872&lt;/a&gt;&lt;/p&gt;
-</description>
-				<pubDate>Sat, 16 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/java-agent</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/java-agent</guid>
 			</item>
 		
 	</channel>

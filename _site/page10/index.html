@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2022/10/reflect">reflect</a></li>
+        
+          <li><a href="/2022/09/xmind">xmind</a></li>
+        
           <li><a href="/2022/09/quic">quic</a></li>
         
           <li><a href="/2022/09/SpEL">spel</a></li>
         
           <li><a href="/2022/09/udp">udp</a></li>
-        
-          <li><a href="/2022/08/b+tree">b+tree</a></li>
-        
-          <li><a href="/2022/08/scope">scope</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>70</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>72</sup></a></li>
 			
 		
 			
@@ -173,6 +173,359 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/canal">Jun 9, 2022 - canal</a></h1>
+        
+        <div class="content">
+            <h1 id="canal">canal</h1>
+
+<p>项目地址： <a href="https://github.com/alibaba/canal/">https://github.com/alibaba/canal/</a></p>
+
+<h3 id="前提">前提</h3>
+<ol>
+  <li>
+    <p><a href="/2022/03/mysql-docker">docker部署MySQL</a></p>
+  </li>
+  <li>
+    <p>开启binlog 写入</p>
+
+    <ol>
+      <li>
+        <p>修改my.cnf 。一般路径在/etc/mysql/my.cnf</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [mysqld]
+ log-bin=mysql-bin # 开启 binlog
+ binlog-format=ROW # 选择 ROW 模式
+ server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>创建canal账号</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  CREATE USER canal IDENTIFIED BY 'canal';  
+  GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
+  -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
+  FLUSH PRIVILEGES;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="启动canal">启动canal</h3>
+
+<p>因为Mysql是docker启动的，如果canal也是docker启动，可能会需要搭建网桥。所以这里我们直接在宿主机上直接启动canal. <a href="https://github.com/alibaba/canal/wiki/QuickStart">QuickStart</a> 这里介绍的很清楚</p>
+
+<p>注意观察 bin/startup.sh脚本中的配置文件路径，默认是 canal.properties</p>
+
+<p>目前1.1.6有点问题，见下面的问题2</p>
+
+<p>我是clone代码 <a href="https://github.com/alibaba/canal">https://github.com/alibaba/canal</a> 之后稍微改了下， 在IDEA中手动启动java进程.</p>
+
+<h3 id="测试代码仓库">测试代码仓库</h3>
+
+<p><a href="https://github.com/gongchangyou/canal_test">https://github.com/gongchangyou/canal_test</a></p>
+
+<h3 id="效果">效果</h3>
+
+<p>在某张表更新了一行记录，可以从canal的客户端中获取变更。</p>
+
+<p>客户端解析protobuf格式的ByteString.</p>
+
+<p><img src="/images/202206/WechatIMG266.png" alt="" width="800" /></p>
+
+<p><img src="/images/202206/WechatIMG267.png" alt="" width="800" /></p>
+
+<p>问题1： 启动canal报错，</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Caused by: java.io.IOException: connect /127.0.0.1:3306 failure
+	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:85)
+	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlConnection.connect(MysqlConnection.java:89)
+	at com.alibaba.otter.canal.parse.inbound.mysql.MysqlEventParser.preDump(MysqlEventParser.java:87)
+	at com.alibaba.otter.canal.parse.inbound.AbstractEventParser$1.run(AbstractEventParser.java:176)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.io.IOException: caching_sha2_password Auth failed
+	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.negotiate(MysqlConnector.java:260)
+	at com.alibaba.otter.canal.parse.driver.mysql.MysqlConnector.connect(MysqlConnector.java:82)
+	... 4 more
+</code></pre></div></div>
+
+<p>解决1: 可能是权限问题，尝试下面的命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
+FLUSH PRIVILEGES;
+
+ALTER USER 'canal'@'%' IDENTIFIED WITH mysql_native_password BY 'canal';
+</code></pre></div></div>
+
+<p>问题2： Caused by: java.io.IOException: ErrorPacket [errorNumber=1146, fieldCount=-1, message=Table ‘XXX.BASE TABLE’ doesn’t exist, sqlState=42S02, sqlStateMarker=#]</p>
+
+<p>解决2： BASE TABLE这张表没找到？ 不知道为啥要去看这张表，事实上db中并没有这张表啊。深深怀疑是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"show full tables from `" + schema + "` where Table_type = 'BASE TABLE'"
+</code></pre></div></div>
+
+<p>这句query找出所有的table后的处理逻辑的bug. 这个我提了个<a href="https://github.com/alibaba/canal/pull/4217">PR</a> . 版本1.1.6目前有这个问题.</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/seata">Jun 8, 2022 - seata</a></h1>
+        
+        <div class="content">
+            <h1 id="seata-分布式事务">SEATA 分布式事务</h1>
+
+<p>官网： <a href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">https://seata.io/zh-cn/docs/overview/what-is-seata.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="术语">术语</h3>
+<p>TC (Transaction Coordinator) - 事务协调者
+维护全局和分支事务的状态，驱动全局事务提交或回滚。</p>
+
+<p>TM (Transaction Manager) - 事务管理器
+定义全局事务的范围：开始全局事务、提交或回滚全局事务。</p>
+
+<p>RM (Resource Manager) - 资源管理器
+管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。</p>
+
+<hr />
+
+<h2 id="at的实现方案">AT的实现方案</h2>
+
+<p>参考文章 <a href="https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html">https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html</a></p>
+
+<p><a href="https://seata.io/zh-cn/docs/user/quickstart.html">https://seata.io/zh-cn/docs/user/quickstart.html</a></p>
+
+<h3 id="前提">前提</h3>
+
+<blockquote>
+  <p>基于支持本地 ACID 事务的关系型数据库。</p>
+
+  <p>Java 应用，通过 JDBC 访问数据库。</p>
+</blockquote>
+
+<p>下面是一个具体的例子：订单扣库存的解决方案</p>
+
+<p><img src="/images/202205/solution.png" alt="" width="800" /></p>
+
+<p>具体的操作步骤有3步：</p>
+
+<p>前提： <a href="../../../2022/01/nacos"> 我们先本地启动一个nacos </a></p>
+
+<p>一. 启动seata</p>
+
+<ol>
+  <li>
+    <p>下载 1.4.2版本，更高版本不知道配置在哪里，<a href="https://github.com/seata/seata/releases/tag/v1.4.2">https://github.com/seata/seata/releases/tag/v1.4.2</a></p>
+  </li>
+  <li>解压后，去修改 conf/registry.conf 和conf/file.conf 中关于db的配置
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    registry {
+              \# file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
+              type = "nacos"
+       
+
+              nacos {
+                application = "seata-server"
+                serverAddr = "127.0.0.1:8848"
+                group = "SEATA_GROUP"
+                namespace = ""
+                cluster = "default"
+                username = "nacos"
+                password = "nacos"
+              }
+          }
+          config {
+              \# file、nacos 、apollo、zk、consul、etcd3
+              type = "nacos"
+
+              nacos {
+                serverAddr = "127.0.0.1:8848"
+                namespace = ""
+                group = "SEATA_GROUP"
+                username = "nacos"
+                password = "nacos"
+                dataId = "seataServer.properties"
+              }
+          }
+                  
+</code></pre></div>    </div>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db {
+## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp)/HikariDataSource(hikari) etc.
+datasource = "druid"
+## mysql/oracle/postgresql/h2/oceanbase etc.
+dbType = "mysql"
+driverClassName = "com.mysql.jdbc.Driver"
+## if using mysql to store the data, recommend add rewriteBatchedStatements=true in jdbc connection param
+url = "jdbc:mysql://127.0.0.1:3306/seata?rewriteBatchedStatements=true"
+user = "root"
+password = "123456"
+minConn = 5
+maxConn = 100
+globalTable = "global_table"
+branchTable = "branch_table"
+lockTable = "lock_table"
+queryLimit = 100
+maxWait = 5000
+}
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <blockquote>
+      <p>cd bin</p>
+
+      <p>sh seata-server.sh -p 8091 -m file</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><img src="/images/202206/WechatIMG259.png" alt="" width="800" /></p>
+
+<p>二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。 每个微服务的db中都要建这个表，因为各自的undo log存在各自的db的undo_log表中</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE `undo_log`
+(
+  `id`            BIGINT(20)   NOT NULL AUTO_INCREMENT,
+  `branch_id`     BIGINT(20)   NOT NULL,
+  `xid`           VARCHAR(100) NOT NULL,
+  `context`       VARCHAR(128) NOT NULL,
+  `rollback_info` LONGBLOB     NOT NULL,
+  `log_status`    INT(11)      NOT NULL,
+  `log_created`   DATETIME     NOT NULL,
+  `log_modified`  DATETIME     NOT NULL,
+  `ext`           VARCHAR(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+</code></pre></div></div>
+
+<p>三. 搭建微服务</p>
+
+<ol>
+  <li>先把nacos 启动起来 <a href="../../../2022/01/nacos">启动nacos</a> (这步第0步已经做过了)</li>
+  <li>启动 maven仓库   <a href="../../../2022/01/maven">启动maven仓库</a></li>
+  <li>注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
+    <ol>
+      <li>
+        <p><a href="https://github.com/gongchangyou/service-order">https://github.com/gongchangyou/service-order</a></p>
+      </li>
+      <li>
+        <p><a href="https://github.com/gongchangyou/service-store">https://github.com/gongchangyou/service-store</a></p>
+      </li>
+      <li>
+        <p><a href="https://github.com/gongchangyou/service-buy">https://github.com/gongchangyou/service-buy</a></p>
+      </li>
+      <li>
+        <p>注意各微服务中关于seata的配置</p>
+
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #seata nacos配置
+ seata.registry.type=nacos
+ #这个配置需要跟nacos中的服务名保持一致
+ seata.registry.nacos.group=SEATA_GROUP
+ seata.registry.nacos.application=seata-server
+ #seata.registry.nacos.namespace=${nacos.discovery.namespace}
+ seata.registry.nacos.cluster=default
+ seata.registry.nacos.server-addr=127.0.0.1:8848
+ #账号密码
+ #seata.registry.nacos.username=nacos
+ #seata.registry.nacos.password=nacos
+ seata.tx-service-group=my_test_tx_group
+ seata.enabled=true
+ #seata 配置
+ seata.enable-auto-data-source-proxy=true
+ seata.application-id=${spring.application.name}
+ seata.config.type=nacos
+ seata.config.nacos.group=SEATA_GROUP
+ seata.config.nacos.server-addr=127.0.0.1:8848
+ #seata.config.nacos.namespace=${nacos.discovery.namespace}
+ #seata.config.nacos.username=nacos
+ #seata.config.nacos.password=nacos
+ #可以切换AT和XA
+ seata.data-source-proxy-mode=AT
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+
+<p>问题1: io.seata.core.rpc.netty.NettyClientChannelManager : can not get cluster name in registry config ‘service.vgroupMapping.my_test_tx_group’, please make sure registry config correct</p>
+
+<p>解决1: 从ClientWorker.getServerConfig方法追进去看 http的url，发现是设置了tenant和 accessToken.注意检查下你的nacos的api是否需要携带这俩参数，如果没必要的话，记得在代码中把 username,password, namespace注释掉</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>访问试试
+
+http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;group=SEATA_GROUP&amp;tenant=c7ba173f-29e5-4c58-ae78-b102be11c4f9&amp;accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY1NDc2NTk5N30.Di3xRbagvMl_OCq5lnQFP7wOWN8dupuQX3QXr24DITU
+
+http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;group=SEATA_GROUP
+</code></pre></div></div>
+
+<p>问题2：io.seata.core.rpc.netty.NettyClientChannelManager : no available service found in cluster ‘seata-server’, please make sure registry config correct and keep your seata server running</p>
+
+<p>解决2：在配置中心设置seata-server 的默认集群(cluster) , 直接写default就行</p>
+
+<p><img src="/images/202206/WechatIMG262.png" alt="" width="800" /></p>
+
+<p>问题3: 2022-06-09 14:40:05.340 ERROR [timeoutChecker_2_1] io.seata.core.rpc.netty.NettyClientChannelManager : 0101 can not connect to 192.168.1.4:8091 cause:can not register RM,err:register RMROLE error, errMsg:cost 30004 ms</p>
+
+<p>解决3： 注册不上RM, 检查了一下seata的 conf/file.conf中 db的配置,  确保username和password都填写正确</p>
+
+<p>问题4： 2022-06-09 14:56:29.679 ERROR [restartedMain] io.seata.core.rpc.netty.NettyClientChannelManager : 0304 register RM failed.</p>
+
+<p>解决4： 同3</p>
+
+<p>问题5：java.lang.NoSuchMethodException: com.mysql.cj.conf.PropertySet.getBooleanReadableProperty(java.lang.String)</p>
+
+<p>method_6_getPropertySet = class_6_connection.getMethod(“getBooleanReadableProperty”);   JdbcConnection中找不到 getBooleanReadableProperty方法</p>
+
+<p>解决5：是druid中的MysqlUtils 类的bug. 在1.2.5以后修复了. 升级即可，但是spring-boot可能会无法自动加载DruidDataSourceWrapper. exclude掉即可 @SpringBootApplication(scanBasePackages = {“com.mouse”}, exclude = DruidDataSourceAutoConfigure.class)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+            &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
+            &lt;version&gt;1.2.5&lt;/version&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                    &lt;artifactId&gt;spring-boot-autoconfigure&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<h3 id="undo-log中的记录-例子-如果想要看undolog的话记得在事务中添加断点因为事务执行完毕会清空undo_log表">undo log中的记录 例子, 如果想要看undolog的话记得在事务中添加断点，因为事务执行完毕会清空undo_log表.</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10,7034894280102293554,192.168.1.3:8091:7034894280102293553,serializer=jackson,"{""@class"":""io.seata.rm.datasource.undo.BranchUndoLog"",""xid"":""192.168.1.3:8091:7034894280102293553"",""branchId"":7034894280102293554,""sqlUndoLogs"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.undo.SQLUndoLog"",""sqlType"":""INSERT"",""tableName"":""`order`"",""beforeImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords$EmptyTableRecords"",""tableName"":""order"",""rows"":[""java.util.ArrayList"",[]]},""afterImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""order"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":28},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""status"",""keyType"":""NULL"",""type"":4,""value"":0}]]}]]}}]]}",0,2022-06-09 12:54:35,2022-06-09 12:54:35,
+
+
+11,7034894280102293555,192.168.1.3:8091:7034894280102293553,serializer=jackson,"{""@class"":""io.seata.rm.datasource.undo.BranchUndoLog"",""xid"":""192.168.1.3:8091:7034894280102293553"",""branchId"":7034894280102293555,""sqlUndoLogs"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.undo.SQLUndoLog"",""sqlType"":""UPDATE"",""tableName"":""store"",""beforeImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""store"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":1},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""count"",""keyType"":""NULL"",""type"":4,""value"":910}]]}]]},""afterImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""store"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":1},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""count"",""keyType"":""NULL"",""type"":4,""value"":907}]]}]]}}]]}",0,2022-06-09 12:55:56,2022-06-09 12:55:56,
+
+</code></pre></div></div>
+
+<h3 id="注意点">注意点</h3>
+
+<ol>
+  <li>各个服务的group要一致，不然无法实例化. 一家公司的group最好统一吧，不然TM无法调用RM.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.application.parameters.group=test-service
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><img src="/images/202206/WechatIMG265.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/RocketMQ-source-code">Jun 2, 2022 - RocketMQ source code</a></h1>
@@ -280,216 +633,6 @@ scheduledThreadPoolExecutor.scheduleAtFixedRate
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/MappedByteBuffer">Jun 1, 2022 - mmap</a></h1>
-        
-        <div class="content">
-            <h1 id="零拷贝技术-mmap">零拷贝技术 mmap</h1>
-
-<p>参考文章: <a href="https://www.jianshu.com/p/f90866dcbffc">https://www.jianshu.com/p/f90866dcbffc</a></p>
-
-<p><a href="https://juejin.cn/post/7016498891365302302">https://juejin.cn/post/7016498891365302302</a></p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/mmap">https://github.com/gongchangyou/mmap</a></p>
-
-<p>常用方法</p>
-
-<p>force : 强制刷盘</p>
-
-<p>slice: 创建一个新的字节缓冲区,其内容是该缓冲区内容的共享子序列</p>
-
-<p>示例代码</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
-@SpringBootTest
-class MmapApplicationTests {
-
-    String str = "mouse 中文";
-
-    int size = str.getBytes().length;
-
-    @Test
-    public void writeWithMap() throws IOException {
-        try (RandomAccessFile file = new RandomAccessFile(new File("src/main/resources/big.www.flydean.com"), "rw"))
-        {
-            //get Channel
-            FileChannel fileChannel = file.getChannel();
-            //get mappedByteBuffer from fileChannel
-            MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_WRITE, 0, 1024 );
-            // check buffer
-            log.info("is Loaded in physical memory: {}",buffer.isLoaded());
-            log.info("capacity {}",buffer.capacity());
-            //write the content
-            buffer.put(str.getBytes());
-        }
-    }
-
-    @Test
-    public void readWithMap() throws IOException {
-        try (RandomAccessFile file = new RandomAccessFile(new File("src/main/resources/big.www.flydean.com"), "r"))
-        {
-            //get Channel
-            FileChannel fileChannel = file.getChannel();
-            //get mappedByteBuffer from fileChannel
-            MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-            // check buffer
-            log.info("is Loaded in physical memory: {}",buffer.isLoaded());
-            log.info("capacity {}",buffer.capacity());
-            byte[] bytes = new byte[size];
-
-            //read the buffer
-            for (int i = 0; i &lt; bytes.length; i++)
-            {
-                bytes[i] = buffer.get();
-//                log.info("get {}", buffer.get());
-            }
-
-            val str = new String(bytes);
-            log.info("str= {}", str);
-        }
-    }
-
-
-}
-
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/Dubbo-source-code">May 30, 2022 - dubbo</a></h1>
-        
-        <div class="content">
-            <h1 id="dubbo-源码解析">Dubbo 源码解析</h1>
-
-<h3 id="bean加载实例化">bean加载，实例化</h3>
-
-<p>参考文章 <a href="https://blog.csdn.net/leisurelen/article/details/107078066">https://blog.csdn.net/leisurelen/article/details/107078066</a></p>
-
-<p>示例代码仓库: <a href="https://github.com/gongchangyou/bean">https://github.com/gongchangyou/bean</a></p>
-
-<p>BeanPostProcessor 的具体实现</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
-public class AbstractAnnotationBeanPostProcessor implements BeanDefinitionRegistryPostProcessor, SmartInstantiationAwareBeanPostProcessor {
-    public static final String BEAN_NAME = "abstractAnnotationBeanPostProcessor";
-    @Override
-    @Nullable
-    public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName)
-            throws BeansException {
-        final List&lt;Object&gt; elements = new LinkedList&lt;&gt;();
-        ReflectionUtils.doWithFields(bean.getClass(), new ReflectionUtils.FieldCallback() {
-            @Override
-            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                if (field.getAnnotation(Dubbo.class)!=null) {
-                    elements.add(field);
-                    //可以在这里做一些根据初始化field的 操作
-                    field.setAccessible(true);
-                    field.set(bean, 3L);
-                }
-            }
-        });
-        log.info("beanName={} list={}",beanName,elements);
-        return null;
-    }
-}
-</code></pre></div></div>
-
-<p>将BeanPostProcessor注册到 BeanDefinition中:</p>
-
-<p><img src="/images/202205/WechatIMG248.png" alt="" width="800" /></p>
-
-<p>只需要在application上添加 @Import 注解即可</p>
-
-<p><img src="/images/202205/WechatIMG249.png" alt="" width="800" /></p>
-
-<h3 id="客户端调用">客户端调用</h3>
-
-<p>自己整理了下客户端调用流程: <a href="/images/202205/dubbo client.drawio">dubbo client.drawio</a>
-<img src="/images/202205/dubbo client.drawio.png" alt="" width="800" /></p>
-
-<p>问题1： 当服务端切换ip时（比如蓝绿升级），客户端 invokers（里面有ip/port）是如何更新的？</p>
-
-<p>回答1:</p>
-
-<p>com.alibaba.nacos.client.naming.core.PushReceiver 会死循环拉取udp报文，通知EventDispatcher，在EventDispatcher中 ， 死循环阻塞poll. 当nacos服务配置变更时，会立即poll到变更内容， 接着执行 EventDispatcher中的listener.onEvent 方法，会去变更RouterChain中的 invokers.</p>
-
-<p><img src="/images/202205/WechatIMG285.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG246.png" alt="" width="800" /></p>
-
-<p><img src="/images/202205/WechatIMG247.png" alt="" width="800" /></p>
-
-<p>问题2： dubbo如何配置 LB？</p>
-
-<p>回答2：  <a href="https://dubbo.apache.org/zh/docs/advanced/loadbalance/">https://dubbo.apache.org/zh/docs/advanced/loadbalance/</a></p>
-
-<blockquote>
-  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  #random / roundrobin
-  dubbo.consumer.loadbalance=roundrobin
-</code></pre></div>  </div>
-  <p>又目前dubbo还不支持nacos的权重，所以下面的配置不会生效
-<img src="/images/202205/WechatIMG287.png" alt="" width="800" /></p>
-</blockquote>
-
-<h3 id="服务端bean加载">服务端bean加载</h3>
-
-<p>具体实现的 BeanDefinitionRegistryPostProcessor 是 ServiceClassPostProcessor. 他扫描packagesToScan 中类，解析DubboService 注解。</p>
-
-<p>那么他是何时被注册的呢？ 跟客户端bean加载一样，@Import (DubboComponentScanRegistrar.class)  .</p>
-
-<p>DubboComponentScanRegistrar中会注册 ServiceClassPostProcessor的子类 ServiceAnnotationBeanPostProcessor（已经不推荐使用了）</p>
-
-<h3 id="服务端逻辑">服务端逻辑</h3>
-
-<p>流程图: 
-<a href="/images/202205/dubbo_server.drawio">dubbo_server.drawio</a></p>
-
-<p><img src="/images/202205/dubbo_server.drawio.png" alt="" width="800" /></p>
-
-<p>问题1：二进制字节流 如何解析 serviceName methodName parameters ?</p>
-
-<p>回答1：DecodeHandler 将 inputStream中的 buffer 转换成targetServiceUniqueName, methodName, arguments等
-具体逻辑在 DecodeableRpcInvocation.decode(Channel channel, InputStream input) 中，应该就是dubbo协议的解析 其中in这个临时变量是根据channel中的serializationType 中确定的，这个也是SPI加载的， 默认是Hessian2</p>
-
-<p><img src="/images/202205/WechatIMG253.png" alt="" width="800" /></p>
-
-<p>问题2： dubbo在收到报文后，如何给到对应的proxy去执行方法？</p>
-
-<p>回答2:   DubboProtocol， 方法 getInvoker , 根据serviceKey(形如 dubbo-demo/com.braindata.dubbodemo.intf.StuRpcService:1.0.0:62604)  ，去exporterMap 获取对应的value，就是invoker了
-<img src="/images/202205/WechatIMG254.png" alt="" width="800" /></p>
-
-<p>问题3： Filter是如何添加进Wrapper的？</p>
-
-<p>回答3:    ProtocolFilterWrapper 类      List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);</Filter></p>
-
-<p>问题4： 如何处理粘包和拆包？</p>
-
-<p>回答4： 参考<a href="https://yestermorrow.github.io/2018/04/10/dubbo%E7%B3%BB%E5%88%97%E4%B9%8B%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85/">https://yestermorrow.github.io/2018/04/10/dubbo%E7%B3%BB%E5%88%97%E4%B9%8B%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85/</a></p>
-
-<p>我们以netty4/NettyCodecAdapter 为例。内部类 InternalDecoder.decode 方法</p>
-
-<p>拆包的处理?</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 关键字 返回这个表示没有在当前包检测到end。 需要等待下个包
-Codec2.DecodeResult.NEED_MORE_INPUT
-</code></pre></div></div>
-
-<p>粘包的处理？</p>
-
-<p>其中 saveReaderIndex 可以记录message的读索引, 如果粘包，decode部分结果后, 当前的读游标肯定不是0，则可以从 message的 readerIndex 开始读取. 下面代码可以和原先的netty/NettyCodecAdapter比对下，省去了一些关于拆包时拼接的逻辑 比如 buffer.readableBytes() + input.readableBytes(); 
-<img src="/images/202205/WechatIMG277.png" alt="" width="800" /></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -497,7 +640,7 @@ Codec2.DecodeResult.NEED_MORE_INPUT
         <a class="btn btn-default" href="/page9" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 10 of 57</span>
+  <span class="page_number ">Page: 10 of 58</span>
   
     <a class="btn btn-default" href="/page11" class="next">Older</a>
   
