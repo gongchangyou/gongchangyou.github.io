@@ -7,6 +7,121 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Validation</title>
+				<description>&lt;h1 id=&quot;validation&quot;&gt;Validation&lt;/h1&gt;
+
+&lt;p&gt;代码仓库:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/gongchangyou/pdfreader&quot;&gt;https://github.com/gongchangyou/pdfreader&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;dependency&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;spring-boot-starter-validation&amp;lt;/artifactId&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+        &amp;lt;dependency&amp;gt;
+            &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;spring-aspects&amp;lt;/artifactId&amp;gt;
+        &amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;annotation&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ParamValidation {
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;aspect&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Slf4j
+@Component
+@Aspect
+@Order(10)
+public class ValidationAspect {
+
+    @Autowired
+    @Qualifier(&quot;executableValidator&quot;)
+    private ExecutableValidator validator;
+//    @Around(value = &quot;within(com.mouse.pdfreader.*) &amp;amp;&amp;amp; execution(public * com.mouse.pdfreader.*.*(..)) &amp;amp;&amp;amp; @annotation(com.mouse.pdfreader.aop.ParamValidation)&quot;)
+    @Around(value = &quot;@annotation(paramValidation) &quot;)
+    public Object process(ProceedingJoinPoint proceedingJoinPoint, ParamValidation paramValidation) {
+        val sw= new StopWatch();
+        sw.start(&quot;validation&quot;);
+        Set&amp;lt;ConstraintViolation&amp;lt;Object&amp;gt;&amp;gt; constraintViolations = validator.validateParameters(proceedingJoinPoint.getTarget(), ((MethodSignature)proceedingJoinPoint.getSignature()).getMethod(), proceedingJoinPoint.getArgs());
+        sw.stop();
+        log.info(sw.prettyPrint());
+
+        if(constraintViolations.size() &amp;gt; 0){
+            final String constraintMessage = constraintViolations.stream()
+                    .findFirst()
+                    .map(ConstraintViolation::getMessage)
+                    .orElse(&quot;&quot;);
+
+            return constraintMessage;
+        }
+
+        try {
+            return proceedingJoinPoint.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Config:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Configuration
+public class ValidatorConfiguration {
+    @Bean(name = &quot;executableValidator&quot;)
+    ExecutableValidator get() {
+        val validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory();
+        return validatorFactory.getValidator().forExecutables();
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Service&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Service
+public class TestService {
+
+    @ParamValidation
+    public String test(@Valid ParamData param){
+        return &quot;success&quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;param&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Data
+@Builder
+public class ParamData {
+    @Range(min=1,max=10, message = &quot;1-10&quot;)
+    int age;
+
+    @NotNull(message = &quot;null name&quot;)
+    String name;
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;检查的字段数,1-2个字段 耗时 0.2-0.4ms。  对于高频计算来说，还是耗时较高。&lt;/p&gt;
+
+</description>
+				<pubDate>Tue, 11 Oct 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/10/validation</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/10/validation</guid>
+			</item>
+		
+			<item>
 				<title>reflect</title>
 				<description>&lt;h1 id=&quot;reflect&quot;&gt;reflect&lt;/h1&gt;
 
@@ -198,24 +313,6 @@ public class ReflectTest {
 				<pubDate>Thu, 28 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/xml</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/xml</guid>
-			</item>
-		
-			<item>
-				<title>poi</title>
-				<description>&lt;h1 id=&quot;poi-excel-读写&quot;&gt;poi excel 读写&lt;/h1&gt;
-
-&lt;p&gt;代码仓库：&lt;a href=&quot;https://github.com/gongchangyou/excelreader&quot;&gt;https://github.com/gongchangyou/excelreader&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;枚举项可以 利用 XSSFDataValidationConstraint 增加 数据有效性的 限制。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/202207/WechatIMG357.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;参考文章: &lt;a href=&quot;https://blog.csdn.net/Janson_Lin/article/details/108379333&quot;&gt;https://blog.csdn.net/Janson_Lin/article/details/108379333&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Fri, 22 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/poi</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/poi</guid>
 			</item>
 		
 	</channel>
