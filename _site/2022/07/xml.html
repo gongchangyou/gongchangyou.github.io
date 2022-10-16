@@ -185,6 +185,20 @@
 
 <p>如果想要混用，也行, 关键字是 @ImportResource(“classpath:beans.xml”)  自动加载xml中的bean</p>
 
+<p>如果要注入map。 就用entry注入</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;property name="dreams"&gt;
+            &lt;map&gt;
+                &lt;entry key="a"&gt;
+                    &lt;value&gt; "abc"&lt;/value&gt;
+                &lt;/entry&gt;
+                &lt;entry key="z"&gt;
+                    &lt;value&gt; "xyz"&lt;/value&gt;
+                &lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+</code></pre></div></div>
+
 <p>参考文章： <a href="https://www.baeldung.com/spring-boot-xml-beans">https://www.baeldung.com/spring-boot-xml-beans</a></p>
 
 

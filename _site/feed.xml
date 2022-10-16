@@ -307,6 +307,20 @@ public class ReflectTest {
 
 &lt;p&gt;如果想要混用，也行, 关键字是 @ImportResource(“classpath:beans.xml”)  自动加载xml中的bean&lt;/p&gt;
 
+&lt;p&gt;如果要注入map。 就用entry注入&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;property name=&quot;dreams&quot;&amp;gt;
+            &amp;lt;map&amp;gt;
+                &amp;lt;entry key=&quot;a&quot;&amp;gt;
+                    &amp;lt;value&amp;gt; &quot;abc&quot;&amp;lt;/value&amp;gt;
+                &amp;lt;/entry&amp;gt;
+                &amp;lt;entry key=&quot;z&quot;&amp;gt;
+                    &amp;lt;value&amp;gt; &quot;xyz&quot;&amp;lt;/value&amp;gt;
+                &amp;lt;/entry&amp;gt;
+            &amp;lt;/map&amp;gt;
+        &amp;lt;/property&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;参考文章： &lt;a href=&quot;https://www.baeldung.com/spring-boot-xml-beans&quot;&gt;https://www.baeldung.com/spring-boot-xml-beans&lt;/a&gt;&lt;/p&gt;
 
 </description>
