@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>73</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
 			
 		
 			
@@ -175,6 +175,50 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2018/01/mod-mysql-password">Jan 12, 2018 - 修改mysql默认密码 并且解决Can’t connect to local MySQL 问题</a></h1>
+        
+        <div class="content">
+            <ol>
+  <li>
+    <p>mysql stop</p>
+  </li>
+  <li>
+    <p>mysqld_safe –user=mysql –skip-grant-tables –skip-networking &amp;</p>
+  </li>
+  <li>
+    <p>mysql -u root mysql</p>
+  </li>
+  <li>
+    <p>update user set authentication_string=password(‘root’) where user=’root’;</p>
+  </li>
+  <li>
+    <p>flush privileges;</p>
+  </li>
+  <li>
+    <p>unset TMPDIR</p>
+  </li>
+  <li>
+    <p>mysql_install_db –verbose –user=`whoami` –basedir=”$(brew –prefix mysql)” –datadir=/usr/local/var/mysql</p>
+  </li>
+</ol>
+
+<p>如果这一步提示 /usr/local/var/mysql 已经存在，先无情rm掉</p>
+
+<ol>
+  <li>
+    <p>mysql.server start</p>
+  </li>
+  <li>
+    <p>mysql -uroot -proot 进去啦！！</p>
+  </li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2017/12/curl-command">Dec 14, 2017 - curl常用命令</a></h1>
         
         <div class="content">
@@ -203,50 +247,6 @@ curl -F”file=@/Users/gongchangyou/Downloads/wKhzR1FmuQ-jPj0qAAGMNl9gujE083.jpg
 
 <p>g++ -std=c++11 delete_image.cpp -o delete_image -lopenapi_protobuf -L.</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/11/docker-command">Nov 28, 2017 - docker常用命令</a></h1>
-        
-        <div class="content">
-            <p>生成镜像  <br />
-docker build -f Dockerfile -t panshi .</p>
-
-<p>批量删除image <br />
-docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
-
-<p>批量删除容器<br />
-docker ps -a -q |xargs docker rm</p>
-
-<p>启动容器  <br />
-1.docker run -dit --name container_name -v /tmp/outer:/tmp/inner image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
-
-<p>进入容器</p>
-
-<p>1.docker exec -it container_id/container_name /bin/bash</p>
-
-<p>退出 敲exit即可</p>
-
-<p>2.docker attach container_id  <br />
-    退出需要ctrl+p+q</p>
-
-<p>跟docker容器一起启动</p>
-
-<p>–restart=always</p>
-
-<p>存储/载入</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker save -o 要保存的文件名  要保存的镜像
-
-
-docker load --input 文件
-
-docker load &lt; 文件名
-</code></pre></div></div>
 
         </div>
     </div>

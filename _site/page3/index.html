@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>73</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
 			
 		
 			
@@ -196,13 +196,83 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/08/scope">Aug 3, 2022 - scope</a></h1>
+        <h1><a href="/2022/08/ignite">Aug 20, 2022 - ignite</a></h1>
         
         <div class="content">
-            <h1 id="scope">Scope</h1>
+            <h1 id="ignite">Ignite</h1>
 
-<p>如果不想bean 创建的是单例，只需要添加 @Scope(“prototype”) 注解即可</p>
+<p>试想这样一种场景，需要快速查找数据，一般我们会选择缓存，比如redis.</p>
 
+<p>如果想更快一点， 我们就用本地缓存，guava local cache 的 进化版本 Caffeine.</p>
+
+<p>但是这些都只满足kv的场景， 如果希望像mysql 那样关系型查找就不满足了。</p>
+
+<p>于是我想到了在内存中构建一个B+树来实现，这种很自然的想法应该有现成的轮子了。所以我找到了这个开源组件 ignite</p>
+
+<p>官网: <a href="https://ignite.apache.org/">https://ignite.apache.org/</a></p>
+
+<p>源码: <a href="https://github.com/apache/ignite">https://github.com/apache/ignite</a></p>
+
+<ol>
+  <li>
+    <p>获取镜像</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker search apacheignite/ignite
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>拉取镜像</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull apacheignite/ignite
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>默认情况，docker将暴露以下端口：11211, 47100, 47500, 49112</p>
+
+<ol>
+  <li>
+    <p>启动 (想要持久化 请看参考文章 这里只介绍 in memory)</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 10800:10800 apacheignite/ignite
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>代码仓库 :  <a href="https://github.com/gongchangyou/ignite_test">https://github.com/gongchangyou/ignite_test</a>  奇怪，这里如果不启动ignite也能正常执行（上述1-3不用做)</p>
+  </li>
+</ol>
+
+<font color="red">比对结果， 不管是筛选 long ,double, 还是String。 ignite均比内存中的list.stream().filter 都要快(换成 parallelStream 也无法提升一个数量级, 毕竟 n/threads 时间复杂度还是n, ignite有B+树， 时间复杂度是logn)</font>
+
+<p><img src="/images/202208/WechatIMG390.png" alt="" width="400" /></p>
+
+<p>ignite 为什么会这么快？ 除了使用B+树以外，还使用了future. 在 IgniteCacheProxyImpl 下面这个query方法中,返回的那个迭代器中，每次 onHasNext 都会去future里面get结果。所以并不是一把结果load出来.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    private &lt;T, R&gt; QueryCursor&lt;R&gt; query(ScanQuery scanQry, @Nullable IgniteClosure&lt;T, R&gt; transformer, @Nullable ClusterGroup grp) throws IgniteCheckedException {
+
+</code></pre></div></div>
+
+<p>但是这样有一个问题，就是每次迭代时去 future.get 会阻塞，实际使用的时候会比list 耗时要长</p>
+
+<p><img src="/images/202208/WechatIMG391.png" alt="" width="400" /></p>
+
+<p>注意： 记得使用 withKeepBinary 查询， 形如</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QueryCursor&lt;Cache.Entry&lt;BinaryObject, BinaryObject&gt;&gt; org = cache.withKeepBinary().query(
+                new IndexQuery&lt;BinaryObject, BinaryObject&gt;(Person.class.getName())
+                        .setCriteria(gt("orgId", 1L)));
+</code></pre></div></div>
+
+<p>注意： h2的版本 要低于1.4.200 。我选择了 1.4.197</p>
+
+<p>参考文章: <a href="https://hub.docker.com/r/apacheignite/ignite">docker 启动 ignite</a></p>
+
+<p><a href="https://blog.csdn.net/c_zyer/article/details/115546772">https://blog.csdn.net/c_zyer/article/details/115546772</a></p>
+
+<p><a href="https://ignite.apache.org/docs/latest/key-value-api/using-cache-queries">cache query</a></p>
+
+<p><a href="https://www.baeldung.com/apache-ignite">https://www.baeldung.com/apache-ignite</a></p>
+
+<p><a href="https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B">https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B</a></p>
 
         </div>
     </div>
@@ -210,18 +280,12 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/autowired-list">Jul 29, 2022 - autowired</a></h1>
+        <h1><a href="/2022/08/scope">Aug 3, 2022 - scope</a></h1>
         
         <div class="content">
-            <h1 id="autowired-注入list">autowired 注入list</h1>
+            <h1 id="scope">Scope</h1>
 
-<p>代码仓库： <a href="https://github.com/gongchangyou/spring_xml_test">https://github.com/gongchangyou/spring_xml_test</a></p>
-
-<p>autowired 注入list  .  按照Order中的 数字 由小到大放入 list。</p>
-
-<p>如果要注入map。 就 @PostConstruct, stream 将list中的元素整理成map</p>
-
-<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1420334">https://cloud.tencent.com/developer/article/1420334</a></p>
+<p>如果不想bean 创建的是单例，只需要添加 @Scope(“prototype”) 注解即可</p>
 
 
         </div>

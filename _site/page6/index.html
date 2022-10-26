@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>73</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
 			
 		
 			
@@ -173,6 +173,69 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/kafka">Jul 13, 2022 - kafka</a></h1>
+        
+        <div class="content">
+            <h1 id="kafka">kafka</h1>
+
+<p>参考文章： <a href="https://blog.csdn.net/qq_36042938/article/details/86690188">https://blog.csdn.net/qq_36042938/article/details/86690188</a></p>
+
+<p><a href="https://segmentfault.com/a/1190000021746086">https://segmentfault.com/a/1190000021746086</a></p>
+
+<ol>
+  <li>
+    <p>Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
+
+docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>进入容器</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it kafka sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>启动消费者进程</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafka-console-consumer.sh --bootstrap-server 192.168.1.60:9092 --topic kafeidou --from-beginning
+</code></pre></div>    </div>
+  </li>
+  <li>再开个窗口，执行第2步，再启动生产者进程
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kafka-console-producer.sh --broker-list 192.168.1.60(机器IP):9092 --topic kafeidou
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>输入消息payload</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &gt;hello
+ &gt;
+ &gt;
+ &gt;
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>广播和单播：</p>
+
+<p>广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。</p>
+
+<p>单播：多个consumer 使用相同的group。 这样每个consumer被分配到不同的消息，加速消费。</p>
+
+<h2 id="实际场景">实际场景</h2>
+
+<p>当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。</p>
+
+<p>话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
@@ -233,57 +296,6 @@ db.person.find({age:18}).explain("executionStats")
 <p><a href="https://hub.docker.com/_/flink">docker flink</a></p>
 
 <p><a href="https://nightlies.apache.org/flink/flink-docs-release-1.2/quickstart/setup_quickstart.html">quick start</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
-        
-        <div class="content">
-            <h1 id="git-批量迁移">git 批量迁移</h1>
-
-<ol>
-  <li>
-    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
-</code></pre></div>    </div>
-  </li>
-  <li>找到最后一行 (如下任1命令)
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
-
- 2.sed -n '$p'
-
- 3.sed '$!N;$!D'
-
- 4.awk '{b=a"\n"$0;a=$0}END{print b}'
-
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>找到最近一次提交的分支的记录</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
-    
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>sed提取出分支</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
-	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
-	#获取分支名
-	echo $log
-	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
-    
-	echo $branchname
-</code></pre></div>    </div>
-  </li>
-</ol>
 
 
         </div>

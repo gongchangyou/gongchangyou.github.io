@@ -268,6 +268,88 @@ public class ReflectTest {
 			</item>
 		
 			<item>
+				<title>ignite</title>
+				<description>&lt;h1 id=&quot;ignite&quot;&gt;Ignite&lt;/h1&gt;
+
+&lt;p&gt;试想这样一种场景，需要快速查找数据，一般我们会选择缓存，比如redis.&lt;/p&gt;
+
+&lt;p&gt;如果想更快一点， 我们就用本地缓存，guava local cache 的 进化版本 Caffeine.&lt;/p&gt;
+
+&lt;p&gt;但是这些都只满足kv的场景， 如果希望像mysql 那样关系型查找就不满足了。&lt;/p&gt;
+
+&lt;p&gt;于是我想到了在内存中构建一个B+树来实现，这种很自然的想法应该有现成的轮子了。所以我找到了这个开源组件 ignite&lt;/p&gt;
+
+&lt;p&gt;官网: &lt;a href=&quot;https://ignite.apache.org/&quot;&gt;https://ignite.apache.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;源码: &lt;a href=&quot;https://github.com/apache/ignite&quot;&gt;https://github.com/apache/ignite&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;获取镜像&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker search apacheignite/ignite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;拉取镜像&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; docker pull apacheignite/ignite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;默认情况，docker将暴露以下端口：11211, 47100, 47500, 49112&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动 (想要持久化 请看参考文章 这里只介绍 in memory)&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run -d -p 10800:10800 apacheignite/ignite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;代码仓库 :  &lt;a href=&quot;https://github.com/gongchangyou/ignite_test&quot;&gt;https://github.com/gongchangyou/ignite_test&lt;/a&gt;  奇怪，这里如果不启动ignite也能正常执行（上述1-3不用做)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;font color=&quot;red&quot;&gt;比对结果， 不管是筛选 long ,double, 还是String。 ignite均比内存中的list.stream().filter 都要快(换成 parallelStream 也无法提升一个数量级, 毕竟 n/threads 时间复杂度还是n, ignite有B+树， 时间复杂度是logn)&lt;/font&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202208/WechatIMG390.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ignite 为什么会这么快？ 除了使用B+树以外，还使用了future. 在 IgniteCacheProxyImpl 下面这个query方法中,返回的那个迭代器中，每次 onHasNext 都会去future里面get结果。所以并不是一把结果load出来.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    private &amp;lt;T, R&amp;gt; QueryCursor&amp;lt;R&amp;gt; query(ScanQuery scanQry, @Nullable IgniteClosure&amp;lt;T, R&amp;gt; transformer, @Nullable ClusterGroup grp) throws IgniteCheckedException {
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;但是这样有一个问题，就是每次迭代时去 future.get 会阻塞，实际使用的时候会比list 耗时要长&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202208/WechatIMG391.png&quot; alt=&quot;&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;注意： 记得使用 withKeepBinary 查询， 形如&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;QueryCursor&amp;lt;Cache.Entry&amp;lt;BinaryObject, BinaryObject&amp;gt;&amp;gt; org = cache.withKeepBinary().query(
+                new IndexQuery&amp;lt;BinaryObject, BinaryObject&amp;gt;(Person.class.getName())
+                        .setCriteria(gt(&quot;orgId&quot;, 1L)));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;注意： h2的版本 要低于1.4.200 。我选择了 1.4.197&lt;/p&gt;
+
+&lt;p&gt;参考文章: &lt;a href=&quot;https://hub.docker.com/r/apacheignite/ignite&quot;&gt;docker 启动 ignite&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/c_zyer/article/details/115546772&quot;&gt;https://blog.csdn.net/c_zyer/article/details/115546772&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://ignite.apache.org/docs/latest/key-value-api/using-cache-queries&quot;&gt;cache query&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.baeldung.com/apache-ignite&quot;&gt;https://www.baeldung.com/apache-ignite&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B&quot;&gt;https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Sat, 20 Aug 2022 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2022/08/ignite</link>
+				<guid isPermaLink="true">http://localhost:4000/2022/08/ignite</guid>
+			</item>
+		
+			<item>
 				<title>scope</title>
 				<description>&lt;h1 id=&quot;scope&quot;&gt;Scope&lt;/h1&gt;
 
@@ -295,38 +377,6 @@ public class ReflectTest {
 				<pubDate>Fri, 29 Jul 2022 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2022/07/autowired-list</link>
 				<guid isPermaLink="true">http://localhost:4000/2022/07/autowired-list</guid>
-			</item>
-		
-			<item>
-				<title>xml</title>
-				<description>&lt;h1 id=&quot;xml&quot;&gt;Xml&lt;/h1&gt;
-
-&lt;p&gt;代码仓库： &lt;a href=&quot;https://github.com/gongchangyou/spring_xml_test&quot;&gt;https://github.com/gongchangyou/spring_xml_test&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;接手了一个老项目，使用xml加载 bean对象 .&lt;/p&gt;
-
-&lt;p&gt;如果想要混用，也行, 关键字是 @ImportResource(“classpath:beans.xml”)  自动加载xml中的bean&lt;/p&gt;
-
-&lt;p&gt;如果要注入map。 就用entry注入&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &amp;lt;property name=&quot;dreams&quot;&amp;gt;
-            &amp;lt;map&amp;gt;
-                &amp;lt;entry key=&quot;a&quot;&amp;gt;
-                    &amp;lt;value&amp;gt; &quot;abc&quot;&amp;lt;/value&amp;gt;
-                &amp;lt;/entry&amp;gt;
-                &amp;lt;entry key=&quot;z&quot;&amp;gt;
-                    &amp;lt;value&amp;gt; &quot;xyz&quot;&amp;lt;/value&amp;gt;
-                &amp;lt;/entry&amp;gt;
-            &amp;lt;/map&amp;gt;
-        &amp;lt;/property&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;参考文章： &lt;a href=&quot;https://www.baeldung.com/spring-boot-xml-beans&quot;&gt;https://www.baeldung.com/spring-boot-xml-beans&lt;/a&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Thu, 28 Jul 2022 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2022/07/xml</link>
-				<guid isPermaLink="true">http://localhost:4000/2022/07/xml</guid>
 			</item>
 		
 	</channel>

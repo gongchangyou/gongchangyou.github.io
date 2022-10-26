@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>73</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
 			
 		
 			
@@ -173,6 +173,57 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
+        
+        <div class="content">
+            <h1 id="git-批量迁移">git 批量迁移</h1>
+
+<ol>
+  <li>
+    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
+</code></pre></div>    </div>
+  </li>
+  <li>找到最后一行 (如下任1命令)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
+
+ 2.sed -n '$p'
+
+ 3.sed '$!N;$!D'
+
+ 4.awk '{b=a"\n"$0;a=$0}END{print b}'
+
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>找到最近一次提交的分支的记录</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
+    
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>sed提取出分支</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
+	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
+	#获取分支名
+	echo $log
+	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
+    
+	echo $branchname
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/prometheus">Jul 7, 2022 - prometheus</a></h1>
@@ -300,20 +351,6 @@
         e.printStackTrace();
  }
 </code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
-        
-        <div class="content">
-            <h1 id="python-docker">python docker</h1>
-
-<p>参考文章： <a href="https://www.runoob.com/docker/docker-install-python.html">https://www.runoob.com/docker/docker-install-python.html</a></p>
 
 
         </div>

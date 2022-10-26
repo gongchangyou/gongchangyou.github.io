@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>73</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
 			
 		
 			
@@ -173,6 +173,129 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/skywalking">Jul 21, 2022 - skywalking</a></h1>
+        
+        <div class="content">
+            <h1 id="skywalking">skywalking</h1>
+
+<ol>
+  <li>
+    <p>docker-compose up -d 启动 es + kibana + oap + UI
+  <a href="/images/202207/docker-compose.yml">docker-compose.yml</a>  docker-compose up -d</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  version: '2.2'
+  services:
+    es-node:
+     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+     container_name: es-node
+     environment:
+       - node.name=es-node
+       - cluster.name=es-cluster-7
+       - discovery.type=single-node
+       - xpack.security.enabled=false
+       - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+     ulimits:
+       memlock:
+         soft: -1
+         hard: -1
+     volumes:
+       - ./data:/usr/share/elasticsearch/data
+     ports:
+       - 9200:9200
+     networks:
+       - skywalking-network
+
+    kibana:
+     image: docker.elastic.co/kibana/kibana:7.5.0
+     environment:
+       ELASTICSEARCH_HOSTS: http://es-node:9200
+     ports:
+       - 5601:5601
+     networks:
+       - skywalking-network
+     depends_on:
+       - es-node
+
+    oap:
+     image: apache/skywalking-oap-server:8.9.1
+     container_name: oap1
+     environment:
+       SW_STORAGE: elasticsearch
+       SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
+       TZ: Asia/Shanghai 
+     ports:
+       - 12800:12800
+       - 11800:11800
+     networks:
+       - skywalking-network
+     depends_on:
+       - es-node
+
+    ui:
+      image: apache/skywalking-ui:8.9.1
+      environment:
+        SW_OAP_ADDRESS: http://oap1:12800
+        TZ: Asia/Shanghai 
+      ports:
+        - 8088:8080
+      networks:
+        - skywalking-network
+      depends_on:
+        - es-node    
+
+  volumes:
+   es-data01:
+     driver: local
+
+  networks:
+   skywalking-network:
+     driver: bridge
+  
+</code></pre></div>    </div>
+
+    <p>发现 es中会创建一堆索引
+<img src="/images/202207/WechatIMG350.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>检查以上4个容器是否都正常启动 docker logs XXX ， 打开 localhost:8088 看到 UI启动好了</p>
+  </li>
+  <li>
+    <p>下载 java agent <a href="https://skywalking.apache.org/downloads/#Agents">https://skywalking.apache.org/downloads/#Agents</a> 通过设置 -javaagent 配置 SkyWalking Agent</p>
+  </li>
+  <li>
+    <p>在idea中设置vm options,   -javaagent:/Users/gongchangyou/learn/skywalking/skywalking-agent/skywalking-agent.jar,  具体的配置可以去 /Users/gongchangyou/learn/skywalking/skywalking-agent/config/agent.config 看看</p>
+
+    <p><img src="/images/202207/WechatIMG355.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>完成 打开 http://localhost:8088/trace 看看</p>
+
+    <p><img src="/images/202207/WechatIMG356.png" alt="" width="800" /></p>
+  </li>
+</ol>
+
+<hr />
+
+<p>问题1: org.apache.skywalking.oap.server.library.module.ProviderNotFoundException</p>
+
+<p>回答1: 应该是ES版本和skywalking版本不匹配导致，把版本先对应好，比如上面的yml中的ES从 8.2.0降到:7.5.0</p>
+
+<p>skywalking版本保持在 8.9.1</p>
+
+<p>参考文章： <a href="https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/">https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/</a></p>
+
+<p><a href="https://www.cnblogs.com/xiao987334176/p/13530575.html">https://www.cnblogs.com/xiao987334176/p/13530575.html</a></p>
+
+<p><a href="https://hub.docker.com/r/apache/skywalking-oap-server">https://hub.docker.com/r/apache/skywalking-oap-server</a></p>
+
+<p><a href="https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/">https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/</a></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/java-agent">Jul 16, 2022 - java agent</a></h1>
@@ -412,69 +535,6 @@ RequestResponseBodyMethodProcessor.readWithMessageConverters
 &lt;/dependency&gt;
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/kafka">Jul 13, 2022 - kafka</a></h1>
-        
-        <div class="content">
-            <h1 id="kafka">kafka</h1>
-
-<p>参考文章： <a href="https://blog.csdn.net/qq_36042938/article/details/86690188">https://blog.csdn.net/qq_36042938/article/details/86690188</a></p>
-
-<p><a href="https://segmentfault.com/a/1190000021746086">https://segmentfault.com/a/1190000021746086</a></p>
-
-<ol>
-  <li>
-    <p>Docker 启动 zookeeper 和 kafka (注意 如下的 ip 192.168.1.60 需要换成你本地的ip)</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d --name zookeeper -p 2181:2181  wurstmeister/zookeeper
-
-docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link zookeeper -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.60(机器IP):9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 -t wurstmeister/kafka
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>进入容器</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it kafka sh
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>启动消费者进程</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafka-console-consumer.sh --bootstrap-server 192.168.1.60:9092 --topic kafeidou --from-beginning
-</code></pre></div>    </div>
-  </li>
-  <li>再开个窗口，执行第2步，再启动生产者进程
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kafka-console-producer.sh --broker-list 192.168.1.60(机器IP):9092 --topic kafeidou
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>输入消息payload</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &gt;hello
- &gt;
- &gt;
- &gt;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>广播和单播：</p>
-
-<p>广播： 多个consumer 使用不同的group。 这样每个group都能获取到所有消息。对应下游不同业务对接同一个上游的场景。</p>
-
-<p>单播：多个consumer 使用相同的group。 这样每个consumer被分配到不同的消息，加速消费。</p>
-
-<h2 id="实际场景">实际场景</h2>
-
-<p>当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。</p>
-
-<p>话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。</p>
 
         </div>
     </div>
