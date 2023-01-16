@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/01/grandma">奶奶</a></li>
+        
+          <li><a href="/2023/01/antlr">Antler</a></li>
+        
           <li><a href="/2022/10/validation">Validation</a></li>
         
           <li><a href="/2022/10/reflect">reflect</a></li>
         
           <li><a href="/2022/09/xmind">xmind</a></li>
-        
-          <li><a href="/2022/09/quic">quic</a></li>
-        
-          <li><a href="/2022/09/SpEL">spel</a></li>
         
     </ul>
 </div>
@@ -106,7 +106,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>21</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>22</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>74</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>75</sup></a></li>
 			
 		
 			
@@ -175,6 +175,139 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/07/prometheus">Jul 7, 2022 - prometheus</a></h1>
+        
+        <div class="content">
+            <h1 id="prometheus">prometheus</h1>
+
+<p>参考文章： <a href="https://www.prometheus.wang/quickstart/why-monitor.html">https://www.prometheus.wang/quickstart/why-monitor.html</a></p>
+
+<p><a href="https://prometheus.io/docs/introduction/overview/">https://prometheus.io/docs/introduction/overview/</a></p>
+
+<p><img src="/images/202207/architecture.png" alt="" width="800" /></p>
+
+<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/custom_exporter_with_java/client_library_java">java client 接入</a></p>
+
+<p>跟 <a href="/2022/05/monitor">Statsd</a> 的区别 :</p>
+
+<ol>
+  <li>statsd是主动udp上报，推的形式. 而prometheus是 提供http接口供 prometheus server pull， 是拉的形式。</li>
+  <li>statsd 协议提供一些常用的metric的类型，通常有timer、counter、gauge和set四种。这样就无需在java client中自行处理</li>
+</ol>
+
+<hr />
+
+<h2 id="一个监控mysql的例子">一个监控mysql的例子：</h2>
+
+<p>参考文章:</p>
+
+<p><a href="https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql">https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql</a></p>
+
+<p><a href="https://hub.docker.com/r/prom/mysqld-exporter">https://hub.docker.com/r/prom/mysqld-exporter</a></p>
+<ol>
+  <li>启动 mysql-exporter 采集指标
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull prom/mysqld-exporter
+
+ docker run -d -p 9104:9104 --link=my_mysql_container:bdd  \
+         -e DATA_SOURCE_NAME="user:password@(bdd:3306)/database" prom/mysqld-exporter
+</code></pre></div>    </div>
+
+    <p>访问 http://localhost:9104/  发现已经采集到指标了</p>
+  </li>
+  <li>
+    <p>启动 Prometheus 将指标保存到 promSQL中</p>
+
+    <p><a href="/images/202207/prometheus.yml">配置yml文件</a>
+ docker 启动 Prometheus ， 注意 -v  前面的路径是宿主机的 ，后面是容器中的。</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run  -d \
+  -p 9090:9090 \
+  -v /Users/gongchangyou/learn/prometheus:/etc/prometheus/  \
+  prom/prometheus
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>访问 http://localhost:9090/targets 确认mysql的metris 都收集到了
+ <img src="/images/202207/WechatIMG340.jpeg" alt="image" width="800" /></p>
+  </li>
+  <li>
+    <p>在grafana中配置 prometheus数据源, 找个好看的dashboard.</p>
+
+    <p>因为都是docker启动的，这里填写宿主机的ip
+ <img src="/images/202207/WechatIMG341.png" alt="" width="800" />
+ <a href="https://grafana.com/docs/grafana/v7.5/dashboards/export-import/">import dashboard</a></p>
+
+    <p><a href="https://grafana.com/grafana/dashboards/7362/reviews">https://grafana.com/grafana/dashboards/7362/reviews</a> download json 或者  copy ID</p>
+
+    <p><a href="https://www.cnblogs.com/chanshuyi/p/02_grafana_quick_start.html">grafana 添加 Prometheus</a></p>
+  </li>
+  <li>大功告成
+ <img src="/images/202207/WechatIMG342.png" alt="" width="800" /></li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/pdfreader">Jul 6, 2022 - pdfreader</a></h1>
+        
+        <div class="content">
+            <h1 id="pdfbox">pdfbox</h1>
+
+<p>添加依赖</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.pdfbox&lt;/groupId&gt;
+            &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;
+            &lt;version&gt;3.0.0-alpha3&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>遍历文件夹</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> String path = "/path/to/pdf";		//要遍历的路径
+        File file = new File(path);		//获取其file对象
+        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
+        for(File f:fs){					//遍历File[]数组
+            if(!f.isDirectory()) {        //若非目录(即文件)，则打印
+//                System.out.println(f);
+                parse(f);
+            }
+        }
+</code></pre></div></div>
+
+<p>逐页读取</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> try {
+        PDDocument document = Loader.loadPDF(file);
+        if (!document.isEncrypted()) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            var lastNo = "";
+            var goodOffset = 1;
+
+            for(int i = 1; i&lt;=document.getNumberOfPages(); i ++){
+                stripper.setSortByPosition(true);
+                stripper.setStartPage(i);
+                stripper.setEndPage(i);
+
+                String text = stripper.getText(document);
+            }
+            
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+ }
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
         
         <div class="content">
@@ -187,83 +320,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/storm">Jul 4, 2022 - storm</a></h1>
-        
-        <div class="content">
-            <h1 id="storm">Storm</h1>
-
-<p>storm是个流数据的处理框架</p>
-
-<p>写在前面：当然我还是推荐使用flink</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-&lt;groupId&gt;com.alibaba.jstorm&lt;/groupId&gt;
-&lt;artifactId&gt;jstorm-core&lt;/artifactId&gt;
-&lt;version&gt;2.1.1&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-<p>他山之石: <a href="https://gitee.com/HuQingmiao/storm-demo">https://gitee.com/HuQingmiao/storm-demo</a>  直接就能跑起来</p>
-
-<p>但是因为我维护的还是个老项目，所以必须使用如下依赖</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-            &lt;groupId&gt;org.apache.storm&lt;/groupId&gt;
-            &lt;artifactId&gt;storm-core&lt;/artifactId&gt;
-            &lt;version&gt;1.2.2&lt;/version&gt;
-&lt;/dependency&gt;
-
-</code></pre></div></div>
-
-<p>代码仓库：<a href="https://github.com/gongchangyou/storm-test">https://github.com/gongchangyou/storm-test</a></p>
-
-<p>注意这是一个maven项目 不是spring项目</p>
-
-<p>参考文章:  <a href="https://zhuanlan.zhihu.com/p/140806701">https://zhuanlan.zhihu.com/p/140806701</a></p>
-
-<p><a href="https://www.cnblogs.com/xuwujing/p/8584684.html">https://www.cnblogs.com/xuwujing/p/8584684.html</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/mysql-log">Jun 30, 2022 - mysql log</a></h1>
-        
-        <div class="content">
-            <h1 id="mysql-log">mysql log</h1>
-
-<p>代码仓库： <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
-
-<ol>
-  <li>如果是mybatis plus, 一行搞定
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>如果是 jpa 。基于 org.springframework.data.repository.CrudRepository;  如何添加日志呢？</p>
-
-    <p>注意到 JdbcTemplate.execute 方法中有个 logger.isDebugEnabled() 判断
- <img src="/images/202206/WechatIMG294.png" alt="" width="800" /></p>
-
-    <p>那就配置下 logging.level.root 就行</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> logging.level.root=DEBUG
-</code></pre></div>    </div>
-  </li>
-  <li>如果是mybatis 1.3.1 看到代码没有注入log的地方。只能把断点加到 CachingExecutor.query 方法中 看 boundSql变量了</li>
-</ol>
-
-<p><img src="/images/202206/WechatIMG295.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -271,7 +327,7 @@
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 58</span>
+  <span class="page_number ">Page: 8 of 59</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   
@@ -284,7 +340,7 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2022 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2023 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>
