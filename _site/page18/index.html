@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
+        
           <li><a href="/2023/01/grandma">奶奶</a></li>
         
           <li><a href="/2023/01/antlr">Antler</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/10/validation">Validation</a></li>
         
           <li><a href="/2022/10/reflect">reflect</a></li>
-        
-          <li><a href="/2022/09/xmind">xmind</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>75</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>76</sup></a></li>
 			
 		
 			
@@ -173,6 +173,22 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/c++">May 8, 2022 - c++ starter</a></h1>
+        
+        <div class="content">
+            <h1 id="c-入门">c++ 入门</h1>
+
+<p>参考文章: <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">https://www.runoob.com/cplusplus/cpp-tutorial.html</a></p>
+
+<p>vector 初始化: https://blog.csdn.net/veghlreywg/article/details/80400382</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
@@ -220,84 +236,6 @@
 <p>轻量级锁： object 的 mark word保存了 锁在thread 栈上的 lock record的地址</p>
 
 <p>重量级锁 ：借助操作系统的monitor</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/MQTT">May 5, 2022 - mqtt</a></h1>
-        
-        <div class="content">
-            <h1 id="mqtt">MQTT</h1>
-
-<p><a href="https://www.cnblogs.com/yourstars/p/15247707.html">https://www.cnblogs.com/yourstars/p/15247707.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull emqx
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  --name=mqtt --restart=always -d -p 18083:18083 -p 1883:1883 emqx
-</code></pre></div></div>
-
-<p>默认账号：admin
-默认密码：public</p>
-
-<p>QOS:</p>
-
-<p>参考文章: <a href="https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html">https://www.csdn.net/tags/MtjaYg5sMTU0NTgtYmxvZwO0O0OO0O0O.html</a></p>
-
-<p>​	<a href="https://blog.csdn.net/qq_24505127/article/details/101701011">https://blog.csdn.net/qq_24505127/article/details/101701011</a></p>
-
-<p>​	<a href="https://blog.csdn.net/m0_50668851/article/details/112555171">https://blog.csdn.net/m0_50668851/article/details/112555171</a></p>
-
-<p>原理 :</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>QOS</th>
-      <th>SAVE MESSAGE</th>
-      <th> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>broker</td>
-      <td>at most once</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>publisher  broker</td>
-      <td>at least once</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>publisher broker subscriber</td>
-      <td>exactly once</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>will : 可以自定义遗嘱，在messageArrived中根据payload来确认producer是否掉线</p>
-
-<p>那么如何知道消费端是否掉线呢？ connectionLost 方法</p>
-
-<p>延迟消息： <a href="https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html">https://www.emqx.io/docs/en/v4.3/advanced/delay-publish.html</a></p>
-
-<p>特定的topic格式：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/{DelayInterval}/{TopicName}
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$delayed/15/x/y: Publish MQTT message to the topic x/y after 15 seconds
-$delayed/60/a/b: Publish MQTT message to the topic a/b after 1 minute
-$delayed/3600/$SYS/topic: Publish MQTT message to the topic $SYS/topic after 1 hour
-</code></pre></div></div>
-
-<p>java代码： <a href="https://github.com/gongchangyou/mqtt">https://github.com/gongchangyou/mqtt</a></p>
 
 
         </div>

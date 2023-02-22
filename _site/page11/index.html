@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
+        
           <li><a href="/2023/01/grandma">奶奶</a></li>
         
           <li><a href="/2023/01/antlr">Antler</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2022/10/validation">Validation</a></li>
         
           <li><a href="/2022/10/reflect">reflect</a></li>
-        
-          <li><a href="/2022/09/xmind">xmind</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>75</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>76</sup></a></li>
 			
 		
 			
@@ -173,6 +173,34 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
+        
+        <div class="content">
+            <h1 id="sentinel">Sentinel</h1>
+
+<p>简介： 是对资源（服务，方法）访问的规则配置。 比如流控，黑白名单等</p>
+
+<p>官网: <a href="https://github.com/alibaba/Sentinel">https://github.com/alibaba/Sentinel</a></p>
+
+<p>参考文章: <a href="https://www.jianshu.com/p/8f901abb7af4">https://www.jianshu.com/p/8f901abb7af4</a></p>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/sentinel_test">https://github.com/gongchangyou/sentinel_test</a></p>
+
+<p>实现较为简单 不赘述了。</p>
+
+<p>注意点</p>
+
+<ol>
+  <li>如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法</li>
+  <li>blockHandler 方法记得添加 BlockException exception 形参</li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/canal-RocketMQ">Jun 10, 2022 - canal RocketMQ</a></h1>
@@ -377,260 +405,6 @@ ALTER USER 'canal'@'%' IDENTIFIED WITH mysql_native_password BY 'canal';
 
 <p>这句query找出所有的table后的处理逻辑的bug. 这个我提了个<a href="https://github.com/alibaba/canal/pull/4217">PR</a> . 版本1.1.6目前有这个问题.</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/seata">Jun 8, 2022 - seata</a></h1>
-        
-        <div class="content">
-            <h1 id="seata-分布式事务">SEATA 分布式事务</h1>
-
-<p>官网： <a href="https://seata.io/zh-cn/docs/overview/what-is-seata.html">https://seata.io/zh-cn/docs/overview/what-is-seata.html</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>跨服务调用场景下的事务传播，本质上就是要把 XID 通过服务调用传递到服务提供方，并绑定到 RootContext 中去。
-</code></pre></div></div>
-
-<hr />
-
-<h3 id="术语">术语</h3>
-<p>TC (Transaction Coordinator) - 事务协调者
-维护全局和分支事务的状态，驱动全局事务提交或回滚。</p>
-
-<p>TM (Transaction Manager) - 事务管理器
-定义全局事务的范围：开始全局事务、提交或回滚全局事务。</p>
-
-<p>RM (Resource Manager) - 资源管理器
-管理分支事务处理的资源，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。</p>
-
-<hr />
-
-<h2 id="at的实现方案">AT的实现方案</h2>
-
-<p>参考文章 <a href="https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html">https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html</a></p>
-
-<p><a href="https://seata.io/zh-cn/docs/user/quickstart.html">https://seata.io/zh-cn/docs/user/quickstart.html</a></p>
-
-<h3 id="前提">前提</h3>
-
-<blockquote>
-  <p>基于支持本地 ACID 事务的关系型数据库。</p>
-
-  <p>Java 应用，通过 JDBC 访问数据库。</p>
-</blockquote>
-
-<p>下面是一个具体的例子：订单扣库存的解决方案</p>
-
-<p><img src="/images/202205/solution.png" alt="" width="800" /></p>
-
-<p>具体的操作步骤有3步：</p>
-
-<p>前提： <a href="../../../2022/01/nacos"> 我们先本地启动一个nacos </a></p>
-
-<p>一. 启动seata</p>
-
-<ol>
-  <li>
-    <p>下载 1.4.2版本，更高版本不知道配置在哪里，<a href="https://github.com/seata/seata/releases/tag/v1.4.2">https://github.com/seata/seata/releases/tag/v1.4.2</a></p>
-  </li>
-  <li>解压后，去修改 conf/registry.conf 和conf/file.conf 中关于db的配置
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    registry {
-              \# file 、nacos 、eureka、redis、zk、consul、etcd3、sofa
-              type = "nacos"
-       
-
-              nacos {
-                application = "seata-server"
-                serverAddr = "127.0.0.1:8848"
-                group = "SEATA_GROUP"
-                namespace = ""
-                cluster = "default"
-                username = "nacos"
-                password = "nacos"
-              }
-          }
-          config {
-              \# file、nacos 、apollo、zk、consul、etcd3
-              type = "nacos"
-
-              nacos {
-                serverAddr = "127.0.0.1:8848"
-                namespace = ""
-                group = "SEATA_GROUP"
-                username = "nacos"
-                password = "nacos"
-                dataId = "seataServer.properties"
-              }
-          }
-                  
-</code></pre></div>    </div>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db {
-## the implement of javax.sql.DataSource, such as DruidDataSource(druid)/BasicDataSource(dbcp)/HikariDataSource(hikari) etc.
-datasource = "druid"
-## mysql/oracle/postgresql/h2/oceanbase etc.
-dbType = "mysql"
-driverClassName = "com.mysql.jdbc.Driver"
-## if using mysql to store the data, recommend add rewriteBatchedStatements=true in jdbc connection param
-url = "jdbc:mysql://127.0.0.1:3306/seata?rewriteBatchedStatements=true"
-user = "root"
-password = "123456"
-minConn = 5
-maxConn = 100
-globalTable = "global_table"
-branchTable = "branch_table"
-lockTable = "lock_table"
-queryLimit = 100
-maxWait = 5000
-}
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <blockquote>
-      <p>cd bin</p>
-
-      <p>sh seata-server.sh -p 8091 -m file</p>
-    </blockquote>
-  </li>
-</ol>
-
-<p><img src="/images/202206/WechatIMG259.png" alt="" width="800" /></p>
-
-<p>二. 在DB中创建一些表例如undo log 来维护事务xid ，branchid （子事务） 的状态和回滚。 每个微服务的db中都要建这个表，因为各自的undo log存在各自的db的undo_log表中</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE `undo_log`
-(
-  `id`            BIGINT(20)   NOT NULL AUTO_INCREMENT,
-  `branch_id`     BIGINT(20)   NOT NULL,
-  `xid`           VARCHAR(100) NOT NULL,
-  `context`       VARCHAR(128) NOT NULL,
-  `rollback_info` LONGBLOB     NOT NULL,
-  `log_status`    INT(11)      NOT NULL,
-  `log_created`   DATETIME     NOT NULL,
-  `log_modified`  DATETIME     NOT NULL,
-  `ext`           VARCHAR(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ux_undo_log` (`xid`, `branch_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
-</code></pre></div></div>
-
-<p>三. 搭建微服务</p>
-
-<ol>
-  <li>先把nacos 启动起来 <a href="../../../2022/01/nacos">启动nacos</a> (这步第0步已经做过了)</li>
-  <li>启动 maven仓库   <a href="../../../2022/01/maven">启动maven仓库</a></li>
-  <li>注册两个service， 新增一个consumer , 注意 dubbo.application.parameters.group 需要配置成相同的。 代码仓库如下
-    <ol>
-      <li>
-        <p><a href="https://github.com/gongchangyou/service-order">https://github.com/gongchangyou/service-order</a></p>
-      </li>
-      <li>
-        <p><a href="https://github.com/gongchangyou/service-store">https://github.com/gongchangyou/service-store</a></p>
-      </li>
-      <li>
-        <p><a href="https://github.com/gongchangyou/service-buy">https://github.com/gongchangyou/service-buy</a></p>
-      </li>
-      <li>
-        <p>注意各微服务中关于seata的配置</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #seata nacos配置
- seata.registry.type=nacos
- #这个配置需要跟nacos中的服务名保持一致
- seata.registry.nacos.group=SEATA_GROUP
- seata.registry.nacos.application=seata-server
- #seata.registry.nacos.namespace=${nacos.discovery.namespace}
- seata.registry.nacos.cluster=default
- seata.registry.nacos.server-addr=127.0.0.1:8848
- #账号密码
- #seata.registry.nacos.username=nacos
- #seata.registry.nacos.password=nacos
- seata.tx-service-group=my_test_tx_group
- seata.enabled=true
- #seata 配置
- seata.enable-auto-data-source-proxy=true
- seata.application-id=${spring.application.name}
- seata.config.type=nacos
- seata.config.nacos.group=SEATA_GROUP
- seata.config.nacos.server-addr=127.0.0.1:8848
- #seata.config.nacos.namespace=${nacos.discovery.namespace}
- #seata.config.nacos.username=nacos
- #seata.config.nacos.password=nacos
- #可以切换AT和XA
- seata.data-source-proxy-mode=AT
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-</ol>
-
-<hr />
-
-<p>问题1: io.seata.core.rpc.netty.NettyClientChannelManager : can not get cluster name in registry config ‘service.vgroupMapping.my_test_tx_group’, please make sure registry config correct</p>
-
-<p>解决1: 从ClientWorker.getServerConfig方法追进去看 http的url，发现是设置了tenant和 accessToken.注意检查下你的nacos的api是否需要携带这俩参数，如果没必要的话，记得在代码中把 username,password, namespace注释掉</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>访问试试
-
-http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;group=SEATA_GROUP&amp;tenant=c7ba173f-29e5-4c58-ae78-b102be11c4f9&amp;accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTY1NDc2NTk5N30.Di3xRbagvMl_OCq5lnQFP7wOWN8dupuQX3QXr24DITU
-
-http://127.0.0.1:8848/nacos/v1/cs/configs?dataId=service.vgroupMapping.my_test_tx_group&amp;group=SEATA_GROUP
-</code></pre></div></div>
-
-<p>问题2：io.seata.core.rpc.netty.NettyClientChannelManager : no available service found in cluster ‘seata-server’, please make sure registry config correct and keep your seata server running</p>
-
-<p>解决2：在配置中心设置seata-server 的默认集群(cluster) , 直接写default就行</p>
-
-<p><img src="/images/202206/WechatIMG262.png" alt="" width="800" /></p>
-
-<p>问题3: 2022-06-09 14:40:05.340 ERROR [timeoutChecker_2_1] io.seata.core.rpc.netty.NettyClientChannelManager : 0101 can not connect to 192.168.1.4:8091 cause:can not register RM,err:register RMROLE error, errMsg:cost 30004 ms</p>
-
-<p>解决3： 注册不上RM, 检查了一下seata的 conf/file.conf中 db的配置,  确保username和password都填写正确</p>
-
-<p>问题4： 2022-06-09 14:56:29.679 ERROR [restartedMain] io.seata.core.rpc.netty.NettyClientChannelManager : 0304 register RM failed.</p>
-
-<p>解决4： 同3</p>
-
-<p>问题5：java.lang.NoSuchMethodException: com.mysql.cj.conf.PropertySet.getBooleanReadableProperty(java.lang.String)</p>
-
-<p>method_6_getPropertySet = class_6_connection.getMethod(“getBooleanReadableProperty”);   JdbcConnection中找不到 getBooleanReadableProperty方法</p>
-
-<p>解决5：是druid中的MysqlUtils 类的bug. 在1.2.5以后修复了. 升级即可，但是spring-boot可能会无法自动加载DruidDataSourceWrapper. exclude掉即可 @SpringBootApplication(scanBasePackages = {“com.mouse”}, exclude = DruidDataSourceAutoConfigure.class)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
-            &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
-            &lt;version&gt;1.2.5&lt;/version&gt;
-            &lt;exclusions&gt;
-                &lt;exclusion&gt;
-                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-                    &lt;artifactId&gt;spring-boot-autoconfigure&lt;/artifactId&gt;
-                &lt;/exclusion&gt;
-            &lt;/exclusions&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<h3 id="undo-log中的记录-例子-如果想要看undolog的话记得在事务中添加断点因为事务执行完毕会清空undo_log表">undo log中的记录 例子, 如果想要看undolog的话记得在事务中添加断点，因为事务执行完毕会清空undo_log表.</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>10,7034894280102293554,192.168.1.3:8091:7034894280102293553,serializer=jackson,"{""@class"":""io.seata.rm.datasource.undo.BranchUndoLog"",""xid"":""192.168.1.3:8091:7034894280102293553"",""branchId"":7034894280102293554,""sqlUndoLogs"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.undo.SQLUndoLog"",""sqlType"":""INSERT"",""tableName"":""`order`"",""beforeImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords$EmptyTableRecords"",""tableName"":""order"",""rows"":[""java.util.ArrayList"",[]]},""afterImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""order"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":28},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""status"",""keyType"":""NULL"",""type"":4,""value"":0}]]}]]}}]]}",0,2022-06-09 12:54:35,2022-06-09 12:54:35,
-
-
-11,7034894280102293555,192.168.1.3:8091:7034894280102293553,serializer=jackson,"{""@class"":""io.seata.rm.datasource.undo.BranchUndoLog"",""xid"":""192.168.1.3:8091:7034894280102293553"",""branchId"":7034894280102293555,""sqlUndoLogs"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.undo.SQLUndoLog"",""sqlType"":""UPDATE"",""tableName"":""store"",""beforeImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""store"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":1},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""count"",""keyType"":""NULL"",""type"":4,""value"":910}]]}]]},""afterImage"":{""@class"":""io.seata.rm.datasource.sql.struct.TableRecords"",""tableName"":""store"",""rows"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Row"",""fields"":[""java.util.ArrayList"",[{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""id"",""keyType"":""PRIMARY_KEY"",""type"":4,""value"":1},{""@class"":""io.seata.rm.datasource.sql.struct.Field"",""name"":""count"",""keyType"":""NULL"",""type"":4,""value"":907}]]}]]}}]]}",0,2022-06-09 12:55:56,2022-06-09 12:55:56,
-
-</code></pre></div></div>
-
-<h3 id="注意点">注意点</h3>
-
-<ol>
-  <li>各个服务的group要一致，不然无法实例化. 一家公司的group最好统一吧，不然TM无法调用RM.
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dubbo.application.parameters.group=test-service
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p><img src="/images/202206/WechatIMG265.png" alt="" width="800" /></p>
 
         </div>
     </div>
