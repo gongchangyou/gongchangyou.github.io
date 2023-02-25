@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/02/bond">中国债市入门</a></li>
+        
           <li><a href="/2023/02/idea-terminal">IDEA</a></li>
         
           <li><a href="/2023/01/grandma">奶奶</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/01/antlr">Antler</a></li>
         
           <li><a href="/2022/10/validation">Validation</a></li>
-        
-          <li><a href="/2022/10/reflect">reflect</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>76</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>77</sup></a></li>
 			
 		
 			
@@ -173,6 +173,63 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/pdfreader">Jul 6, 2022 - pdfreader</a></h1>
+        
+        <div class="content">
+            <h1 id="pdfbox">pdfbox</h1>
+
+<p>添加依赖</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.pdfbox&lt;/groupId&gt;
+            &lt;artifactId&gt;pdfbox&lt;/artifactId&gt;
+            &lt;version&gt;3.0.0-alpha3&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>遍历文件夹</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> String path = "/path/to/pdf";		//要遍历的路径
+        File file = new File(path);		//获取其file对象
+        File[] fs = file.listFiles();	//遍历path下的文件和目录，放在File数组中
+        for(File f:fs){					//遍历File[]数组
+            if(!f.isDirectory()) {        //若非目录(即文件)，则打印
+//                System.out.println(f);
+                parse(f);
+            }
+        }
+</code></pre></div></div>
+
+<p>逐页读取</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> try {
+        PDDocument document = Loader.loadPDF(file);
+        if (!document.isEncrypted()) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            var lastNo = "";
+            var goodOffset = 1;
+
+            for(int i = 1; i&lt;=document.getNumberOfPages(); i ++){
+                stripper.setSortByPosition(true);
+                stripper.setStartPage(i);
+                stripper.setEndPage(i);
+
+                String text = stripper.getText(document);
+            }
+            
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+ }
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/python-docker">Jul 5, 2022 - python docker</a></h1>
@@ -230,40 +287,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/mysql-log">Jun 30, 2022 - mysql log</a></h1>
-        
-        <div class="content">
-            <h1 id="mysql-log">mysql log</h1>
-
-<p>代码仓库： <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
-
-<ol>
-  <li>如果是mybatis plus, 一行搞定
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>如果是 jpa 。基于 org.springframework.data.repository.CrudRepository;  如何添加日志呢？</p>
-
-    <p>注意到 JdbcTemplate.execute 方法中有个 logger.isDebugEnabled() 判断
- <img src="/images/202206/WechatIMG294.png" alt="" width="800" /></p>
-
-    <p>那就配置下 logging.level.root 就行</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> logging.level.root=DEBUG
-</code></pre></div>    </div>
-  </li>
-  <li>如果是mybatis 1.3.1 看到代码没有注入log的地方。只能把断点加到 CachingExecutor.query 方法中 看 boundSql变量了</li>
-</ol>
-
-<p><img src="/images/202206/WechatIMG295.png" alt="" width="800" /></p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -271,7 +294,7 @@
         <a class="btn btn-default" href="/page8" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 9 of 59</span>
+  <span class="page_number ">Page: 9 of 60</span>
   
     <a class="btn btn-default" href="/page10" class="next">Older</a>
   
