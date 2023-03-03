@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
+        
           <li><a href="/2023/02/bond">中国债市入门</a></li>
         
           <li><a href="/2023/02/idea-terminal">IDEA</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/01/grandma">奶奶</a></li>
         
           <li><a href="/2023/01/antlr">Antler</a></li>
-        
-          <li><a href="/2022/10/validation">Validation</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>77</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
 			
 		
 			
@@ -175,6 +175,30 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2016/11/shader-light-model">Nov 11, 2016 - shader-module</a></h1>
+        
+        <div class="content">
+            <p>标准光照模型</p>
+
+<p>漫反射</p>
+
+<p>C_diffuse = C_light * M_diffuse * max(0, dot(n,l))</p>
+
+<p>高光反射</p>
+
+<p>r = 2(n . l)n - l;</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(v, r)), M_gloss);</p>
+
+<p>C_specular = C_light * M_specular * power(max(0, dot(n, h)), M_gloss);</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2016/08/vim-check-tab">Aug 26, 2016 - vim 查看空格</a></h1>
         
         <div class="content">
@@ -198,32 +222,6 @@
 <p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
 
 <p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/07/ssh-config-alias">Jul 20, 2016 - ssh rsa</a></h1>
-        
-        <div class="content">
-            <p>1.ssh-keygen  -t rsa</p>
-
-<p>2.在 ~/.ssh/config中添加</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	Host lfs-cn-manage 
-	  HostName localhost  #这里写ip
-	  User aiming
-	  IdentityFile ~/.ssh/id_rsa.aiming
-</code></pre></div></div>
-
-<p>3.chmod 666 ~/.ssh/config #勿忘</p>
-
-<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
-
-<p>搞定！</p>
-
 
         </div>
     </div>
