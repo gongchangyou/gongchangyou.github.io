@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,14 +175,67 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/python_user">Apr 24, 2022 - user</a></h1>
+        <h1><a href="/2022/04/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F%E6%AF%94%E5%AF%B9">Apr 26, 2022 - job</a></h1>
         
         <div class="content">
-            <h1 id="python-user">python-User</h1>
+            <h1 id="任务调度系统比对">任务调度系统比对</h1>
 
-<p>获取当前用户</p>
-
-<p>参考文章: <a href="https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/">https://www.geeksforgeeks.org/how-to-get-the-current-username-in-python/</a></p>
+<table>
+  <thead>
+    <tr>
+      <th>开源框架</th>
+      <th>开发语言</th>
+      <th>任务类型</th>
+      <th>⼯作流</th>
+      <th>能否区分用户</th>
+      <th>可视化</th>
+      <th>API</th>
+      <th>⾼可⽤</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Airflow</td>
+      <td>python</td>
+      <td>通过operator⾃定义，⼤数据组件及Shell，不⽀持Java</td>
+      <td>DAG</td>
+      <td>-</td>
+      <td>⽀持</td>
+      <td>不⽀持</td>
+      <td>主从</td>
+    </tr>
+    <tr>
+      <td>XXL-JOB</td>
+      <td>Java</td>
+      <td>Java/Shell/Python/PHP</td>
+      <td>不⽀持</td>
+      <td>不能, 需要做些改造Runtime.getRuntime().exec()</td>
+      <td>⽀持</td>
+      <td>⽀持</td>
+      <td>主从</td>
+    </tr>
+    <tr>
+      <td>DolphinScheduler</td>
+      <td>Java</td>
+      <td>⼤数据组件及Shell等近20种</td>
+      <td>DAG</td>
+      <td>能，因为内部实现是 sudo -u username</td>
+      <td>⽀持</td>
+      <td>⽀持</td>
+      <td>去中⼼</td>
+    </tr>
+    <tr>
+      <td>Quartz</td>
+      <td>Java</td>
+      <td>Java</td>
+      <td>不⽀持</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
 
 
         </div>
@@ -191,60 +244,74 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/04/conda">Apr 23, 2022 - conda</a></h1>
+        <h1><a href="/2022/04/xxl-job">Apr 25, 2022 - xxl-job</a></h1>
         
         <div class="content">
-            <h1 id="conda">Conda</h1>
+            <h1 id="xxl-job">Xxl-job</h1>
 
-<p>是个python虚拟环境</p>
+<p>github : <a href="https://github.com/xuxueli/xxl-job">https://github.com/xuxueli/xxl-job</a></p>
 
-<p>参考文章: <a href="https://blog.csdn.net/coder_oldgeek/article/details/122239755">https://blog.csdn.net/coder_oldgeek/article/details/122239755</a></p>
+<p>quick start: <a href="https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0">https://www.xuxueli.com/xxl-job/#1.1%20%E6%A6%82%E8%BF%B0</a></p>
 
-<p><a href="https://zhuanlan.zhihu.com/p/64100305">https://zhuanlan.zhihu.com/p/64100305</a></p>
+<p>在 ScriptJobHandler 中</p>
 
-<p>常用命令：</p>
+<p><img src="/images/202204/WechatIMG122.png" alt="" width="800" /></p>
 
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create --name ancillary python=3.7
+<p>ScriptUtil ，在worker的服务器上执行命令</p>
 
-conda env list
+<p><img src="/images/202204/WechatIMG123.png" alt="" width="800" /></p>
 
-conda activate ancillary
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/dolphinscheduler">Apr 25, 2022 - dolphinscheduler</a></h1>
+        
+        <div class="content">
+            <h1 id="dolphinscheduler">Dolphinscheduler</h1>
+
+<p>因为想学习下 如何绑定web用户 和 linux用户</p>
+
+<p>我们可以学习下业内主流任务调度开源系统  <a href="https://github.com/apache/dolphinscheduler">https://github.com/apache/dolphinscheduler</a></p>
+
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/start/quick-start.html">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/start/quick-start.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull dolphinscheduler.docker.scarf.sh/apache/dolphinscheduler
 </code></pre></div></div>
 
+<p><a href="https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/task/shell.html">https://dolphinscheduler.apache.org/zh-cn/docs/latest/user_doc/guide/task/shell.html</a></p>
 
-        </div>
-    </div>
-</div>
+<p>”worker 执行该任务的时候，会生成一个临时shell脚本， 并使用与租户同名的 linux 用户执行这个脚本。“</p>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/04/MinIO_policy">Apr 22, 2022 - minio_policy</a></h1>
-        
-        <div class="content">
-            <h1 id="minio-policy">MinIO-policy</h1>
+<p>“如果Worker所在节点没有这个用户，Worker会在执行任务时创建这个用户。”</p>
 
-<p>权限控制</p>
+<p>按照这个说法，Dolphinscheduler权限很大，都可以创建用户了。</p>
 
-<h3 id="有时候场景是-只针对某个账号有权限read-先将bucket设置成privacy-再将这个账号的policy设置成-readonly">有时候场景是 只针对某个账号有权限read， 先将bucket设置成privacy, 再将这个账号的policy设置成 readonly</h3>
+<p>https://dolphinscheduler.apache.org/zh-cn/docs/1.3.1/user_doc/cluster-deployment.html</p>
 
-<p>policy设置如下</p>
+<ul>
+  <li>因为是以 sudo -u {linux-user} 切换不同linux用户的方式来实现多租户运行作业，所以部署用户需要有 sudo 权限，而且是免密的。</li>
+</ul>
 
-<p><img src="/images/202204/WechatIMG118.png" alt="" width="800" /></p>
+<font color="red">所以没有黑科技，要么就是有root权限，要么用user 账号密码登录worker服务器</font>
 
-<p>S3 action: <a href="https://iam.cloudonaut.io/reference/s3.html">https://iam.cloudonaut.io/reference/s3.html</a></p>
+<p>在这个循环中，从queue里不停的获取task， 并交给taskExecuteThread去run</p>
 
-<h3 id="如何获取物理存储地址">如何获取物理存储地址？</h3>
-<p>不可能！ 因为MinIO是将一个文件拆开存放到多个物理磁盘上，不是直接放到某个磁盘。</p>
+<p><img src="/images/202204/WechatIMG120.png" alt="" width="800" /></p>
 
-<h3 id="为什么minio可以保证一半节点不可用的时候服务依然可用">为什么MinIO可以保证一半节点不可用的时候，服务依然可用？</h3>
-<p>参考文章：<a href="https://www.cnblogs.com/FLY_DREAM/p/14587022.html">https://www.cnblogs.com/FLY_DREAM/p/14587022.html</a></p>
+<p><img src="/images/202204/WechatIMG119.png" alt="" width="800" /></p>
 
-<p><a href="https://blog.csdn.net/sinat_27186785/article/details/52034588">https://blog.csdn.net/sinat_27186785/article/details/52034588</a></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TaskExecuteThread.run
+TaskExecuteThread.task.handle()
+ShellTask.handle()
+AbstractCommandExecutor.run
+AbstractCommandExecutor.buildProcess 在这里面会切换用户执行cmd sudo -s username cmd
+</code></pre></div></div>
 
-<p>纠删码</p>
-
-<p>纠删码是一种恢复丢失和损坏数据的数学算法，目前，纠删码技术在分布式存储系统中的应用主要有三类，阵列纠删码（Array Code: RAID5、RAID6 等）、RS(Reed-Solomon)里德-所罗门类纠删码和 LDPC(LowDensity Parity Check Code)低密度奇偶校验纠删码。Erasure Code 是一种编码技术，它可以将 n 份原始数据，增加 m 份数据，并能通过 n+m 份中的任意 n 份数据，还原为原始数据。即如果有任意小于等于 m 份的数据失效，仍然能通过剩下的数据还原出来</p>
-
+<p>FAQ :  <a href="https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md">https://github.com/apache/dolphinscheduler/blob/dev/docs/docs/zh/faq.md</a></p>
 
         </div>
     </div>
@@ -257,7 +324,7 @@ conda activate ancillary
         <a class="btn btn-default" href="/page21" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 22 of 60</span>
+  <span class="page_number ">Page: 22 of 61</span>
   
     <a class="btn btn-default" href="/page23" class="next">Older</a>
   

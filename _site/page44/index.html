@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,38 +175,43 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/10/memcache-expiretime">Oct 20, 2017 - memcache过期时间</a></h1>
+        <h1><a href="/2017/11/docker-command">Nov 28, 2017 - docker常用命令</a></h1>
         
         <div class="content">
-            <p>memcache 过期时间的设置</p>
+            <p>生成镜像  <br />
+docker build -f Dockerfile -t panshi .</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#define REALTIME_MAXDELTA 60*60*24*30  </span>
-   <span class="n">static</span> <span class="n">rel_time_t</span> <span class="n">realtime</span><span class="p">(</span><span class="n">const</span> <span class="n">time_t</span> <span class="n">exptime</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&gt;</span> <span class="no">REALTIME_MAXDELTA</span><span class="p">)</span> <span class="p">{</span>   <span class="c1">#如果超过30天  </span>
-               <span class="k">if</span> <span class="p">(</span><span class="n">exptime</span> <span class="o">&lt;=</span> <span class="n">process_started</span><span class="p">)</span>   <span class="c1">#又小于进程启动时间，直接失效  </span>
-                      <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>   
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">-</span> <span class="n">process_started</span><span class="p">);</span>   <span class="c1">#返回相对时间 exptime时间戳 - 进程启动时间  </span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>   <span class="c1">#没超过30天的秒数，就是用当前运行时间+exptime  </span>
-               <span class="k">return</span> <span class="p">(</span><span class="n">rel_time_t</span><span class="p">)(</span><span class="n">exptime</span> <span class="o">+</span> <span class="n">current_time</span><span class="p">);</span>   <span class="c1">#返回相对时间 服务器运行时间(从启动到现在的时间) + exptime  </span>
-        <span class="p">}</span>  
- <span class="p">}</span>  </code></pre></figure>
+<p>批量删除image <br />
+docker images -a |tr -s ‘ ‘|cut -d ‘ ‘ -f3|xargs docker rmi</p>
 
-<p>当memcache的current_time不对，当(process_started + current_time)落后系统时间戳时，导致cache迟迟不过期,</p>
+<p>批量删除容器<br />
+docker ps -a -q |xargs docker rm</p>
 
-<p><img src="/images/201710/F5C3A0FD-1B86-4D8E-8611-0AF63D8E7D02.png" alt="" /></p>
+<p>启动容器  <br />
+1.docker run -dit --name container_name -v /tmp/outer:/tmp/inner image_name /bin/bash -c "/etc/rc.local;/bin/bash"</p>
 
-<p>uptime就是运行时间<br />
-time是当前时间 （memcache启动时间 + uptime)</p>
-<font color="red">当电脑休眠时，memcache服务器的uptime不会增长，memcache的当前时间就不更新了！！</font>
-<p>(uptime就是代码中的current_time)</p>
+<p>进入容器</p>
 
-<font color="blue">如何处理？ 重启memcache  </font>
+<p>1.docker exec -it container_id/container_name /bin/bash</p>
 
-<p>ps aux|grep memcache<br />
-kill -9 pid<br />
-/usr/bin/memcached -d restart -m 64 -p 11211 -u memcache -l 127.0.0.1</p>
+<p>退出 敲exit即可</p>
 
+<p>2.docker attach container_id  <br />
+    退出需要ctrl+p+q</p>
+
+<p>跟docker容器一起启动</p>
+
+<p>–restart=always</p>
+
+<p>存储/载入</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker save -o 要保存的文件名  要保存的镜像
+
+
+docker load --input 文件
+
+docker load &lt; 文件名
+</code></pre></div></div>
 
         </div>
     </div>
@@ -214,33 +219,50 @@ kill -9 pid<br />
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/09/php_beautifier">Sep 30, 2017 - 在sublime 2中添加php_beautifer </a></h1>
+        <h1><a href="/2017/11/apt-get-command">Nov 9, 2017 - apt-get命令</a></h1>
         
         <div class="content">
-            <p>1.下载go-pear.phar 到php安装目录下，地址http://pear.php.net/go-pear.phar 。//macbook 无法放到/usr/bin 中，我随便放到了/User/gongchangyou/ 下 <br /></p>
+            <p>apt-get update——在修改/etc/apt/sources.list或者/etc/apt/preferences之後运行该命令。此外您需要定期运行这一命令以确保您的软件包列表是最新的。</p>
 
-<p>2.cd /user/gongchangyou</p>
+<p>apt-get install packagename——安装一个新软件包（参见下文的aptitude）</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php go-pear.phar
-一路回车
-</code></pre></div></div>
+<p>apt-get remove packagename——卸载一个已安装的软件包（保留配置文件）</p>
 
-<p>3.export PATH=”/Users/gongchangyou/pear/bin:$PATH” 将这行加到~/.bash_profile中，source ~/.bash_profile</p>
+<p>apt-get –purge remove packagename——卸载一个已安装的软件包（删除配置文件）</p>
 
-<p>4.pear install –alldeps channel://pear.php.net/php_beautifier-0.1.15</p>
+<p>dpkg –force-all –purge packagename 有些软件很难卸载，而且还阻止了别的软件的应用，就可以用这个，不过有点冒险。</p>
 
-<p>5.在Sublime text中安装beautifier插件,  按ctrl+shift+p 在package control中搜索install ,回车后稍等一下就会跳出好多插件,搜索phpbeautifier,回车安装</p>
+<p>apt-get autoclean apt会把已装或已卸的软件都备份在硬盘上，所以如果需要空间的话，可以让这个命令来删除你已经删掉的软件</p>
 
-<p>6.重点来了: 去到sublime =&gt; Preferences =&gt; Browse Packages 打开PhpBeautifier/php_beautifier.py</p>
+<p>apt-get clean 这个命令会把安装的软件的备份也删除，不过这样不会影响软件的使用的。</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cmd = "php_beautifier"
-cmd = "/Users/gongchangyou/pear/bin/php_beautifier" #替换成之前第4步安装的php_beautifier的路径
-如果有需求将class和function 的开启花括号放到下一行
-filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return:break) Pear(add-header=false,newline_class=true,newline_function=true)" //这里需要加上newline_class=true,newline_function=true
-</code></pre></div></div>
+<p>apt-get upgrade——更新所有已安装的软件包</p>
 
-<p>7.试试ctrl+alt+f 或者 command+shift+p   搜索format php</p>
+<p>apt-get dist-upgrade——将系统升级到新版本</p>
 
+<p>apt-cache search string——在软件包列表中搜索字符串</p>
+
+<p>dpkg -l package-name-pattern——列出所有与模式相匹配的软件包。如果您不知道软件包的全名，您可以使用“<em>package-name-pattern</em>”。</p>
+
+<p>aptitude——详细查看已安装或可用的软件包。与apt-get类似，aptitude可以通过命令行方式调用，但仅限于某些命令——最常见的有安装和卸载命令。由于aptitude比apt-get了解更多信息，可以说它更适合用来进行安装和卸载。</p>
+
+<p>aptitude search XXX</p>
+
+<p>apt-cache showpkg pkgs——显示软件包信息。</p>
+
+<p>apt-cache dumpavail——打印可用软件包列表。</p>
+
+<p>apt-cache show pkgs——显示软件包记录，类似于dpkg –print-avail。</p>
+
+<p>apt-cache pkgnames——打印软件包列表中所有软件包的名称。</p>
+
+<p>dpkg -S file——这个文件属于哪个已安装软件包。</p>
+
+<p>dpkg -L package——列出软件包中的所有文件。</p>
+
+<p>apt-file search filename——查找包含特定文件的软件包（不一定是已安装的），这些文件的文件名中含有指定的字符串。apt-file是一个独立的软件包。您必须先使用apt-get install来安装它，然後运行apt-file update。如果apt-file search filename输出的内容太多，您可以尝试使用apt-file search filename | grep -w filename（只显示指定字符串作为完整的单词出现在其中的那些文件名）或者类似方法，例如：apt-file search filename | grep /bin/（只显示位于诸如/bin或/usr/bin这些文件夹中的文件，如果您要查找的是某个特定的执行文件的话，这样做是有帮助的）。</p>
+
+<p>apt-get update 系统软件包更新</p>
 
         </div>
     </div>
@@ -248,27 +270,21 @@ filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - csv文件导入mysql</a></h1>
+        <h1><a href="/2017/11/find-git-string">Nov 6, 2017 - 查找git中有特定字符串的文件</a></h1>
         
         <div class="content">
-            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” <br />
-into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
+            <p>查看我的修改中是否含有var_dump字符串</p>
 
-<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
-错误咋办？</p>
+<p>git log --name-only --author="mouse" |grep php |xargs find {} |xargs grep var_dump</p>
 
-<p>在/etc/my.cnf中添加
-secure-file-priv=”/data/xlive/tools/masterdata/”</p>
-
-<font style="color:red">注意： csv文件中，逗号隔开，不要有空格</font>
-<p><br />
-<br />
-<a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a></p>
-
-<p>将cdb_pms表subject字段中的Welcom to替换成 欢迎光临<br />
-UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
-SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
-WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
+<table>
+  <tbody>
+    <tr>
+      <td>find .</td>
+      <td>xargs grep -ri “example_str” -l</td>
+    </tr>
+  </tbody>
+</table>
 
         </div>
     </div>
@@ -281,7 +297,7 @@ WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt
         <a class="btn btn-default" href="/page43" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 44 of 60</span>
+  <span class="page_number ">Page: 44 of 61</span>
   
     <a class="btn btn-default" href="/page45" class="next">Older</a>
   

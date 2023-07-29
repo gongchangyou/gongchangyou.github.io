@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,115 +175,365 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
+        <h1><a href="/2022/07/skywalking">Jul 21, 2022 - skywalking</a></h1>
         
         <div class="content">
-            <h1 id="mongodb-索引">mongodb 索引</h1>
-
-<p>通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.</p>
-
-<p>参考文章: <a href="https://juejin.cn/post/6844903520747929614">https://juejin.cn/post/6844903520747929614</a></p>
-
-<p><a href="https://haicoder.net/mongodb/mongodb-index-principle.html">https://haicoder.net/mongodb/mongodb-index-principle.html</a></p>
-
-<p><a href="https://blog.csdn.net/guangyacyb/article/details/104339183">https://blog.csdn.net/guangyacyb/article/details/104339183</a></p>
-
-<p><a href="https://mongoing.com/archives/2797">https://mongoing.com/archives/2797</a></p>
-
-<p>可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db.person.createIndex( {age: 1, name: -1} )  
-</code></pre></div></div>
-
-<p>查看索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.getIndexes() 
-</code></pre></div></div>
-
-<p>查看query 是否使用索引,  如果是 <a href="https://docs.mongodb.org/manual/reference/explain-results/#queryplanner">COLLSCAN</a> 说明全表扫描， 如果是 IXSCAN ，就是使用了索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.find({age:18}).explain()
-db.person.find({age:18}).explain("executionStats")
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/flink">Jul 11, 2022 - flink</a></h1>
-        
-        <div class="content">
-            <h1 id="flink">Flink</h1>
-
-<p>官方文档 : <a href="https://flink.apache.org/">https://flink.apache.org/</a></p>
-
-<p>参考文章 : <a href="https://www.jianshu.com/p/d5ccb3aaabc5">https://www.jianshu.com/p/d5ccb3aaabc5</a></p>
-
-<p><a href="https://tech.meituan.com/2018/10/18/meishi-data-flink.html">https://tech.meituan.com/2018/10/18/meishi-data-flink.html</a></p>
-
-<p><a href="https://tech.youzan.com/flink-practice/">https://tech.youzan.com/flink-practice/</a></p>
-
-<blockquote>
-  <p>在执行引擎这一层，流处理系统与批处理系统最大不同在于节点间的数据传输方式。<strong>对于一个流处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，然后立刻通过网络传输到下一个节点，由下一个节点继续处理。</strong> 而对于一个<strong>批处理系统，其节点间数据传输的标准模型是：当一条数据被处理完成后，序列化到缓存中，并不会立刻通过网络传输到下一个节点，当缓存写满，就持久化到本地硬盘上，当所有数据都被处理完成后，才开始将处理后的数据通过网络传输到下一个节点。</strong>这两种数据传输模式是两个极端，对应的是流处理系统对低延迟的要求和批处理系统对高吞吐量的要求。Flink的执行引擎采用了一种十分灵活的方式，同时支持了这两种数据传输模型。Flink以固定的缓存块为单位进行网络数据传输，用户可以通过缓存块超时值指定缓存块的传输时机。如果缓存块的超时值为0，则Flink的数据传输方式类似上文所提到流处理系统的标准模型，此时系统可以获得最低的处理延迟。如果缓存块的超时值为无限大，则Flink的数据传输方式类似上文所提到批处理系统的标准模型，此时系统可以获得最高的吞吐量。同时缓存块的超时值也可以设置为0到无限大之间的任意值。缓存块的超时阈值越小，则Flink流处理执行引擎的数据处理延迟越低，但吞吐量也会降低，反之亦然。通过调整缓存块的超时阈值，用户可根据需求灵活地权衡系统延迟和吞吐量。</p>
-</blockquote>
-
-<p><a href="https://hub.docker.com/_/flink">docker flink</a></p>
-
-<p><a href="https://nightlies.apache.org/flink/flink-docs-release-1.2/quickstart/setup_quickstart.html">quick start</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/git-clone">Jul 8, 2022 - git</a></h1>
-        
-        <div class="content">
-            <h1 id="git-批量迁移">git 批量迁移</h1>
+            <h1 id="skywalking">skywalking</h1>
 
 <ol>
   <li>
-    <p>先找到每个分支最近一次提交的记录， 并按照提交时间排序, tformat 最后会有换行符，比 format好用一些。</p>
+    <p>docker-compose up -d 启动 es + kibana + oap + UI
+  <a href="/images/202207/docker-compose.yml">docker-compose.yml</a>  docker-compose up -d</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  version: '2.2'
+  services:
+    es-node:
+     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+     container_name: es-node
+     environment:
+       - node.name=es-node
+       - cluster.name=es-cluster-7
+       - discovery.type=single-node
+       - xpack.security.enabled=false
+       - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+     ulimits:
+       memlock:
+         soft: -1
+         hard: -1
+     volumes:
+       - ./data:/usr/share/elasticsearch/data
+     ports:
+       - 9200:9200
+     networks:
+       - skywalking-network
+
+    kibana:
+     image: docker.elastic.co/kibana/kibana:7.5.0
+     environment:
+       ELASTICSEARCH_HOSTS: http://es-node:9200
+     ports:
+       - 5601:5601
+     networks:
+       - skywalking-network
+     depends_on:
+       - es-node
+
+    oap:
+     image: apache/skywalking-oap-server:8.9.1
+     container_name: oap1
+     environment:
+       SW_STORAGE: elasticsearch
+       SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
+       TZ: Asia/Shanghai 
+     ports:
+       - 12800:12800
+       - 11800:11800
+     networks:
+       - skywalking-network
+     depends_on:
+       - es-node
+
+    ui:
+      image: apache/skywalking-ui:8.9.1
+      environment:
+        SW_OAP_ADDRESS: http://oap1:12800
+        TZ: Asia/Shanghai 
+      ports:
+        - 8088:8080
+      networks:
+        - skywalking-network
+      depends_on:
+        - es-node    
+
+  volumes:
+   es-data01:
+     driver: local
+
+  networks:
+   skywalking-network:
+     driver: bridge
+  
 </code></pre></div>    </div>
-  </li>
-  <li>找到最后一行 (如下任1命令)
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 1.awk 'END {print}'
 
- 2.sed -n '$p'
-
- 3.sed '$!N;$!D'
-
- 4.awk '{b=a"\n"$0;a=$0}END{print b}'
-
-</code></pre></div>    </div>
+    <p>发现 es中会创建一堆索引
+<img src="/images/202207/WechatIMG350.png" alt="" width="800" /></p>
   </li>
   <li>
-    <p>找到最近一次提交的分支的记录</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}' 
-    
-</code></pre></div>    </div>
+    <p>检查以上4个容器是否都正常启动 docker logs XXX ， 打开 localhost:8088 看到 UI启动好了</p>
   </li>
   <li>
-    <p>sed提取出分支</p>
+    <p>下载 java agent <a href="https://skywalking.apache.org/downloads/#Agents">https://skywalking.apache.org/downloads/#Agents</a> 通过设置 -javaagent 配置 SkyWalking Agent</p>
+  </li>
+  <li>
+    <p>在idea中设置vm options,   -javaagent:/Users/gongchangyou/learn/skywalking/skywalking-agent/skywalking-agent.jar,  具体的配置可以去 /Users/gongchangyou/learn/skywalking/skywalking-agent/config/agent.config 看看</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#获取最近一次提交
-	log=$(git br -vvr |awk '{print $1}' |xargs -I {} git log {} --pretty=tformat:"%C(cyan)%at %C(cyan)%ad %C(yellow)%h %C(magenta)%d %C(reset)%s %C(green)[%an]"  -1 --date=iso | sort|awk 'END {print}') 
-	#获取分支名
-	echo $log
-	branchname=$(echo $log |sed 's/.*(\(.*\)).*/\1/' | awk -F',' '{print $NF}' | sed 's/origin\/\(.*\)/\1/') 
-    
-	echo $branchname
-</code></pre></div>    </div>
+    <p><img src="/images/202207/WechatIMG355.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>完成 打开 http://localhost:8088/trace 看看</p>
+
+    <p><img src="/images/202207/WechatIMG356.png" alt="" width="800" /></p>
   </li>
 </ol>
+
+<hr />
+
+<p>问题1: org.apache.skywalking.oap.server.library.module.ProviderNotFoundException</p>
+
+<p>回答1: 应该是ES版本和skywalking版本不匹配导致，把版本先对应好，比如上面的yml中的ES从 8.2.0降到:7.5.0</p>
+
+<p>skywalking版本保持在 8.9.1</p>
+
+<p>参考文章： <a href="https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/">https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/</a></p>
+
+<p><a href="https://www.cnblogs.com/xiao987334176/p/13530575.html">https://www.cnblogs.com/xiao987334176/p/13530575.html</a></p>
+
+<p><a href="https://hub.docker.com/r/apache/skywalking-oap-server">https://hub.docker.com/r/apache/skywalking-oap-server</a></p>
+
+<p><a href="https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/">https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/java-agent">Jul 16, 2022 - java agent</a></h1>
+        
+        <div class="content">
+            <h1 id="java-agent">java agent</h1>
+
+<p>参考文章： <a href="https://xz.aliyun.com/t/9450">https://xz.aliyun.com/t/9450</a></p>
+
+<p><a href="https://www.cnblogs.com/rickiyang/p/11368932.html">https://www.cnblogs.com/rickiyang/p/11368932.html</a></p>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/javaagent_test">https://github.com/gongchangyou/javaagent_test</a></p>
+
+<ol>
+  <li>premain 启动应用的同时 添加 -javaagent:/path/to/agent.jar</li>
+</ol>
+
+<p>问题1：Failed to find Premain-Class manifest attribute</p>
+
+<p>回答1:  解压缩我打的包之后发现 MANIFEST.MF文件被替换成了默认的. 我们用maven 插件修改他</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven 3.6.3
+Built-By: gongchangyou
+Build-Jdk: 11.0.12
+
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;archive&gt;
+            &lt;!--自动添加META-INF/MANIFEST.MF --&gt;
+            &lt;manifest&gt;
+                &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+            &lt;/manifest&gt;
+            &lt;manifestEntries&gt;
+                &lt;Premain-Class&gt;com.mouse.PreDemo&lt;/Premain-Class&gt;
+                &lt;Agent-Class&gt;com.mouse.AgentDemo&lt;/Agent-Class&gt;
+                &lt;Can-Redefine-Classes&gt;true&lt;/Can-Redefine-Classes&gt;
+                &lt;Can-Retransform-Classes&gt;true&lt;/Can-Retransform-Classes&gt;
+            &lt;/manifestEntries&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre></div></div>
+
+<hr />
+
+<ol>
+  <li>agentmain 应用已经启动的情况下，将agent.jar attach上去</li>
+</ol>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/agent_main">https://github.com/gongchangyou/agent_main</a>
+  <a href="https://github.com/gongchangyou/agent_demo">https://github.com/gongchangyou/agent_demo</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      java -jar agent.jar pid /path/to/app.jar
+      
+      # 一个例子
+      java -jar javaagent_test-1.0-SNAPSHOT.jar 40843 /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar
+      
+      
+</code></pre></div></div>
+
+<hr />
+
+<p>问题1： Agent JAR not found or no Agent-Class attribute</p>
+
+<p>回答1：loadAgent ， agent.jar注意用绝对路径</p>
+
+<p>参考文章: <a href="https://blog.csdn.net/weixin_37828719/article/details/106237872">https://blog.csdn.net/weixin_37828719/article/details/106237872</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/feign">Jul 14, 2022 - feign</a></h1>
+        
+        <div class="content">
+            <h1 id="feign-集成-到nacos上">Feign 集成 到nacos上</h1>
+
+<p>feign 集成nacos,  先启动<a href="/2022/01/nacos">nacos</a>, 再搭一个<a href="/2022/01/nexus">nexus</a></p>
+
+<p>代码仓库:  <a href="https://github.com/gongchangyou/feign_producer">https://github.com/gongchangyou/feign_producer</a></p>
+
+<p><a href="https://github.com/gongchangyou/feign_consumer">https://github.com/gongchangyou/feign_consumer</a></p>
+
+<p>处理依赖真的是……一言难尽</p>
+
+<p>主要思路是: <font color="red"> 为了能够通过服务名发现注册到Nacos的服务，所以需要引入spring-cloud-starter-alibaba-nacos-discovery；为了使用Spring官方的负载均衡器来替换Ribbon，需要引入spring-cloud-starter-loadbalancer，并添加配置 spring.cloud.loadbalancer.ribbon.enabled=false
+</font></p>
+
+<p>总之feign集成到nacos 比dubbo 难用很多，因为本身feign是netflix出品，而nacos是 alibaba出品。</p>
+
+<p>注意： 入参是对象的话，要将method指定为post， 且在参数上添加 @RequestBody 注解. 原理说明 <a href="https://www.jianshu.com/p/c1b8315c5a03">https://www.jianshu.com/p/c1b8315c5a03</a>.</p>
+<blockquote>
+  <p>@RequestBody修饰的参数会使用RequestResponseBodyMethodProcessor解析，</p>
+</blockquote>
+
+<p>重点看 InvocableHandlerMethod.getMethodArgumentValues 其中的
+RequestResponseBodyMethodProcessor.readWithMessageConverters
+最终发现是 AbstractJackson2HttpMessageConverter 中的一句 objectMapper.readValue(inputMessage.getBody(), javaType)。</p>
+
+<p><img src="/images/202207/WechatIMG321.png" alt="" width="800" /></p>
+
+<p><img src="/images/202207/WechatIMG322.png" alt="" width="800" /></p>
+
+<p><img src="/images/202207/WechatIMG323.jpeg" alt="" width="800" /></p>
+
+<hr />
+
+<p>问题1： client error: invalid param. com.alibaba.nacos.client.naming.NacosNamingService</p>
+
+<p>解决1： 从这里追进去看 是class NacosNamingService 找不到 ， 添加依赖即可</p>
+
+<p><img src="/images/202207/WechatIMG318.png" alt="" width="800" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;
+            &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;
+            &lt;version&gt;1.3.1&lt;/version&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<hr />
+
+<p>问题2： Caused by: java.lang.ClassNotFoundException: org.springframework.boot.logging.DeferredLogFactory
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]</p>
+
+<p>回答2： spring-cloud 和 spring-boot的版本不匹配， 可以参考文章: <a href="https://spring.io/projects/spring-cloud">https://spring.io/projects/spring-cloud</a></p>
+
+<p><a href="https://start.spring.io/actuator/info">https://start.spring.io/actuator/info</a></p>
+
+<hr />
+
+<p>问题3：No Feign Client for loadBalancing defined. Did you forget to include spring-cloud-starter-netflix-ribbon or spring-cloud-starter-loadbalancer?</p>
+
+<p>回答3：加入 spring-cloud-starter-loadbalancer 并在nacos中排除ribbon依赖</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-loadbalancer --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-loadbalancer&lt;/artifactId&gt;
+    &lt;version&gt;2.2.9.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+<p>参考文章 <a href="https://blog.csdn.net/eclipse1024/article/details/115587984">https://blog.csdn.net/eclipse1024/article/details/115587984</a></p>
+
+<hr />
+
+<p>问题4： 无法根据 feignClient中的name获取实际的ip:port 
+<img src="/images/202207/WechatIMG320.png" alt="" width="800" />
+回答4： 需要引入 spring-cloud-starter-alibaba-nacos-discovery, 注意选择和项目中 spring-boot 匹配的版本</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+    &lt;version&gt;2.2.6.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre></div></div>
+<p>参考文章 <a href="https://blog.csdn.net/hbtj_1216/article/details/108190231">https://blog.csdn.net/hbtj_1216/article/details/108190231</a>
+<a href="https://cloud.tencent.com/developer/article/1957463">https://cloud.tencent.com/developer/article/1957463</a></p>
+
+<hr />
+
+<p>问题5： Caused by: java.lang.ClassNotFoundException: com.alibaba.nacos.client.logging.NacosLogging
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]</p>
+
+<p>回答5：  把 spring-cloud-starter-alibaba-nacos-discovery 降到合适的版本</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+            &lt;version&gt;2.2.0.RELEASE&lt;/version&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;
+                    &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;servo-core&lt;/artifactId&gt;
+                    &lt;groupId&gt;com.netflix.servo&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
+                    &lt;groupId&gt;com.alibaba.spring&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;hystrix-core&lt;/artifactId&gt;
+                    &lt;groupId&gt;com.netflix.hystrix&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-cloud-commons&lt;/artifactId&gt;
+                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-cloud-context&lt;/artifactId&gt;
+                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-cloud-netflix-ribbon&lt;/artifactId&gt;
+                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-cloud-starter&lt;/artifactId&gt;
+                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;artifactId&gt;spring-cloud-netflix-archaius&lt;/artifactId&gt;
+                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<hr />
+
+<p>问题6： java.lang.ClassNotFoundException: com.netflix.servo.monitor.Monitors</p>
+
+<p>回答6：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.netflix.servo&lt;/groupId&gt;
+    &lt;artifactId&gt;servo-core&lt;/artifactId&gt;
+    &lt;version&gt;0.12.7&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
 
 
         </div>
@@ -297,7 +547,7 @@ db.person.find({age:18}).explain("executionStats")
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 60</span>
+  <span class="page_number ">Page: 8 of 61</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   

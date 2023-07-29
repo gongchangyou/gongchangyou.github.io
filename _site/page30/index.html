@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,96 +175,421 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/03/opengl-go">Mar 10, 2022 - go-opengl</a></h1>
+        <h1><a href="/2022/03/es-heatmap">Mar 15, 2022 - es-heatmap</a></h1>
         
         <div class="content">
-            <h1 id="go-opengl">Go OpenGL</h1>
+            <h1 id="elasticsearch-热力图性能测评">ElasticSearch 热力图性能测评</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/elasticsearch-test">https://github.com/gongchangyou/elasticsearch-test</a></p>
+
+<p>上述仓库里面也有建立索引+bulk批量创建数据的测试代码 ,1亿数据一会儿就能创建好</p>
+
+<p>java客户端 <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html">https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html</a></p>
+
+<p>创建索引: <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings">https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-create-index.html#_index_settings</a></p>
+
+<p>测试服务器8核,  线上环境会更好</p>
+
+<p>10000个点热力图40ms</p>
+
+<p>1000000 个点 热力图, 不测了。直接上7kw个点</p>
+
+<p>7kw 个点 热力图</p>
+
+<p>搜索10*10的矩形， 首次查询5-6s，效果还是非常不错的。</p>
+
+<p>搜索100*100的矩形， 首次查询10-11s.</p>
+
+<p>搜索1000*1000， 报错 “too_many_buckets_exception” 这是ES为了性能考虑。 我们尝试调大一点 2000000。实测23s左右耗时。</p>
+
+<p><img src="/images/202203/WechatIMG51.png" alt="" width="800" /></p>
+
+<p>当然实际情况更多的是查看局部，这样就会退化成500*500个bucket，这样查询耗时依然是10s左右，可以接受.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PUT /_cluster/settings
+{"persistent": {"search.max_buckets": 2000000}}
+</code></pre></div></div>
+
+<p>现在唯一的问题就是存储空间，7kw个点的是4g+ ，如果200个数据集将近1T。</p>
+
+<p><img src="/images/202203/WechatIMG50.png" alt="" width="800" /></p>
+
+<p>问题1： JacksonJsonpMapper NoClassDefFoundError</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;properties&gt;
+        &lt;jakarta-json.version&gt;2.0.1&lt;/jakarta-json.version&gt; #这里把版本号设置成2.0.1
+        &lt;java.version&gt;11&lt;/java.version&gt;
+    &lt;/properties&gt;
+</code></pre></div></div>
+
+<p>问题2： Missing [X-Elastic-Product] header.</p>
+
+<p>解决2： elasticsearch 升级下版本，7.17.0+</p>
+
+<p>问题3：  返回值大于100M</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: entity content is too long [107665275] for the configured buffer limit [104857600]
+
+</code></pre></div></div>
+
+<p>解决3:  别人的解决方案 <a href="https://www.cnblogs.com/wwjj4811/p/15261125.html">https://www.cnblogs.com/wwjj4811/p/15261125.html</a></p>
+
+<p>解决3：上述解决方案太复杂了，我觉得ES设置成100M上限还是挺有道理的，先看看我们本身的query，咱们这个步长因为精度问题可能在小数点后很多位，超出我们的需要，本身0.0004就够了，结果 0.00040000002，然后AggregationRange需要将float转换成String，所以这里字符串长度就长了许多。至此，我们就直接把小数点位数控制好即可</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /**
+     * 保留小数点后4位
+     */
+    private String decimal(float x){
+        return String.format("%.4f", x);
+    }
+</code></pre></div></div>
+
+<p><img src="/images/202203/WechatIMG52.png" alt="" width="800" /></p>
+
+<p>注意： 如果没做归一化的话，不需要使用geo_point 类别，否则插入、查询的时候会报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET map_geo/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat": 400,
+              "lon": 100
+            },
+            "bottom_right": {
+              "lat": 30,
+              "lon": 71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "query_shard_exception",
+        "reason" : "couldn't validate latitude/ longitude values",
+        "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+        "index" : "map_geo"
+      }
+    ],
+    "type" : "search_phase_execution_exception",
+    "reason" : "all shards failed",
+    "phase" : "query",
+    "grouped" : true,
+    "failed_shards" : [
+      {
+        "shard" : 0,
+        "index" : "map_geo",
+        "node" : "h6XPf8XwQla0HPzsoZa4KA",
+        "reason" : {
+          "type" : "query_shard_exception",
+          "reason" : "couldn't validate latitude/ longitude values",
+          "index_uuid" : "zVEWBGbYSjO70J7-gmSGDQ",
+          "index" : "map_geo",
+          "caused_by" : {
+            "type" : "query_validation_exception",
+            "reason" : "Validation Failed: 1: [geo_bounding_box] top latitude is invalid: 400.0;"
+          }
+        }
+      }
+    ]
+  },
+  "status" : 400
+}
+
+</code></pre></div></div>
+
+<p>如何加速范围查询？ 可以将范围作为keyword保存下来，下次term查询就快了。</p>
+
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/es">Mar 14, 2022 - es-install</a></h1>
+        
+        <div class="content">
+            <h1 id="docker-install--elasticsearch">Docker install  ElasticSearch</h1>
+
+<h3 id="如果想部署-kibana--es--httpsquoeamastermediumcomdeploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">如果想部署 kibana + es ： <a href="https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851">https://quoeamaster.medium.com/deploying-elasticsearch-and-kibana-with-docker-86a4ac78d851</a></h3>
 
 <ol>
   <li>
-    <p>先安装一个 goland <a href="https://www.jetbrains.com/zh-cn/go/">https://www.jetbrains.com/zh-cn/go/</a></p>
-  </li>
-  <li>
-    <p>配置GOROOT, GOPATH, 注意GO Modules配置成如下这样
-<img src="/images/202203/421646811018_.pic.jpg" alt="" width="800" />
-<img src="/images/202203/401646810998_.pic.jpg" alt="" width="800" />
-<img src="/images/202203/411646811008_.pic.jpg" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>proxy也设置一下
-  <img src="/images/202203/451646811683_.pic.jpg" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>如果要使用命令行的话 ，还需要 ~/.bash_profile中添加 ，并source ~/.bash_profile</p>
+    <p>docker pull</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export GOPROXY=https://goproxy.io
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull docker.elastic.co/kibana/kibana:8.1.0
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>去有 go.mod 的文件同级敲命令</p>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> go mod tidy
+    <p>docker-compose.yml</p>
+  </li>
+</ol>
+
+<p><a href="/images/202203/docker-compose.yml">下载 yaml</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2.2'
+services:
+ node01:
+   image: docker.elastic.co/elasticsearch/elasticsearch:8.2.0
+   container_name: node01
+   environment:
+     - node.name=node01
+     - cluster.name=es-cluster-7
+     - discovery.type=single-node
+     - xpack.security.enabled=false
+     - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+   ulimits:
+     memlock:
+       soft: -1
+       hard: -1
+   volumes:
+     - es-data01:/usr/share/elasticsearch/data
+   ports:
+     - 9200:9200
+   networks:
+     - es-network
+
+ kibana:
+   image: docker.elastic.co/kibana/kibana:8.2.0
+   environment:
+     ELASTICSEARCH_HOSTS: http://node01:9200
+   ports:
+     - 5601:5601
+   networks:
+     - es-network
+   depends_on:
+     - node01
+
+volumes:
+ es-data01:
+   driver: local
+
+networks:
+ es-network:
+   driver: bridge
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <blockquote>
+      <p>docker-compose up</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>浏览器 访问 http://localhost:5601/</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:5601/app/dev_tools#/console #dev tool 可以直接敲命令
 </code></pre></div>    </div>
   </li>
 </ol>
 
-<p>external libraries中应该就引入了</p>
-
-<p>问题1: 多个文件时， go run main.go 会报错 某个函数undefined。</p>
-
-<p>两种解决方案：</p>
-
-<ol>
-  <li>将函数，变量等都挪到 main.go 里面</li>
-  <li>执行 go run *.go 而不是 go run main.go</li>
-</ol>
-
-<p>问题2： ubuntu缺少组件库 会报错</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-root@mouse-Precision-3650-Tower:/home/mouse/Downloads/opengl-heatmap/trial# go run *.go
-# pkg-config --cflags  -- gl gl
-Package gl was not found in the pkg-config search path.
-Perhaps you should add the directory containing `gl.pc'
-to the PKG_CONFIG_PATH environment variable
-No package 'gl' found
-Package gl was not found in the pkg-config search path.
-Perhaps you should add the directory containing `gl.pc'
-to the PKG_CONFIG_PATH environment variable
-No package 'gl' found
-pkg-config: exit status 1
-# github.com/go-gl/glfw/v3.3/glfw
-In file included from ./glfw/src/internal.h:188,
-                 from ./glfw/src/context.c:30,
-                 from /root/go/pkg/mod/github.com/go-gl/glfw/v3.3/glfw@v0.0.0-20211213063430-748e38ca8aec/c_glfw.go:4:
-./glfw/src/x11_platform.h:36:10: fatal error: X11/Xcursor/Xcursor.h: No such file or directory
-   36 | #include &lt;X11/Xcursor/Xcursor.h&gt;
-      |          ^~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-
+<p>查看所有索引</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET _cat/indices
 </code></pre></div></div>
 
-<p><a href="https://github.com/go-gl/glfw/issues/129">https://github.com/go-gl/glfw/issues/129</a></p>
+<p>注意：最好把版本升级下 7.11.1 -&gt; 7.17.0，因为java的客户端 8.1.0会报错 Missing [X-Elastic-Product] header.</p>
 
-<p>那就根据报错找到对应的lib 安装即可</p>
+<p>如果要压测的话，上面的jvm内存调大一点，至少10G吧.   如果想要使用kNN查询的话，最好把版本升到8.0以上，比如8.1.0. <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search-api.html</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libxcursor-dev
+<p>热力图可视化  <a href="https://www.freesion.com/article/72491420060/">https://www.freesion.com/article/72491420060/</a></p>
 
-apt-get install libxinerama-dev
+<p>重点是要在stack management中创建index pattern!! 否则无法在Visualize 页面创建关于这个index的可视化界面</p>
 
-apt-get install libxrandr-dev
+<p>可以点击inspect 看request 语句</p>
 
-apt-get install libxi-dev
+<p><img src="/images/202203/WechatIMG49.png" alt="" width="800" /></p>
 
-sudo apt-get install mesa-common-dev
-sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
-
-sudo apt-get install Xxf86vm*
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET users/_search 
+{
+  "aggs": {
+    "2": {
+      "terms": {
+        "field": "country.keyword",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 2
+      },
+      "aggs": {
+        "3": {
+          "terms": {
+            "field": "age",
+            "order": {
+              "_count": "desc"
+            },
+            "size": 2
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "fields": [],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
 </code></pre></div></div>
 
-<p>问题3： ubuntu 如何查看opengl版本？</p>
+<p>坐标系的热力图的 query</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install mesa-utils
-glxinfo | grep -i opengl
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get users/_search
+{
+  "aggs": {
+    "2": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "to": 10,
+            "from": 0
+          },
+          {
+            "to": 20,
+            "from": 10
+          },
+          {
+            "to": 30,
+            "from": 20
+          },
+          {
+            "to": 37,
+            "from": 30
+          }
+        ],
+        "keyed": true
+      },
+      "aggs": {
+        "2": {
+          "range": {
+            "field": "age",
+            "ranges": [
+              {
+                "to": 10,
+                "from": 0
+              },
+              {
+                "to": 20,
+                "from": 10
+              },
+              {
+                "to": 30,
+                "from": 20
+              },
+              {
+                "to": 40,
+                "from": 30
+              }
+            ],
+            "keyed": true
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "fields": [],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+</code></pre></div></div>
+
+<p>附： docker-compose 安装 <a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+
+<h3 id="单独部署-es">单独部署 ES</h3>
+
+<p>官网 ： <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull docker.io/elasticsearch
+
+docker network create elastic
+
+docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+
+docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt .
+
+curl --cacert http_ca.crt -u elastic https://localhost:9200 
+
+输入docker run 时的password即可
+</code></pre></div></div>
+
+<p>问题1： 报错</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR: [1] bootstrap checks failed. You must address the points described in the following [1] lines before starting Elasticsearch.
+bootstrap check failure [1] of [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+ERROR: Elasticsearch did not exit normally - check the logs at /usr/share/elasticsearch/logs/docker-cluster.log
+</code></pre></div></div>
+
+<p>虚拟内存太小了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/sysctl.conf 
+vm.max_map_count=655360
+</code></pre></div></div>
+
+<p>重启</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --name es01 --net elastic -p 9200:9200 -p 9300:9300 -it docker.elastic.co/elasticsearch/elasticsearch:8.1.0
+</code></pre></div></div>
+
+<p>几个常用的命令</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#查看索引结构
+GET /table_ik
+
+#grid_cell是索引库的名称
+GET /table_ik/_count
+
+#查看所有的索引
+GET /_cat/indices/
 </code></pre></div></div>
 
 
@@ -274,64 +599,13 @@ glxinfo | grep -i opengl
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/03/opengl-java">Mar 9, 2022 - java-opengl</a></h1>
+        <h1><a href="/2022/03/go(1)">Mar 11, 2022 - go-1</a></h1>
         
         <div class="content">
-            <h1 id="java-opengl">java opengl</h1>
+            <h1 id="go1">Go（1）</h1>
 
-<p>Lwjgl  vs jogl ?</p>
+<p>学习网站 <a href="https://tiancaiamao.gitbooks.io/go-internals/content/zh/">https://tiancaiamao.gitbooks.io/go-internals/content/zh/</a></p>
 
-<p>我看https://mvnrepository.com上 jogl很久没更新了，最近一次是2015年, 怕是已经没人维护了。</p>
-
-<p>选择lwjgl试试</p>
-
-<p><a href="https://www.lwjgl.org/guide">https://www.lwjgl.org/guide</a> 官网好看</p>
-
-<p>官方demo :<a href="https://github.com/LWJGL/lwjgl3-demos">https://github.com/LWJGL/lwjgl3-demos</a></p>
-
-<p>可以修改mainclass 查看不同的demo效果</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;transformers&gt;
-	&lt;transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"&gt;
-     &lt;mainClass&gt;org.lwjgl.demo.${class}&lt;/mainClass&gt;
-     &lt;/transformer&gt;
-  &lt;/transformers&gt;
-</code></pre></div></div>
-
-<p>可是这个是一个专门的window， 可以播放opengl。 希望导出一个图片，后续对opengl有研究了再继续这个项目。</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/gitlab-container">Mar 9, 2022 - gitlab-container</a></h1>
-        
-        <div class="content">
-            <h1 id="gitlab-container-registry">gitlab container registry</h1>
-
-<p>官网说明 ：[https://docs.gitlab.cn/jh/administration/packages/container_registry.html](https://docs.gitlab.cn/jh/administration/packages/container_registry.html</p>
-
-<p>即可以进到docker容器中查看配置文件，也可以先查看挂载数据卷，再看宿主机上的文件。</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>docker inspect container_name</td>
-      <td>grep Mounts -A 20</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>在这个配置中可以看到  容器的镜像仓库的port等配置</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat /srv/gitlab/data/gitlab-rails/etc/gitlab.yml|grep 5005 -C 20
-</code></pre></div></div>
-
-<p>每个工程的镜像在如图这个位置查看
-<img src="/images/202203/WechatIMG350.png" alt="" width="800" /></p>
-
-<p>不知道如何用docker客户端连接私有镜像库</p>
 
         </div>
     </div>
@@ -344,7 +618,7 @@ glxinfo | grep -i opengl
         <a class="btn btn-default" href="/page29" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 30 of 60</span>
+  <span class="page_number ">Page: 30 of 61</span>
   
     <a class="btn btn-default" href="/page31" class="next">Older</a>
   

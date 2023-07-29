@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,45 +175,44 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/07/activity%E5%88%AB%E5%90%8D">Jul 1, 2016 - activity 别名</a></h1>
+        <h1><a href="/2016/08/mysqldump-tz">Aug 26, 2016 - mysqldump --tz-utc=0 的坑</a></h1>
         
         <div class="content">
-            <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;activity
-        android:name="com.skymoons.zdbmgj.WXEntryActivity"&gt;&lt;/activity&gt; 
-    &lt;activity-alias
-        android:name=".wxapi.WXEntryActivity"
-        android:targetActivity="com.skymoons.zdbmgj.WXEntryActivity"
-        android:exported="true" /&gt;
+            <p>mysqldump 时区对不上 用unix_timestamp 在mysql里面运行还是ok的 结果用mysqldump 就不对了</p>
+
+<p>InsertTime &gt;= unix_timestamp(date_sub(curdate(), INTERVAL 1 DAY)) and InsertTime &lt;= unix_timestamp(curdate())</p>
+
+<p>需要用–tz-utc=0 来设置默认时区，否则用的就是mysqldump在默认情况下，是按’+00:00’(中时区).</p>
+
+<p>mysqldump ${MYSQLDUMP_OPTION}  –databases ${database_schema} –tables ${database_table} –skip-opt –quick –single-transaction –hex-blob –no-create-info –tz-utc=0 –where “${mysqldump_where}” | grep INSERT &gt; ${dump_file}</p>
+
+<p>http://www.linuxidc.com/Linux/2012-12/76184.htm</p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2016/07/ssh-config-alias">Jul 20, 2016 - ssh rsa</a></h1>
+        
+        <div class="content">
+            <p>1.ssh-keygen  -t rsa</p>
+
+<p>2.在 ~/.ssh/config中添加</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	Host lfs-cn-manage 
+	  HostName localhost  #这里写ip
+	  User aiming
+	  IdentityFile ~/.ssh/id_rsa.aiming
 </code></pre></div></div>
 
-<p>比如微信的接口只能用 .wxapi.WXEntryActivity 这个名字，现在 com.skymoons.zdbmgj.WXEntryActivity 用这个activity来代替</p>
+<p>3.chmod 666 ~/.ssh/config #勿忘</p>
 
-<p>记得在manifest之前 声明com.skymoons.zdbmgj.WXEntryActivity</p>
+<p>4.将pub key 添加到服务端的 ~/.ssh/authorized_keys 中</p>
 
-        </div>
-    </div>
-</div>
+<p>搞定！</p>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2016/06/atos-dSYM">Jun 21, 2016 - atos命令 调试ios crash</a></h1>
-        
-        <div class="content">
-            <p>打开Terminal，进入到build/Debug-iphoneos</p>
-
-<p>使用命令:</p>
-
-<p>$atos -arch armv7 -o XXX.app/XXX 0xabcdef</p>
-
-<p>XXX是你的App名字，用需要解析的地址替换上面的0xabcdef</p>
-
-<p>armv7是编译App时所用的Architecture，也可能是arm64，如果在simulator上的App，这个位置应该用i386</p>
-
-<p>=====================</p>
-
-<p>上传ipa:</p>
-
-<p>利用mac自带软件 Application Loader上传ipa</p>
 
         </div>
     </div>
@@ -221,12 +220,42 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2016/06/ios%E6%8A%93%E5%8C%85%E5%88%A9%E5%99%A8">Jun 12, 2016 - ios抓包利器</a></h1>
+        <h1><a href="/2016/07/nfs">Jul 7, 2016 - nfs磁盘共享</a></h1>
         
         <div class="content">
-            <p>Replica</p>
+            <p>A机器磁盘太小了  希望通过A机器的路径访问到 有剩余空间的B机器</p>
 
-<p>https://itunes.apple.com/cn/app/replica-web-developer-tool/id1068196306?mt=8</p>
+<p>0.先进入到B机器，发现没有安装nfs service</p>
+
+<p>1，配置NFS服务端</p>
+
+<p>$ sudo yum install nfs-utils portmap  （适用centos 5）
+$ sudo yum install nfs-utils rpcbind  （适用centos 6）</p>
+
+<p>2.sudo vi /etc/exports</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/big_query 10.140.69.97(rw)  //前面的是本地的路径 后面是A机器的ip rw是读写权限 
+</code></pre></div></div>
+
+<p>参数说明：
+rw：read-write，可读写；
+ro：read-only，只读；
+sync：同步写入（文件同时写入硬盘和内存），适用在通信比较频繁且实时性比较高的场合
+async：异步写入（文件先写入内存，稍候再写入硬盘），性能较好（速度快），适合超大或者超多文件的写入，但有数据丢失的风险，比如突然断电等情况；
+root_squash（默认）：将来访的root用户映射为匿名用户或用户组；
+no_root_squash：来访的root用户保持root帐号权限（可能会不安全）；
+no_all_squash（默认）：访问用户先与本机用户匹配，匹配失败后再映射为匿名用户或用户组；
+all_squash：将来访的所有用户映射为匿名用户或用户组；
+secure（默认）：限制客户端只能从小于1024的tcp/ip端口连接服务器；
+insecure：允许客户端从大于1024的tcp/ip端口连接服务器；
+anonuid：匿名用户的UID值，通常是nobody或nfsnobody，可以在此处自行设定；
+anongid：匿名用户的GID值；
+no_subtree_check：如果NFS输出的是一个子目录，则无需检查其父目录的权限（可以提高效率）</p>
+
+<p>3.sudo service nfs start //启动nfs服务 可以通过sudo service nfs status来查看当前状态</p>
+
+<p>4.激动人心的来了 去A服务器
+	mount  10.140.99.122:/var/log/big_query  /var/path/of/local //前面的ip是B的ip 路径就是第2步中的路径 后面那个是A本地路径</p>
 
 
         </div>
@@ -240,7 +269,7 @@
         <a class="btn btn-default" href="/page46" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 47 of 60</span>
+  <span class="page_number ">Page: 47 of 61</span>
   
     <a class="btn btn-default" href="/page48" class="next">Older</a>
   

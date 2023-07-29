@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,23 +175,84 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/jenkins">Jan 19, 2022 - jenkins-install</a></h1>
+        <h1><a href="/2022/01/matomo">Jan 24, 2022 - matomo</a></h1>
         
         <div class="content">
-            <h1 id="jenkins-install">Jenkins-install</h1>
+            <h1 id="matomo-部署">Matomo 部署</h1>
 
-<p><a href="https://www.jenkins.io/zh/doc/book/installing/">https://www.jenkins.io/zh/doc/book/installing/</a></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull matomo
 
-<h2 id="记得把timezone设置成东8区">记得把timezone设置成东8区</h2>
-<p>docker run -u root -d  –restart always -e TZ=”Asia/Shanghai” -p 8080:8080 -p 50000:50000 -v /Users/gongchangyou/learn:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean</p>
+docker run --restart=always -d --name matomo -p 7777:80 -v /opt/matomo/data:/data -v /opt/matomo/html:/var/www/html matomo
+</code></pre></div></div>
 
-<p>docker ps</p>
+<p>mysql新建db 和用户</p>
 
-<p>docker exec -it  ad5f918f0e58 bash</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create database matomo;
 
-<p>bash-5.1# cat /var/jenkins_home/secrets/initialAdminPassword</p>
+create user 'matomo'@'%' IDENTIFIED BY 'password';
 
-<p>10.10.48.192:8080/</p>
+grant all privileges on matomo.* to 'matomo'@'%';
+
+</code></pre></div></div>
+
+<p>但是因为宿主机已经安装了 mysql 。 所以需要matomo能够访问宿主机的db</p>
+
+<p>在宿主机 ifconfig 命令后 。发现一个docker0 的网桥，记住他的ip 172.17.0.1</p>
+
+<p>在localhost:7777 中设置 database的时候 将 刚刚的ip[172.17.0.1]当成 host贴进去，应该就ok了.</p>
+
+<p>因为默认端口是80，咱们这里改成了7777 所以有可能需要去配置下
+vi /var/www/html/config/config.ini.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[General]
+trusted_hosts[] = "10.10.48.194:7777"
+</code></pre></div></div>
+
+<p>若是反向代理的话，需要获取用户ip，需要修改 html/core/IP.php</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public static function getIpFromHeader()
+{
+    ...
+    
+    if(isset($_SERVER['HTTP_X_REAL_IP'])) { //获取header中的ip
+        $default = $_SERVER['HTTP_X_REAL_IP'];
+    }
+    
+    ...
+}
+</code></pre></div></div>
+
+<p>问题1： IP依然错误，后两位是0.0, 且无法获取到remote_addr 。</p>
+
+<p>原因1: nginx 的 X-Real-IP 设置没生效</p>
+
+<p>原因2: matomo的隐私政策</p>
+
+<p>privacy 里面有个配置</p>
+
+<p><img src="/images/202204/WechatIMG176.png" alt="" width="800" /></p>
+
+<p>js客户端 代码： <a href="https://developer.matomo.org/guides/tracking-javascript-guide">https://developer.matomo.org/guides/tracking-javascript-guide</a></p>
+
+<p>[Recording a click as a download] 手动指定某个链接是下载类型  <a href="https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download">https://developer.matomo.org/guides/tracking-javascript-guide#recording-a-click-as-a-download</a></p>
+
+<h3 id="具体问题如何想看单位时间中某个用户的下载量">具体问题：如何想看单位时间中某个用户的下载量？</h3>
+
+<p>详细的访问路径在表 matomo_log_action 中 ,其中type=3是下载</p>
+
+<p>界面上看到的visitor ID是 matomo_log_visit.idvisitor 注意数据库中的字母是大写的</p>
+
+<p>外键：</p>
+
+<p>matomo_log_visit.idvisit  = matomo_log_link_visit_action.idvisit</p>
+
+<p>matomo_log_link_visit_action.idaction_url = matomo_log_action.idaction</p>
+
+<p>但是表  matomo_log_action 中的url是去重的可复用的，有时候会删除无用的记录，所以时间上后访问的url可能反而比前面访问的url的id要小。</p>
+
+<p>所以如果要监控访问的url type =3 ，不可以遍历 matomo_log_action 表。</p>
+
+<p>而还是应该遍历 matomo_log_link_visit_action，查看单位时间内相同  idvisit 产生的matomo_log_action的type=3的记录数.</p>
 
         </div>
     </div>
@@ -199,143 +260,128 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/01/gitlab-sync">Jan 18, 2022 - gitlab-sync</a></h1>
+        <h1><a href="/2022/01/RocketMQ">Jan 21, 2022 - rocket mq</a></h1>
         
         <div class="content">
-            <h1 id="gitlab-主从同步">gitlab-主从同步</h1>
+            <h1 id="rocketmq-部署">RocketMQ 部署</h1>
 
-<p><a href="https://www.jianshu.com/p/52de6a8d29d6">https://www.jianshu.com/p/52de6a8d29d6</a></p>
+<p>基础术语：</p>
 
-<h3 id="lsyncd-安装在主服务器上">lsyncd 安装在主服务器上</h3>
+<ol>
+  <li>生产者(Producer)</li>
+  <li>消费者(Consumer)</li>
+  <li>主题（Topic)  一类消息的集合</li>
+  <li>生产者组（Producer Group) 这类Producer 发送同一类消息。如果发送事务消息，且原始生产者在发送后崩溃，Broker Server 会联系同一组的生产者实例提交或回溯消费</li>
+  <li>消费者组（Consumer Group) 消费同一类消息，注意同一个group的消费者必须订阅相同的topic。可以方便的负载均衡和容错</li>
+  <li>代理服务器（Broker Server)  负责存储和转发消息，还存储元数据，包括消费者组、进度偏移、主题和队列消息</li>
+  <li>名字服务器 （Name Server) 路由消息的提供者。 根据主题获取 Broker IP 的地址列表</li>
+</ol>
 
-<p>lsyncd 配置完事就能跑了</p>
-
-<p>配置</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/lsyncd.conf 
-</code></pre></div></div>
-
-<p>日志</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /var/log/lsyncd/lsyncd.log
-</code></pre></div></div>
-
-<p>问题： 创建了一个新的project， 从库没显示</p>
-
-<p>我显式重启了docker容器才在从库看到</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-</code></pre></div></div>
-
-<p>如果报一些奇怪的异常，比如连不上 postgresql 5432之类的， Don’t panic ! 很可能是主从同步不一致导致的文件错误。 去主库上 重启下 systemctl restart lsyncd。等两边数据一致了再重启下,docker stop ,docker start.</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/01/gitlab-install">Jan 17, 2022 - gitlab-install</a></h1>
-        
-        <div class="content">
-            <h1 id="方法1-推荐-docker-安装">方法1： 推荐 docker 安装</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull gitlab/gitlab-ce:[version]  最好选择跟主一个版本，避免出现什么幺蛾子
-
-docker run -detach --publish 8443:443 --publish 9091:80 --publish 8022:22  --publish 5005:5005 --name gitlab --restart always --volume /srv/gitlab/config:/etc/gitlab --volume /srv/gitlab/logs:/var/log/gitlab --volume /srv/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce:13.7.1-ce.0
-
-
-可能需要改一些配置
-
-vi /srv/gitlab/config/gitlab.rb
-
-external_url 'http://ip' 不用写port
-
-
-postgresql['shared_buffers'] = "256MB"
-
-如果puma 启动不了 看到pid不停变大
-gitlab-ctl tail puma
-
-puma['port'] = 8888
-gitlab_workhorse['auth_backend'] = "http://localhost:8888"
-
-</code></pre></div></div>
-
-<h2 id="管理员账号初始化">管理员账号初始化</h2>
-<p>a、 切换目录：cd /opt/gitlab/bin</p>
-
-<p>b、执行 ：sudo gitlab-rails console production 命令 开始初始化密码</p>
-
-<p>c、在irb(main):001:0&gt; 后面通过 u=User.where(id:1).first 来查找与切换账号（User.all 可以查看所有用户）</p>
-
-<p>d、通过u.password=’12345678’设置密码为12345678(这里的密码看自己喜欢)：</p>
-
-<p>e、通过u.password_confirmation=’12345678’ 再次确认密码</p>
-
-<p>f、通过 u.save!进行保存（切记切记 后面的 !）</p>
-
-<p>g、如果看到上面截图中的true ，恭喜你已经成功了，执行 exit 退出当前设置流程即可。</p>
-
-<p>h、回到gitlab ,可以通过 root/12345678 这一超级管理员账号登录了</p>
-
-<p>i、至此大功搞成。</p>
-
-<p>https://www.jianshu.com/p/b1736c34c150</p>
-
-<h1 id="方法2不推荐gitlab-install">方法2（不推荐）：gitlab-install</h1>
-
-<p><a href="https://blog.csdn.net/qq_35844177/article/details/106876923">https://blog.csdn.net/qq_35844177/article/details/106876923</a></p>
+<p>参考 <a href="https://www.cnblogs.com/fx-blog/p/11732749.html">https://www.cnblogs.com/fx-blog/p/11732749.html</a></p>
 
 <ol>
   <li>
-    <p>sudo apt update
-sudo apt install ca-certificates curl openssh-server postfix</p>
+    <p>下载RocketMQ zip包 <a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip">https://www.apache.org/dyn/closer.cgi?path=rocketmq/4.9.2/rocketmq-all-4.9.2-bin-release.zip</a></p>
+  </li>
+  <li>先启动 name service
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqnamesrv &amp;
+</code></pre></div>    </div>
+  </li>
+  <li>再启动 broker service. 注意 vi bin/runbroker.sh 里面的 -Xms 内存要求是8g
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  nohup sh bin/mqbroker -n localhost:9876 &amp;
+</code></pre></div>    </div>
   </li>
   <li>
-    <p>cd /tmp
- curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh</p>
+    <p>测试下 是否可以正常生产、消费</p>
 
-    <p>less /tmp/script.deb.sh</p>
-
-    <p>sudo bash /tmp/script.deb.sh</p>
-
-    <p>sudo apt install gitlab-ce</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export NAMESRV_ADDR=localhost:9876
+sh bin/tools.sh org.apache.rocketmq.example.quickstart.Producer
+   
+sh bin/tools.sh org.apache.rocketmq.example.quickstart.Consumer	
+</code></pre></div>    </div>
+  </li>
+  <li>关闭服务器
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>停止 broker：sh bin/mqshutdown broker
+停止 nameserver：sh bin/mqshutdown namesrv
+</code></pre></div>    </div>
   </li>
 </ol>
 
-<p>如果一切顺利 那么 gitlab-ctl start 就够了。</p>
+<h2 id="控制台启动">控制台启动</h2>
 
-<h1 id="可能你的服务器上已经安装了其他的应用-占用了原有的端口">可能你的服务器上已经安装了其他的应用 占用了原有的端口</h1>
-<p>则需要去修改配置文件</p>
+<ol>
+  <li>下载 控制台安装包 注意现在拆分出来了 <a href="https://github.com/apache/rocketmq-dashboard">https://github.com/apache/rocketmq-dashboard</a>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:apache/rocketmq-dashboard.git
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>看  readme 直接 docker 搞起</p>
 
-<p>vim /etc/gitlab/gitlab.rb</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>external_url 'http://10.1.48.192:9091' 
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull apacherocketmq/rocketmq-dashboard:latest
 
- puma['port'] =9092
+ ## 注意这里看看本地端口哪个可用，我这里用了8081
+ docker run -d --name rocketmq-dashboard -e "JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.1.145:9876" -p 8081:8080 -t apacherocketmq/rocketmq-dashboard:latest
+</code></pre></div>    </div>
+
+    <p>如果是docker启动的话，上面Drocketmq.namesrv.addr参数直接用127.0.0.1:9876 会让dashboard无法连接到本地的9876端口，只能说docker容器中的 127.0.0.1 9876 不是宿主机的那个</p>
+
+    <p>如果是自行打包并且启动jar包的话，应该是用127.0.0.1 没问题的</p>
+  </li>
+  <li>浏览器打开 localhost:8081</li>
+</ol>
+
+<p><img src="/images/202201/1642757861082.jpg" alt="embbed" width="1000" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/01/nacos-cluster">Jan 20, 2022 - cluster</a></h1>
+        
+        <div class="content">
+            <h1 id="spring-cloud-alibaba---nacos-5-集群部署">Spring Cloud Alibaba - nacos 5 集群部署</h1>
+
+<p><a href="https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html">https://nacos.io/zh-cn/docs/cluster-mode-quick-start.html</a></p>
+
+<ol>
+  <li>域名 + SLB模式(内网SLB，不可暴露到公网，以免带来安全风险)</li>
+</ol>
+
+<p><img src="/images/202201/deployDnsVipMode.jpeg" alt="embbed" /></p>
+
+<p>配置 cluster.conf
+nacos应该会将注册服务同步给其他ip</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```
+#it is ip
+#example
+192.168.1.145:8848
+192.168.1.146:8848
+
+```
 </code></pre></div></div>
 
-<h2 id="重置配置-并-重启">重置配置 并 重启</h2>
+<ol>
+  <li>
+    <p>线上环境使用 外置数据源 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql">https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql</a></p>
+  </li>
+  <li>
+    <p>修改 db的url和帐号密码  并打jar包 <a href="https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties">https://github.com/alibaba/nacos/blob/master/distribution/conf/application.properties</a></p>
+  </li>
+  <li>
+    <p>重启nacos</p>
+  </li>
+</ol>
 
-<p>gitlab-ctl reconfigure</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh
+</code></pre></div></div>
 
-<p>gitlab-ctl restart</p>
-
-<h2 id="查看日志命令">查看日志命令：</h2>
-
-<p>gitlab-ctl tail</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>gitlab-ctl tail</td>
-      <td>grep -i error</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="查看端口命令">查看端口命令：</h2>
-
-<p>lsof -i:9091</p>
+<h2 id="又-如果-第2步选择了内置数据源">又： 如果 第2步选择了内置数据源</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh startup.sh -p embedded
+</code></pre></div></div>
 
 
         </div>
@@ -349,7 +395,7 @@ sudo apt install ca-certificates curl openssh-server postfix</p>
         <a class="btn btn-default" href="/page36" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 37 of 60</span>
+  <span class="page_number ">Page: 37 of 61</span>
   
     <a class="btn btn-default" href="/page38" class="next">Older</a>
   

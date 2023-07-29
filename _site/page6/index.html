@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,33 +175,20 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/xml">Jul 28, 2022 - xml</a></h1>
+        <h1><a href="/2022/08/b+tree">Aug 20, 2022 - b+tree</a></h1>
         
         <div class="content">
-            <h1 id="xml">Xml</h1>
+            <h1 id="btree">b+tree</h1>
 
-<p>代码仓库： <a href="https://github.com/gongchangyou/spring_xml_test">https://github.com/gongchangyou/spring_xml_test</a></p>
+<p>因为 ignite 搜索后迭代效率有点低，所以找找看有没有现成的内存 B+树。</p>
 
-<p>接手了一个老项目，使用xml加载 bean对象 .</p>
+<p>开源的有btree4j 有 bug， 网上搜到的范围查询 要遍历所有节点，性能不佳，所以自行开发。</p>
 
-<p>如果想要混用，也行, 关键字是 @ImportResource(“classpath:beans.xml”)  自动加载xml中的bean</p>
+<p>代码仓库: <a href="https://github.com/gongchangyou/dolphincache">https://github.com/gongchangyou/dolphincache</a></p>
 
-<p>如果要注入map。 就用entry注入</p>
+<p>参考文章: <a href="https://www.cnblogs.com/zzk0/p/14656189.html">https://www.cnblogs.com/zzk0/p/14656189.html</a></p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;property name="dreams"&gt;
-            &lt;map&gt;
-                &lt;entry key="a"&gt;
-                    &lt;value&gt; "abc"&lt;/value&gt;
-                &lt;/entry&gt;
-                &lt;entry key="z"&gt;
-                    &lt;value&gt; "xyz"&lt;/value&gt;
-                &lt;/entry&gt;
-            &lt;/map&gt;
-        &lt;/property&gt;
-</code></pre></div></div>
-
-<p>参考文章： <a href="https://www.baeldung.com/spring-boot-xml-beans">https://www.baeldung.com/spring-boot-xml-beans</a></p>
-
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html">https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html</a></p>
 
         </div>
     </div>
@@ -209,142 +196,97 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/07/poi">Jul 22, 2022 - poi</a></h1>
+        <h1><a href="/2022/08/ignite">Aug 20, 2022 - ignite</a></h1>
         
         <div class="content">
-            <h1 id="poi-excel-读写">poi excel 读写</h1>
+            <h1 id="ignite">Ignite</h1>
 
-<p>代码仓库：<a href="https://github.com/gongchangyou/excelreader">https://github.com/gongchangyou/excelreader</a></p>
+<p>试想这样一种场景，需要快速查找数据，一般我们会选择缓存，比如redis.</p>
 
-<p>枚举项可以 利用 XSSFDataValidationConstraint 增加 数据有效性的 限制。</p>
+<p>如果想更快一点， 我们就用本地缓存，guava local cache 的 进化版本 Caffeine.</p>
 
-<p><img src="/images/202207/WechatIMG357.png" alt="" width="400" /></p>
+<p>但是这些都只满足kv的场景， 如果希望像mysql 那样关系型查找就不满足了。</p>
 
-<p>参考文章: <a href="https://blog.csdn.net/Janson_Lin/article/details/108379333">https://blog.csdn.net/Janson_Lin/article/details/108379333</a></p>
+<p>于是我想到了在内存中构建一个B+树来实现，这种很自然的想法应该有现成的轮子了。所以我找到了这个开源组件 ignite</p>
 
+<p>官网: <a href="https://ignite.apache.org/">https://ignite.apache.org/</a></p>
 
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/skywalking">Jul 21, 2022 - skywalking</a></h1>
-        
-        <div class="content">
-            <h1 id="skywalking">skywalking</h1>
+<p>源码: <a href="https://github.com/apache/ignite">https://github.com/apache/ignite</a></p>
 
 <ol>
   <li>
-    <p>docker-compose up -d 启动 es + kibana + oap + UI
-  <a href="/images/202207/docker-compose.yml">docker-compose.yml</a>  docker-compose up -d</p>
+    <p>获取镜像</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  version: '2.2'
-  services:
-    es-node:
-     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-     container_name: es-node
-     environment:
-       - node.name=es-node
-       - cluster.name=es-cluster-7
-       - discovery.type=single-node
-       - xpack.security.enabled=false
-       - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
-     ulimits:
-       memlock:
-         soft: -1
-         hard: -1
-     volumes:
-       - ./data:/usr/share/elasticsearch/data
-     ports:
-       - 9200:9200
-     networks:
-       - skywalking-network
-
-    kibana:
-     image: docker.elastic.co/kibana/kibana:7.5.0
-     environment:
-       ELASTICSEARCH_HOSTS: http://es-node:9200
-     ports:
-       - 5601:5601
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    oap:
-     image: apache/skywalking-oap-server:8.9.1
-     container_name: oap1
-     environment:
-       SW_STORAGE: elasticsearch
-       SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
-       TZ: Asia/Shanghai 
-     ports:
-       - 12800:12800
-       - 11800:11800
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    ui:
-      image: apache/skywalking-ui:8.9.1
-      environment:
-        SW_OAP_ADDRESS: http://oap1:12800
-        TZ: Asia/Shanghai 
-      ports:
-        - 8088:8080
-      networks:
-        - skywalking-network
-      depends_on:
-        - es-node    
-
-  volumes:
-   es-data01:
-     driver: local
-
-  networks:
-   skywalking-network:
-     driver: bridge
-  
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker search apacheignite/ignite
 </code></pre></div>    </div>
-
-    <p>发现 es中会创建一堆索引
-<img src="/images/202207/WechatIMG350.png" alt="" width="800" /></p>
   </li>
   <li>
-    <p>检查以上4个容器是否都正常启动 docker logs XXX ， 打开 localhost:8088 看到 UI启动好了</p>
-  </li>
-  <li>
-    <p>下载 java agent <a href="https://skywalking.apache.org/downloads/#Agents">https://skywalking.apache.org/downloads/#Agents</a> 通过设置 -javaagent 配置 SkyWalking Agent</p>
-  </li>
-  <li>
-    <p>在idea中设置vm options,   -javaagent:/Users/gongchangyou/learn/skywalking/skywalking-agent/skywalking-agent.jar,  具体的配置可以去 /Users/gongchangyou/learn/skywalking/skywalking-agent/config/agent.config 看看</p>
-
-    <p><img src="/images/202207/WechatIMG355.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>完成 打开 http://localhost:8088/trace 看看</p>
-
-    <p><img src="/images/202207/WechatIMG356.png" alt="" width="800" /></p>
+    <p>拉取镜像</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker pull apacheignite/ignite
+</code></pre></div>    </div>
   </li>
 </ol>
 
-<hr />
+<p>默认情况，docker将暴露以下端口：11211, 47100, 47500, 49112</p>
 
-<p>问题1: org.apache.skywalking.oap.server.library.module.ProviderNotFoundException</p>
+<ol>
+  <li>
+    <p>启动 (想要持久化 请看参考文章 这里只介绍 in memory)</p>
 
-<p>回答1: 应该是ES版本和skywalking版本不匹配导致，把版本先对应好，比如上面的yml中的ES从 8.2.0降到:7.5.0</p>
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -d -p 10800:10800 apacheignite/ignite
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>代码仓库 :  <a href="https://github.com/gongchangyou/ignite_test">https://github.com/gongchangyou/ignite_test</a>  奇怪，这里如果不启动ignite也能正常执行（上述1-3不用做)</p>
+  </li>
+</ol>
 
-<p>skywalking版本保持在 8.9.1</p>
+<font color="red">比对结果， 不管是筛选 long ,double, 还是String。 ignite均比内存中的list.stream().filter 都要快(换成 parallelStream 也无法提升一个数量级, 毕竟 n/threads 时间复杂度还是n, ignite有B+树， 时间复杂度是logn)</font>
 
-<p>参考文章： <a href="https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/">https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/</a></p>
+<p><img src="/images/202208/WechatIMG390.png" alt="" width="400" /></p>
 
-<p><a href="https://www.cnblogs.com/xiao987334176/p/13530575.html">https://www.cnblogs.com/xiao987334176/p/13530575.html</a></p>
+<p>ignite 为什么会这么快？ 除了使用B+树以外，还使用了future. 在 IgniteCacheProxyImpl 下面这个query方法中,返回的那个迭代器中，每次 onHasNext 都会去future里面get结果。所以并不是一把结果load出来.</p>
 
-<p><a href="https://hub.docker.com/r/apache/skywalking-oap-server">https://hub.docker.com/r/apache/skywalking-oap-server</a></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    private &lt;T, R&gt; QueryCursor&lt;R&gt; query(ScanQuery scanQry, @Nullable IgniteClosure&lt;T, R&gt; transformer, @Nullable ClusterGroup grp) throws IgniteCheckedException {
 
-<p><a href="https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/">https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/</a></p>
+</code></pre></div></div>
+
+<p>但是这样有一个问题，就是每次迭代时去 future.get 会阻塞，实际使用的时候会比list 耗时要长</p>
+
+<p><img src="/images/202208/WechatIMG391.png" alt="" width="400" /></p>
+
+<p>注意： 记得使用 withKeepBinary 查询， 形如</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>QueryCursor&lt;Cache.Entry&lt;BinaryObject, BinaryObject&gt;&gt; org = cache.withKeepBinary().query(
+                new IndexQuery&lt;BinaryObject, BinaryObject&gt;(Person.class.getName())
+                        .setCriteria(gt("orgId", 1L)));
+</code></pre></div></div>
+
+<p>注意： h2的版本 要低于1.4.200 。我选择了 1.4.197</p>
+
+<p>参考文章: <a href="https://hub.docker.com/r/apacheignite/ignite">docker 启动 ignite</a></p>
+
+<p><a href="https://blog.csdn.net/c_zyer/article/details/115546772">https://blog.csdn.net/c_zyer/article/details/115546772</a></p>
+
+<p><a href="https://ignite.apache.org/docs/latest/key-value-api/using-cache-queries">cache query</a></p>
+
+<p><a href="https://www.baeldung.com/apache-ignite">https://www.baeldung.com/apache-ignite</a></p>
+
+<p><a href="https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B">https://www.ignite-service.cn/doc/java/QuickStartGuide.html#_1-5-%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E7%A4%BA%E4%BE%8B</a></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/08/scope">Aug 3, 2022 - scope</a></h1>
+        
+        <div class="content">
+            <h1 id="scope">Scope</h1>
+
+<p>如果不想bean 创建的是单例，只需要添加 @Scope(“prototype”) 注解即可</p>
+
 
         </div>
     </div>
@@ -357,7 +299,7 @@
         <a class="btn btn-default" href="/page5" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 6 of 60</span>
+  <span class="page_number ">Page: 6 of 61</span>
   
     <a class="btn btn-default" href="/page7" class="next">Older</a>
   

@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
+        
+          <li><a href="/2023/07/gradle">gradle</a></li>
+        
+          <li><a href="/2023/05/UML">uml</a></li>
+        
+          <li><a href="/2023/04/jdom">xml</a></li>
+        
           <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
-        
-          <li><a href="/2023/02/bond">中国债市入门</a></li>
-        
-          <li><a href="/2023/02/idea-terminal">IDEA</a></li>
-        
-          <li><a href="/2023/01/grandma">奶奶</a></li>
-        
-          <li><a href="/2023/01/antlr">Antler</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>78</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
 			
 		
 			
@@ -175,18 +175,12 @@
             
 <div class="article">
     <div class="well">
-        <h1><a href="/2023/01/grandma">Jan 13, 2023 - 奶奶</a></h1>
+        <h1><a href="/2023/04/jdom">Apr 4, 2023 - xml</a></h1>
         
         <div class="content">
-            <h1 id="奶奶">奶奶</h1>
+            <h1 id="java-操作xml">java 操作xml</h1>
 
-<p>奶奶对中国的传统祭祖非常重视，每年春节她都会点香、燃蜡烛、祭酒，摆好桌椅，一桌子菜祖先先吃，我们再吃。那些令人迷惑的举动让唯物的我难以理解，不过也无所谓，毕竟小孩子眼里，只有热闹和吃席。</p>
-
-<p>小学上学很早,5点半天还没亮，爸妈要忙着上班，早饭是奶奶给我准备的，一碗白粥加个鸡蛋，担心我嫌太淡，通常会在切开的半个鸡蛋上浇点酱油。雷打不动直到我初中毕业，老宅拆迁。这个习惯让我一直对物质的要求不高，一碗白粥当做早饭就行。</p>
-
-<p>高中最后一个学期，学校离家很远。爷爷奶奶家交通方便，我就睡在他们一个屋里，阳台上一张小床就够了。有些必要的学习用品和课外读物保存在独立的一个抽屉中。整理的时候翻出来一本06年的《科幻世界》，连载了《三体》， 那时候还不知道会是一部引领中国科幻的巨著。</p>
-
-<p>马上过年，奶奶给爷爷做伴去了。没有长辈的春节异常冷清，以前一张桌子坐不下，现在一张桌子坐不满。</p>
+<p><img src="https://blog.csdn.net/weixin_48052161/article/details/115053853" alt="" /></p>
 
 
         </div>
@@ -195,16 +189,21 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2023/01/antlr">Jan 9, 2023 - Antler</a></h1>
+        <h1><a href="/2023/03/dependency">Mar 1, 2023 - spring 循环依赖</a></h1>
         
         <div class="content">
-            <h1 id="antler">Antler</h1>
+            <h1 id="spring循环依赖的概念及解决方式">Spring循环依赖的概念及解决方式</h1>
 
-<p>参考文章:</p>
+<ol>
+  <li>
+    <p>必须单例</p>
+  </li>
+  <li>
+    <p>尽量用setter方法，使用构造器注入不保证成功</p>
+  </li>
+</ol>
 
-<p><a href="https://blog.csdn.net/zRegle/article/details/78054011">https://blog.csdn.net/zRegle/article/details/78054011</a></p>
-
-<p><a href="https://github.com/gongchangyou/antlr_test">https://github.com/gongchangyou/antlr_test</a></p>
+<p><img src="https://m.dandelioncloud.cn/article/details/1581668550006001666" alt="" /></p>
 
 
         </div>
@@ -213,115 +212,21 @@
 
 <div class="article">
     <div class="well">
-        <h1><a href="/2022/10/validation">Oct 13, 2022 - Validation</a></h1>
+        <h1><a href="/2023/02/bond">Feb 22, 2023 - 中国债市入门</a></h1>
         
         <div class="content">
-            <h1 id="validation">Validation</h1>
+            <h1 id="中国债市入门">中国债市入门</h1>
 
-<p>代码仓库:</p>
-
-<p><a href="https://github.com/gongchangyou/pdfreader">https://github.com/gongchangyou/pdfreader</a></p>
-
-<p>dependency</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<p>annotation</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ParamValidation {
-}
-</code></pre></div></div>
-
-<p>aspect</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
-@Component
-@Aspect
-@Order(10)
-public class ValidationAspect {
-
-    @Autowired
-    @Qualifier("executableValidator")
-    private ExecutableValidator validator;
-//    @Around(value = "within(com.mouse.pdfreader.*) &amp;&amp; execution(public * com.mouse.pdfreader.*.*(..)) &amp;&amp; @annotation(com.mouse.pdfreader.aop.ParamValidation)")
-    @Around(value = "@annotation(paramValidation) ")
-    public Object process(ProceedingJoinPoint proceedingJoinPoint, ParamValidation paramValidation) {
-        val sw= new StopWatch();
-        sw.start("validation");
-        Set&lt;ConstraintViolation&lt;Object&gt;&gt; constraintViolations = validator.validateParameters(proceedingJoinPoint.getTarget(), ((MethodSignature)proceedingJoinPoint.getSignature()).getMethod(), proceedingJoinPoint.getArgs());
-        sw.stop();
-        log.info(sw.prettyPrint());
-
-        if(constraintViolations.size() &gt; 0){
-            final String constraintMessage = constraintViolations.stream()
-                    .findFirst()
-                    .map(ConstraintViolation::getMessage)
-                    .orElse("");
-
-            return constraintMessage;
-        }
-
-        try {
-            return proceedingJoinPoint.proceed();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-}
-</code></pre></div></div>
-
-<p>Config:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
-public class ValidatorConfiguration {
-    @Bean(name = "executableValidator")
-    ExecutableValidator get() {
-        val validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory();
-        return validatorFactory.getValidator().forExecutables();
-    }
-}
-
-</code></pre></div></div>
-
-<p>Service</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Service
-public class TestService {
-
-    @ParamValidation
-    public String test(@Valid ParamData param){
-        return "success";
-    }
-}
-</code></pre></div></div>
-
-<p>param</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Data
-@Builder
-public class ParamData {
-    @Range(min=1,max=10, message = "1-10")
-    int age;
-
-    @NotNull(message = "null name")
-    String name;
-
-}
-</code></pre></div></div>
-
-<p>检查的字段数,1-2个字段 耗时 0.2-0.4ms。  对于高频计算来说，还是耗时较高。</p>
+<p><img src="/images/202302/本币交易市场.xmind" alt="" />
+<img src="/images/202302/发行定价.xmind" alt="" />
+<img src="/images/202302/债券交易类型.xmind" alt="" />
+<img src="/images/202302/债券类型.xmind" alt="" />
+<img src="/images/202302/第四章商业银行资产配置分析.xmind" alt="" />
+<img src="/images/202302/第五章银行监管体系全解析.xmind" alt="" />
+<img src="/images/202302/第六章广义基金资产配置分析.xmind" alt="" />
+<img src="/images/202302/第八章债券收益率曲线与利差分析.xmind" alt="" />
+<img src="/images/202302/第九章高频数据分析.xmind" alt="" />
+<img src="/images/202302/第十章经济周期与债市周期.xmind" alt="" /></p>
 
 
         </div>
@@ -335,7 +240,7 @@ public class ParamData {
         <a class="btn btn-default" href="/index.html" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 2 of 60</span>
+  <span class="page_number ">Page: 2 of 61</span>
   
     <a class="btn btn-default" href="/page3" class="next">Older</a>
   
