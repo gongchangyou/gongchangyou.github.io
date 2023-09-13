@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
+        
+          <li><a href="/2023/08/jmockit">jmockit</a></li>
+        
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
           <li><a href="/2023/07/gradle">gradle</a></li>
         
           <li><a href="/2023/05/UML">uml</a></li>
-        
-          <li><a href="/2023/04/jdom">xml</a></li>
-        
-          <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
 			
 		
 			
@@ -173,6 +173,112 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/CompletableFuture">May 29, 2022 - CompletableFuture</a></h1>
+        
+        <div class="content">
+            <h1 id="completablefuture">CompletableFuture</h1>
+
+<p>参考文章: <a href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
+
+<p><a href="https://colobu.com/2016/02/29/Java-CompletableFuture/">https://colobu.com/2016/02/29/Java-CompletableFuture/</a></p>
+
+<p>一个手动complete的例子</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Test
+    void complete() {
+        CompletableFuture cf = new CompletableFuture&lt;String&gt;();
+
+        val cf1 = cf.thenApply((Object str) -&gt; {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return ((String)str).replace("a", "d");
+        });
+
+        cf.complete("aad"); //这里会触发cf后面的thenApply方法，上述的sleep会同步阻塞。
+
+        try {
+            val value = cf.get();
+            val value1 = cf1.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
+            log.info("value={} value1={}",value,value1);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+</code></pre></div></div>
+
+<h3 id="超时设置">超时设置</h3>
+
+<ol>
+  <li>orTimeout 方法， 超时会抛出TimeOut异常</li>
+  <li>completeOnTimeout 超时会被设置成默认值</li>
+  <li>get(long timeout, TimeUnit unit)， 同1</li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/maven-antrun-plugin">May 28, 2022 - antrun</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-antrun-plugin">maven antrun plugin</h1>
+
+<p>有时候我们希望打包的时候添加一些行为，比如把文件从resource 文件夹下拷贝到另外一个地方.</p>
+
+<p>这时候就可以使用 maven antrun plugin.</p>
+
+<p>参考文章： <a href="https://maven.apache.org/plugins/maven-antrun-plugin/usage.html">https://maven.apache.org/plugins/maven-antrun-plugin/usage.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;project&gt;
+  [...]
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.8&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;phase&gt; &lt;!-- Maven的生命周期阶段 --&gt; &lt;/phase&gt;
+            &lt;configuration&gt;
+              &lt;target&gt;
+
+                &lt;!--
+                  将任务Ant任务放在这里，还可以在这里添加一个build.xml文件
+                --&gt;
+
+              &lt;/target&gt;
+            &lt;/configuration&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;run&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  [...]
+&lt;/project&gt;
+</code></pre></div></div>
+
+<p>代码仓库:   <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a> 这里借用下transactional仓库演示一下</p>
+
+<p>直接打包， 就可以看到具体的target任务已经执行了</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn package -Dmaven.test.skip=true
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/Idea-in-windows">May 27, 2022 - idea</a></h1>
@@ -236,86 +342,6 @@ file-&gt; settings -&gt; 搜索color scheme -&gt; import 上述文件即可</p>
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/VS-code-in-windows">May 26, 2022 - vscode</a></h1>
-        
-        <div class="content">
-            <h1 id="vs-code-in-windows">VS code in windows</h1>
-
-<p>参考文章： <a href="https://blog.csdn.net/weixin_44211968/article/details/122605298">https://blog.csdn.net/weixin_44211968/article/details/122605298</a></p>
-
-<p><a href="https://blog.csdn.net/u014374175/article/details/81365130">https://blog.csdn.net/u014374175/article/details/81365130</a></p>
-
-<p>官网下载: <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
-
-<ol>
-  <li>
-    <p>File -&gt; preferences -&gt; settings  各种配置</p>
-
-    <ol>
-      <li>配置 Maven: UserSettings  改成本地的settings.xml  <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></li>
-      <li>配置 java home 和 maven path 
-<img src="/images/202205/20220528000432.png" alt="" width="800" />
-        <h3 id="一个settingsjson的例子"><a href="/images/202205/settings.json">一个settings.json的例子</a></h3>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>创建spring 项目</p>
-
-    <blockquote>
-      <ol>
-        <li>打开命令选项板「Ctrl + Shift + P」；</li>
-        <li>键入Spring Initializr 开始生成Maven项目；</li>
-        <li>按照向导执行，选择依赖包，我在这选了 devTools（热部署扩展包）和 web两个。</li>
-      </ol>
-    </blockquote>
-  </li>
-  <li>
-    <p>配置启动项 点击「run」界面中下拉框 -&gt; 「添加配置」按钮，VS Code 会给你自动配好。</p>
-  </li>
-  <li>
-    <p>调试
-<img src="/images/202205/20220528000444.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/windows-install-jdk">May 25, 2022 - jdk</a></h1>
-        
-        <div class="content">
-            <h1 id="jdk-in-windows">jdk in windows</h1>
-
-<p>参考文章：<a href="https://blog.csdn.net/qq_45752401/article/details/121220471">https://blog.csdn.net/qq_45752401/article/details/121220471</a></p>
-
-<ol>
-  <li>一般都是64位系统， 我们去官网下载并安装 <a href="https://www.oracle.com/java/technologies/downloads/#java11">https://www.oracle.com/java/technologies/downloads/#java11</a></li>
-  <li>打开powershell 敲 java -version 如果能正常展示 就ok了， 如果没有，则可能需要配置下面的环境变量。</li>
-  <li>配置系统环境变量 右击“我的电脑”–&gt;“高级”–&gt;“环境变量”
-    <ol>
-      <li>JAVA_HOME环境变量。 
- <img src="/images/202205/java_home.png" alt="" width="800" /></li>
-      <li>path环境变量
- <img src="/images/202205/path.png" alt="" width="800" /></li>
-    </ol>
-  </li>
-</ol>
-
-<h3 id="安装maven">安装maven</h3>
-
-<p><a href="https://phoenixnap.com/kb/install-maven-windows">https://phoenixnap.com/kb/install-maven-windows</a></p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -323,7 +349,7 @@ file-&gt; settings -&gt; 搜索color scheme -&gt; import 上述文件即可</p>
         <a class="btn btn-default" href="/page15" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 16 of 61</span>
+  <span class="page_number ">Page: 16 of 62</span>
   
     <a class="btn btn-default" href="/page17" class="next">Older</a>
   

@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
+        
+          <li><a href="/2023/08/jmockit">jmockit</a></li>
+        
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
           <li><a href="/2023/07/gradle">gradle</a></li>
         
           <li><a href="/2023/05/UML">uml</a></li>
-        
-          <li><a href="/2023/04/jdom">xml</a></li>
-        
-          <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
 			
 		
 			
@@ -173,6 +173,44 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2023/01/grandma">Jan 13, 2023 - 奶奶</a></h1>
+        
+        <div class="content">
+            <h1 id="奶奶">奶奶</h1>
+
+<p>奶奶对中国的传统祭祖非常重视，每年春节她都会点香、燃蜡烛、祭酒，摆好桌椅，一桌子菜祖先先吃，我们再吃。那些令人迷惑的举动让唯物的我难以理解，不过也无所谓，毕竟小孩子眼里，只有热闹和吃席。</p>
+
+<p>小学上学很早,5点半天还没亮，爸妈要忙着上班，早饭是奶奶给我准备的，一碗白粥加个鸡蛋，担心我嫌太淡，通常会在切开的半个鸡蛋上浇点酱油。雷打不动直到我初中毕业，老宅拆迁。这个习惯让我一直对物质的要求不高，一碗白粥当做早饭就行。</p>
+
+<p>高中最后一个学期，学校离家很远。爷爷奶奶家交通方便，我就睡在他们一个屋里，阳台上一张小床就够了。有些必要的学习用品和课外读物保存在独立的一个抽屉中。整理的时候翻出来一本06年的《科幻世界》，连载了《三体》， 那时候还不知道会是一部引领中国科幻的巨著。</p>
+
+<p>马上过年，奶奶给爷爷做伴去了。没有长辈的春节异常冷清，以前一张桌子坐不下，现在一张桌子坐不满。</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2023/01/antlr">Jan 9, 2023 - Antler</a></h1>
+        
+        <div class="content">
+            <h1 id="antler">Antler</h1>
+
+<p>参考文章:</p>
+
+<p><a href="https://blog.csdn.net/zRegle/article/details/78054011">https://blog.csdn.net/zRegle/article/details/78054011</a></p>
+
+<p><a href="https://github.com/gongchangyou/antlr_test">https://github.com/gongchangyou/antlr_test</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/10/validation">Oct 13, 2022 - Validation</a></h1>
@@ -290,89 +328,6 @@ public class ParamData {
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/10/reflect">Oct 11, 2022 - reflect</a></h1>
-        
-        <div class="content">
-            <h1 id="reflect">reflect</h1>
-
-<p>反射取值的性能？</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
-@SpringBootTest
-public class ReflectTest {
-    @Test
-    void test() {
-        val a = Node.builder()
-                .name("a")
-                .age(10)
-                .node(SubNode.builder()
-                        .name("sub_a")
-                        .age(5)
-                        .build())
-                .build();
-
-        val b = Node.builder()
-                .name("a")
-                .age(10)
-                .node(SubNode.builder()
-                        .name("sub_a")
-                        .age(6)
-                        .build())
-                .build();
-
-        val sw= new StopWatch();
-        sw.start();
-        for(int i = 0; i &lt;1000; i++) {
-            for(val f : a.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                try {
-                    f.get(a).equals(f.get(b));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-                //            log.info("result={}", isEqual(a, b));
-        }
-        sw.stop();
-        log.info(sw.prettyPrint());
-    }
-}
-</code></pre></div></div>
-
-<p>字段数, 耗时</p>
-
-<p>100,  0.68ms</p>
-
-<p>1000, 3ms</p>
-
-<p>10000, 11ms</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/09/xmind">Sep 23, 2022 - xmind</a></h1>
-        
-        <div class="content">
-            <h1 id="xmind">Xmind</h1>
-
-<p>利用java api 读取代码，并自动生成 xmind</p>
-
-<p>类的依赖关系一目了然</p>
-
-<p>参考文章: <a href="https://juejin.cn/post/6844904012915933191">https://juejin.cn/post/6844904012915933191</a>
-<a href="https://blog.51cto.com/u_7932852/3753021">https://blog.51cto.com/u_7932852/3753021</a></p>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -380,7 +335,7 @@ public class ReflectTest {
         <a class="btn btn-default" href="/page3" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 4 of 61</span>
+  <span class="page_number ">Page: 4 of 62</span>
   
     <a class="btn btn-default" href="/page5" class="next">Older</a>
   

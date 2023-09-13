@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
+        
+          <li><a href="/2023/08/jmockit">jmockit</a></li>
+        
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
           <li><a href="/2023/07/gradle">gradle</a></li>
         
           <li><a href="/2023/05/UML">uml</a></li>
-        
-          <li><a href="/2023/04/jdom">xml</a></li>
-        
-          <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
 			
 		
 			
@@ -175,6 +175,89 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2023/09/iterator_remove">Sep 13, 2023 - iterator-remove</a></h1>
+        
+        <div class="content">
+            <h1 id="iterator-remove">iterator-remove</h1>
+
+<p>在HashMap类中， 不管是 KeyIterator ValueIterator还是 EntryIterator 都是 extends HashIterator</p>
+
+<p>所以remove方法都可以将其从map中删除。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">com</span><span class="p">.</span><span class="n">mouse</span><span class="p">.</span><span class="n">spel_demo</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">lombok</span><span class="p">.</span><span class="n">extern</span><span class="p">.</span><span class="n">slf4j</span><span class="p">.</span><span class="n">Slf4j</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">junit</span><span class="p">.</span><span class="n">jupiter</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">Test</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">boot</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">context</span><span class="p">.</span><span class="n">SpringBootTest</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">expression</span><span class="p">.</span><span class="n">Expression</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">expression</span><span class="p">.</span><span class="n">spel</span><span class="p">.</span><span class="n">standard</span><span class="p">.</span><span class="n">SpelExpressionParser</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">org</span><span class="p">.</span><span class="n">springframework</span><span class="p">.</span><span class="n">expression</span><span class="p">.</span><span class="n">spel</span><span class="p">.</span><span class="n">support</span><span class="p">.</span><span class="n">StandardEvaluationContext</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">ArrayList</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">HashMap</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Iterator</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="k">List</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Map</span><span class="p">;</span>
+
+<span class="p">@</span><span class="n">Slf4j</span>
+<span class="p">@</span><span class="n">SpringBootTest</span>
+<span class="n">class</span> <span class="n">MapIteratorTests</span> <span class="p">{</span>
+
+    <span class="p">@</span><span class="n">Test</span>
+    <span class="n">void</span> <span class="n">remove</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="k">Integer</span><span class="p">&gt;</span> <span class="n">map</span> <span class="p">=</span> <span class="n">new</span> <span class="n">HashMap</span><span class="p">&lt;&gt;();</span>
+        <span class="n">Iterator</span><span class="p">&lt;</span><span class="n">Map</span><span class="p">.</span><span class="n">Entry</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span><span class="k">Integer</span><span class="p">&gt;&gt;</span> <span class="n">it</span> <span class="p">=</span> <span class="n">map</span><span class="p">.</span><span class="n">entrySet</span><span class="p">().</span><span class="n">iterator</span><span class="p">();</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">hasNext</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="k">next</span><span class="p">().</span><span class="n">getKey</span><span class="p">().</span><span class="n">equals</span><span class="p">(</span><span class="s2">"a"</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">it</span><span class="p">.</span><span class="n">remove</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">map</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="p">@</span><span class="n">Test</span>
+    <span class="n">void</span> <span class="n">removeValue</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Map</span><span class="p">&lt;</span><span class="k">String</span><span class="p">,</span> <span class="k">Integer</span><span class="p">&gt;</span> <span class="n">map</span> <span class="p">=</span> <span class="n">new</span> <span class="n">HashMap</span><span class="p">&lt;&gt;();</span>
+        <span class="n">Iterator</span><span class="p">&lt;</span><span class="k">Integer</span><span class="p">&gt;</span> <span class="n">it</span> <span class="p">=</span> <span class="n">map</span><span class="p">.</span><span class="n">values</span><span class="p">().</span><span class="n">iterator</span><span class="p">();</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">hasNext</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="k">next</span><span class="p">().</span><span class="n">equals</span><span class="p">(</span><span class="m">1</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">it</span><span class="p">.</span><span class="n">remove</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nf">System</span><span class="p">.</span><span class="n">out</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">map</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2023/08/jmockit">Aug 9, 2023 - jmockit</a></h1>
+        
+        <div class="content">
+            <h1 id="jmockit-编写-testcase">jmockit 编写 testcase</h1>
+
+<ol>
+  <li>
+    <p>如何调用原有目标函数？</p>
+
+    <p>在@Mock 的函数中 第一个参数使用 Invocation invocation</p>
+  </li>
+</ol>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2023/07/easyexcel">Jul 29, 2023 - easyexcel</a></h1>
         
         <div class="content">
@@ -191,43 +274,10 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2023/07/gradle">Jul 27, 2023 - gradle</a></h1>
-        
-        <div class="content">
-            <h1 id="gradle">Gradle</h1>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gradle clean build -x test -refresh-depend
-</code></pre></div></div>
-
-<p>自定义 gradle 插件 <a href="https://www.baeldung.com/gradle-create-plugin">https://www.baeldung.com/gradle-create-plugin</a></p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2023/05/UML">May 19, 2023 - uml</a></h1>
-        
-        <div class="content">
-            <h1 id="uml">UML</h1>
-
-<p>参考文章：<a href="https://blog.csdn.net/qq_20936333/article/details/86773664">https://blog.csdn.net/qq_20936333/article/details/86773664</a></p>
-
-<p>聚合 比 组合更松散一些。</p>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 61</span>
+  <span class="page_number ">Page: 1 of 62</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   

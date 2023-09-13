@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
+        
+          <li><a href="/2023/08/jmockit">jmockit</a></li>
+        
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
           <li><a href="/2023/07/gradle">gradle</a></li>
         
           <li><a href="/2023/05/UML">uml</a></li>
-        
-          <li><a href="/2023/04/jdom">xml</a></li>
-        
-          <li><a href="/2023/03/dependency">spring 循环依赖</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>82</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
 			
 		
 			
@@ -173,6 +173,60 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/xml">Jul 28, 2022 - xml</a></h1>
+        
+        <div class="content">
+            <h1 id="xml">Xml</h1>
+
+<p>代码仓库： <a href="https://github.com/gongchangyou/spring_xml_test">https://github.com/gongchangyou/spring_xml_test</a></p>
+
+<p>接手了一个老项目，使用xml加载 bean对象 .</p>
+
+<p>如果想要混用，也行, 关键字是 @ImportResource(“classpath:beans.xml”)  自动加载xml中的bean</p>
+
+<p>如果要注入map。 就用entry注入</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;property name="dreams"&gt;
+            &lt;map&gt;
+                &lt;entry key="a"&gt;
+                    &lt;value&gt; "abc"&lt;/value&gt;
+                &lt;/entry&gt;
+                &lt;entry key="z"&gt;
+                    &lt;value&gt; "xyz"&lt;/value&gt;
+                &lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+</code></pre></div></div>
+
+<p>参考文章： <a href="https://www.baeldung.com/spring-boot-xml-beans">https://www.baeldung.com/spring-boot-xml-beans</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/poi">Jul 22, 2022 - poi</a></h1>
+        
+        <div class="content">
+            <h1 id="poi-excel-读写">poi excel 读写</h1>
+
+<p>代码仓库：<a href="https://github.com/gongchangyou/excelreader">https://github.com/gongchangyou/excelreader</a></p>
+
+<p>枚举项可以 利用 XSSFDataValidationConstraint 增加 数据有效性的 限制。</p>
+
+<p><img src="/images/202207/WechatIMG357.png" alt="" width="400" /></p>
+
+<p>参考文章: <a href="https://blog.csdn.net/Janson_Lin/article/details/108379333">https://blog.csdn.net/Janson_Lin/article/details/108379333</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/skywalking">Jul 21, 2022 - skywalking</a></h1>
@@ -296,250 +350,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/java-agent">Jul 16, 2022 - java agent</a></h1>
-        
-        <div class="content">
-            <h1 id="java-agent">java agent</h1>
-
-<p>参考文章： <a href="https://xz.aliyun.com/t/9450">https://xz.aliyun.com/t/9450</a></p>
-
-<p><a href="https://www.cnblogs.com/rickiyang/p/11368932.html">https://www.cnblogs.com/rickiyang/p/11368932.html</a></p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/javaagent_test">https://github.com/gongchangyou/javaagent_test</a></p>
-
-<ol>
-  <li>premain 启动应用的同时 添加 -javaagent:/path/to/agent.jar</li>
-</ol>
-
-<p>问题1：Failed to find Premain-Class manifest attribute</p>
-
-<p>回答1:  解压缩我打的包之后发现 MANIFEST.MF文件被替换成了默认的. 我们用maven 插件修改他</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven 3.6.3
-Built-By: gongchangyou
-Build-Jdk: 11.0.12
-
-
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
-    &lt;version&gt;3.1.0&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;archive&gt;
-            &lt;!--自动添加META-INF/MANIFEST.MF --&gt;
-            &lt;manifest&gt;
-                &lt;addClasspath&gt;true&lt;/addClasspath&gt;
-            &lt;/manifest&gt;
-            &lt;manifestEntries&gt;
-                &lt;Premain-Class&gt;com.mouse.PreDemo&lt;/Premain-Class&gt;
-                &lt;Agent-Class&gt;com.mouse.AgentDemo&lt;/Agent-Class&gt;
-                &lt;Can-Redefine-Classes&gt;true&lt;/Can-Redefine-Classes&gt;
-                &lt;Can-Retransform-Classes&gt;true&lt;/Can-Retransform-Classes&gt;
-            &lt;/manifestEntries&gt;
-        &lt;/archive&gt;
-    &lt;/configuration&gt;
-&lt;/plugin&gt;
-</code></pre></div></div>
-
-<hr />
-
-<ol>
-  <li>agentmain 应用已经启动的情况下，将agent.jar attach上去</li>
-</ol>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/agent_main">https://github.com/gongchangyou/agent_main</a>
-  <a href="https://github.com/gongchangyou/agent_demo">https://github.com/gongchangyou/agent_demo</a></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      java -jar agent.jar pid /path/to/app.jar
-      
-      # 一个例子
-      java -jar javaagent_test-1.0-SNAPSHOT.jar 40843 /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar
-      
-      
-</code></pre></div></div>
-
-<hr />
-
-<p>问题1： Agent JAR not found or no Agent-Class attribute</p>
-
-<p>回答1：loadAgent ， agent.jar注意用绝对路径</p>
-
-<p>参考文章: <a href="https://blog.csdn.net/weixin_37828719/article/details/106237872">https://blog.csdn.net/weixin_37828719/article/details/106237872</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/feign">Jul 14, 2022 - feign</a></h1>
-        
-        <div class="content">
-            <h1 id="feign-集成-到nacos上">Feign 集成 到nacos上</h1>
-
-<p>feign 集成nacos,  先启动<a href="/2022/01/nacos">nacos</a>, 再搭一个<a href="/2022/01/nexus">nexus</a></p>
-
-<p>代码仓库:  <a href="https://github.com/gongchangyou/feign_producer">https://github.com/gongchangyou/feign_producer</a></p>
-
-<p><a href="https://github.com/gongchangyou/feign_consumer">https://github.com/gongchangyou/feign_consumer</a></p>
-
-<p>处理依赖真的是……一言难尽</p>
-
-<p>主要思路是: <font color="red"> 为了能够通过服务名发现注册到Nacos的服务，所以需要引入spring-cloud-starter-alibaba-nacos-discovery；为了使用Spring官方的负载均衡器来替换Ribbon，需要引入spring-cloud-starter-loadbalancer，并添加配置 spring.cloud.loadbalancer.ribbon.enabled=false
-</font></p>
-
-<p>总之feign集成到nacos 比dubbo 难用很多，因为本身feign是netflix出品，而nacos是 alibaba出品。</p>
-
-<p>注意： 入参是对象的话，要将method指定为post， 且在参数上添加 @RequestBody 注解. 原理说明 <a href="https://www.jianshu.com/p/c1b8315c5a03">https://www.jianshu.com/p/c1b8315c5a03</a>.</p>
-<blockquote>
-  <p>@RequestBody修饰的参数会使用RequestResponseBodyMethodProcessor解析，</p>
-</blockquote>
-
-<p>重点看 InvocableHandlerMethod.getMethodArgumentValues 其中的
-RequestResponseBodyMethodProcessor.readWithMessageConverters
-最终发现是 AbstractJackson2HttpMessageConverter 中的一句 objectMapper.readValue(inputMessage.getBody(), javaType)。</p>
-
-<p><img src="/images/202207/WechatIMG321.png" alt="" width="800" /></p>
-
-<p><img src="/images/202207/WechatIMG322.png" alt="" width="800" /></p>
-
-<p><img src="/images/202207/WechatIMG323.jpeg" alt="" width="800" /></p>
-
-<hr />
-
-<p>问题1： client error: invalid param. com.alibaba.nacos.client.naming.NacosNamingService</p>
-
-<p>解决1： 从这里追进去看 是class NacosNamingService 找不到 ， 添加依赖即可</p>
-
-<p><img src="/images/202207/WechatIMG318.png" alt="" width="800" /></p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-            &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;
-            &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;
-            &lt;version&gt;1.3.1&lt;/version&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<hr />
-
-<p>问题2： Caused by: java.lang.ClassNotFoundException: org.springframework.boot.logging.DeferredLogFactory
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]</p>
-
-<p>回答2： spring-cloud 和 spring-boot的版本不匹配， 可以参考文章: <a href="https://spring.io/projects/spring-cloud">https://spring.io/projects/spring-cloud</a></p>
-
-<p><a href="https://start.spring.io/actuator/info">https://start.spring.io/actuator/info</a></p>
-
-<hr />
-
-<p>问题3：No Feign Client for loadBalancing defined. Did you forget to include spring-cloud-starter-netflix-ribbon or spring-cloud-starter-loadbalancer?</p>
-
-<p>回答3：加入 spring-cloud-starter-loadbalancer 并在nacos中排除ribbon依赖</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-loadbalancer --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-loadbalancer&lt;/artifactId&gt;
-    &lt;version&gt;2.2.9.RELEASE&lt;/version&gt;
-&lt;/dependency&gt;
-
-</code></pre></div></div>
-<p>参考文章 <a href="https://blog.csdn.net/eclipse1024/article/details/115587984">https://blog.csdn.net/eclipse1024/article/details/115587984</a></p>
-
-<hr />
-
-<p>问题4： 无法根据 feignClient中的name获取实际的ip:port 
-<img src="/images/202207/WechatIMG320.png" alt="" width="800" />
-回答4： 需要引入 spring-cloud-starter-alibaba-nacos-discovery, 注意选择和项目中 spring-boot 匹配的版本</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-starter-alibaba-nacos-discovery --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
-    &lt;version&gt;2.2.6.RELEASE&lt;/version&gt;
-&lt;/dependency&gt;
-
-</code></pre></div></div>
-<p>参考文章 <a href="https://blog.csdn.net/hbtj_1216/article/details/108190231">https://blog.csdn.net/hbtj_1216/article/details/108190231</a>
-<a href="https://cloud.tencent.com/developer/article/1957463">https://cloud.tencent.com/developer/article/1957463</a></p>
-
-<hr />
-
-<p>问题5： Caused by: java.lang.ClassNotFoundException: com.alibaba.nacos.client.logging.NacosLogging
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]</p>
-
-<p>回答5：  把 spring-cloud-starter-alibaba-nacos-discovery 降到合适的版本</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
-            &lt;version&gt;2.2.0.RELEASE&lt;/version&gt;
-            &lt;exclusions&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;nacos-client&lt;/artifactId&gt;
-                    &lt;groupId&gt;com.alibaba.nacos&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;servo-core&lt;/artifactId&gt;
-                    &lt;groupId&gt;com.netflix.servo&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-context-support&lt;/artifactId&gt;
-                    &lt;groupId&gt;com.alibaba.spring&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;hystrix-core&lt;/artifactId&gt;
-                    &lt;groupId&gt;com.netflix.hystrix&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-cloud-commons&lt;/artifactId&gt;
-                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-cloud-context&lt;/artifactId&gt;
-                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-cloud-netflix-ribbon&lt;/artifactId&gt;
-                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-cloud-starter&lt;/artifactId&gt;
-                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-                &lt;exclusion&gt;
-                    &lt;artifactId&gt;spring-cloud-netflix-archaius&lt;/artifactId&gt;
-                    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
-                &lt;/exclusion&gt;
-            &lt;/exclusions&gt;
-        &lt;/dependency&gt;
-</code></pre></div></div>
-
-<hr />
-
-<p>问题6： java.lang.ClassNotFoundException: com.netflix.servo.monitor.Monitors</p>
-
-<p>回答6：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
-    &lt;groupId&gt;com.netflix.servo&lt;/groupId&gt;
-    &lt;artifactId&gt;servo-core&lt;/artifactId&gt;
-    &lt;version&gt;0.12.7&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -547,7 +357,7 @@ RequestResponseBodyMethodProcessor.readWithMessageConverters
         <a class="btn btn-default" href="/page7" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 8 of 61</span>
+  <span class="page_number ">Page: 8 of 62</span>
   
     <a class="btn btn-default" href="/page9" class="next">Older</a>
   
