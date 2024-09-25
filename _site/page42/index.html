@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/grep">grep</a></li>
+        
+          <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
+        
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
         
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
-        
-          <li><a href="/2023/07/gradle">gradle</a></li>
-        
-          <li><a href="/2023/05/UML">uml</a></li>
         
     </ul>
 </div>
@@ -114,7 +114,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>12</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
 			
 		
 			
@@ -175,6 +175,96 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2021/12/kotlin">Dec 25, 2021 - kotlin 语法糖</a></h1>
+        
+        <div class="content">
+            <h1 id="kotlin-语法糖">Kotlin 语法糖</h1>
+
+<p>sequence chunked 列表分块处理</p>
+
+<p><a href="https://www.jianshu.com/p/553dd6095edb">简书-kotlin语法糖整理</a></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2021/12/selenium-java">Dec 20, 2021 - java-selenium</a></h1>
+        
+        <div class="content">
+            <h1 id="下载-chrome-driver">下载 chrome-driver</h1>
+<p><a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></p>
+
+<p>ChromeDriver 96.0.4664.45 对应 selenium-java版本 3.14.0 (这个版本比较稳定. 最新版本4.1.4 会class not found)</p>
+
+<h2 id="拷贝到-usrlocalbin-并-chmod-777">拷贝到 /usr/local/bin/ 并 chmod 777</h2>
+
+<p>MacBook-Pro-7:Downloads gongchangyou$ cp chromedriver /usr/local/bin/
+MacBook-Pro-7:Downloads gongchangyou$ chmod 777 /usr/local/bin/chromedriver</p>
+
+<h2 id="可能需要在系统偏好设置---安全性与隐私-中添加-仍可打开">可能需要在“系统偏好设置” -》 “安全性与隐私” 中添加 “仍可打开”</h2>
+
+<h1 id="添加依赖">添加依赖</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+   &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
+   &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
+   &lt;version&gt;3.14.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<h1 id="编写代码">编写代码</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        log.info("args = {}", args);
+        val driver = new ChromeDriver();
+        driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
+        val problemList = driver.findElementsByCssSelector("#lc-content &gt; div &gt; div.css-1ezka95-TableContainer.ermji1u1 &gt; div &gt; section &gt; div &gt; div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; table &gt; tbody &gt; tr:nth-child(1) &gt; td:nth-child(2) &gt; div &gt; div &gt; div");
+        log.info("problemList={}", problemList);
+</code></pre></div></div>
+
+<h1 id="如果难以打开新的标签页">如果难以打开新的标签页</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JavascriptExecutor js = (JavascriptExecutor) driver;  
+js.executeScript("window.open();");
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("window.open(\"http://www.baidu.com\");");
+</code></pre></div></div>
+
+<h3 id="有时候会报-chromedriver-支持的chrome版本不匹配安装和你本地chrome对应的-chromedriver即可-httpschromedriverchromiumorgdownloads">有时候会报 chromedriver 支持的chrome版本不匹配。安装和你本地chrome对应的 chromedriver即可 <a href="https://chromedriver.chromium.org/downloads">https://chromedriver.chromium.org/downloads</a></h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2022-05-08 21:21:26.810 ERROR [http-nio-8081-exec-1] o.a.c.c.C.[.[localhost].[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.openqa.selenium.SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version 96
+Current browser version is 101.0.4951.54 with binary path /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+</code></pre></div></div>
+
+<p>代码中设置</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver_101");
+</code></pre></div></div>
+
+<p>Selector 选择器语法</p>
+
+<p><a href="https://blog.csdn.net/kuangjuelian229/article/details/87868816">https://blog.csdn.net/kuangjuelian229/article/details/87868816</a></p>
+
+<p>tab的操作</p>
+
+<p><a href="https://www.browserstack.com/guide/handling-tabs-in-selenium">https://www.browserstack.com/guide/handling-tabs-in-selenium</a></p>
+
+<p>阿里云可能需要安装一些依赖：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install libxcb
+
+yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2021/04/grandpa">Apr 24, 2021 - 爷爷</a></h1>
         
         <div class="content">
@@ -190,67 +280,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2019/12/money">Dec 1, 2019 - 金钱暗流</a></h1>
-        
-        <div class="content">
-            <h1 id="第一章-科赫家族史">第一章 科赫家族史</h1>
-
-<ol>
-  <li>弗雷德·科赫  MIT读化学工程，生命中有两个贵人，一个是约瑟夫·斯大林，另一个是阿道夫·希特勒，先后帮助苏联和纳粹建立炼油厂。可见在利益面前，什么党派，什么思想那都不是资本家考虑的。</li>
-  <li>兄弟阋墙，大哥弗雷迪和二哥查尔斯争夺遗产，双胞胎弟弟 大卫和比尔，一个站队大哥，一个站队二哥，让我想起九子夺嫡。最后醉心艺术的大哥败下阵，继承父亲保守主义思想的二哥掌舵科赫集团。
-    <ul>
-      <li>大卫被人问起巨额财产，他的回答：“在我小时候，我父亲给了我一个苹果，我很快卖了5块钱，买了两个苹果，卖了10块钱，日复一日，年复一年，直到父亲去世，留给我3亿美元！”</li>
-    </ul>
-  </li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2019/03/tmux">Mar 2, 2019 - tmux常用命令</a></h1>
-        
-        <div class="content">
-            <ul>
-<li>创建并指定session名字<br />
-		tmux new -s $session_name</li>
-&lt;/li&gt;
-<li>删除session<br />
- Ctrl+b :kill-session</li>
-<li>临时退出session<br />
-Ctrl+b d</li>
-<li>列出session<br />
-tmux ls</li>
-<li>进入已存在的session<br />
-tmux a -t $session_name</li>
-<li>删除所有session<br />
-Ctrl+b :kill-server</li>
-<li>删除指定session<br />
-tmux kill-session -t $session_name</li>
-<li>删除指定window<br />
-Ctrl+b : &amp;</li>
-</ul>
-
-<p>settings 鼠标滚动接管tmux历史窗口</p>
-
-<ul><li>vi ~/.tmux.conf</li>
-<li>set-window-option -g mode-mouse on</li>
-<li>tmux source-file ~/.tmux.conf</li>
-<li></li>
-<li></li>
-
-
-</ul>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -258,7 +287,7 @@ Ctrl+b : &amp;</li>
         <a class="btn btn-default" href="/page41" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 42 of 62</span>
+  <span class="page_number ">Page: 42 of 63</span>
   
     <a class="btn btn-default" href="/page43" class="next">Older</a>
   
@@ -271,7 +300,7 @@ Ctrl+b : &amp;</li>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2023 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2024 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>

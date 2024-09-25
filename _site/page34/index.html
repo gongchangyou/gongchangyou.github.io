@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/grep">grep</a></li>
+        
+          <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
+        
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
         
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
-        
-          <li><a href="/2023/07/gradle">gradle</a></li>
-        
-          <li><a href="/2023/05/UML">uml</a></li>
         
     </ul>
 </div>
@@ -114,7 +114,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>12</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
 			
 		
 			
@@ -175,6 +175,213 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2022/03/postgis">Mar 2, 2022 - postgis</a></h1>
+        
+        <div class="content">
+            <h1 id="postgis">Postgis</h1>
+
+<p>一个postgresql的扩展，空间数据库</p>
+
+<h3 id="法1-docker安装">法1： docker安装</h3>
+
+<p>1 <a href="https://www.cnblogs.com/6324/p/11947388.html">https://www.cnblogs.com/6324/p/11947388.html</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run
+-v $(pwd)/data:/var/lib/postgresql/data -e POSTGRES_DB="openmaptiles" -e POSTGRES_USER="test" -e POSTGRES_PASSWORD="test" -p 15432:5432 -d openmaptiles/postgis
+</code></pre></div></div>
+
+<p>2  因为上一步里面各种扩展都安装好了， 所以 这里我们就直接 操作DDL 和DML即可<a href="https://zhuanlan.zhihu.com/p/43374582">https://zhuanlan.zhihu.com/p/43374582</a></p>
+
+<p>具体操作面板在这</p>
+
+<p><img src="/images/202203/1646357982434.jpg" alt="pgadmin" width="800" /></p>
+
+<p>3 如何批量导入数据？</p>
+
+<p><img src="/images/202203/1646358797595.jpg" alt="pgadmin" width="800" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#单个的写入point语句是这样的
+insert into point_test (name,pt) values ('p1',ST_GeomFromText('Point(0 0 0)'));
+
+</code></pre></div></div>
+
+<p>4 如何批量导入geometry字段类型的数据。以下可以看到 pt geometry字段是一堆字符串，如果已知三维坐标 恐怕无法自行写出那样的字符串.</p>
+
+<p><img src="/images/202203/1646364305354.jpg" alt="pgadmin" width="800" /></p>
+
+<p>只能曲线救国了</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 先在表里新增字段x, y，z （numeric）
+
+2. 用csv把 x,y,z 字段导入
+
+3. update 一把，将x,y,z 生成的point 写到pt字段中
+
+    ```
+    update point_test set pt = ST_SetSRID(ST_MakePoint(x,y,z),0) [where id=5];
+    ```
+</code></pre></div></div>
+
+<p>这里导入的时候注意 csv中如果有标题的话 header，记得勾选header</p>
+
+<p>column 必须匹配，多一列pgsql就不认识了，导入不了。</p>
+
+<p><img src="/images/202203/1646369341367.jpg" alt="pgadmin" width="500" /></p>
+
+<p>5 如何查看执行效率？性能？</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	explain Analyze select id,name,ST_3DDistance(ST_GeomFromText('Point(0 0 0)'),pt)  from point_test;
+</code></pre></div></div>
+
+<p>压测结果，导入了17000个点， 搜索距离最远的两个点</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select p1.id,p2.id, p1.name,p2.name,ST_3DDistance(p1.pt,p2.pt) as distance  from point_test as p1,point_test as p2 where p1.id &gt; p2.id order by distance desc limit 1;
+</code></pre></div></div>
+
+<p>不加索引的情况下是53.4s,加了gist索引 还是 53.4s。 没生效？</p>
+
+<p><a href="http://postgis.net/workshops/postgis-intro/indexing.html">http://postgis.net/workshops/postgis-intro/indexing.html</a></p>
+
+<p>因为这个索引不是所有函数都能生效的，因为索引还是根据空间划分矩形，大部分是cover，intersect之类的功能</p>
+
+<p>至于用gist 还是spgist索引，取决于数据的稠密程度 <a href="https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis">https://blog.crunchydata.com/blog/the-many-spatial-indexes-of-postgis</a></p>
+
+<p>实际使用下来，1百万行，1000^3 的立方体中， 搜索在某个矩阵中的（10x10) 耗时是100ms左右，还是非常快的。如果不加索引的话，计算超时了都，估计1分钟之后都不会有结果。</p>
+
+<p>索引大小52M</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WITH xyz AS (
+SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
+FROM generate_series(1, 1000)),
+boxes AS (
+  SELECT ST_3DMakeBox(ST_MakePoint(x-5, y-5, z-5),
+    ST_MakePoint(x+5 ,y+5.1875, z+15)) AS geom
+  FROM xyz
+)
+SELECT Count(*)
+FROM points, boxes
+WHERE points.geom &amp;&amp; boxes.geom;
+</code></pre></div></div>
+
+<p>有些点是否在某个不规则Polygon中的功能也可以使用该数据库</p>
+
+<p><a href="https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope">https://help.aliyun.com/document_detail/116091.html?utm_content=g_1000230851&amp;spm=5176.20966629.toubu.3.f2991ddcpxxvD1#h2-st_makeenvelope</a></p>
+
+<p>但是因为我们的数据是在亿级， 按照 <a href="https://github.com/digoal/blog/blob/master/201601/20160119_01.md?spm=a2c6h.12873639.0.0.45131bffUfN7jx&amp;file=20160119_01.md">PostgreSQL 百亿地理位置数据 近邻查询性能</a>  建立索引确实要花点时间,1亿行gis数据大约5GB索引,查询上述在box中的点耗时只有100ms. 但是如果box再大一点,里面包括1kw数据时，就需要花大约10s时间。生产环境是不可能使用了，OLAP场景还行。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select pg_relation_size('gist2')
+</code></pre></div></div>
+
+<p><img src="/images/202203/WechatIMG46.png" alt="pgadmin" width="500" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WITH xyz AS (
+SELECT 1000*random() AS x, 1000*random() AS y, 1000*random() AS z
+FROM generate_series(1, 1000)),
+boxes AS (
+  SELECT ST_3DMakeBox(ST_MakePoint(x-0.1, y-5, z-5),
+    ST_MakePoint(x+0.1 ,y+5.1875, z+15)) AS geom
+  FROM xyz
+)
+SELECT ST_AsText(points.geom), ST_AsText(boxes.geom)
+FROM points, boxes
+WHERE  ST_3DIntersects(boxes.geom ,points.geom) 
+</code></pre></div></div>
+
+<p>//之前那个 &amp;&amp; 操作会有重复数据，这个 ST_3DIntersects 函数可以给出在这个box中的点, 返回2000个点 耗时差不多 500ms</p>
+
+<h3 id="法2以下的甭看了">法2：以下的甭看了</h3>
+
+<p>源 /etc/apt/sources.list ， 如果无法安装，请变更源</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-cache search postgis
+apt-get install postgis
+
+</code></pre></div></div>
+
+<h3 id="以上这个一般来说搞不定因为源没有postgis-只能下载各种源码-比如postgis的源码-tar包解压缩之后">以上这个一般来说搞不定，因为源没有postgis ，只能下载各种源码 ,比如postgis的源码 ，tar包解压缩之后</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure
+make
+make install
+</code></pre></div></div>
+
+<h3 id="完事之后-还需要安装">完事之后 还需要安装</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install postgresql-9.5-postgis-2.2
+</code></pre></div></div>
+
+<p>一通折腾之后，算是安装完成了。</p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/03/postgresql">Mar 1, 2022 - Postgresql</a></h1>
+        
+        <div class="content">
+            <h1 id="postgresql">Postgresql</h1>
+
+<h3 id="ubuntu-安装-postgresql">ubuntu 安装 postgresql</h3>
+<p><a href="https://linux.cn/article-11480-1.html">https://linux.cn/article-11480-1.html</a></p>
+
+<ol>
+  <li>sudo apt update</li>
+  <li>sudo apt install postgresql postgresql-contrib</li>
+  <li>service postgresql start</li>
+  <li>sudo -s postgresql	 #切换用户</li>
+  <li>pgsql 	#登录PostgreSQL</li>
+  <li>ALTER USER postgres WITH PASSWORD ‘password’; # 初始化密码</li>
+</ol>
+
+<h3 id="安装gui--pgadmin">安装GUI  pgadmin</h3>
+
+<ol>
+  <li>
+    <p>docker pull dpage/pgadmin4</p>
+  </li>
+  <li>
+    <p>docker run -d -p 5433:80 –name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=test@123.com -e PGADMIN_DEFAULT_PASSWORD=123456 -v /var/lib/pgadmin:/var/lib/pgadmin dpage/pgadmin4</p>
+
+    <p>注意这里的volume 绑定的位置，未来导入导出csv 可以使用</p>
+  </li>
+  <li>
+    <p>网页打开Localhost:5433 输入第二步的用户名密码</p>
+
+    <p>问题： create server 时发现 无法连接server</p>
+
+    <p>解决：去 /etc/postgresql/12/main下 修改 postgresql.conf 文件</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen_addresses = '*' 
+</code></pre></div>    </div>
+
+    <p>重启postgresql : service postgresql restart</p>
+
+    <p>问题2： no pg_hba.conf entry for host “172.17.0.4”, … SSL on connection to server at “localhost”, port 5432</p>
+
+    <p>编辑 pg_hba.conf文件</p>
+
+    <p>把报错中的host 拷贝到这个文件中：如下编写</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/postgresql/12/main/pg_hba.conf
+   
+host all all 172.17.0.4/24 md5
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把 安装postgresql 设置好的password 填入即可 这个界面还蛮好看的</p>
+  </li>
+</ol>
+
+<p><img src="/images/202202/WechatIMG31.png" alt="set server list code" width="800" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2022/02/grafana">Feb 25, 2022 - grafana</a></h1>
         
         <div class="content">
@@ -203,196 +410,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/ssh">Feb 24, 2022 - ssh</a></h1>
-        
-        <div class="content">
-            <h1 id="ssh-无密码访问">ssh 无密码访问</h1>
-
-<ol>
-  <li>apt-get install openssh-server</li>
-  <li>查看状态 service ssh status</li>
-  <li>
-    <p>启动ssh : systemctl start ssh  (关闭 systemctl stop ssh)</p>
-  </li>
-  <li>将源server的 id_rsa.pub的内容拷贝到 ~/.ssh/authorized_keys文件夹中, authorized_keys 记得chmod 600</li>
-  <li>如果还是不行，再查看/etc/ssh/sshd_config文件中设置有StrictModes yes ,显式设置成 no</li>
-</ol>
-
-<p>别名</p>
-
-<p>编辑 ~/.ssh/config</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host ksyun_stg
-  HostName 120.92.232.118
-  Port 10022
-  User dingsongyun
-  IdentityFile ~/.ssh/id_rsa
-
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/02/voice-clone">Feb 22, 2022 - voice</a></h1>
-        
-        <div class="content">
-            <h1 id="python-ai语音合成">python AI语音合成</h1>
-
-<p>https://mp.weixin.qq.com/s/ROETeFo4Q__8hkX9Ss-CAw 看到这篇报道。觉得可以试试将自己的语音变成语音包，这样就可以给自己读文章了，或者去喜马拉雅领任务。</p>
-
-<p>pyttsx3是一套基于实现SAPI5文语合成引擎的Python封装库，该库的设计者为Natesh M Bhat，该库其实是 <a href="https://pypi.org/project/pyTTS/">pyTTS</a> 和 <a href="https://github.com/RapidWareTech/pyttsx">pyttsx</a> 项目的延续，pyttsx3主要是为Python3版本设计的，但同时也兼容Python2。JaysPySPEECH使用的是pyttsx3 2.7。</p>
-
-<p>但是因为依赖的是当前PC的语音环境，所以无法将我们自己的语音导入。</p>
-
-<h2 id="mockingbird----貌似这个只是学习音色"><a href="https://github.com/babysor/MockingBird">MockingBird</a>  - 貌似这个只是学习音色</h2>
-
-<p>https://github.com/babysor/MockingBird/blob/main/README-CN.md</p>
-
-<h2 id="注意第8步下载数据集非常大建议先做">注意第8步下载数据集非常大，建议先做</h2>
-
-<p>我是ubuntu系统</p>
-
-<ol>
-  <li>
-    <p>安装 <a href="https://pytorch.org/get-started/locally/">PyTorch</a></p>
-
-    <ol>
-      <li>
-        <p>先看本地有没有python.一般是python3了</p>
-      </li>
-      <li>
-        <p>再安装pip: apt install python3-pip</p>
-      </li>
-      <li>
-        <p>安装python torch  : pip3 install torch torchivision torchaudio</p>
-      </li>
-      <li>
-        <p>验证:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import torch
-x = torch.rand(5,3)
-print(x)
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>安装 <a href="https://ffmpeg.org/download.html#get-packages">ffmpeg</a>。</p>
-
-    <ol>
-      <li>
-        <p>下载源码/source code 并解压缩</p>
-      </li>
-      <li>
-        <p>库的安装</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y autoconf automake build-essential git libass-dev libfreetype6-dev libsdl2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev pkg-config texinfo wget zlib1g-dev
-</code></pre></div>        </div>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install libavformat-dev
-apt install libavcodec-dev
-apt install libswresample-dev
-apt install libswscale-dev
-apt install libavutil-dev
-apt install libsdl1.2-dev
-</code></pre></div>        </div>
-
-        <p>如果没用的话 先 apt-get update, 再 apt-get install XXX.</p>
-      </li>
-      <li>
-        <p>安装libx264</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libx264-dev
-</code></pre></div>        </div>
-      </li>
-      <li>安装 yasm
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> apt-get install yasm
-</code></pre></div>        </div>
-      </li>
-      <li>
-        <p>安装 ffmpeg</p>
-      </li>
-      <li>
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure   --enable-shared  --prefix=/usr/local/ffmpeg  --enable-gpl --enable-libx264 --extra-cflags=-I/usr/local/ffmpeg/include --extra-ldflags=-L/usr/local/ffmpeg/lib
-make
-make install
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>安装 MockingBird</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:babysor/MockingBird.git
-   
-cd MockingBird
-#安装剩余的依赖
-pip install -r requirements.txt
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>安装 webrtcvad</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install webrtcvad-wheels
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>在 MockingBird/synthesizer 下新建文件夹 saved_models</p>
-  </li>
-  <li>
-    <p>把下载到的或者训练好的 pt文件拷贝到 saved_models文件夹下</p>
-  </li>
-  <li>
-    <p>浏览器访问 localhost:8080 ， 如果端口被占用的话，可以修改default.py 变更 PORT</p>
-  </li>
-  <li>
-    <p>下载数据集 <a href="https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89">https://github.com/babysor/MockingBird/blob/main/README-CN.md#1%E6%95%B8%E6%93%9A%E9%9B%86%E5%93%AA%E8%A3%A1%E4%B8%8B%E8%BC%89</a></p>
-  </li>
-  <li>
-    <p>将上一部的数据集 放到某个文件夹下 <datasets_root>, 该解压的解压</datasets_root></p>
-  </li>
-  <li>
-    <p>打开工具</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python demo_toolbox.py -d &lt;datasets_root&gt;
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<p>Notice：</p>
-
-<ol>
-  <li>
-    <p>如果第十步报错 ”you do not have any of the recognized datasets in XXX“ ，我们打开文件 /toolbaox/__init__.py看看 里面的 recognized_datasets数组 ，可能需要调整 数据集的路径.</p>
-  </li>
-  <li>
-    <p>如果报错 size mismatch https://github.com/babysor/MockingBird/issues/37 一个兼容性的问题</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这个是我最近一个修复导致的不兼容问题， 你可以把文件中：synthesizer/utils/symbols.py 第11行的内容 改为：
-_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.:;? '
-即可。暂时先不要关闭这个issue吧。我看下遇到的人太多的话我做个兼容
-   
-不同的模型(*.pt) 这里可能还要改回去
-</code></pre></div>    </div>
-  </li>
-  <li>
-    <p>演示视频 <a href="https://www.bilibili.com/video/BV1uh411B7AD/">https://www.bilibili.com/video/BV1uh411B7AD/</a></p>
-  </li>
-</ol>
-
-<h3 id="可是实际操作下来上传了我的音频转换成一段刺耳的声音无法将中文text-转换成音频">可是实际操作下来，上传了我的音频，转换成一段刺耳的声音，无法将中文text 转换成音频</h3>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -400,7 +417,7 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
         <a class="btn btn-default" href="/page33" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 34 of 62</span>
+  <span class="page_number ">Page: 34 of 63</span>
   
     <a class="btn btn-default" href="/page35" class="next">Older</a>
   
@@ -413,7 +430,7 @@ _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz12340!\'(),-.
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2023 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2024 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>

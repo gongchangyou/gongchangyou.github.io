@@ -74,15 +74,15 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/grep">grep</a></li>
+        
+          <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
+        
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
         
           <li><a href="/2023/07/easyexcel">easyexcel</a></li>
-        
-          <li><a href="/2023/07/gradle">gradle</a></li>
-        
-          <li><a href="/2023/05/UML">uml</a></li>
         
     </ul>
 </div>
@@ -114,7 +114,7 @@
 			
 		
 			
-				<li><a href="/tag/shell" title="shell">shell<sup>11</sup></a></li>
+				<li><a href="/tag/shell" title="shell">shell<sup>12</sup></a></li>
 			
 		
 			
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>84</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
 			
 		
 			
@@ -173,6 +173,67 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/mysql-log">Jun 30, 2022 - mysql log</a></h1>
+        
+        <div class="content">
+            <h1 id="mysql-log">mysql log</h1>
+
+<p>代码仓库： <a href="https://github.com/gongchangyou/transactional">https://github.com/gongchangyou/transactional</a></p>
+
+<ol>
+  <li>如果是mybatis plus, 一行搞定
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>如果是 jpa 。基于 org.springframework.data.repository.CrudRepository;  如何添加日志呢？</p>
+
+    <p>注意到 JdbcTemplate.execute 方法中有个 logger.isDebugEnabled() 判断
+ <img src="/images/202206/WechatIMG294.png" alt="" width="800" /></p>
+
+    <p>那就配置下 logging.level.root 就行</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> logging.level.root=DEBUG
+</code></pre></div>    </div>
+  </li>
+  <li>如果是mybatis 1.3.1 看到代码没有注入log的地方。只能把断点加到 CachingExecutor.query 方法中 看 boundSql变量了</li>
+</ol>
+
+<p><img src="/images/202206/WechatIMG295.png" alt="" width="800" /></p>
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/mvn-settings">Jun 29, 2022 - maven settings</a></h1>
+        
+        <div class="content">
+            <h1 id="maven-settings">maven settings</h1>
+
+<p>设置 settings.xml</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn -s "D:\program\maven-3.6.3\maven3\conf\settings.xml" clean install
+</code></pre></div></div>
+
+<p>查看当前生效的 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn help:effective-settings
+</code></pre></div></div>
+
+<p>mvn命令指定 settings</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn install --settings c:\user\settings.xml 
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/mongodb-batch">Jun 27, 2022 - mongodb</a></h1>
@@ -262,79 +323,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/ES-cluster">Jun 24, 2022 - es cluster</a></h1>
-        
-        <div class="content">
-            <h1 id="es-集群">ES 集群</h1>
-
-<p>java访问ES 集群，两种方法：</p>
-
-<ol>
-  <li>
-    <p>推荐 走内网虚拟ip(VIP) 参考文章： <a href="https://cloud.tencent.com/document/product/845/19538">https://cloud.tencent.com/document/product/845/19538</a></p>
-
-    <ol>
-      <li>
-        <p>配置虚拟ip的命令:</p>
-
-        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig eth0:1 192.168.0.107 netmask 255.255.0.0
-        
-#下线虚拟ip
-ifconfig eth0:1 down
-</code></pre></div>        </div>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>把cluster node都添加到client中,类似下面的代码</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RestHighLevelClient client = new RestHighLevelClient(
-                 RestClient.builder(
-                 		//Es连接信息，我用的是伪集群哈哈哈
-                         new HttpHost("localhost", 9200, "http"),
-                         new HttpHost("localhost", 9201, "http"),
-                         new HttpHost("localhost", 9202, "http")
-                 )
-         );
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/06/sentinel">Jun 11, 2022 - sentinel</a></h1>
-        
-        <div class="content">
-            <h1 id="sentinel">Sentinel</h1>
-
-<p>简介： 是对资源（服务，方法）访问的规则配置。 比如流控，黑白名单等</p>
-
-<p>官网: <a href="https://github.com/alibaba/Sentinel">https://github.com/alibaba/Sentinel</a></p>
-
-<p>参考文章: <a href="https://www.jianshu.com/p/8f901abb7af4">https://www.jianshu.com/p/8f901abb7af4</a></p>
-
-<p>代码仓库: <a href="https://github.com/gongchangyou/sentinel_test">https://github.com/gongchangyou/sentinel_test</a></p>
-
-<p>实现较为简单 不赘述了。</p>
-
-<p>注意点</p>
-
-<ol>
-  <li>如果blockHandlerClass是另外的类，记得把 blockHandler 方法设置成static 方法</li>
-  <li>blockHandler 方法记得添加 BlockException exception 形参</li>
-</ol>
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -342,7 +330,7 @@ ifconfig eth0:1 down
         <a class="btn btn-default" href="/page12" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 13 of 62</span>
+  <span class="page_number ">Page: 13 of 63</span>
   
     <a class="btn btn-default" href="/page14" class="next">Older</a>
   
@@ -355,7 +343,7 @@ ifconfig eth0:1 down
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span12 footer navbar-inverse navbar-fixed-bottom">
-            <p class="copyright">&copy;2023 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
+            <p class="copyright">&copy;2024 Mouse的博客. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="https://github.com/scotte/jekyll-clean">Scott Emmons</a>
             under
             <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a></p>
         </div>
