@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/es-apm">es apm</a></li>
+        
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
-        
-          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
     </ul>
 </div>
@@ -146,7 +146,7 @@
 			
 		
 			
-				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>4</sup></a></li>
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,22 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/04/websocket">Apr 13, 2022 - websocket</a></h1>
+        
+        <div class="content">
+            <h1 id="websocket">Websocket</h1>
+
+<p>代码地址: <a href="https://github.com/gongchangyou/websocket-test">https://github.com/gongchangyou/websocket-test</a></p>
+
+<p>postman 调试: <a href="https://blog.postman.com/postman-supports-websocket-apis/">https://blog.postman.com/postman-supports-websocket-apis/</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/04/webgl">Apr 6, 2022 - webgl</a></h1>
@@ -215,98 +231,6 @@
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl x509 -inform pem -in 你的证书名字.pem -outform der -out 你的新证书.cer
 </code></pre></div></div>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/03/arthas">Mar 29, 2022 - arthas</a></h1>
-        
-        <div class="content">
-            <h1 id="arthas使用">Arthas使用</h1>
-
-<p>参考文章: <a href="https://www.jianshu.com/p/507f7e0cc3a3">https://www.jianshu.com/p/507f7e0cc3a3</a></p>
-
-<p>官方文档: <a href="https://arthas.aliyun.com/doc/profiler.html#id4">https://arthas.aliyun.com/doc/profiler.html#id4</a></p>
-
-<h3 id="查看java进程">查看java进程</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jps -mlVv
-或
-ps -ef| grep java
-</code></pre></div></div>
-
-<h3 id="查看火焰图">查看火焰图</h3>
-
-<p>下载arthas<a href="https://arthas.aliyun.com/doc/profiler.html"> https://arthas.aliyun.com/doc/profiler.html</a></p>
-
-<p>启动，一般用 “java -jar arthas-boot.jar” 。我这里端口冲突了，可以指定端口</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar arthas-boot.jar --telnet-port 9998 --http-port -1
-</code></pre></div></div>
-
-<h2 id="启动profiler">启动profiler</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler start
-Started [cpu] profiling
-</code></pre></div></div>
-
-<blockquote>
-  <p>默认情况下，生成的是cpu的火焰图，即event为<code class="highlighter-rouge">cpu</code>。可以用<code class="highlighter-rouge">--event</code>参数来指定。</p>
-</blockquote>
-
-<h2 id="获取已采集的sample的数量">获取已采集的sample的数量</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler getSamples
-23
-</code></pre></div></div>
-
-<h2 id="查看profiler状态-最新版本366-windows-不支持">查看profiler状态 （最新版本3.6.6 windows 不支持）</h2>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler status
-[cpu] profiling is running for 4 seconds
-</code></pre></div></div>
-
-<p>可以查看当前profiler在采样哪种<code class="highlighter-rouge">event</code>和采样时间。</p>
-
-<h2 id="停止profiler">停止profiler</h2>
-
-<h3 id="生成html格式结果">生成html格式结果</h3>
-
-<p>默认情况下，结果文件是<code class="highlighter-rouge">html</code>格式，也可以用<code class="highlighter-rouge">--format</code>参数指定：</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ profiler stop --format html
-profiler output file: /tmp/test/arthas-output/20211207-111550.html
-OK
-</code></pre></div></div>
-
-<p>默认情况下，arthas使用3658端口，则可以打开： http://localhost:3658/arthas-output/ 查看到arthas-output目录下面的profiler结果：</p>
-
-<p><img src="/images/202203/WechatIMG71.png" alt="" width="800" /></p>
-
-<p><img src="/images/202203/WechatIMG70.png" alt="" width="800" /></p>
-
-<font color="red" size="4">
-分析思路总结只有一句话：火焰图里，横条越长，代表使用的越多，从下到上是调用堆栈信息
-
-越宽表示被调用越多执行时间长，越高表示调用栈越深
-</font>
-
-<h3 id="profiler默认采样cpu的时间如果需要采样内存则使用event参数">profiler默认采样cpu的时间，如果需要采样内存，则使用event参数</h3>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>profiler start --duration 30 --event alloc
-</code></pre></div></div>
-
-<p>如何查看当前java进程？ 如果jps失效了 .加个断点</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ManagementFactory.getRuntimeMXBean().getName()
-</code></pre></div></div>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-        System.out.println(runtimeMXBean.getName());
-</code></pre></div></div>
 
         </div>
     </div>

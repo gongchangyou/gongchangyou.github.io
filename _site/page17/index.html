@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/es-apm">es apm</a></li>
+        
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
-        
-          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
     </ul>
 </div>
@@ -146,7 +146,7 @@
 			
 		
 			
-				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>4</sup></a></li>
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,56 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/CompletableFuture">May 29, 2022 - CompletableFuture</a></h1>
+        
+        <div class="content">
+            <h1 id="completablefuture">CompletableFuture</h1>
+
+<p>参考文章: <a href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
+
+<p><a href="https://colobu.com/2016/02/29/Java-CompletableFuture/">https://colobu.com/2016/02/29/Java-CompletableFuture/</a></p>
+
+<p>一个手动complete的例子</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Test
+    void complete() {
+        CompletableFuture cf = new CompletableFuture&lt;String&gt;();
+
+        val cf1 = cf.thenApply((Object str) -&gt; {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return ((String)str).replace("a", "d");
+        });
+
+        cf.complete("aad"); //这里会触发cf后面的thenApply方法，上述的sleep会同步阻塞。
+
+        try {
+            val value = cf.get();
+            val value1 = cf1.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
+            log.info("value={} value1={}",value,value1);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+</code></pre></div></div>
+
+<h3 id="超时设置">超时设置</h3>
+
+<ol>
+  <li>orTimeout 方法， 超时会抛出TimeOut异常</li>
+  <li>completeOnTimeout 超时会被设置成默认值</li>
+  <li>get(long timeout, TimeUnit unit)， 同1</li>
+</ol>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/maven-antrun-plugin">May 28, 2022 - antrun</a></h1>
@@ -287,55 +337,6 @@ file-&gt; settings -&gt; 搜索color scheme -&gt; import 上述文件即可</p>
 <p>问题1： 为什么我的IDEA是中文？</p>
 
 <p>解决1： 去plugins中把chinese那个插件停用了</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/VS-code-in-windows">May 26, 2022 - vscode</a></h1>
-        
-        <div class="content">
-            <h1 id="vs-code-in-windows">VS code in windows</h1>
-
-<p>参考文章： <a href="https://blog.csdn.net/weixin_44211968/article/details/122605298">https://blog.csdn.net/weixin_44211968/article/details/122605298</a></p>
-
-<p><a href="https://blog.csdn.net/u014374175/article/details/81365130">https://blog.csdn.net/u014374175/article/details/81365130</a></p>
-
-<p>官网下载: <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
-
-<ol>
-  <li>
-    <p>File -&gt; preferences -&gt; settings  各种配置</p>
-
-    <ol>
-      <li>配置 Maven: UserSettings  改成本地的settings.xml  <a href="/images/202205/settings-personal.xml">settings-personal.xml</a></li>
-      <li>配置 java home 和 maven path 
-<img src="/images/202205/20220528000432.png" alt="" width="800" />
-        <h3 id="一个settingsjson的例子"><a href="/images/202205/settings.json">一个settings.json的例子</a></h3>
-      </li>
-    </ol>
-  </li>
-  <li>
-    <p>创建spring 项目</p>
-
-    <blockquote>
-      <ol>
-        <li>打开命令选项板「Ctrl + Shift + P」；</li>
-        <li>键入Spring Initializr 开始生成Maven项目；</li>
-        <li>按照向导执行，选择依赖包，我在这选了 devTools（热部署扩展包）和 web两个。</li>
-      </ol>
-    </blockquote>
-  </li>
-  <li>
-    <p>配置启动项 点击「run」界面中下拉框 -&gt; 「添加配置」按钮，VS Code 会给你自动配好。</p>
-  </li>
-  <li>
-    <p>调试
-<img src="/images/202205/20220528000444.png" alt="" width="800" /></p>
-  </li>
-</ol>
 
         </div>
     </div>

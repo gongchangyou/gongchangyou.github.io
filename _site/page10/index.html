@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/es-apm">es apm</a></li>
+        
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
-        
-          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
     </ul>
 </div>
@@ -146,7 +146,7 @@
 			
 		
 			
-				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>4</sup></a></li>
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,86 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/java-agent">Jul 16, 2022 - java agent</a></h1>
+        
+        <div class="content">
+            <h1 id="java-agent">java agent</h1>
+
+<p>参考文章： <a href="https://xz.aliyun.com/t/9450">https://xz.aliyun.com/t/9450</a></p>
+
+<p><a href="https://www.cnblogs.com/rickiyang/p/11368932.html">https://www.cnblogs.com/rickiyang/p/11368932.html</a></p>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/javaagent_test">https://github.com/gongchangyou/javaagent_test</a></p>
+
+<ol>
+  <li>premain 启动应用的同时 添加 -javaagent:/path/to/agent.jar</li>
+</ol>
+
+<p>问题1：Failed to find Premain-Class manifest attribute</p>
+
+<p>回答1:  解压缩我打的包之后发现 MANIFEST.MF文件被替换成了默认的. 我们用maven 插件修改他</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven 3.6.3
+Built-By: gongchangyou
+Build-Jdk: 11.0.12
+
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;archive&gt;
+            &lt;!--自动添加META-INF/MANIFEST.MF --&gt;
+            &lt;manifest&gt;
+                &lt;addClasspath&gt;true&lt;/addClasspath&gt;
+            &lt;/manifest&gt;
+            &lt;manifestEntries&gt;
+                &lt;Premain-Class&gt;com.mouse.PreDemo&lt;/Premain-Class&gt;
+                &lt;Agent-Class&gt;com.mouse.AgentDemo&lt;/Agent-Class&gt;
+                &lt;Can-Redefine-Classes&gt;true&lt;/Can-Redefine-Classes&gt;
+                &lt;Can-Retransform-Classes&gt;true&lt;/Can-Retransform-Classes&gt;
+            &lt;/manifestEntries&gt;
+        &lt;/archive&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre></div></div>
+
+<hr />
+
+<ol>
+  <li>agentmain 应用已经启动的情况下，将agent.jar attach上去</li>
+</ol>
+
+<p>代码仓库: <a href="https://github.com/gongchangyou/agent_main">https://github.com/gongchangyou/agent_main</a>
+  <a href="https://github.com/gongchangyou/agent_demo">https://github.com/gongchangyou/agent_demo</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      java -jar agent.jar pid /path/to/app.jar
+      
+      # 一个例子
+      java -jar javaagent_test-1.0-SNAPSHOT.jar 40843 /Users/gongchangyou/learn/spring_xml_test/target/spring_xml_test-0.0.1-SNAPSHOT.jar
+      
+      
+</code></pre></div></div>
+
+<hr />
+
+<p>问题1： Agent JAR not found or no Agent-Class attribute</p>
+
+<p>回答1：loadAgent ， agent.jar注意用绝对路径</p>
+
+<p>参考文章: <a href="https://blog.csdn.net/weixin_37828719/article/details/106237872">https://blog.csdn.net/weixin_37828719/article/details/106237872</a></p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/feign">Jul 14, 2022 - feign</a></h1>
@@ -395,44 +475,6 @@ docker run -d --name kafka -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_
 <p>当然实际场景会有一些特殊的情况，比如下游部门丢消息了，想让你补发，如果我们用广播模式，那下游那些没想刷数据的部门也会收到消息。这时候“懦弱”的上游只能给每个下游安排一个topic隔离。这样其实是把困难留给了自己，如果某一天下游十七八个部门都要求补发，那这天你就甭干别的事儿了。</p>
 
 <p>话说回来，消息弄丢了其实是下游部门的问题，得先严格保证事情处理完了之后再ack. 上游只需提供一个根据id的反查接口 和 一个scan的迭代接口方便全量刷新即可。</p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
-        
-        <div class="content">
-            <h1 id="mongodb-索引">mongodb 索引</h1>
-
-<p>通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.</p>
-
-<p>参考文章: <a href="https://juejin.cn/post/6844903520747929614">https://juejin.cn/post/6844903520747929614</a></p>
-
-<p><a href="https://haicoder.net/mongodb/mongodb-index-principle.html">https://haicoder.net/mongodb/mongodb-index-principle.html</a></p>
-
-<p><a href="https://blog.csdn.net/guangyacyb/article/details/104339183">https://blog.csdn.net/guangyacyb/article/details/104339183</a></p>
-
-<p><a href="https://mongoing.com/archives/2797">https://mongoing.com/archives/2797</a></p>
-
-<p>可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db.person.createIndex( {age: 1, name: -1} )  
-</code></pre></div></div>
-
-<p>查看索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.getIndexes() 
-</code></pre></div></div>
-
-<p>查看query 是否使用索引,  如果是 <a href="https://docs.mongodb.org/manual/reference/explain-results/#queryplanner">COLLSCAN</a> 说明全表扫描， 如果是 IXSCAN ，就是使用了索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.find({age:18}).explain()
-db.person.find({age:18}).explain("executionStats")
-</code></pre></div></div>
-
 
         </div>
     </div>

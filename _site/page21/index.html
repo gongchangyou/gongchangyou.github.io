@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/es-apm">es apm</a></li>
+        
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
-        
-          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
     </ul>
 </div>
@@ -146,7 +146,7 @@
 			
 		
 			
-				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>4</sup></a></li>
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,58 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/05/OWASP">May 15, 2022 - java项目 依赖检查</a></h1>
+        
+        <div class="content">
+            <h1 id="owasp">OWASP</h1>
+
+<p>官网： <a href="https://owasp.org/">https://owasp.org/</a></p>
+
+<p>网站安全top 10: <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></p>
+
+<p>检测插件 <a href="https://blog.csdn.net/qq_35624642/article/details/122438449">https://blog.csdn.net/qq_35624642/article/details/122438449</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!--        代码依赖包安全漏洞检测--&gt;
+&lt;!-- https://mvnrepository.com/artifact/org.owasp/dependency-check-maven --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.owasp&lt;/groupId&gt;
+    &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
+    &lt;version&gt;6.5.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;!--        代码依赖包安全漏洞检测--&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.owasp&lt;/groupId&gt;
+                &lt;artifactId&gt;dependency-check-maven&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;autoUpdate&gt;true&lt;/autoUpdate&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;check&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+</code></pre></div></div>
+
+<p>如下图点击maven:check</p>
+
+<p><img src="/images/202205/WechatIMG143.png" alt="" width="800" /></p>
+
+<p>运行结束后，会在target下生成检测报告dependency-check-report.html，直接浏览器打开查看就可以了</p>
+
+<p><img src="/images/202205/WechatIMG144.png" alt="" width="800" /></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/05/maven_plugin">May 14, 2022 - maven plugin</a></h1>
@@ -368,37 +420,6 @@
 <p>参考文章: <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html">https://www.runoob.com/cplusplus/cpp-tutorial.html</a></p>
 
 <p>vector 初始化: https://blog.csdn.net/veghlreywg/article/details/80400382</p>
-
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/gateway">May 7, 2022 - gateway</a></h1>
-        
-        <div class="content">
-            <h1 id="gateway-mono-flux">Gateway Mono Flux</h1>
-
-<p>参考文章: <a href="https://segmentfault.com/a/1190000024499748">https://segmentfault.com/a/1190000024499748</a></p>
-
-<p><a href="https://www.cnblogs.com/littleatp/p/11515458.html">https://www.cnblogs.com/littleatp/p/11515458.html</a></p>
-
-<p>冷流（从头开始消费） 和 热流(从offset处开始消费)  <a href="https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b">https://medium.com/reactive-programming-in-springboot-using-webflux/hot-vs-cold-reactive-streams-2314ec983f5b</a></p>
-
-<p><a href="https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/">https://www.vinsguru.com/reactor-hot-publisher-vs-cold-publisher/</a></p>
-
-<p>注意：如果热流的上个subscribe已经消费结束了，则下一个subscribe会从头开始，而不是不消费.</p>
-
-<p>响应式编程</p>
-
-<ul>
-  <li>响应流必须是无阻塞的。</li>
-  <li>响应流必须是一个数据流。</li>
-  <li>它必须可以异步执行。</li>
-  <li>并且它也应该能够处理背压。</li>
-</ul>
 
 
         </div>

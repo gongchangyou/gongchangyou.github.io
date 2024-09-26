@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/09/es-apm">es apm</a></li>
+        
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
           <li><a href="/2023/08/jmockit">jmockit</a></li>
-        
-          <li><a href="/2023/07/easyexcel">easyexcel</a></li>
         
     </ul>
 </div>
@@ -146,7 +146,7 @@
 			
 		
 			
-				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>4</sup></a></li>
+				<li><a href="/tag/elasticsearch" title="elasticsearch">elasticsearch<sup>5</sup></a></li>
 			
 		
 			
@@ -173,6 +173,113 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/06/RocketMQ-source-code">Jun 2, 2022 - RocketMQ source code</a></h1>
+        
+        <div class="content">
+            <h1 id="rocketmq-源码解析">RocketMQ 源码解析</h1>
+
+<p>参考文章: <a href="https://juejin.cn/post/6847902221577748487">https://juejin.cn/post/6847902221577748487</a></p>
+
+<p>代码仓库： <a href="https://github.com/gongchangyou/dubbo-demo-producer">https://github.com/gongchangyou/dubbo-demo-producer</a></p>
+
+<p><a href="https://github.com/gongchangyou/dubbo-demo-consumer">https://github.com/gongchangyou/dubbo-demo-consumer</a></p>
+
+<p>这里借用了dubbo的demo， 所以可能需要启动nacos.</p>
+
+<h3 id="netty基础知识">netty基础知识:</h3>
+<p>RocketMQ是的TCP通信基于 netty的
+初始化时, NettyRemotingClient.start 中， 实例化一个bootstrap, 设置一个 ChannelHandler，这个handler给pipeline注册一堆 ChannelHandler，比如 SimpleChannelInboundHandler， 可以read channel中的报文。</p>
+
+<p><img src="/images/202206/WechatIMG256.png" alt="" width="800" /></p>
+
+<h3 id="生产端-producer">生产端 producer</h3>
+<p><img src="/images/202206/producer_uml.drawio.png" alt="" width="800" /></p>
+
+<hr />
+<h3 id="消费端-consumer">消费端 consumer</h3>
+
+<p>参考文章: <a href="https://blog.csdn.net/weixin_34452850/article/details/82712634">https://blog.csdn.net/weixin_34452850/article/details/82712634</a></p>
+
+<p>长轮询上面这篇文章介绍过了，具体方法就是 DefaultMQPushConsumerImpl.executePullRequestLater</p>
+
+<font color="red">管理类是 MQClientInstance，一个主题对应一个，里面有很多成员，管理主题路由信息（topicRouteTable），消费者(consumerTable) 等 </font>
+
+<p>consumer的设计简直回调地狱.</p>
+
+<p><img src="/images/202206/consumer_uml.drawio.png" alt="" width="800" /> 
+<img src="/images/202206/consumer_receive_uml.drawio.png" alt="" width="800" /></p>
+
+<ol>
+  <li>
+    <p>consumer是利用 PullMessageService 中的 LinkedBlockingQueue<PullRequest> pullRequestQueue 来获取消息. 因为producer的这个 pullRequestQueue 不会put元素进去，所以会阻塞在这个take方法，也不会有啥影响，顶多就是占用一个空的queue对象.</PullRequest></p>
+
+    <p><img src="/images/202206/WechatIMG257.png" alt="" width="800" /></p>
+  </li>
+  <li>
+    <p>这个 schedule task 里面启动了很多轮询任务，包括更新主题路由信息(根据topic 获取addr)，清理掉线的broker，上报offset给broker，心跳检测。</p>
+  </li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>this.startScheduledTask();
+
+private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "MQClientFactoryScheduledThread");
+        }
+    });
+scheduledThreadPoolExecutor.scheduleAtFixedRate
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="核心组件-broker">核心组件 broker</h3>
+<p>这个我说不好，暂时没时间看源码了，参考文章:</p>
+
+<p><a href="https://juejin.cn/post/6844904191916245000">https://juejin.cn/post/6844904191916245000</a></p>
+
+<p><a href="https://cloud.tencent.com/developer/article/1645897">https://cloud.tencent.com/developer/article/1645897</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/427602828">https://zhuanlan.zhihu.com/p/427602828</a></p>
+
+<p><a href="https://gsmtoday.github.io/2018/03/26/rocketmq-broker/">https://gsmtoday.github.io/2018/03/26/rocketmq-broker/</a></p>
+
+<p><a href="https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html">https://kgyhkgyh.gitbooks.io/rocketmq/content/chapter2.html</a></p>
+
+<p><a href="https://www.modb.pro/db/72476">https://www.modb.pro/db/72476</a></p>
+
+<hr />
+
+<p>问题1：超时是如何实现的？</p>
+
+<p>回答1:  NettyRemotingAbstract 中 ,  responseFuture的 responseCommand 初始化的时候就是null， 如果发送成功 但是迟迟没有收到response 就会抛timeout异常。这里的实现是基于countDownLatch. 如果是我的话可能会用个 completableFuture.orTimeout, 或者get(2, TimeUnit.SECONDS)  .示例代码:
+<a href="https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46">https://github.com/gongchangyou/transactional/blob/master/src/test/java/com/mouse/transactional/FutureTest.java#L46</a>.</p>
+
+<p>当然  responseFuture.isSendRequestOK() 这个判断还是需要的，用来区分是否发送成功。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RemotingCommand responseCommand = responseFuture.waitResponse(timeoutMillis);
+            if (null == responseCommand) { //netty迟迟没有receive 消息，这里就是null
+                if (responseFuture.isSendRequestOK()) { //但是request已经发送成功了
+                    throw new RemotingTimeoutException(RemotingHelper.parseSocketAddressAddr(addr), timeoutMillis,
+                        responseFuture.getCause());
+                } else {
+                    throw new RemotingSendRequestException(RemotingHelper.parseSocketAddressAddr(addr), responseFuture.getCause());
+                }
+            }
+</code></pre></div></div>
+
+<p>问题2:  多个consumer的offset是如何管理的？
+回答2： 参考文章 <a href="https://www.jianshu.com/p/4929947c0b31">https://www.jianshu.com/p/4929947c0b31</a>  因为broker的代码我还没看过哈，猜测一个可能的处理方式，A,B 两个consumer. nextOffset分别是34，35， 当各自消费完之后，A，B各自去pull 34，35。因为34消息已经被B消费掉了， 所以A可能就pull了个寂寞，pullResult.getPullStatus() 是 NO_NEW_MSG， 此时会将本地 nextOffset置位 35.</p>
+
+<p>问题3： broker是如何处理某个offset上的消息一直没消费成功的?
+回答3:    没有时间看源码，结合一些文章看大概是，consumer本地重试 + sendBack， 将异常的消息重新发送一次，这样offset往前走也没问题。</p>
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/06/MappedByteBuffer">Jun 1, 2022 - mmap</a></h1>
@@ -378,56 +485,6 @@ Codec2.DecodeResult.NEED_MORE_INPUT
 <p>其中 saveReaderIndex 可以记录message的读索引, 如果粘包，decode部分结果后, 当前的读游标肯定不是0，则可以从 message的 readerIndex 开始读取. 下面代码可以和原先的netty/NettyCodecAdapter比对下，省去了一些关于拆包时拼接的逻辑 比如 buffer.readableBytes() + input.readableBytes(); 
 <img src="/images/202205/WechatIMG277.png" alt="" width="800" /></p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/05/CompletableFuture">May 29, 2022 - CompletableFuture</a></h1>
-        
-        <div class="content">
-            <h1 id="completablefuture">CompletableFuture</h1>
-
-<p>参考文章: <a href="https://juejin.cn/post/6844903594165026829">https://juejin.cn/post/6844903594165026829</a></p>
-
-<p><a href="https://colobu.com/2016/02/29/Java-CompletableFuture/">https://colobu.com/2016/02/29/Java-CompletableFuture/</a></p>
-
-<p>一个手动complete的例子</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    @Test
-    void complete() {
-        CompletableFuture cf = new CompletableFuture&lt;String&gt;();
-
-        val cf1 = cf.thenApply((Object str) -&gt; {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return ((String)str).replace("a", "d");
-        });
-
-        cf.complete("aad"); //这里会触发cf后面的thenApply方法，上述的sleep会同步阻塞。
-
-        try {
-            val value = cf.get();
-            val value1 = cf1.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);
-            log.info("value={} value1={}",value,value1);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            e.printStackTrace();
-        }
-    }
-</code></pre></div></div>
-
-<h3 id="超时设置">超时设置</h3>
-
-<ol>
-  <li>orTimeout 方法， 超时会抛出TimeOut异常</li>
-  <li>completeOnTimeout 超时会被设置成默认值</li>
-  <li>get(long timeout, TimeUnit unit)， 同1</li>
-</ol>
 
         </div>
     </div>
