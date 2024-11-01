@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/11/fat_jar">fat jar</a></li>
+        
           <li><a href="/2024/09/es-apm">es apm</a></li>
         
           <li><a href="/2024/09/grep">grep</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
         
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
-        
-          <li><a href="/2023/08/jmockit">jmockit</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>86</sup></a></li>
 			
 		
 			
@@ -173,6 +173,26 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/07/autowired-list">Jul 29, 2022 - autowired</a></h1>
+        
+        <div class="content">
+            <h1 id="autowired-注入list">autowired 注入list</h1>
+
+<p>代码仓库： <a href="https://github.com/gongchangyou/spring_xml_test">https://github.com/gongchangyou/spring_xml_test</a></p>
+
+<p>autowired 注入list  .  按照Order中的 数字 由小到大放入 list。</p>
+
+<p>如果要注入map。 就 @PostConstruct, stream 将list中的元素整理成map</p>
+
+<p>参考文章： <a href="https://cloud.tencent.com/developer/article/1420334">https://cloud.tencent.com/developer/article/1420334</a></p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/07/xml">Jul 28, 2022 - xml</a></h1>
@@ -222,129 +242,6 @@
 
 <p>参考文章: <a href="https://blog.csdn.net/Janson_Lin/article/details/108379333">https://blog.csdn.net/Janson_Lin/article/details/108379333</a></p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/07/skywalking">Jul 21, 2022 - skywalking</a></h1>
-        
-        <div class="content">
-            <h1 id="skywalking">skywalking</h1>
-
-<ol>
-  <li>
-    <p>docker-compose up -d 启动 es + kibana + oap + UI
-  <a href="/images/202207/docker-compose.yml">docker-compose.yml</a>  docker-compose up -d</p>
-
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  version: '2.2'
-  services:
-    es-node:
-     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-     container_name: es-node
-     environment:
-       - node.name=es-node
-       - cluster.name=es-cluster-7
-       - discovery.type=single-node
-       - xpack.security.enabled=false
-       - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
-     ulimits:
-       memlock:
-         soft: -1
-         hard: -1
-     volumes:
-       - ./data:/usr/share/elasticsearch/data
-     ports:
-       - 9200:9200
-     networks:
-       - skywalking-network
-
-    kibana:
-     image: docker.elastic.co/kibana/kibana:7.5.0
-     environment:
-       ELASTICSEARCH_HOSTS: http://es-node:9200
-     ports:
-       - 5601:5601
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    oap:
-     image: apache/skywalking-oap-server:8.9.1
-     container_name: oap1
-     environment:
-       SW_STORAGE: elasticsearch
-       SW_STORAGE_ES_CLUSTER_NODES: es-node:9200
-       TZ: Asia/Shanghai 
-     ports:
-       - 12800:12800
-       - 11800:11800
-     networks:
-       - skywalking-network
-     depends_on:
-       - es-node
-
-    ui:
-      image: apache/skywalking-ui:8.9.1
-      environment:
-        SW_OAP_ADDRESS: http://oap1:12800
-        TZ: Asia/Shanghai 
-      ports:
-        - 8088:8080
-      networks:
-        - skywalking-network
-      depends_on:
-        - es-node    
-
-  volumes:
-   es-data01:
-     driver: local
-
-  networks:
-   skywalking-network:
-     driver: bridge
-  
-</code></pre></div>    </div>
-
-    <p>发现 es中会创建一堆索引
-<img src="/images/202207/WechatIMG350.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>检查以上4个容器是否都正常启动 docker logs XXX ， 打开 localhost:8088 看到 UI启动好了</p>
-  </li>
-  <li>
-    <p>下载 java agent <a href="https://skywalking.apache.org/downloads/#Agents">https://skywalking.apache.org/downloads/#Agents</a> 通过设置 -javaagent 配置 SkyWalking Agent</p>
-  </li>
-  <li>
-    <p>在idea中设置vm options,   -javaagent:/Users/gongchangyou/learn/skywalking/skywalking-agent/skywalking-agent.jar,  具体的配置可以去 /Users/gongchangyou/learn/skywalking/skywalking-agent/config/agent.config 看看</p>
-
-    <p><img src="/images/202207/WechatIMG355.png" alt="" width="800" /></p>
-  </li>
-  <li>
-    <p>完成 打开 http://localhost:8088/trace 看看</p>
-
-    <p><img src="/images/202207/WechatIMG356.png" alt="" width="800" /></p>
-  </li>
-</ol>
-
-<hr />
-
-<p>问题1: org.apache.skywalking.oap.server.library.module.ProviderNotFoundException</p>
-
-<p>回答1: 应该是ES版本和skywalking版本不匹配导致，把版本先对应好，比如上面的yml中的ES从 8.2.0降到:7.5.0</p>
-
-<p>skywalking版本保持在 8.9.1</p>
-
-<p>参考文章： <a href="https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/">https://skywalking.apache.org/zh/2020-04-19-skywalking-quick-start/</a></p>
-
-<p><a href="https://www.cnblogs.com/xiao987334176/p/13530575.html">https://www.cnblogs.com/xiao987334176/p/13530575.html</a></p>
-
-<p><a href="https://hub.docker.com/r/apache/skywalking-oap-server">https://hub.docker.com/r/apache/skywalking-oap-server</a></p>
-
-<p><a href="https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/">https://skywalking.apache.org/docs/main/v8.9.1/en/setup/backend/backend-docker/</a></p>
 
         </div>
     </div>

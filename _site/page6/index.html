@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/11/fat_jar">fat jar</a></li>
+        
           <li><a href="/2024/09/es-apm">es apm</a></li>
         
           <li><a href="/2024/09/grep">grep</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
         
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
-        
-          <li><a href="/2023/08/jmockit">jmockit</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>86</sup></a></li>
 			
 		
 			
@@ -173,6 +173,123 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2022/10/validation">Oct 13, 2022 - Validation</a></h1>
+        
+        <div class="content">
+            <h1 id="validation">Validation</h1>
+
+<p>代码仓库:</p>
+
+<p><a href="https://github.com/gongchangyou/pdfreader">https://github.com/gongchangyou/pdfreader</a></p>
+
+<p>dependency</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre></div></div>
+
+<p>annotation</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface ParamValidation {
+}
+</code></pre></div></div>
+
+<p>aspect</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Slf4j
+@Component
+@Aspect
+@Order(10)
+public class ValidationAspect {
+
+    @Autowired
+    @Qualifier("executableValidator")
+    private ExecutableValidator validator;
+//    @Around(value = "within(com.mouse.pdfreader.*) &amp;&amp; execution(public * com.mouse.pdfreader.*.*(..)) &amp;&amp; @annotation(com.mouse.pdfreader.aop.ParamValidation)")
+    @Around(value = "@annotation(paramValidation) ")
+    public Object process(ProceedingJoinPoint proceedingJoinPoint, ParamValidation paramValidation) {
+        val sw= new StopWatch();
+        sw.start("validation");
+        Set&lt;ConstraintViolation&lt;Object&gt;&gt; constraintViolations = validator.validateParameters(proceedingJoinPoint.getTarget(), ((MethodSignature)proceedingJoinPoint.getSignature()).getMethod(), proceedingJoinPoint.getArgs());
+        sw.stop();
+        log.info(sw.prettyPrint());
+
+        if(constraintViolations.size() &gt; 0){
+            final String constraintMessage = constraintViolations.stream()
+                    .findFirst()
+                    .map(ConstraintViolation::getMessage)
+                    .orElse("");
+
+            return constraintMessage;
+        }
+
+        try {
+            return proceedingJoinPoint.proceed();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+}
+</code></pre></div></div>
+
+<p>Config:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Configuration
+public class ValidatorConfiguration {
+    @Bean(name = "executableValidator")
+    ExecutableValidator get() {
+        val validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true).buildValidatorFactory();
+        return validatorFactory.getValidator().forExecutables();
+    }
+}
+
+</code></pre></div></div>
+
+<p>Service</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Service
+public class TestService {
+
+    @ParamValidation
+    public String test(@Valid ParamData param){
+        return "success";
+    }
+}
+</code></pre></div></div>
+
+<p>param</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@Data
+@Builder
+public class ParamData {
+    @Range(min=1,max=10, message = "1-10")
+    int age;
+
+    @NotNull(message = "null name")
+    String name;
+
+}
+</code></pre></div></div>
+
+<p>检查的字段数,1-2个字段 耗时 0.2-0.4ms。  对于高频计算来说，还是耗时较高。</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2022/10/reflect">Oct 11, 2022 - reflect</a></h1>
@@ -251,20 +368,6 @@ public class ReflectTest {
 
 <p>参考文章: <a href="https://juejin.cn/post/6844904012915933191">https://juejin.cn/post/6844904012915933191</a>
 <a href="https://blog.51cto.com/u_7932852/3753021">https://blog.51cto.com/u_7932852/3753021</a></p>
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2022/09/quic">Sep 15, 2022 - quic</a></h1>
-        
-        <div class="content">
-            <h1 id="quic">quic</h1>
-
-<p>参考文章: <a href="https://zhuanlan.zhihu.com/p/270628018">https://zhuanlan.zhihu.com/p/270628018</a></p>
-
 
         </div>
     </div>

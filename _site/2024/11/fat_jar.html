@@ -174,36 +174,28 @@
         <div class="col-md-9">
           <div class="article">
             <div class="well">
-                <h1><a href="/2022/07/mongodb-index">Jul 12, 2022 - mongodb index</a></h1>
+                <h1><a href="/2024/11/fat_jar">Nov 1, 2024 - fat jar</a></h1>
             
             <div class="post-content">
-            <h1 id="mongodb-索引">mongodb 索引</h1>
+            <h1 id="如何使用gradle打一个fat-jar-">如何使用gradle打一个fat jar ?</h1>
 
-<p>通常我们会用 mongodb 来做kv存储。 但是其实也可以用来做关系型数据库，只需要加上索引即可。原理就是 B tree.</p>
-
-<p>参考文章: <a href="https://juejin.cn/post/6844903520747929614">https://juejin.cn/post/6844903520747929614</a></p>
-
-<p><a href="https://haicoder.net/mongodb/mongodb-index-principle.html">https://haicoder.net/mongodb/mongodb-index-principle.html</a></p>
-
-<p><a href="https://blog.csdn.net/guangyacyb/article/details/104339183">https://blog.csdn.net/guangyacyb/article/details/104339183</a></p>
-
-<p><a href="https://mongoing.com/archives/2797">https://mongoing.com/archives/2797</a></p>
-
-<p>可以 createIndex单个字段的索引，还能建立联合索引, 1 -1 控制升序和降序</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> db.person.createIndex( {age: 1, name: -1} )  
-</code></pre></div></div>
-
-<p>查看索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.getIndexes() 
-</code></pre></div></div>
-
-<p>查看query 是否使用索引,  如果是 <a href="https://docs.mongodb.org/manual/reference/explain-results/#queryplanner">COLLSCAN</a> 说明全表扫描， 如果是 IXSCAN ，就是使用了索引</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db.person.find({age:18}).explain()
-db.person.find({age:18}).explain("executionStats")
-</code></pre></div></div>
+<ol>
+  <li>build.gradle 配置
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {    
+ id 'com.github.johnrengelman.shadow' version '8.1.0' // 使用最新版本
+}
+</code></pre></div>    </div>
+  </li>
+  <li>build.gradle 配置
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shadowJar {
+ archiveBaseName.set('my-fat-jar') // JAR 文件名称
+ archiveClassifier.set('all') // 添加分类，通常为 'all'
+ archiveVersion.set('1.0') // JAR 版本
+}
+</code></pre></div>    </div>
+  </li>
+  <li>gradle clean shadowJar</li>
+</ol>
 
 
             </div>
@@ -217,10 +209,8 @@ db.person.find({age:18}).explain("executionStats")
           </div>
           <div class="pagination">
               
-                <a class="btn btn-default" href="/2022/07/kafka" class="next">Newer Post</a>
               
-              
-                <a class="btn btn-default" href="/2022/07/flink" class="previous">Older Post</a>
+                <a class="btn btn-default" href="/2024/09/es-apm" class="previous">Older Post</a>
               
 </div>
 
@@ -228,13 +218,13 @@ db.person.find({age:18}).explain("executionStats")
     </div>
 </div>
 <!--  -->
-<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/c++/">c++</a></p> -->
+<!-- <p id="post-meta">Posted with <i class="fa fa-tag"></i>: <a href="/tag/life/">生活</a></p> -->
 
   <script type="text/javascript">
     var disqus_shortname = '';
 
     var disqus_config = function () {
-        this.page.identifier = '2022-07-mongodb-index';
+        this.page.identifier = '2024-11-fat-jar';
     };
 
    (function() {

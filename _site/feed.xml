@@ -7,6 +7,34 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>fat jar</title>
+				<description>&lt;h1 id=&quot;如何使用gradle打一个fat-jar-&quot;&gt;如何使用gradle打一个fat jar ?&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;build.gradle 配置
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;plugins {    
+ id 'com.github.johnrengelman.shadow' version '8.1.0' // 使用最新版本
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;build.gradle 配置
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shadowJar {
+ archiveBaseName.set('my-fat-jar') // JAR 文件名称
+ archiveClassifier.set('all') // 添加分类，通常为 'all'
+ archiveVersion.set('1.0') // JAR 版本
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;gradle clean shadowJar&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+				<pubDate>Fri, 01 Nov 2024 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2024/11/fat_jar</link>
+				<guid isPermaLink="true">http://localhost:4000/2024/11/fat_jar</guid>
+			</item>
+		
+			<item>
 				<title>es apm</title>
 				<description>&lt;h1 id=&quot;apm-一种替代zipkin的-elasticsearch的trace方案&quot;&gt;apm 一种替代zipkin的 ElasticSearch的trace方案&lt;/h1&gt;
 
@@ -213,27 +241,6 @@ done&lt;/span&gt;
 				<pubDate>Tue, 04 Apr 2023 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2023/04/jdom</link>
 				<guid isPermaLink="true">http://localhost:4000/2023/04/jdom</guid>
-			</item>
-		
-			<item>
-				<title>spring 循环依赖</title>
-				<description>&lt;h1 id=&quot;spring循环依赖的概念及解决方式&quot;&gt;Spring循环依赖的概念及解决方式&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;必须单例&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;尽量用setter方法，使用构造器注入不保证成功&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://m.dandelioncloud.cn/article/details/1581668550006001666&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Wed, 01 Mar 2023 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2023/03/dependency</link>
-				<guid isPermaLink="true">http://localhost:4000/2023/03/dependency</guid>
 			</item>
 		
 	</channel>

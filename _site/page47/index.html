@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/11/fat_jar">fat jar</a></li>
+        
           <li><a href="/2024/09/es-apm">es apm</a></li>
         
           <li><a href="/2024/09/grep">grep</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
         
           <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
-        
-          <li><a href="/2023/08/jmockit">jmockit</a></li>
         
     </ul>
 </div>
@@ -130,7 +130,7 @@
 			
 		
 			
-				<li><a href="/tag/java" title="java">java<sup>85</sup></a></li>
+				<li><a href="/tag/java" title="java">java<sup>86</sup></a></li>
 			
 		
 			
@@ -173,6 +173,18 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2017/10/mysql-find-duplicate-records">Oct 24, 2017 - mysql查找多行重复记录</a></h1>
+        
+        <div class="content">
+            <p>select user_name,count(*) as count from user_table group by user_name having count&gt;1;</p>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2017/10/memcache-expiretime">Oct 20, 2017 - memcache过期时间</a></h1>
@@ -241,34 +253,6 @@ filters = "ArrayNested() NewLines(before=switch:while:for:foreach:T_CLASS:return
 
 <p>7.试试ctrl+alt+f 或者 command+shift+p   搜索format php</p>
 
-
-        </div>
-    </div>
-</div>
-
-<div class="article">
-    <div class="well">
-        <h1><a href="/2017/09/mysql-load-data">Sep 13, 2017 - csv文件导入mysql</a></h1>
-        
-        <div class="content">
-            <p>load data infile “/data/xlive/tools/masterdata/badwords.csv” <br />
-into table xlive.badwords character set utf8 FIELDS ESCAPED BY    ‘\’ TERMINATED BY     ‘,’ OPTIONALLY ENCLOSED BY ‘'’ LINES TERMINATED BY   ‘\n’ ignore 1 lines;</p>
-
-<p>ERROR 1290 (HY000): The MySQL server is running with the –secure-file-priv option so it cannot execute this statement 
-错误咋办？</p>
-
-<p>在/etc/my.cnf中添加
-secure-file-priv=”/data/xlive/tools/masterdata/”</p>
-
-<font style="color:red">注意： csv文件中，逗号隔开，不要有空格</font>
-<p><br />
-<br />
-<a href="http://www.51testing.com/html/46/262846-837305.html">替换mysql中某个字段的部分内容</a></p>
-
-<p>将cdb_pms表subject字段中的Welcom to替换成 欢迎光临<br />
-UPDATE <code class="highlighter-rouge">cdb_pms</code><br />
-SET <code class="highlighter-rouge">subject</code> = REPLACE(<code class="highlighter-rouge">subject</code>, ‘Welcome to’, ‘欢迎光临’)<br />
-WHERE INSTR(<code class="highlighter-rouge">subject</code>,’Welcome to’) &gt; 0</p>
 
         </div>
     </div>
