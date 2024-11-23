@@ -183,8 +183,174 @@
 
 <p><a href="https://blog.csdn.net/zRegle/article/details/78054011">https://blog.csdn.net/zRegle/article/details/78054011</a></p>
 
+<p><a href="https://wizardforcel.gitbooks.io/antlr4-short-course/content/calculator-visitor.html">https://wizardforcel.gitbooks.io/antlr4-short-course/content/calculator-visitor.html</a></p>
+
 <p><a href="https://github.com/gongchangyou/antlr_test">https://github.com/gongchangyou/antlr_test</a></p>
 
+<p>以下是生成步骤</p>
+
+<ol>
+  <li>编写 Common.g4
+```
+grammar Rule;</li>
+</ol>
+
+<p>@header {
+package com.mouse.antlr_test.rule;
+}</p>
+
+<p>parse:   expr EOF ;</p>
+
+<p>expr:    expr AND expr              # AndExpr
+       | expr OR expr               # OrExpr
+       | NOT expr                   # NotExpr
+       | ‘(‘ expr ‘)’               # ParenthesizedExpr
+       | atom IN list               # ExprIn
+       | atom LIKE atom             # ExprLike
+       | atom COMPARISON atom         # CompareExpr
+       | atom                       # AtomExpr
+       ;</p>
+
+<p>atom:    ID                         # IdentifierAtom
+       | NUMBER                     # NumberAtom
+       | STRING                     # StringAtom
+       | TRUE                       # TrueAtom
+       | FALSE                      # FalseAtom
+       ;</p>
+
+<p>list:    ‘[’ expr (‘,’ expr)* ‘]’ ;</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>COMPARISON : ‘&gt;’</td>
+      <td>’&lt;’</td>
+      <td>’&gt;=’</td>
+      <td>’&lt;=’</td>
+      <td>’=’</td>
+      <td>’&lt;&gt;’;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>NUMBER  : [0-9]+ ;
+STRING  : ‘”’ (~[”\] | ‘\”’ | ‘\\’)* ‘”’ ;
+TRUE    : T R U E ;
+FALSE   : F A L S E ;
+AND     : A N D ;
+OR      : O R ;
+NOT     : N O T ;
+IN      : I N ;
+LIKE    : L I K E ;
+//关键字必须在ID之前被定义!!
+ID      : [a-zA-Z_%][a-zA-Z0-9_%]* ;</p>
+
+<p>WS      : [ \t\r\n]+ -&gt; skip ;</p>
+
+<p>fragment T : [tT];
+fragment R : [rR];
+fragment U : [uU];
+fragment E : [eE];
+fragment A : [aA];
+fragment N : [nN];
+fragment O : [oO];
+fragment F : [fF];
+fragment L : [lL];
+fragment I : [iI];
+fragment K : [kK];
+fragment S : [sK];
+fragment D : [dD];</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+1. 执行命令 anltr -visitor Common.g4
+
+2. override CommonBaseVisitor
+</code></pre></div></div>
+<p>package com.mouse.antlr_test.expr;</p>
+
+<p>import java.util.HashMap;
+import java.util.Map;</p>
+
+<p>public class EvalVisitor extends CommonBaseVisitor<object> {</object></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public EvalVisitor(){
+}
+
+@Override
+public Object visitExprIn(CommonParser.ExprInContext ctx) {
+    System.out.println(ctx);
+    return visitChildren(ctx);
+}
+@Override public Object visitAtomExpr(CommonParser.AtomExprContext ctx) {
+    System.out.println(ctx.getText());
+    return visitChildren(ctx);
+}
+@Override public Object visitExprLike(CommonParser.ExprLikeContext ctx) {
+    System.out.println(ctx);
+    return visitChildren(ctx);
+}
+
+@Override public Object visitCompareExpr(CommonParser.CompareExprContext ctx) {
+    System.out.println(ctx.atom(0).getText() + " " +ctx.atom(1).getText());
+    return visitChildren(ctx);
+}
+</code></pre></div></div>
+
+<p>}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+3. main函数
+</code></pre></div></div>
+<p>package com.mouse.antlr_test.expr;</p>
+
+<p>import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.tree.ParseTree;</p>
+
+<p>import java.io.IOException;
+import java.io.InputStream;</p>
+
+<p>public class MyCommon {
+    public static void main(String[] args) throws IOException {
+        String file=”commontest.txt”;
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream(file);
+        //创建输入文件流
+//        FileInputStream inputStream=new FileInputStream(file);
+        //转化为字符流
+        CharStream input= CharStreams.fromStream(is);
+        // 创建词法分析器
+        CommonLexer lexer = new CommonLexer(input);</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    // 创建语法分析器
+    CommonParser parser = new CommonParser(new CommonTokenStream(lexer));
+    // 设置错误监听器以捕获语法错误
+    parser.addErrorListener(new BaseErrorListener() {
+        @Override
+        public void syntaxError(Recognizer&lt;?, ?&gt; recognizer,
+                                Object offendingSymbol,
+                                int line,
+                                int charPositionInLine,
+                                String msg,
+                                RecognitionException e) {
+            throw new RuntimeException("Syntax error on line " + line + ":" + charPositionInLine + " " + msg, e);
+        }
+    });
+    //分析语法
+    ParseTree tree=parser.parse();
+    //遍历语法树，输出结果
+    EvalVisitor visitor=new EvalVisitor();
+    //当遍历树时如果出错，会返回空指针，在这里捕获
+    try{
+        Object result = visitor.visit(tree);
+        System.out.println(result);
+    }catch (NullPointerException e){
+        System.out.println("oops, we have some problem");
+    }
+} } ```
+</code></pre></div></div>
 
             </div>
             
