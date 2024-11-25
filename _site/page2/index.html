@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/11/antiestablishment">美国反正统文化运动-嬉皮士文化研究</a></li>
+        
           <li><a href="/2024/11/fat_jar">fat jar</a></li>
         
           <li><a href="/2024/09/es-apm">es apm</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
-        
-          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
     </ul>
 </div>
@@ -106,7 +106,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>22</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>23</sup></a></li>
 			
 		
 			
@@ -173,6 +173,51 @@
         </div>
         <div class="col-md-9">
             
+<div class="article">
+    <div class="well">
+        <h1><a href="/2024/09/grep">Sep 25, 2024 - grep</a></h1>
+        
+        <div class="content">
+            <h1 id="grep">grep</h1>
+
+<p>有多个文件 希望用某个关键字匹配 某几行，同时输出这一行的前3行和后9行 到一个文件中，用bash 命令或者脚本怎么写?</p>
+
+<p>如下方法耗时较久，不如再另外找个关键字直接 grep -B 20 来的快。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># 文件名和关键字</span>
+<span class="nv">filename</span><span class="o">=</span><span class="s2">"*.log"</span>
+<span class="nv">keyword</span><span class="o">=</span><span class="s2">"your_keyword"</span>
+<span class="nv">output_file</span><span class="o">=</span><span class="s2">"output_file.txt"</span>
+
+<span class="c"># 清空输出文件（如果已经存在）</span>
+<span class="o">&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>
+
+<span class="k">for </span>logfile <span class="k">in</span> <span class="nv">$filename</span><span class="p">;</span> <span class="k">do</span>
+<span class="c"># 使用 grep 找到匹配的行号</span>
+    <span class="nb">grep</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$keyword</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$logfile</span><span class="s2">"</span> | <span class="k">while </span><span class="nv">IFS</span><span class="o">=</span>: <span class="nb">read</span> <span class="nt">-r</span> line_number line_content<span class="p">;</span> <span class="k">do</span>
+        <span class="c"># 打印匹配行的前三行和后九行</span>
+        <span class="nv">start</span><span class="o">=</span><span class="k">$((</span>line_number <span class="o">-</span> <span class="m">3</span><span class="k">))</span>
+        <span class="nv">end</span><span class="o">=</span><span class="k">$((</span>line_number <span class="o">+</span> <span class="m">9</span><span class="k">))</span>
+
+        <span class="c"># 处理文件开头或结尾的情况</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="nv">$start</span> <span class="nt">-lt</span> 1 <span class="o">]</span><span class="p">;</span> <span class="k">then
+            </span><span class="nv">start</span><span class="o">=</span>1
+        <span class="k">fi</span>
+
+        <span class="c"># 输出到文件</span>
+        <span class="nb">sed</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">start</span><span class="k">}</span><span class="s2">,</span><span class="k">${</span><span class="nv">end</span><span class="k">}</span><span class="s2">p"</span> <span class="s2">"</span><span class="nv">$logfile</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>
+        <span class="nb">echo</span> <span class="s2">"-----"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>  <span class="c"># 输出分隔符到文件，方便区分不同匹配结果</span>
+    <span class="k">done
+done</span>
+
+</code></pre></div></div>
+
+
+        </div>
+    </div>
+</div>
+
 <div class="article">
     <div class="well">
         <h1><a href="/2023/11/dolphinDB">Nov 10, 2023 - dolphinDB</a></h1>
@@ -250,26 +295,6 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2023/08/jmockit">Aug 9, 2023 - jmockit</a></h1>
-        
-        <div class="content">
-            <h1 id="jmockit-编写-testcase">jmockit 编写 testcase</h1>
-
-<ol>
-  <li>
-    <p>如何调用原有目标函数？</p>
-
-    <p>在@Mock 的函数中 第一个参数使用 Invocation invocation</p>
-  </li>
-</ol>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
@@ -277,7 +302,7 @@
         <a class="btn btn-default" href="/index.html" class="previous">Newer</a>
       
   
-  <span class="page_number ">Page: 2 of 63</span>
+  <span class="page_number ">Page: 2 of 64</span>
   
     <a class="btn btn-default" href="/page3" class="next">Older</a>
   

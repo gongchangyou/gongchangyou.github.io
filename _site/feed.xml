@@ -7,6 +7,23 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>美国反正统文化运动-嬉皮士文化研究</title>
+				<description>&lt;h1 id=&quot;美国反正统文化运动-嬉皮士文化研究&quot;&gt;美国反正统文化运动-嬉皮士文化研究&lt;/h1&gt;
+
+&lt;p&gt;近期社会热点事件，郑州大学生夜骑开封。又把这本书翻出来看看，总结了以下这个大纲。
+简单来说就是社会学的通病，引用了一堆文献，数字，得出众人皆知的结论。&lt;/p&gt;
+
+&lt;p&gt;熟读中国历史的朋友们都能一眼看出来，这些嬉皮士连洪秀全都不如，难以成事。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/202411/antiestablishment.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+</description>
+				<pubDate>Mon, 25 Nov 2024 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2024/11/antiestablishment</link>
+				<guid isPermaLink="true">http://localhost:4000/2024/11/antiestablishment</guid>
+			</item>
+		
+			<item>
 				<title>fat jar</title>
 				<description>&lt;h1 id=&quot;如何使用gradle打一个fat-jar-&quot;&gt;如何使用gradle打一个fat jar ?&lt;/h1&gt;
 
@@ -229,18 +246,6 @@ done&lt;/span&gt;
 				<pubDate>Fri, 19 May 2023 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2023/05/UML</link>
 				<guid isPermaLink="true">http://localhost:4000/2023/05/UML</guid>
-			</item>
-		
-			<item>
-				<title>xml</title>
-				<description>&lt;h1 id=&quot;java-操作xml&quot;&gt;java 操作xml&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://blog.csdn.net/weixin_48052161/article/details/115053853&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-</description>
-				<pubDate>Tue, 04 Apr 2023 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2023/04/jdom</link>
-				<guid isPermaLink="true">http://localhost:4000/2023/04/jdom</guid>
 			</item>
 		
 	</channel>

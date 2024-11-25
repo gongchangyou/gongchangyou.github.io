@@ -74,6 +74,8 @@
     <h1>Recent Posts</h1>
     <ul>
         
+          <li><a href="/2024/11/antiestablishment">美国反正统文化运动-嬉皮士文化研究</a></li>
+        
           <li><a href="/2024/11/fat_jar">fat jar</a></li>
         
           <li><a href="/2024/09/es-apm">es apm</a></li>
@@ -81,8 +83,6 @@
           <li><a href="/2024/09/grep">grep</a></li>
         
           <li><a href="/2023/11/dolphinDB">dolphinDB</a></li>
-        
-          <li><a href="/2023/09/iterator_remove">iterator-remove</a></li>
         
     </ul>
 </div>
@@ -106,7 +106,7 @@
 			
 		
 			
-				<li><a href="/tag/life" title="life">life<sup>22</sup></a></li>
+				<li><a href="/tag/life" title="life">life<sup>23</sup></a></li>
 			
 		
 			
@@ -175,6 +175,25 @@
             
 <div class="article">
     <div class="well">
+        <h1><a href="/2024/11/antiestablishment">Nov 25, 2024 - 美国反正统文化运动-嬉皮士文化研究</a></h1>
+        
+        <div class="content">
+            <h1 id="美国反正统文化运动-嬉皮士文化研究">美国反正统文化运动-嬉皮士文化研究</h1>
+
+<p>近期社会热点事件，郑州大学生夜骑开封。又把这本书翻出来看看，总结了以下这个大纲。
+简单来说就是社会学的通病，引用了一堆文献，数字，得出众人皆知的结论。</p>
+
+<p>熟读中国历史的朋友们都能一眼看出来，这些嬉皮士连洪秀全都不如，难以成事。</p>
+
+<p><img src="/images/202411/antiestablishment.png" alt="" /></p>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class="well">
         <h1><a href="/2024/11/fat_jar">Nov 1, 2024 - fat jar</a></h1>
         
         <div class="content">
@@ -223,55 +242,10 @@
     </div>
 </div>
 
-<div class="article">
-    <div class="well">
-        <h1><a href="/2024/09/grep">Sep 25, 2024 - grep</a></h1>
-        
-        <div class="content">
-            <h1 id="grep">grep</h1>
-
-<p>有多个文件 希望用某个关键字匹配 某几行，同时输出这一行的前3行和后9行 到一个文件中，用bash 命令或者脚本怎么写?</p>
-
-<p>如下方法耗时较久，不如再另外找个关键字直接 grep -B 20 来的快。</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-
-<span class="c"># 文件名和关键字</span>
-<span class="nv">filename</span><span class="o">=</span><span class="s2">"*.log"</span>
-<span class="nv">keyword</span><span class="o">=</span><span class="s2">"your_keyword"</span>
-<span class="nv">output_file</span><span class="o">=</span><span class="s2">"output_file.txt"</span>
-
-<span class="c"># 清空输出文件（如果已经存在）</span>
-<span class="o">&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>
-
-<span class="k">for </span>logfile <span class="k">in</span> <span class="nv">$filename</span><span class="p">;</span> <span class="k">do</span>
-<span class="c"># 使用 grep 找到匹配的行号</span>
-    <span class="nb">grep</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$keyword</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$logfile</span><span class="s2">"</span> | <span class="k">while </span><span class="nv">IFS</span><span class="o">=</span>: <span class="nb">read</span> <span class="nt">-r</span> line_number line_content<span class="p">;</span> <span class="k">do</span>
-        <span class="c"># 打印匹配行的前三行和后九行</span>
-        <span class="nv">start</span><span class="o">=</span><span class="k">$((</span>line_number <span class="o">-</span> <span class="m">3</span><span class="k">))</span>
-        <span class="nv">end</span><span class="o">=</span><span class="k">$((</span>line_number <span class="o">+</span> <span class="m">9</span><span class="k">))</span>
-
-        <span class="c"># 处理文件开头或结尾的情况</span>
-        <span class="k">if</span> <span class="o">[</span> <span class="nv">$start</span> <span class="nt">-lt</span> 1 <span class="o">]</span><span class="p">;</span> <span class="k">then
-            </span><span class="nv">start</span><span class="o">=</span>1
-        <span class="k">fi</span>
-
-        <span class="c"># 输出到文件</span>
-        <span class="nb">sed</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">start</span><span class="k">}</span><span class="s2">,</span><span class="k">${</span><span class="nv">end</span><span class="k">}</span><span class="s2">p"</span> <span class="s2">"</span><span class="nv">$logfile</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>
-        <span class="nb">echo</span> <span class="s2">"-----"</span> <span class="o">&gt;&gt;</span> <span class="s2">"</span><span class="nv">$output_file</span><span class="s2">"</span>  <span class="c"># 输出分隔符到文件，方便区分不同匹配结果</span>
-    <span class="k">done
-done</span>
-
-</code></pre></div></div>
-
-
-        </div>
-    </div>
-</div>
-
 
 <div class="pagination">
   
-  <span class="page_number ">Page: 1 of 63</span>
+  <span class="page_number ">Page: 1 of 64</span>
   
     <a class="btn btn-default" href="/page2" class="next">Older</a>
   
