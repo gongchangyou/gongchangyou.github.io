@@ -7,6 +7,25 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>规则引擎Drools</title>
+				<description>&lt;h1 id=&quot;规则引擎drools&quot;&gt;规则引擎Drools&lt;/h1&gt;
+
+&lt;p&gt;Drools 是一个开源的业务规则管理系统（BRMS）和复杂事件处理（CEP）引擎，广泛应用于企业级应用中，用于决策支持、业务流程控制、规则引擎等场景。&lt;/p&gt;
+
+&lt;p&gt;官网说明: &lt;a href=&quot;https://www.drools.org/&quot;&gt;https://www.drools.org/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;源码: &lt;a href=&quot;https://github.com/apache/incubator-kie-drools&quot;&gt;https://github.com/apache/incubator-kie-drools&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;例子: &lt;a href=&quot;https://github.com/ityouknow/drools-examples?tab=readme-ov-file&quot;&gt;https://github.com/ityouknow/drools-examples?tab=readme-ov-file&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;例子:  &lt;a href=&quot;https://www.baeldung.com/drools&quot;&gt;https://www.baeldung.com/drools&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Thu, 12 Dec 2024 10:25:06 +0800</pubDate>
+				<link>http://localhost:4000/2024/12/drools</link>
+				<guid isPermaLink="true">http://localhost:4000/2024/12/drools</guid>
+			</item>
+		
+			<item>
 				<title>美国反正统文化运动-嬉皮士文化研究</title>
 				<description>&lt;h1 id=&quot;美国反正统文化运动-嬉皮士文化研究&quot;&gt;美国反正统文化运动-嬉皮士文化研究&lt;/h1&gt;
 
@@ -232,20 +251,6 @@ done&lt;/span&gt;
 				<pubDate>Thu, 27 Jul 2023 10:25:06 +0800</pubDate>
 				<link>http://localhost:4000/2023/07/gradle</link>
 				<guid isPermaLink="true">http://localhost:4000/2023/07/gradle</guid>
-			</item>
-		
-			<item>
-				<title>uml</title>
-				<description>&lt;h1 id=&quot;uml&quot;&gt;UML&lt;/h1&gt;
-
-&lt;p&gt;参考文章：&lt;a href=&quot;https://blog.csdn.net/qq_20936333/article/details/86773664&quot;&gt;https://blog.csdn.net/qq_20936333/article/details/86773664&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;聚合 比 组合更松散一些。&lt;/p&gt;
-
-</description>
-				<pubDate>Fri, 19 May 2023 10:25:06 +0800</pubDate>
-				<link>http://localhost:4000/2023/05/UML</link>
-				<guid isPermaLink="true">http://localhost:4000/2023/05/UML</guid>
 			</item>
 		
 	</channel>
