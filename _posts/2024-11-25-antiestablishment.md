@@ -19,7 +19,6 @@ tag: [life]
 熟读中国历史的朋友们都能一眼看出来，这些嬉皮士连洪秀全都不如，难以成事。
 
 
-
 ![]({{ site.baseurl}}/images/202411/antiestablishment.png)
 
 

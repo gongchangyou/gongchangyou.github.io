@@ -15,8 +15,14 @@
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; https://open-claw.me/zh/guide/getting-started
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-  &lt;li&gt;直接在TUI (终端)开启对话
-&lt;img src=&quot;/images/202602/微信图片_20260217160312_759_4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;直接在TUI (终端)开启对话
+&lt;img src=&quot;/images/202602/微信图片_20260217160312_759_4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;若两次 ctrl + C 关闭了对话框，可以通过 如下命令再次打开
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openclaw tui
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
 </description>
 				<pubDate>Tue, 17 Feb 2026 10:25:06 +0800</pubDate>
