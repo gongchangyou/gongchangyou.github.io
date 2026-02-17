@@ -12,7 +12,7 @@
   &lt;li&gt;&lt;a href=&quot;https://nodejs.org/zh-cn/download&quot;&gt;https://nodejs.org/zh-cn/download&lt;/a&gt; 下载最新的node&lt;/li&gt;
   &lt;li&gt;npm install -g openclaw&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://open-claw.me/zh/guide/getting-started&quot;&gt;https://open-claw.me/zh/guide/getting-started&lt;/a&gt; 按照这个指引的第2步  ,逐步设置
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; https://open-claw.me/zh/guide/getting-started
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; openclaw onboard --install-daemon
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
